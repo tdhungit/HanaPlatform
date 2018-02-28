@@ -15,7 +15,7 @@ import {
 import {Meteor} from 'meteor/meteor';
 import {Roles} from 'meteor/alanning:roles';
 
-import collections from '/imports/collections/collections';
+import {coreCollections} from '/imports/collections/collections';
 import {permissionsAclTypes} from '/imports/collections/Permissions/config';
 import Permissions from '/imports/collections/Permissions/Permissions';
 import {T, t, PT} from '/imports/common/Translation';
@@ -44,8 +44,8 @@ class ViewPermissions extends Component {
             this.state.permissions = permissions;
         }
 
-        for (let idx in collections) {
-            let collection = collections[idx];
+        for (let idx in coreCollections) {
+            let collection = coreCollections[idx];
             if (!this.state.permissions[collection]) {
                 this.state.permissions[collection] = {Access: false};
             }
@@ -113,7 +113,7 @@ class ViewPermissions extends Component {
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {collections.map((collection) => {
+                                    {coreCollections.map((collection) => {
                                         return (
                                             <tr key={collection}>
                                                 <td>{collection}</td>

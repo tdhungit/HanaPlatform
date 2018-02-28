@@ -43,7 +43,13 @@ class ViewRoles extends Component {
                     <Col>
                         <Card>
                             <CardHeader>
+                                <i className="fa fa-list"/>
                                 <strong><T>View Roles</T></strong>
+                                <div className="card-actions">
+                                    <Link to={'/manager/roles/create'} title={t.__('Create')}>
+                                        <i className="fa fa-plus-circle"/>
+                                    </Link>
+                                </div>
                             </CardHeader>
                             <CardBody>
                                 <Table responsive hover className="table-outline">

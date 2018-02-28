@@ -6,6 +6,8 @@ const routes = {
     '/manager/users/create': 'Create User',
     '/manager/user-groups': 'View User Groups',
     '/manager/user-groups/create': 'Create User Group',
+    '/manager/roles': 'View Roles',
+    '/manager/roles/create': 'Create Role',
     '/manager/main-menus': 'Main Menu',
     '/manager/main-menus/create': 'Create Menu',
     '/manager/settings': 'System Settings',

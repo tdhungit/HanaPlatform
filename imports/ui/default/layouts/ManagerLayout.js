@@ -34,6 +34,8 @@ import ViewActivities from '../pages/activities/ViewActivities';
 import ViewCalendar from '../pages/activities/ViewCalendar';
 import CreateActivity from '../pages/activities/CreateActivity';
 
+import ListView from '../pages/models/ListView';
+
 class ManagerLayout extends Component {
     constructor(props) {
         super(props);
@@ -66,15 +68,16 @@ class ManagerLayout extends Component {
                             <Authenticate exact path="/manager/user-groups/:_id/edit" component={EditUserGroup} {...appProps}/>
                             <Authenticate exact path="/manager/user-groups/:_id/detail" component={ViewUserGroup} {...appProps}/>
 
+                            <Authenticate exact path="/manager/settings" component={SystemSettings} {...appProps}/>
                             <Authenticate exact path="/manager/main-menus" component={ViewMainMenus} {...appProps}/>
                             <Authenticate exact path="/manager/main-menus/create" component={CreateMainMenu} {...appProps}/>
                             <Authenticate exact path="/manager/main-menus/:_id/edit" component={EditMainMenu} {...appProps}/>
 
-                            <Authenticate exact path="/manager/settings" component={SystemSettings} {...appProps}/>
-
                             <Authenticate exact path="/manager/activities" component={ViewActivities} {...appProps}/>
                             <Authenticate exact path="/manager/activities/calendar" component={ViewCalendar} {...appProps}/>
                             <Authenticate exact path="/manager/activities/create" component={CreateActivity} {...appProps}/>
+
+                            <Authenticate exact path="/manager/models/:_model/list" component={ListView} {...appProps}/>
                         </Container>
                     </main>
                 </div>

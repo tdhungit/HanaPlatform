@@ -1,4 +1,4 @@
-const collections = [
+const coreCollections = [
     'Users',
     'UserGroups',
     'Permissions',
@@ -6,4 +6,11 @@ const collections = [
     'Activities'
 ];
 
-export default collections;
+const customCollections = [
+
+];
+
+export {
+    coreCollections,
+    customCollections
+};
