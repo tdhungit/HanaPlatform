@@ -1,0 +1,60 @@
+header {
+  .dropdown-menu {
+    min-width: 11.5rem;
+  }
+}
+
+.activities-calendar {
+  .fc-center {
+    padding-top: 5px;
+
+    h2 {
+      font-size: 16px;
+    }
+  }
+
+  .fc-content {
+    cursor: pointer;
+    padding: 3px 5px;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 12px;
+  }
+
+  .btn-default {
+    border: 1px solid #a4b7c1;
+  }
+
+  .btn-default.active {
+    border-color: #20a8d8;
+  }
+}
+
+.react-datepicker__time-container {
+  width: 71px !important;
+}
+
+.react-datepicker__time-list {
+  padding-left: 0 !important;
+}
+
+.react-datepicker__time-list-item {
+  padding: 5px !important;
+}
+
+.inviteUsers {
+  .inviteUser {
+    padding: 5px;
+
+    .badge {
+      display: inline-block;
+      margin-top: 4px;
+    }
+
+    .inviteOption {
+      margin-top: 5px;
+      padding-top: 3px;
+      border-top: 1px solid #eeeeee;
+    }
+  }
+}
