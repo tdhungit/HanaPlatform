@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Meteor} from 'meteor/meteor';
+import {Roles} from 'meteor/alanning:roles';
 import PropTypes from 'prop-types';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
@@ -9,6 +10,7 @@ import HomeLayout from "./HomeLayout";
 
 import Public from '../components/Router/Public';
 import Authenticate from '../components/Router/Authenticate';
+import Loading from '../components/Loading/Loading';
 
 import Login from '../pages/auth/Login';
 import Signup from '../pages/auth/Signup';
@@ -42,11 +44,14 @@ App.propTypes = {
 };
 
 export default container((props, onData) => {
-    const userSubscription = Meteor.subscribe('users.user');
-    const settingSubscription = Meteor.subscribe('settings.systemSettings');
+    const userSub = Meteor.subscribe('users.user');
+    const settingSub2 = Meteor.subscribe('settings.systemSettings');
 
-    if (settingSubscription && settingSubscription.ready()
-        && userSubscription && userSubscription.ready()) {
+    const loading = userSub.ready()
+        && Roles.subscription.ready()
+        && settingSub2.ready();
+
+    if (loading) {
         const loggingIn = Meteor.loggingIn();
         const userId = Meteor.userId();
 
@@ -55,4 +60,4 @@ export default container((props, onData) => {
             authenticated: !loggingIn && !!userId
         });
     }
-}, App);
+}, App, {loadingHandler: () => (<Loading/>)});
