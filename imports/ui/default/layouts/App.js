@@ -45,11 +45,13 @@ App.propTypes = {
 
 export default container((props, onData) => {
     const userSub = Meteor.subscribe('users.user');
-    const settingSub2 = Meteor.subscribe('settings.systemSettings');
+    const settingSub = Meteor.subscribe('settings.systemSettings');
+    const modelSub = Meteor.subscribe('models.list');
 
     const loading = userSub.ready()
         && Roles.subscription.ready()
-        && settingSub2.ready();
+        && settingSub.ready()
+        && modelSub.ready();
 
     if (loading) {
         const loggingIn = Meteor.loggingIn();

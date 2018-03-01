@@ -2,10 +2,10 @@ import {Meteor} from 'meteor/meteor';
 import Media from './Media';
 
 Media.denyClient();
-Meteor.publish('media.list', function () {
+Meteor.publish('media.list', () => {
     return Media.find().cursor;
 });
 
-Meteor.publish('media.detail', function (mediaId) {
+Meteor.publish('media.detail', (mediaId) => {
     return Media.find({_id: mediaId}).cursor;
 });

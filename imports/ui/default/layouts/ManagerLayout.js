@@ -34,6 +34,7 @@ import ViewActivities from '../pages/activities/ViewActivities';
 import ViewCalendar from '../pages/activities/ViewCalendar';
 import CreateActivity from '../pages/activities/CreateActivity';
 
+import ViewModels from '../pages/models/ViewModels';
 import ListView from '../pages/models/ListView';
 
 class ManagerLayout extends Component {
@@ -77,6 +78,7 @@ class ManagerLayout extends Component {
                             <Authenticate exact path="/manager/activities/calendar" component={ViewCalendar} {...appProps}/>
                             <Authenticate exact path="/manager/activities/create" component={CreateActivity} {...appProps}/>
 
+                            <Authenticate exact path="/manager/models" component={ViewModels} {...appProps}/>
                             <Authenticate exact path="/manager/models/:_model/list" component={ListView} {...appProps}/>
                         </Container>
                     </main>

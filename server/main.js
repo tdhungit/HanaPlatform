@@ -17,3 +17,6 @@ import '/imports/collections/Media/methods';
 
 import '/imports/collections/Activities/publications';
 import '/imports/collections/Activities/methods';
+
+import '/imports/collections/Models/publications';
+import '/imports/collections/Models/methods';
