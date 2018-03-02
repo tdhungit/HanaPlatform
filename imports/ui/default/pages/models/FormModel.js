@@ -13,6 +13,7 @@ import {
     Button
 } from 'reactstrap';
 import {Link} from 'react-router-dom';
+import {Bert} from 'meteor/themeteorchef:bert';
 
 import {t, T} from '/imports/common/Translation';
 import {modules} from '/imports/collections/collections';
@@ -25,7 +26,7 @@ class FormModel extends Component {
 
         this.state = {
             model: {
-                status: 1
+                status: true
             }
         };
 
@@ -38,10 +39,29 @@ class FormModel extends Component {
     }
 
     handleSubmit() {
-        console.log(this.state.model);
-        // Meteor.call('models.insert', this.state.model, (error, modelId) => {
-        //
-        // });
+        let model = this.state.model;
+        let errorStatus = false;
+        let errorMessage = '';
+
+        model.schemaString = model.schemaString.replace(/\r?\n/g, '<br />');
+        if (model.schemaString) {
+            try {
+                model.schema = JSON.parse(model.schemaString);
+            } catch (error) {
+                errorStatus = false;
+                errorMessage = error.message;
+            }
+        }
+
+        console.log(model);
+
+        if (errorStatus) {
+            Meteor.call('models.insert', this.state.model, (error, modelId) => {
+                console.log(error);
+            });
+        } else {
+            Bert.alert(errorMessage, 'danger');
+        }
     }
 
     render() {
@@ -78,8 +98,8 @@ class FormModel extends Component {
                                 <Label><T>Status</T></Label>
                                 <Input type="select" name="status"
                                        onChange={this.handleInputChange}>
-                                    <option value="1">{t.__('Active')}</option>
-                                    <option value="0">{t.__('Inactive')}</option>
+                                    <option value={true}>{t.__('Active')}</option>
+                                    <option value={false}>{t.__('Inactive')}</option>
                                 </Input>
                             </FormGroup>
                         </Col>
@@ -88,7 +108,7 @@ class FormModel extends Component {
                         <Col>
                             <FormGroup>
                                 <Label><T>Schema</T></Label>
-                                <Input type="textarea" name="schema" placeholder={t.__('Enter here')} style={{height: 400}}
+                                <Input type="textarea" name="schemaString" placeholder={t.__('Enter here')} style={{height: 400}}
                                        onChange={this.handleInputChange}/>
                             </FormGroup>
                         </Col>
