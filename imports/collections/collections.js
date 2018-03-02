@@ -10,7 +10,12 @@ const customCollections = [
 
 ];
 
+const modules = [
+    'Core'
+];
+
 export {
     coreCollections,
-    customCollections
+    customCollections,
+    modules
 };
