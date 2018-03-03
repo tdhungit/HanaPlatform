@@ -1,4 +1,9 @@
 import React, {Component} from 'react';
+import {
+    Row,
+    Col,
+    Card
+} from 'reactstrap';
 import {myModel} from '/imports/common/Model';
 
 class ListView extends Component {
