@@ -7,6 +7,7 @@
 * ACL feature
 * Easy to learn Meteor and React JS
 * Add some component basic to easy to use
+* Auto CRUD
 
 ## Install
 
