@@ -45,8 +45,25 @@ class ViewModel extends Component {
                                     </Link>
                                 </div>
                             </CardHeader>
-                            <CardBody>
-
+                            <CardBody className="detail">
+                                <dl className="row">
+                                    <dt className="col-sm-3"><T>Module</T></dt>
+                                    <dd className="col-sm-9">{this.state.model.module}</dd>
+                                </dl>
+                                <dl className="row">
+                                    <dt className="col-sm-3"><T>Collection</T></dt>
+                                    <dd className="col-sm-9">{this.state.model.collection}</dd>
+                                </dl>
+                                <dl className="row">
+                                    <dt className="col-sm-3"><T>Status</T></dt>
+                                    <dd className="col-sm-9">
+                                        {this.state.model.status ? <span className="badge badge-blue">{t.__('Active')}</span> : <span className="badge badge-danger">{t.__('Inactive')}</span>}
+                                    </dd>
+                                </dl>
+                                <dl className="row">
+                                    <dt className="col-sm-3"><T>Schema</T></dt>
+                                    <dd className="col-sm-9">{this.state.model.schema}</dd>
+                                </dl>
                             </CardBody>
                         </Card>
                     </Col>
