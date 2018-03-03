@@ -45,6 +45,11 @@ export default {
                     name: 'System Settings',
                     url: '/manager/settings',
                     icon: 'fa fa-cogs'
+                },
+                {
+                    name: 'Module Builder',
+                    url: '/manager/models',
+                    icon: 'fa fa-cogs'
                 }
             ]
         }

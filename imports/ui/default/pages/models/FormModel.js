@@ -25,9 +25,7 @@ class FormModel extends Component {
         super(props);
 
         this.state = {
-            model: {
-                status: true
-            }
+            model: {}
         };
 
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -35,12 +33,9 @@ class FormModel extends Component {
 
     componentWillMount() {
         if (this.props.model) {
-            let model = this.props.model;
-            if (!model._id) {
-                model.status = true;
-            }
-
-            this.state.model = model;
+            this.state.model = this.props.model;
+        } else {
+            this.state.model = {status: true};
         }
     }
 
@@ -50,6 +45,11 @@ class FormModel extends Component {
     }
 
     getVal(field) {
+        if (field == 'status') {
+            if (this.state.model._id) {
+                return this.state.model.status;
+            }
+        }
         return this.state.model[field] || '';
     }
 
@@ -68,7 +68,7 @@ class FormModel extends Component {
         }
 
         if (!errorStatus) {
-            Meteor.call(method, this.state.model, (error, modelId) => {
+            Meteor.call(method, model, (error, modelId) => {
                 if (error) {
                     Bert.alert(error.reason, 'danger');
                 } else {
@@ -125,7 +125,7 @@ class FormModel extends Component {
                         <Col>
                             <FormGroup>
                                 <Label><T>Schema</T></Label>
-                                <Input type="textarea" name="schema" placeholder={t.__('Enter here')} style={{height: 400}}
+                                <Input type="textarea" name="schema" placeholder={t.__('Enter here')} style={{height: 250}}
                                        value={this.getVal('schema')} onChange={this.handleInputChange}/>
                             </FormGroup>
                         </Col>

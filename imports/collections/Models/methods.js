@@ -11,5 +11,15 @@ Meteor.methods({
             schema: String
         });
         return Models.insert(model);
+    },
+    'models.update': function (model) {
+        check(model, Object);
+        try {
+            const modelId = model._id;
+            Models.update(modelId, {$set: model});
+            return modelId;
+        } catch (exception) {
+            throw new Meteor.Error('500', exception);
+        }
     }
 });
