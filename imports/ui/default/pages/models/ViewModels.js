@@ -53,9 +53,13 @@ class ViewModels extends Component {
                                     <tbody>
                                     {this.state.models.map((model) => {
                                         return (
-                                            <tr>
+                                            <tr key={model._id}>
                                                 <td>{model.module}</td>
-                                                <td>{model.collection}</td>
+                                                <td>
+                                                    <Link to={'/manager/models/' + model._id + '/detail'}>
+                                                        {model.collection}
+                                                    </Link>
+                                                </td>
                                                 <td>{model.status}</td>
                                             </tr>
                                         );

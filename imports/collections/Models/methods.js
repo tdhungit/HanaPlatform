@@ -8,7 +8,7 @@ Meteor.methods({
             module: String,
             collection: String,
             status: Boolean,
-            schema: Object
+            schema: String
         });
         return Models.insert(model);
     }

@@ -43,9 +43,8 @@ const ModelsSchema = new SimpleSchema({
         defaultValue: true
     },
     schema: {
-        type: Object,
-        label: 'Collection schema',
-        blackbox: true
+        type: String,
+        label: 'Collection schema'
     }
 });
 

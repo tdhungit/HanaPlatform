@@ -33,9 +33,24 @@ class FormModel extends Component {
         this.handleInputChange = this.handleInputChange.bind(this);
     }
 
+    componentWillMount() {
+        if (this.props.model) {
+            let model = this.props.model;
+            if (!model._id) {
+                model.status = true;
+            }
+
+            this.state.model = model;
+        }
+    }
+
     handleInputChange(event) {
         let model = utilsHelper.inputChange(event, this.state.model);
         this.setState({model: model});
+    }
+
+    getVal(field) {
+        return this.state.model[field] || '';
     }
 
     handleSubmit() {
@@ -43,21 +58,23 @@ class FormModel extends Component {
         let errorStatus = false;
         let errorMessage = '';
 
-        model.schemaString = model.schemaString.replace(/\r?\n/g, '<br />');
-        if (model.schemaString) {
-            try {
-                model.schema = JSON.parse(model.schemaString);
-            } catch (error) {
-                errorStatus = false;
-                errorMessage = error.message;
-            }
+        model.schema = model.schema.replace(/\r?\n/g, '');
+        model.schema = model.schema.replace(/\s\s+/g, ' ');
+
+        let method = 'models.insert';
+        const existingRecord = this.props.model && this.props.model._id;
+        if (existingRecord) {
+            method = 'models.update';
         }
 
-        console.log(model);
-
-        if (errorStatus) {
-            Meteor.call('models.insert', this.state.model, (error, modelId) => {
-                console.log(error);
+        if (!errorStatus) {
+            Meteor.call(method, this.state.model, (error, modelId) => {
+                if (error) {
+                    Bert.alert(error.reason, 'danger');
+                } else {
+                    Bert.alert(t.__('Successful!'), 'success');
+                    this.props.history.push('/manager/models/' + modelId + '/detail');
+                }
             });
         } else {
             Bert.alert(errorMessage, 'danger');
@@ -79,7 +96,7 @@ class FormModel extends Component {
                             <FormGroup>
                                 <Label><T>Module</T></Label>
                                 <SelectHelper name="module" options={modules} placeholder={t.__('Choose...')}
-                                              onChange={this.handleInputChange}/>
+                                              value={this.getVal('module')} onChange={this.handleInputChange}/>
                             </FormGroup>
                         </Col>
                     </Row>
@@ -88,7 +105,7 @@ class FormModel extends Component {
                             <FormGroup>
                                 <Label><T>Collection</T></Label>
                                 <Input type="text" name="collection" placeholder={t.__('Enter here')} required
-                                       onChange={this.handleInputChange}/>
+                                       value={this.getVal('collection')} onChange={this.handleInputChange}/>
                             </FormGroup>
                         </Col>
                     </Row>
@@ -97,7 +114,7 @@ class FormModel extends Component {
                             <FormGroup>
                                 <Label><T>Status</T></Label>
                                 <Input type="select" name="status"
-                                       onChange={this.handleInputChange}>
+                                       value={this.getVal('status')} onChange={this.handleInputChange}>
                                     <option value={true}>{t.__('Active')}</option>
                                     <option value={false}>{t.__('Inactive')}</option>
                                 </Input>
@@ -108,8 +125,8 @@ class FormModel extends Component {
                         <Col>
                             <FormGroup>
                                 <Label><T>Schema</T></Label>
-                                <Input type="textarea" name="schemaString" placeholder={t.__('Enter here')} style={{height: 400}}
-                                       onChange={this.handleInputChange}/>
+                                <Input type="textarea" name="schema" placeholder={t.__('Enter here')} style={{height: 400}}
+                                       value={this.getVal('schema')} onChange={this.handleInputChange}/>
                             </FormGroup>
                         </Col>
                     </Row>
