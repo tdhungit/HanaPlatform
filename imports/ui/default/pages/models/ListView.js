@@ -4,7 +4,9 @@ import {
     Col,
     Card
 } from 'reactstrap';
+
 import {myModel} from '/imports/common/Model';
+import {t, T, PT} from '/imports/common/Translation';
 
 class ListView extends Component {
     render() {
