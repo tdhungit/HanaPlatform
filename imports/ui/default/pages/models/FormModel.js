@@ -19,6 +19,7 @@ import {t, T} from '/imports/common/Translation';
 import {modules} from '/imports/collections/collections';
 import {SelectHelper} from '../../helpers/inputs/SelectHelper';
 import {utilsHelper} from '../../helpers/utils/utils';
+import {existCollections} from '/imports/collections/collections';
 
 class FormModel extends Component {
     constructor(props) {
@@ -68,6 +69,15 @@ class FormModel extends Component {
         model.view = model.view.replace(/\r?\n/g, '');
         model.view = JSON.parse(model.view);
 
+        for (let idx in existCollections) {
+            let existCollection = existCollections[idx];
+            if (existCollection.toLowerCase() === model.model.toLowerCase()
+                || existCollection.toLowerCase() === model.collection.toLowerCase()) {
+                errorStatus = true;
+                errorMessage = t.__('Exist model or collection');
+            }
+        }
+
         let method = 'models.insert';
         const existingRecord = this.props.model && this.props.model._id;
         if (existingRecord) {
@@ -111,7 +121,7 @@ class FormModel extends Component {
                         <Col>
                             <FormGroup>
                                 <Label><T>Module</T></Label>
-                                <SelectHelper name="module" options={modules} placeholder={t.__('Choose...')}
+                                <SelectHelper name="module" options={modules} placeholder={t.__('Choose...')} required
                                               value={this.getVal('module')} onChange={this.handleInputChange}/>
                             </FormGroup>
                         </Col>
@@ -150,7 +160,7 @@ class FormModel extends Component {
                         <Col>
                             <FormGroup>
                                 <Label><T>Schema</T></Label>
-                                <Input type="textarea" name="schema" placeholder={t.__('Enter here')} style={{height: 200}}
+                                <Input type="textarea" name="schema" placeholder={t.__('Enter here')} required style={{height: 200}}
                                        value={this.getVal('schema')} onChange={this.handleInputChange}/>
                             </FormGroup>
                         </Col>
@@ -159,7 +169,7 @@ class FormModel extends Component {
                         <Col>
                             <FormGroup>
                                 <Label><T>List View</T></Label>
-                                <Input type="textarea" name="list" placeholder={t.__('Enter here')} style={{height: 200}}
+                                <Input type="textarea" name="list" placeholder={t.__('Enter here')} required style={{height: 200}}
                                        value={this.getVal('list')} onChange={this.handleInputChange}/>
                             </FormGroup>
                         </Col>
@@ -168,7 +178,7 @@ class FormModel extends Component {
                         <Col>
                             <FormGroup>
                                 <Label><T>Record View</T></Label>
-                                <Input type="textarea" name="view" placeholder={t.__('Enter here')} style={{height: 200}}
+                                <Input type="textarea" name="view" placeholder={t.__('Enter here')} required style={{height: 200}}
                                        value={this.getVal('view')} onChange={this.handleInputChange}/>
                             </FormGroup>
                         </Col>

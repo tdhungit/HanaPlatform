@@ -10,6 +10,14 @@ const customCollections = [
 
 ];
 
+const existCollections = [
+    ...coreCollections,
+    'Accounts',
+    'Roles',
+    'Models',
+    'Media'
+];
+
 const modules = [
     'Core'
 ];
@@ -17,5 +25,6 @@ const modules = [
 export {
     coreCollections,
     customCollections,
+    existCollections,
     modules
 };
