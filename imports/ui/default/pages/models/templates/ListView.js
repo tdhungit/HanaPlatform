@@ -20,7 +20,6 @@ class ListView extends Component {
     }
     render() {
         const testCollection = myModel.getCollection('Activities');
-        console.log(testCollection.test());
         return (
             <div className="module-ListView animated fadeIn">
                 <PT titile={this.props.model + ' ' + t.__('List')}/>

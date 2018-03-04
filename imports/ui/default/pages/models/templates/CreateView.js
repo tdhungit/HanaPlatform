@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {Meteor} from 'meteor/meteor';
 import {
     Row,
     Col
@@ -17,6 +16,21 @@ class CreateView extends Component {
             model
         } = this.props;
 
+        if (!model) {
+            return (
+                <div>
+                    <PT title={t.__('404')}/>
+                    <Row>
+                        <Col>
+                            <div className="alert alert-danger">
+                                {t.__('Can not found') + ': ' + this.props.match.params._model + ' Module'}
+                            </div>
+                        </Col>
+                    </Row>
+                </div>
+            );
+        }
+
         return (
             <div>
                 <PT title={t.__('Create new') + ' ' + model.model}/>
@@ -33,10 +47,7 @@ class CreateView extends Component {
 
 export default container((props, onData) => {
     const modelName = props.match.params._model;
-    const subModel = Meteor.subscribe('models.get', modelName);
-    if (subModel.ready()) {
-        onData(null, {
-            model: Models.findOne({model: modelName})
-        });
-    }
+    onData(null, {
+        model: Models.findOne({model: modelName})
+    });
 }, CreateView, {loadingHandler: () => <Loading/>});

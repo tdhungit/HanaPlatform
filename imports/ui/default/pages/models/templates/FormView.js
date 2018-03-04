@@ -1,12 +1,23 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router';
+import {Meteor} from 'meteor/meteor';
 import {
+    Row,
+    Col,
     Card,
     CardHeader,
-    CardBody
+    CardBody,
+    CardFooter,
+    FormGroup,
+    Label,
+    Button
 } from 'reactstrap';
+import {Link} from 'react-router-dom';
+import {Bert} from 'meteor/themeteorchef:bert';
 
+import {t, T} from '/imports/common/Translation';
 import {utilsHelper} from '../../../helpers/utils/utils';
+import {FieldEditView} from '../../../components/Fields/FieldView';
 
 class FormView extends Component {
     constructor(props) {
@@ -14,7 +25,9 @@ class FormView extends Component {
 
         this.state = {
             record: {}
-        }
+        };
+
+        this.handleInputChange = this.handleInputChange.bind(this);
     }
 
     componentWillMount() {
@@ -23,11 +36,58 @@ class FormView extends Component {
         }
     }
 
+    handleInputChange(event) {
+        const object = utilsHelper.inputChange(event, this.state.record);
+        this.setState({record: object});
+    }
+
     getVal(field) {
         return utilsHelper.getField(this.state.record, field, '');
     }
 
+    renderFields(fields) {
+        let fieldsRender = [];
+        for (let fieldName in fields) {
+            let field = fields[fieldName];
+            let row = (
+                <Row key={fieldName}>
+                    <Col>
+                        <FormGroup>
+                            <Label><T>{field.label}</T></Label>
+                            <FieldEditView type={field.type} name={fieldName} required={field.required || false}
+                                           value={this.getVal(fieldName)}
+                                           onChange={this.handleInputChange}/>
+                        </FormGroup>
+                    </Col>
+                </Row>
+            );
+
+            fieldsRender.push(row);
+        }
+
+        return fieldsRender;
+    }
+
+    handleSubmit() {
+        const model = this.props.model;
+        Meteor.call('models.insertRecord', model.model, this.state.record, (error, recordId) => {
+            if (error) {
+                Bert.alert(error.reason, 'danger');
+            } else {
+                console.log(recordId);
+            }
+        });
+    }
+
     render() {
+        const {
+            model,
+            record
+        } = this.props;
+
+        const existingRecord = record && record._id;
+        const recordFields = model.view;
+
         return (
             <Card>
                 <CardHeader>
@@ -35,8 +95,25 @@ class FormView extends Component {
                     <strong>{this.props.title}</strong> {this.props.slogan}
                 </CardHeader>
                 <CardBody>
-
+                    {this.renderFields(recordFields)}
                 </CardBody>
+                <CardFooter>
+                    <Button type="button" size="sm" color="primary" onClick={this.handleSubmit.bind(this)}>
+                        <i className="fa fa-dot-circle-o"></i> <T>{existingRecord ? 'Update' : 'Create'}</T>
+                    </Button>
+                    <Button type="button" size="sm" color="danger">
+                        {existingRecord
+                            ?
+                            <Link to={'/manager/model/' + model.model + '/' + record._id + '/detail'}>
+                                <i className="fa fa-ban"></i> <T>Cancel</T>
+                            </Link>
+                            :
+                            <Link to={'/manager/model/' + model.model + '/list'}>
+                                <i className="fa fa-ban"></i> <T>Cancel</T>
+                            </Link>
+                        }
+                    </Button>
+                </CardFooter>
             </Card>
         );
     }

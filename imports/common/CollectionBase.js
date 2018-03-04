@@ -40,10 +40,6 @@ class CollectionBase extends Mongo.Collection {
 
         return false;
     }
-
-    test() {
-        return 'OK';
-    }
 }
 
 export default CollectionBase;
