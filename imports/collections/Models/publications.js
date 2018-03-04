@@ -8,3 +8,7 @@ Meteor.publish('models.list', () => {
 Meteor.publish('models.detail', (modelId) => {
     return Models.find({_id: modelId});
 });
+
+Meteor.publish('models.get', (modelName) => {
+    return Models.find({model: modelName});
+});

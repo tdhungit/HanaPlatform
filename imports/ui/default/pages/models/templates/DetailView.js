@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Meteor} from "meteor/meteor";
 import {
     Row,
     Col,
@@ -10,17 +11,22 @@ import {
 import container from '/imports/common/Container';
 import {t, T, PT} from '/imports/common/Translation';
 import Loading from '../../../components/Loading/Loading';
+import Models from '/imports/collections/Models/Models';
 
 class DetailView extends Component {
     render() {
+        const {
+            model
+        } = this.props;
+
         return (
             <div>
-                <PT title={this.props.model + ' ' + t.__('Detail')}/>
+                <PT title={model.model + ' ' + t.__('Detail')}/>
                 <Row>
                     <Card>
                         <CardHeader>
                             <i className="fa fa-eye"/>
-                            <strong>{this.props.model} <T>Detail</T>: </strong>
+                            <strong>{model.model} <T>Detail</T>: </strong>
                         </CardHeader>
                     </Card>
                 </Row>
@@ -30,8 +36,11 @@ class DetailView extends Component {
 }
 
 export default container((props, onData) => {
-    const model = props.match.params._model;
-    onData(null, {
-        model: model
-    })
+    const modelName = props.match.params._model;
+    const subModel = Meteor.subscribe('models.get', modelName);
+    if (subModel.ready()) {
+        onData(null, {
+            model: Models.findOne({model: modelName})
+        });
+    }
 }, DetailView, {loadingHandler: () => <Loading/>});

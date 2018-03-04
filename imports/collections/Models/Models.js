@@ -28,6 +28,10 @@ const ModelsSchema = new SimpleSchema({
             return this.value;
         },
     },
+    model: {
+        type: String,
+        label: 'Model name'
+    },
     module: {
         type: String,
         label: 'Module name',

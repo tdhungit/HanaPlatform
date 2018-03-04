@@ -20,9 +20,10 @@ class UtilsHelper {
             fieldKey = fieldArray[(length - 1)];
         }
 
-        if (object[fieldKey]) {
+        if (typeof object[fieldKey] !== 'undefined') {
             return object[fieldKey];
         }
+
         return defaultValue;
     }
 

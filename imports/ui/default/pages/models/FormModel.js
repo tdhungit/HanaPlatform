@@ -47,7 +47,7 @@ class FormModel extends Component {
     }
 
     getVal(field) {
-        if (field == 'status') {
+        if (field === 'status') {
             if (this.state.model._id) {
                 return this.state.model.status;
             }
@@ -98,6 +98,15 @@ class FormModel extends Component {
                     <strong>{this.props.title}</strong> {this.props.slogan}
                 </CardHeader>
                 <CardBody>
+                    <Row>
+                        <Col>
+                            <FormGroup>
+                                <Label><T>Model</T></Label>
+                                <Input type="text" name="model" placeholder={t.__('Enter here')} required
+                                       value={this.getVal('model')} onChange={this.handleInputChange}/>
+                            </FormGroup>
+                        </Col>
+                    </Row>
                     <Row>
                         <Col>
                             <FormGroup>

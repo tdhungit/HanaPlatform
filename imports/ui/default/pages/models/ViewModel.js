@@ -49,6 +49,10 @@ class ViewModel extends Component {
                             </CardHeader>
                             <CardBody className="detail">
                                 <dl className="row">
+                                    <dt className="col-sm-3"><T>Model</T></dt>
+                                    <dd className="col-sm-9">{this.state.model.model}</dd>
+                                </dl>
+                                <dl className="row">
                                     <dt className="col-sm-3"><T>Module</T></dt>
                                     <dd className="col-sm-9">{this.state.model.module}</dd>
                                 </dl>

@@ -46,22 +46,35 @@ class ViewModels extends Component {
                                 <Table responsive className="table-outline">
                                     <thead>
                                     <tr>
+                                        <th><T>Model</T></th>
                                         <th><T>Module</T></th>
                                         <th><T>Collection</T></th>
                                         <th><T>Status</T></th>
+                                        <th></th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     {this.state.models.map((model) => {
                                         return (
                                             <tr key={model._id}>
+                                                <td>
+                                                    <Link to={'/manager/models/' + model._id + '/detail'}>
+                                                        {model.model}
+                                                    </Link>
+                                                </td>
                                                 <td>{model.module}</td>
                                                 <td>
                                                     <Link to={'/manager/models/' + model._id + '/detail'}>
                                                         {model.collection}
                                                     </Link>
                                                 </td>
-                                                <td>{model.status}</td>
+                                                <td>{model.status ? <span className="badge badge-info">{t.__('Active')}</span>
+                                                    : <span className="badge badge-gray-200">{t.__('Inactive')}</span>}</td>
+                                                <td>
+                                                    <Link to={'/manager'}>
+                                                        <i className="fa fa-trash" color="danger"/>
+                                                    </Link>
+                                                </td>
                                             </tr>
                                         );
                                     })}
