@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import {
     Row,
-    Col
+    Col,
+    Alert
 } from 'reactstrap';
 
 import container from '/imports/common/Container';
-import {t, PT} from '/imports/common/Translation';
+import {t, T, PT} from '/imports/common/Translation';
 import Loading from '../../../components/Loading/Loading';
 import FormView from './FormView';
 import Models from '/imports/collections/Models/Models';
@@ -22,9 +23,7 @@ class CreateView extends Component {
                     <PT title={t.__('404')}/>
                     <Row>
                         <Col>
-                            <div className="alert alert-danger">
-                                {t.__('Can not found') + ': ' + this.props.match.params._model + ' Module'}
-                            </div>
+                            <Alert color="danger"><T>Can not found</T>: {this.props.match.params._model} Module</Alert>
                         </Col>
                     </Row>
                 </div>

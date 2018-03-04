@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Meteor} from 'meteor/meteor';
 import {
     Row,
     Col,
@@ -12,30 +13,51 @@ import {myModel} from '/imports/common/Model';
 import container from '/imports/common/Container';
 import {t, T, PT} from '/imports/common/Translation';
 import Loading from '../../../components/Loading/Loading';
-import {FieldEditView} from '../../../components/Fields/FieldView';
+import Models from '/imports/collections/Models/Models';
+import ListViewTable from './ListViewTable';
 
 class ListView extends Component {
-    onChange() {
-
+    constructor(props) {
+        super(props);
     }
+
+    componentWillMount() {
+        const model = this.props.model;
+        const collection = myModel.getCollection(model.model);
+
+        this.limit = 20;
+        const limit = this.limit;
+        this.pagination = new Meteor.Pagination(collection, {
+            filters: {},
+            sort: {},
+            perPage: limit,
+            reactive: true,
+            debug: true
+        });
+    }
+
     render() {
-        const testCollection = myModel.getCollection('Activities');
+        const {
+            model
+        } = this.props;
+
         return (
             <div className="module-ListView animated fadeIn">
-                <PT titile={this.props.model + ' ' + t.__('List')}/>
+                <PT titile={model.model + ' ' + t.__('List')}/>
                 <Row>
                     <Col>
                         <Card>
                             <CardHeader>
-                                <strong>{this.props.model} <T>List</T></strong>
+                                <i className={model.icon}/>
+                                <strong>{model.model} <T>List</T></strong>
                                 <div className="card-actions">
-                                    <Link to={'/manager/model/' + this.props.model + '/create'} title={t.__('Create')}>
+                                    <Link to={'/manager/model/' + model.model + '/create'} title={t.__('Create')}>
                                         <i className="fa fa-plus-circle"/>
                                     </Link>
                                 </div>
                             </CardHeader>
                             <CardBody>
-                                <FieldEditView type="texteditor" name="test" onChange={this.onChange.bind(this)}/>
+                                <ListViewTable pagination={this.pagination} limit={this.limit}/>
                             </CardBody>
                         </Card>
                     </Col>
@@ -46,8 +68,8 @@ class ListView extends Component {
 }
 
 export default container((props, onData) => {
-    const model = props.match.params._model;
+    const modelName = props.match.params._model;
     onData(null, {
-        model: model
-    })
+        model: Models.findOne({model: modelName})
+    });
 }, ListView, {loadingHandler: () => <Loading/>});

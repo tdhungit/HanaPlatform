@@ -33,10 +33,7 @@ class EditView extends Component {
 
 export default container((props, onData) => {
     const modelName = props.match.params._model;
-    const subModel = Meteor.subscribe('models.get', modelName);
-    if (subModel.ready()) {
-        onData(null, {
-            model: Models.findOne({model: modelName})
-        });
-    }
+    onData(null, {
+        model: Models.findOne({model: modelName})
+    });
 }, EditView, {loadingHandler: () => <Loading/>});

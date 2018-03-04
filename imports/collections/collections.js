@@ -12,6 +12,7 @@ const customCollections = [
 
 const existCollections = [
     ...coreCollections,
+    ...customCollections,
     'Accounts',
     'Roles',
     'Models',

@@ -11,7 +11,16 @@ import App from '../imports/ui/default/layouts/App';
 
 Meteor.startup(() => {
     Tracker.autorun((c) => {
-        if (Meteor.loggingIn() || !Roles.subscription.ready()) {
+        const userSub = Meteor.subscribe('users.user');
+        const settingSub = Meteor.subscribe('settings.systemSettings');
+        const modelSub = Meteor.subscribe('models.list');
+
+        const loading = userSub.ready()
+            && Roles.subscription.ready()
+            && settingSub.ready()
+            && modelSub.ready();
+
+        if (!loading) {
             return;
         }
 

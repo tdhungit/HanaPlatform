@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {Meteor} from 'meteor/meteor';
 import {
     Row,
     Col,
@@ -67,7 +66,9 @@ class ViewModel extends Component {
                                 <dl className="row">
                                     <dt className="col-sm-3"><T>Status</T></dt>
                                     <dd className="col-sm-9">
-                                        {this.state.model.status ? <span className="badge badge-blue">{t.__('Active')}</span> : <span className="badge badge-danger">{t.__('Inactive')}</span>}
+                                        {this.state.model.status ?
+                                            <span className="badge badge-blue">{t.__('Active')}</span> :
+                                            <span className="badge badge-danger">{t.__('Inactive')}</span>}
                                     </dd>
                                 </dl>
                                 <dl className="row">
@@ -93,10 +94,7 @@ class ViewModel extends Component {
 
 export default container((props, onData) => {
     const modelId = props.match.params._id;
-    const sub = Meteor.subscribe('models.detail', modelId);
-    if (sub.ready()) {
-        onData(null, {
-            model: Models.findOne(modelId)
-        });
-    }
+    onData(null, {
+        model: Models.findOne(modelId)
+    });
 }, ViewModel, {loadingHandler: () => (<Loading/>)});

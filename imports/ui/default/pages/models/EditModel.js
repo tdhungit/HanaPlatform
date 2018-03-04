@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {Meteor} from 'meteor/meteor';
 import {
     Row,
     Col
@@ -29,10 +28,7 @@ class EditModel extends Component {
 
 export default container((props, onData) => {
     const modelId = props.match.params._id;
-    const sub = Meteor.subscribe('models.detail', modelId);
-    if (sub.ready()) {
-        onData(null, {
-            model: Models.findOne(modelId)
-        });
-    }
+    onData(null, {
+        model: Models.findOne(modelId)
+    });
 }, EditModel, {loadingHandler: () => (<Loading/>)});

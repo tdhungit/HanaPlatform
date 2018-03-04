@@ -7,6 +7,18 @@ class ActivitiesCollection extends CollectionAssign {
 
 const Activities = new ActivitiesCollection('activities');
 
+Activities.allow({
+    insert: () => false,
+    update: () => false,
+    remove: () => false,
+});
+
+Activities.deny({
+    insert: () => true,
+    update: () => true,
+    remove: () => true,
+});
+
 const ActivitiesSchema = new SimpleSchema({
     createdAt: {
         type: String,

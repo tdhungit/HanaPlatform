@@ -20,10 +20,11 @@ class FieldDetailView extends Component {
     render() {
         const {
             field,
-            object
+            record
         } = this.props;
 
-        const value = object._id ? object[field] : object[field] || '';
+        const fieldName = field.name;
+        const value = record._id ? record[fieldName] : record[fieldName] || '';
 
         return <div>{value}</div>;
     }
