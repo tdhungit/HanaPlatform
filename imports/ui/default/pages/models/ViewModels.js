@@ -34,6 +34,7 @@ class ViewModels extends Component {
                     <Col>
                         <Card>
                             <CardHeader>
+                                <i className="fa fa-wrench"/>
                                 <strong><T>View Models</T></strong>
                                 <div className="card-actions">
                                     <Link to={'/manager/models/create'} title={t.__('Create')}>

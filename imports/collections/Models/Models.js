@@ -45,6 +45,21 @@ const ModelsSchema = new SimpleSchema({
     schema: {
         type: String,
         label: 'Collection schema'
+    },
+    icon: {
+        type: String,
+        label: 'Module icon',
+        defaultValue: 'fa fa-cogs'
+    },
+    list: {
+        type: Object,
+        label: 'List View fields',
+        blackbox: true
+    },
+    view: {
+        type: Object,
+        label: 'Detail/Edit/View fields',
+        blackbox: true
     }
 });
 

@@ -34,6 +34,8 @@ class FormModel extends Component {
     componentWillMount() {
         if (this.props.model) {
             this.state.model = this.props.model;
+            this.state.model.list = JSON.stringify(this.state.model.list);
+            this.state.model.view = JSON.stringify(this.state.model.view);
         } else {
             this.state.model = {status: true};
         }
@@ -61,6 +63,11 @@ class FormModel extends Component {
         model.schema = model.schema.replace(/\r?\n/g, '');
         model.schema = model.schema.replace(/\s\s+/g, ' ');
 
+        model.list = model.list.replace(/\r?\n/g, '');
+        model.list = JSON.parse(model.list);
+        model.view = model.view.replace(/\r?\n/g, '');
+        model.view = JSON.parse(model.view);
+
         let method = 'models.insert';
         const existingRecord = this.props.model && this.props.model._id;
         if (existingRecord) {
@@ -87,7 +94,7 @@ class FormModel extends Component {
         return (
             <Card>
                 <CardHeader>
-                    <i className="fa fa-cogs"/>
+                    <i className="fa fa-wrench"/>
                     <strong>{this.props.title}</strong> {this.props.slogan}
                 </CardHeader>
                 <CardBody>
@@ -112,6 +119,15 @@ class FormModel extends Component {
                     <Row>
                         <Col>
                             <FormGroup>
+                                <Label><T>Icon</T></Label>
+                                <Input type="text" name="icon" placeholder={t.__('Enter here')} required
+                                       value={this.getVal('icon')} onChange={this.handleInputChange}/>
+                            </FormGroup>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <FormGroup>
                                 <Label><T>Status</T></Label>
                                 <Input type="select" name="status"
                                        value={this.getVal('status')} onChange={this.handleInputChange}>
@@ -125,8 +141,26 @@ class FormModel extends Component {
                         <Col>
                             <FormGroup>
                                 <Label><T>Schema</T></Label>
-                                <Input type="textarea" name="schema" placeholder={t.__('Enter here')} style={{height: 250}}
+                                <Input type="textarea" name="schema" placeholder={t.__('Enter here')} style={{height: 200}}
                                        value={this.getVal('schema')} onChange={this.handleInputChange}/>
+                            </FormGroup>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <FormGroup>
+                                <Label><T>List View</T></Label>
+                                <Input type="textarea" name="list" placeholder={t.__('Enter here')} style={{height: 200}}
+                                       value={this.getVal('list')} onChange={this.handleInputChange}/>
+                            </FormGroup>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <FormGroup>
+                                <Label><T>Record View</T></Label>
+                                <Input type="textarea" name="view" placeholder={t.__('Enter here')} style={{height: 200}}
+                                       value={this.getVal('view')} onChange={this.handleInputChange}/>
                             </FormGroup>
                         </Col>
                     </Row>

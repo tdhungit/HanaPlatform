@@ -26,6 +26,8 @@ class ViewModel extends Component {
     componentWillMount() {
         if (this.props.model) {
             this.state.model = this.props.model;
+            this.state.model.list = JSON.stringify(this.state.model.list);
+            this.state.model.view = JSON.stringify(this.state.model.view);
         }
     }
 
@@ -37,7 +39,7 @@ class ViewModel extends Component {
                     <Col>
                         <Card>
                             <CardHeader>
-                                <i className="fa fa-cogs"/>
+                                <i className="fa fa-wrench"/>
                                 <strong>{this.state.model.collection}</strong>
                                 <div className="card-actions">
                                     <Link to={'/manager/models/' + this.state.model._id + '/edit'} title={t.__('Edit')}>
@@ -55,6 +57,10 @@ class ViewModel extends Component {
                                     <dd className="col-sm-9">{this.state.model.collection}</dd>
                                 </dl>
                                 <dl className="row">
+                                    <dt className="col-sm-3"><T>Icon</T></dt>
+                                    <dd className="col-sm-9">{this.state.model.icon}</dd>
+                                </dl>
+                                <dl className="row">
                                     <dt className="col-sm-3"><T>Status</T></dt>
                                     <dd className="col-sm-9">
                                         {this.state.model.status ? <span className="badge badge-blue">{t.__('Active')}</span> : <span className="badge badge-danger">{t.__('Inactive')}</span>}
@@ -63,6 +69,14 @@ class ViewModel extends Component {
                                 <dl className="row">
                                     <dt className="col-sm-3"><T>Schema</T></dt>
                                     <dd className="col-sm-9">{this.state.model.schema}</dd>
+                                </dl>
+                                <dl className="row">
+                                    <dt className="col-sm-3"><T>List View</T></dt>
+                                    <dd className="col-sm-9">{this.state.model.list}</dd>
+                                </dl>
+                                <dl className="row">
+                                    <dt className="col-sm-3"><T>Record View</T></dt>
+                                    <dd className="col-sm-9">{this.state.model.view}</dd>
                                 </dl>
                             </CardBody>
                         </Card>
