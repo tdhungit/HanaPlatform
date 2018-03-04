@@ -9,7 +9,7 @@ import {
 
 import container from '/imports/common/Container';
 import {t, T, PT} from '/imports/common/Translation';
-import Loading from '../../components/Loading/Loading';
+import Loading from '../../../components/Loading/Loading';
 
 class DetailView extends Component {
     render() {

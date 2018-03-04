@@ -6,7 +6,7 @@ import {
 
 import container from '/imports/common/Container';
 import {t, PT} from '/imports/common/Translation';
-import Loading from '../../components/Loading/Loading';
+import Loading from '../../../components/Loading/Loading';
 import FormView from './FormView';
 
 class CreateView extends Component {

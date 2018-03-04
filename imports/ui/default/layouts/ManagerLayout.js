@@ -38,10 +38,10 @@ import ViewModels from '../pages/models/ViewModels';
 import CreateModel from '../pages/models/CreateModel';
 import ViewModel from '../pages/models/ViewModel';
 import EditModel from '../pages/models/EditModel';
-import ListView from '../pages/models/ListView';
-import CreateView from '../pages/models/CreateView';
-import EditView from '../pages/models/EditView';
-import DetailView from '../pages/models/DetailView';
+import ListView from '../pages/models/templates/ListView';
+import CreateView from '../pages/models/templates/CreateView';
+import EditView from '../pages/models/templates/EditView';
+import DetailView from '../pages/models/templates/DetailView';
 
 class ManagerLayout extends Component {
     constructor(props) {
