@@ -31,7 +31,7 @@ import {AppListStrings} from '/imports/common/AppListStrings';
 import {SelectHelper, Select2Helper, SelectGroupHelper} from '../../helpers/inputs/SelectHelper';
 import {DateInput} from '../../helpers/inputs/DateHelper';
 import {ImageTag} from '../../helpers/tags/MediaImage';
-import TextEditor from '../../helpers/inputs/TextEditor';
+import {TextEditor} from '../../helpers/inputs/TextEditor';
 import {utilsHelper} from '../../helpers/utils/utils';
 
 class FormActivity extends Component {

@@ -108,8 +108,6 @@ class TextEditor extends Component {
     }
 }
 
-export default TextEditor;
-
 class StyleButton extends Component {
     constructor() {
         super();
@@ -208,3 +206,7 @@ function getBlockStyle(block) {
             return null;
     }
 }
+
+export {
+    TextEditor
+};
