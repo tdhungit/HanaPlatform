@@ -16,7 +16,7 @@ import {
     TextEditor
 } from '../../helpers/inputs/TextEditor';
 
-class FieldListView extends Component {
+class FieldDetailView extends Component {
     render() {
         const {
             field,
@@ -76,6 +76,6 @@ class FieldEditView extends Component {
 }
 
 export {
-    FieldListView,
+    FieldDetailView,
     FieldEditView
 }

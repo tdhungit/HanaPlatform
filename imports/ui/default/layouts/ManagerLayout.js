@@ -39,6 +39,9 @@ import CreateModel from '../pages/models/CreateModel';
 import ViewModel from '../pages/models/ViewModel';
 import EditModel from '../pages/models/EditModel';
 import ListView from '../pages/models/ListView';
+import CreateView from '../pages/models/CreateView';
+import EditView from '../pages/models/EditView';
+import DetailView from '../pages/models/DetailView';
 
 class ManagerLayout extends Component {
     constructor(props) {
@@ -86,6 +89,9 @@ class ManagerLayout extends Component {
                             <Authenticate exact path="/manager/models/:_id/detail" component={ViewModel} {...appProps}/>
                             <Authenticate exact path="/manager/models/:_id/edit" component={EditModel} {...appProps}/>
                             <Authenticate exact path="/manager/model/:_model/list" component={ListView} {...appProps}/>
+                            <Authenticate exact path="/manager/model/:_model/create" component={CreateView} {...appProps}/>
+                            <Authenticate exact path="/manager/model/:_model/:_id/edit" component={EditView} {...appProps}/>
+                            <Authenticate exact path="/manager/model/:_model/:_id/detail" component={DetailView} {...appProps}/>
                         </Container>
                     </main>
                 </div>
