@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Meteor} from 'meteor/meteor';
 import {Roles} from 'meteor/alanning:roles';
 import PropTypes from 'prop-types';
-import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'; // or HashRouter
 
 import container from '/imports/common/Container';
 import ManagerLayout from "./ManagerLayout";
@@ -44,16 +44,11 @@ App.propTypes = {
 };
 
 export default container((props, onData) => {
-    const userSub = Meteor.subscribe('users.user');
-    const settingSub = Meteor.subscribe('settings.systemSettings');
-    const modelSub = Meteor.subscribe('models.list');
+    Meteor.subscribe('users.user');
+    Meteor.subscribe('settings.systemSettings');
+    Meteor.subscribe('models.list');
 
-    const loading = userSub.ready()
-        && Roles.subscription.ready()
-        && settingSub.ready()
-        && modelSub.ready();
-
-    if (loading) {
+    if (Roles.subscription.ready()) {
         const loggingIn = Meteor.loggingIn();
         const userId = Meteor.userId();
 

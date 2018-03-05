@@ -15,7 +15,7 @@ class ListViewTable extends Component {
         let headers = [];
         for (let fieldName in this.props.model.list) {
             let field = this.props.model.list[fieldName];
-            headers.push(<th><T>{field.label || fieldName}</T></th>)
+            headers.push(<th key={fieldName}><T>{field.label || fieldName}</T></th>)
         }
 
         return headers;
@@ -27,7 +27,7 @@ class ListViewTable extends Component {
             let field = this.props.model.list[fieldName];
             field.name = fieldName;
             let col = (
-                <th>
+                <th key={fieldName}>
                     <FieldDetailView record={record} field={field}/>
                 </th>
             );
@@ -72,6 +72,9 @@ export default container((props, onData) => {
     if (props.pagination.ready()) {
         const records = props.pagination.getPage();
         const totalPages = props.pagination.totalPages();
-        onData(null, {records, totalPages});
+        onData(null, {
+            records,
+            totalPages
+        });
     }
 }, ListViewTable, {loadingHandler: () => <Loading/>});

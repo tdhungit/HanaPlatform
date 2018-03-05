@@ -57,7 +57,7 @@ class ListView extends Component {
                                 </div>
                             </CardHeader>
                             <CardBody>
-                                <ListViewTable pagination={this.pagination} limit={this.limit}/>
+                                <ListViewTable model={model} pagination={this.pagination} limit={this.limit}/>
                             </CardBody>
                         </Card>
                     </Col>

@@ -71,6 +71,9 @@ export default container((props, onData) => {
     if (props.pagination.ready()) {
         const users = props.pagination.getPage();
         const totalPages = props.pagination.totalPages();
-        onData(null, {users, totalPages});
+        onData(null, {
+            users,
+            totalPages
+        });
     }
 }, ViewUsersTable, {loadingHandler: () => <Loading/>});
