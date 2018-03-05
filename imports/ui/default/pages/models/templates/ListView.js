@@ -34,7 +34,7 @@ class ListView extends Component {
                 sort: {},
                 perPage: limit,
                 reactive: true,
-                debug: true
+                debug: false
             });
         }
     }

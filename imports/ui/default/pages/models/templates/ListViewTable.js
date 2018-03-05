@@ -3,6 +3,7 @@ import {
     Table,
     Alert
 } from 'reactstrap';
+import {Link} from 'react-router-dom';
 import BootstrapPaginator from 'react-bootstrap-pagination';
 
 import {T} from '/imports/common/Translation';
@@ -18,22 +19,40 @@ class ListViewTable extends Component {
             headers.push(<th key={fieldName}><T>{field.label || fieldName}</T></th>)
         }
 
+        headers.push(<th key="actions"></th>);
+
         return headers;
     }
 
     renderCol(record) {
+        const model = this.props.model;
+
         let cols = [];
-        for (let fieldName in this.props.model.list) {
-            let field = this.props.model.list[fieldName];
+        for (let fieldName in model.list) {
+            let field = model.list[fieldName];
             field.name = fieldName;
             let col = (
-                <th key={fieldName}>
+                <td key={fieldName}>
                     <FieldDetailView record={record} field={field}/>
-                </th>
+                </td>
             );
 
             cols.push(col)
         }
+
+        cols.push(
+            <td key="actions">
+                <a href="javascript:void(0)" className="btn btn-sm btn-link text-danger">
+                    <i className="fa fa-trash"/>
+                </a>
+                <Link to={'/manager/model/' + model.model + '/' + record._id + '/detail'} className="btn btn-sm btn-link">
+                    <i className="fa fa-eye"/>
+                </Link>
+                <Link to={'/manager/models/' + model.model + '/' + record._id + '/edit'} className="btn btn-sm btn-link text-warning">
+                    <i className="fa fa-edit"/>
+                </Link>
+            </td>
+        );
 
         return cols;
     }
@@ -68,7 +87,6 @@ class ListViewTable extends Component {
 }
 
 export default container((props, onData) => {
-    console.log(props.pagination.ready());
     if (props.pagination.ready()) {
         const records = props.pagination.getPage();
         const totalPages = props.pagination.totalPages();

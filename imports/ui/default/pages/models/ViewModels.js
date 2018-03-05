@@ -71,8 +71,14 @@ class ViewModels extends Component {
                                                 <td>{model.status ? <span className="badge badge-info">{t.__('Active')}</span>
                                                     : <span className="badge badge-gray-200">{t.__('Inactive')}</span>}</td>
                                                 <td>
-                                                    <Link to={'/manager'}>
-                                                        <i className="fa fa-trash" color="danger"/>
+                                                    <a href="javascript:void(0)" className="btn btn-sm btn-link text-danger">
+                                                        <i className="fa fa-trash"/>
+                                                    </a>
+                                                    <Link to={'/manager/models/' + model._id + '/detail'} className="btn btn-sm btn-link">
+                                                        <i className="fa fa-eye"/>
+                                                    </Link>
+                                                    <Link to={'/manager/models/' + model._id + '/edit'} className="btn btn-sm btn-link text-warning">
+                                                        <i className="fa fa-edit"/>
                                                     </Link>
                                                 </td>
                                             </tr>
