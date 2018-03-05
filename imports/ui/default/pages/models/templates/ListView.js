@@ -5,7 +5,8 @@ import {
     Col,
     Card,
     CardHeader,
-    CardBody
+    CardBody,
+    Alert
 } from 'reactstrap';
 import {Link} from 'react-router-dom';
 
@@ -23,23 +24,29 @@ class ListView extends Component {
 
     componentWillMount() {
         const model = this.props.model;
-        const collection = myModel.getCollection(model.model);
+        if (model && model._id) {
+            const collection = myModel.getCollection(model.model);
 
-        this.limit = 20;
-        const limit = this.limit;
-        this.pagination = new Meteor.Pagination(collection, {
-            filters: {},
-            sort: {},
-            perPage: limit,
-            reactive: true,
-            debug: true
-        });
+            this.limit = 20;
+            const limit = this.limit;
+            this.pagination = new Meteor.Pagination(collection, {
+                filters: {},
+                sort: {},
+                perPage: limit,
+                reactive: true,
+                debug: true
+            });
+        }
     }
 
     render() {
         const {
             model
         } = this.props;
+
+        if (!model || !model._id) {
+            return <Alert color="danger"><T>No Data</T></Alert>;
+        }
 
         return (
             <div className="module-ListView animated fadeIn">
