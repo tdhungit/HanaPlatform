@@ -14,8 +14,8 @@ import {FieldDetailView} from '../../../components/Fields/FieldView';
 class ListViewTable extends Component {
     renderHeader() {
         let headers = [];
-        for (let fieldName in this.props.model.list) {
-            let field = this.props.model.list[fieldName];
+        for (let fieldName in this.props.model.list.fields) {
+            let field = this.props.model.list.fields[fieldName];
             headers.push(<th key={fieldName}><T>{field.label || fieldName}</T></th>)
         }
 
@@ -28,8 +28,8 @@ class ListViewTable extends Component {
         const model = this.props.model;
 
         let cols = [];
-        for (let fieldName in model.list) {
-            let field = model.list[fieldName];
+        for (let fieldName in model.list.fields) {
+            let field = model.list.fields[fieldName];
             field.name = fieldName;
             let col = (
                 <td key={fieldName}>
@@ -48,7 +48,7 @@ class ListViewTable extends Component {
                 <Link to={'/manager/model/' + model.model + '/' + record._id + '/detail'} className="btn btn-sm btn-link">
                     <i className="fa fa-eye"/>
                 </Link>
-                <Link to={'/manager/models/' + model.model + '/' + record._id + '/edit'} className="btn btn-sm btn-link text-warning">
+                <Link to={'/manager/model/' + model.model + '/' + record._id + '/edit'} className="btn btn-sm btn-link text-warning">
                     <i className="fa fa-edit"/>
                 </Link>
             </td>

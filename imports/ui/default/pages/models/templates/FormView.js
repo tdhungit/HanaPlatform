@@ -69,12 +69,23 @@ class FormView extends Component {
     }
 
     handleSubmit() {
-        const model = this.props.model;
-        Meteor.call('models.insertRecord', model.model, this.state.record, (error, recordId) => {
+        const {
+            model,
+            record
+        } = this.props;
+
+        let method = 'models.insertRecord';
+        const existingRecord = record && record._id;
+        if (existingRecord) {
+            method = 'models.updateRecord';
+        }
+
+        Meteor.call(method, model.model, this.state.record, (error, recordId) => {
             if (error) {
                 Bert.alert(error.reason, 'danger');
             } else {
-                console.log(recordId);
+                Bert.alert(t.__('Successful'), 'success');
+                this.props.history.push('/manager/model/' + model.model + '/' + recordId + '/detail');
             }
         });
     }
@@ -86,12 +97,12 @@ class FormView extends Component {
         } = this.props;
 
         const existingRecord = record && record._id;
-        const recordFields = model.view;
+        const recordFields = model.view.fields;
 
         return (
             <Card>
                 <CardHeader>
-                    <i className="fa fa-list"/>
+                    <i className={model.icon}/>
                     <strong>{this.props.title}</strong> {this.props.slogan}
                 </CardHeader>
                 <CardBody>

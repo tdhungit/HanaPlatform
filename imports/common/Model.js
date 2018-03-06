@@ -7,9 +7,11 @@ class MyModel {
     getCollection(modelName) {
         const model = Models.findOne({model: modelName});
         if (model && model.collection) {
-            const store = Meteor.connection._stores[model.collection];
-            if (store) {
-                return store._getCollection();
+            if (Meteor.connection && Meteor.connection._stores) {
+                const store = Meteor.connection._stores[model.collection];
+                if (store) {
+                    return store._getCollection();
+                }
             }
 
             const collection = new CollectionAssign(model.collection);
