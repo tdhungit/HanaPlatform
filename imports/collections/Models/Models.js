@@ -28,6 +28,12 @@ const ModelsSchema = new SimpleSchema({
             return this.value;
         },
     },
+    type: {
+        type: String,
+        label: 'Type of model',
+        allowedValues: ['custom', 'system'],
+        defaultValue: 'custom'
+    },
     model: {
         type: String,
         label: 'Model name'

@@ -15,9 +15,11 @@ class MyModel {
             }
 
             const collection = new CollectionAssign(model.collection);
-            const schemaObject = eval('(' + model.schema + ')');
-            const collectionSchema = new SimpleSchema(schemaObject);
-            collection.attachSchema(collectionSchema);
+            if (model.schema) {
+                const schemaObject = eval('(' + model.schema + ')');
+                const collectionSchema = new SimpleSchema(schemaObject);
+                collection.attachSchema(collectionSchema);
+            }
             return collection;
         }
 
