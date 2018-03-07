@@ -23,7 +23,6 @@ import {
 import {Bert} from 'meteor/themeteorchef:bert';
 
 import {T, t} from '/imports/common/Translation';
-import routes from '../../components/Router/routes';
 import {SelectHelper} from '../../helpers/inputs/SelectHelper';
 import {SelectSimpleLineIcon} from '../../helpers/inputs/SelectSimpleLineIcon';
 
@@ -163,7 +162,7 @@ class FormMainMenu extends Component {
                         <Col xs="12" lg="6">
                             <FormGroup>
                                 <Label><T>Url</T></Label>
-                                <SelectHelper name="url" options={routes} onChange={this.handleInputChange} value={this.state.menu.url} required/>
+                                <Input type="text" name="url" placeholder={t.__('Enter here')} onChange={this.handleInputChange} value={this.state.menu.url} required/>
                             </FormGroup>
                         </Col>
                         <Col xs="12" lg="6">
