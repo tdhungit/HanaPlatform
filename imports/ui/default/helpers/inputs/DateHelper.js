@@ -6,7 +6,7 @@ import Settings from '/imports/collections/Settings/Settings';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
-class DateInput extends Component {
+export class DateInput extends Component {
     constructor(props) {
         super(props);
         this.dateFormat = 'YYYY-MM-DD';
@@ -75,8 +75,4 @@ class DateInput extends Component {
             </div>
         );
     }
-}
-
-export {
-    DateInput
 }

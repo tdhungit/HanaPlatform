@@ -3,7 +3,7 @@ import {Editor, EditorState, RichUtils, convertToRaw, convertFromHTML, ContentSt
 import 'draft-js/dist/Draft.css';
 import {stateToHTML} from 'draft-js-export-html';
 
-class TextEditor extends Component {
+export class TextEditor extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -206,7 +206,3 @@ function getBlockStyle(block) {
             return null;
     }
 }
-
-export {
-    TextEditor
-};

@@ -22,7 +22,7 @@ class ImageTagClass extends Component {
     }
 }
 
-const ImageTag = container((props, onData) => {
+export const ImageTag = container((props, onData) => {
     const mediaId = props.media;
     let mediaLink = '';
     if (mediaId) {
@@ -38,7 +38,3 @@ const ImageTag = container((props, onData) => {
         src: mediaLink
     });
 }, ImageTagClass);
-
-export {
-    ImageTag
-};

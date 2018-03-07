@@ -43,7 +43,7 @@ class ViewModels extends Component {
                                 </div>
                             </CardHeader>
                             <CardBody>
-                                <Table responsive className="table-outline">
+                                <Table responsive hover>
                                     <thead>
                                     <tr>
                                         <th><T>Model</T></th>

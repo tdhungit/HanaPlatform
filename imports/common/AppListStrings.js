@@ -1,4 +1,4 @@
-const AppListStrings = {
+export const AppListStrings = {
     DateFormatList: [
         'YYYY-MM-DD',
         'MM-DD-YYYY',
@@ -19,7 +19,3 @@ const AppListStrings = {
         'Hangout'
     ]
 };
-
-export {
-    AppListStrings
-}

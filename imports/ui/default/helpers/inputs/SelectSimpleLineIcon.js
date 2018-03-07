@@ -4,7 +4,7 @@ import {
     Col
 } from 'reactstrap';
 
-class SelectSimpleLineIcon extends Component {
+export class SelectSimpleLineIcon extends Component {
     constructor(props) {
         super(props);
     }
@@ -753,7 +753,3 @@ class SelectSimpleLineIcon extends Component {
         );
     }
 }
-
-export {
-    SelectSimpleLineIcon
-};

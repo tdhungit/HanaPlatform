@@ -15,7 +15,7 @@ import {ImageTag} from '../tags/MediaImage';
 
 import 'react-select/dist/react-select.css';
 
-class SelectHelper extends Component {
+export class SelectHelper extends Component {
     renderOptions(options) {
         if (typeof options == 'undefined') {
             return [];
@@ -64,7 +64,7 @@ class SelectHelper extends Component {
     }
 }
 
-class Select2Helper extends Component {
+export class Select2Helper extends Component {
     getOptions(options) {
         if (options.constructor === Array) {
             if (options[0] && options[0].value && options[0].label) {
@@ -148,7 +148,7 @@ class Select2Helper extends Component {
     }
 }
 
-class SelectGroupHelper extends Component {
+export class SelectGroupHelper extends Component {
     constructor(props) {
         super(props);
 
@@ -258,9 +258,3 @@ class SelectGroupHelper extends Component {
         );
     }
 }
-
-export {
-    SelectHelper,
-    Select2Helper,
-    SelectGroupHelper
-};

@@ -27,7 +27,4 @@ class MyModel {
     }
 }
 
-const myModel = new MyModel();
-export {
-    myModel
-}
+export const myModel = new MyModel();

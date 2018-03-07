@@ -10,8 +10,8 @@ import Settings from '/imports/collections/Settings/Settings';
 
 // Translation
 i18n.setLocale('en-US');
-const T = i18n.createComponent();
-const t = i18n;
+export const T = i18n.createComponent();
+export const t = i18n;
 
 // SEO
 const seoURL = path => Meteor.absoluteUrl(path);
@@ -113,7 +113,7 @@ SEO.propTypes = {
     settings: PropTypes.object
 };
 
-const PT = container((props, onData) => {
+export const PT = container((props, onData) => {
     const subscription = Meteor.subscribe('settings.getSetting', 'Systems', 'title');
     if (subscription && subscription.ready()) {
         const SystemSettings = Settings.find({category: 'Systems', name: 'title'}).fetch();
@@ -130,9 +130,3 @@ const PT = container((props, onData) => {
         });
     }
 }, SEO);
-
-export {
-    T,
-    t,
-    PT
-}
