@@ -24,7 +24,7 @@ class FieldDetailView extends Component {
         } = this.props;
 
         const fieldName = field.name;
-        const value = record._id ? record[fieldName] : record[fieldName] || '';
+        const value = utilsHelper.getField(record, fieldName);
 
         return <div>{value}</div>;
     }

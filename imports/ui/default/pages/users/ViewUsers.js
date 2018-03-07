@@ -11,7 +11,9 @@ import {Link} from 'react-router-dom';
 
 import {T, t, PT} from '/imports/common/Translation';
 import Users from '/imports/collections/Users/Users';
-import ViewUsersTable from './ViewUsersTable';
+import ListComponent from '../models/components/ListComponent';
+import Models from '/imports/collections/Models/Models';
+import {userLayouts} from '/imports/collections/Users/layouts';
 
 class ViewUsers extends Component {
     constructor(props) {
@@ -37,6 +39,8 @@ class ViewUsers extends Component {
             limit
         } = this;
 
+        const model = Models.getModel('Users') || userLayouts;
+
         return (
             <div className="users-Users animated fadeIn">
                 <PT title={t.__('View users')}/>
@@ -52,7 +56,12 @@ class ViewUsers extends Component {
                                 </div>
                             </CardHeader>
                             <CardBody className="card-body">
-                                <ViewUsersTable pagination={pagination} limit={limit}/>
+                                <ListComponent
+                                    model={model}
+                                    pagination={pagination}
+                                    limit={limit}
+                                    detailLink="/manager/users/%s/detail"
+                                    editLink="/manager/users/%s/edit"/>
                             </CardBody>
                         </Card>
                     </Col>

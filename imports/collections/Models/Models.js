@@ -2,7 +2,9 @@ import CollectionBase from '/imports/common/CollectionBase';
 import SimpleSchema from 'simpl-schema';
 
 class ModelsCollection extends CollectionBase {
-
+    getModel(modelName) {
+        return this.findOne({model: modelName});
+    }
 }
 
 const Models = new ModelsCollection('models');

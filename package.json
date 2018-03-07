@@ -29,6 +29,7 @@
     "react-select": "^1.2.1",
     "react-sortable-tree": "^2.0.1",
     "reactstrap": "^5.0.0-alpha.4",
-    "simpl-schema": "^1.4.2"
+    "simpl-schema": "^1.4.2",
+    "sprintf-js": "^1.1.1"
   }
 }
