@@ -4,16 +4,12 @@ import {Meteor} from 'meteor/meteor';
 import {Tracker} from 'meteor/tracker';
 import {Roles} from 'meteor/alanning:roles';
 import {Provider} from 'react-redux'
-import {createStore, applyMiddleware} from 'redux';
-import thunk from 'redux-thunk';
 
 import '/public/css/style.min.css';
 import '/imports/scss/style.scss';
 
-import {appReducer} from '../imports/ui/default/reducers';
+import store from '../imports/ui/default/store';
 import App from '../imports/ui/default/layouts/App';
-
-const store = createStore(appReducer, applyMiddleware(thunk));
 
 Meteor.startup(() => {
     Tracker.autorun((c) => {
