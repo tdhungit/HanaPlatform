@@ -3,6 +3,7 @@ import {Meteor} from 'meteor/meteor';
 import {Roles} from 'meteor/alanning:roles';
 import PropTypes from 'prop-types';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'; // or HashRouter
+import {connect} from 'react-redux';
 
 import container from '/imports/common/Container';
 import ManagerLayout from "./ManagerLayout";
@@ -23,6 +24,7 @@ class App extends Component {
         return (
             <Router>
                 <div className="PenguinPlatform">
+                    {appProps.app.loading ? <Loading/> : null}
                     <Switch>
                         <Public exact path="/signup" component={Signup} {...appProps} />
                         <Public exact path="/login" component={Login} {...appProps} />
@@ -43,6 +45,10 @@ App.propTypes = {
     authenticated: PropTypes.bool,
 };
 
+const mapStateToProps = (state) => {
+    return {app: state.app}
+};
+
 export default container((props, onData) => {
     Meteor.subscribe('users.user');
     Meteor.subscribe('settings.systemSettings');
@@ -57,4 +63,4 @@ export default container((props, onData) => {
             authenticated: !loggingIn && !!userId
         });
     }
-}, App, {loadingHandler: () => (<Loading/>)});
+}, connect(mapStateToProps)(App), {loadingHandler: () => (<Loading/>)});
