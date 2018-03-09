@@ -11,20 +11,24 @@ import {
 import {Link} from 'react-router-dom';
 
 import {myModel} from '/imports/common/Model';
-import container from '/imports/common/Container';
 import {t, T, PT} from '/imports/common/Translation';
-import Loading from '../../../components/Loading/Loading';
 import Models from '/imports/collections/Models/Models';
 import ListViewTable from './ListViewTable';
 
 class ListView extends Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            model: {}
+        }
     }
 
     componentWillMount() {
-        const model = this.props.model;
-        if (model && model._id) {
+        const modelName = this.props.match.params._model;
+        this.state.model = Models.findOne({model: modelName});
+        const model = this.state.model;
+        if (model._id) {
             const collection = myModel.getCollection(model.model);
 
             this.limit = 20;
@@ -40,11 +44,8 @@ class ListView extends Component {
     }
 
     render() {
-        const {
-            model
-        } = this.props;
-
-        if (!model || !model._id) {
+        const model = this.state.model;
+        if (!model._id) {
             return <Alert color="danger"><T>No Data</T></Alert>;
         }
 
@@ -74,9 +75,4 @@ class ListView extends Component {
     }
 }
 
-export default container((props, onData) => {
-    const modelName = props.match.params._model;
-    onData(null, {
-        model: Models.findOne({model: modelName})
-    });
-}, ListView, {loadingHandler: () => <Loading/>});
+export default ListView;
