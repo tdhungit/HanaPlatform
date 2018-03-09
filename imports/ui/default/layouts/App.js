@@ -4,6 +4,8 @@ import {Roles} from 'meteor/alanning:roles';
 import PropTypes from 'prop-types';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'; // or HashRouter
 import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {appLoading} from '../store/app/app.actions';
 
 import container from '/imports/common/Container';
 import ManagerLayout from "./ManagerLayout";
@@ -49,6 +51,12 @@ const mapStateToProps = (state) => {
     return {app: state.app}
 };
 
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({
+        appLoading: appLoading
+    }, dispatch);
+};
+
 export default container((props, onData) => {
     Meteor.subscribe('users.user');
     Meteor.subscribe('settings.systemSettings');
@@ -63,4 +71,4 @@ export default container((props, onData) => {
             authenticated: !loggingIn && !!userId
         });
     }
-}, connect(mapStateToProps)(App), {loadingHandler: () => (<Loading/>)});
+}, connect(mapStateToProps, mapDispatchToProps)(App), {loadingHandler: () => (<Loading/>)});

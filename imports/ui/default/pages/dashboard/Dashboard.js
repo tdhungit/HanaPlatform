@@ -1,32 +1,16 @@
 import React, { Component } from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux'
-
-import {setLoading, setLoaded} from '../../store/app/app.actions';
 
 class Dashboard extends Component {
     render() {
+        console.log(this.props);
         return (
             <div className="index-Dashboard animated fadeIn">
-                <a href="javascript:void(0)" onClick={this.props.setLoading}>Loading</a>
+                <a href="javascript:void(0)" onClick={() => this.props.appLoading()}>Loading</a>
                 <br/>
-                <a href="javascript:void(0)" onClick={this.props.setLoaded}>Loaded</a>
+                <a href="javascript:void(0)" onClick={() => this.props.appLoading(false)}>Loaded</a>
             </div>
         );
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        app: state.app
-    }
-};
-
-const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({
-        setLoading: setLoading,
-        setLoaded: setLoaded
-    }, dispatch);
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+export default Dashboard;

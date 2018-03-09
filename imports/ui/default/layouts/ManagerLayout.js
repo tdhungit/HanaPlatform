@@ -44,10 +44,6 @@ import EditView from '../pages/models/templates/EditView';
 import DetailView from '../pages/models/templates/DetailView';
 
 class ManagerLayout extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         const appProps = this.props;
         return (
@@ -101,4 +97,4 @@ class ManagerLayout extends Component {
     }
 }
 
-export default  ManagerLayout;
+export default ManagerLayout;
