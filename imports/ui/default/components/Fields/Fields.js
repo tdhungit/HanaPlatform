@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import {Input, FormText} from 'reactstrap';
 import {Field} from 'redux-form'
 
@@ -9,7 +9,17 @@ import {SelectHelper, Select2Helper, SelectGroupHelper} from '../../helpers/inpu
 import {DateInput} from '../../helpers/inputs/DateHelper';
 import {TextEditor} from '../../helpers/inputs/TextEditor';
 
+// Forms
+import {Form, RForm} from './Forms';
+export {Form, RForm};
+
+// Fields
 export class FieldView extends Component {
+    static propTypes = {
+        field: PropTypes.object,
+        record: PropTypes.object
+    };
+
     render() {
         const {field, record} = this.props;
 
@@ -21,6 +31,15 @@ export class FieldView extends Component {
 }
 
 export class FieldInput extends Component {
+    static propTypes = {
+        name: PropTypes.string,
+        type: PropTypes.string,
+        className: PropTypes.string,
+        placeholder: PropTypes.string,
+        validate: PropTypes.array,
+        onChange: PropTypes.func
+    };
+
     constructor(props) {
         super(props);
 
@@ -54,6 +73,10 @@ export class FieldInput extends Component {
                 'onChange',
                 'onBlur'
             ]);
+
+        if (!type) {
+            type = 'text';
+        }
 
         attributes.className = attributes.className ? (this.state.className + ' ' + attributes.className) : this.state.className;
 
@@ -122,6 +145,13 @@ const renderFieldEdit = ({input, label, type, meta: {touched, error, warning}}) 
 };
 
 export class RFieldInput extends Component {
+    static propTypes = {
+        name: PropTypes.string,
+        type: PropTypes.string,
+        className: PropTypes.string,
+        placeholder: PropTypes.string
+    };
+
     render() {
         let _props = this.props,
             attributes = utilsHelper.objectWithoutProperties(_props, [

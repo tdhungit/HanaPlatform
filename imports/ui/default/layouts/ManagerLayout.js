@@ -56,6 +56,7 @@ class ManagerLayout extends Component {
                         <Breadcrumb/>
                         <Container fluid>
                             <Authenticate exact path="/manager" component={Dashboard} {...appProps}/>
+                            <Authenticate exact path="/manager/dashboard" component={Dashboard} {...appProps}/>
                             <Authenticate exact path="/manager/me" component={ViewProfile} {...appProps}/>
 
                             <Authenticate exact path="/manager/users" component={ViewUsers} {...appProps}/>
