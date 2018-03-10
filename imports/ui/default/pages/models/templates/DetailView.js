@@ -15,7 +15,7 @@ import {t, T, PT} from '/imports/common/Translation';
 import Loading from '../../../components/Loading/Loading';
 import Models from '/imports/collections/Models/Models';
 import {myModel} from '/imports/common/Model';
-import {FieldDetailView} from '../../../components/Fields/FieldView';
+import {FieldView} from '../../../components/Fields/Fields';
 
 class DetailView extends Component {
     renderFields(model, record) {
@@ -27,7 +27,7 @@ class DetailView extends Component {
                 <dl className="row" key={fieldName}>
                     <dt className="col-sm-3"><T>{field.label || fieldName}</T></dt>
                     <dd className="col-sm-9">
-                        <FieldDetailView record={record} field={field}/>
+                        <FieldView record={record} field={field}/>
                     </dd>
                 </dl>
             );

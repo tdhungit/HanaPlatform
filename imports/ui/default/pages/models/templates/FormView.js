@@ -17,7 +17,7 @@ import {Bert} from 'meteor/themeteorchef:bert';
 
 import {t, T} from '/imports/common/Translation';
 import {utilsHelper} from '../../../helpers/utils/utils';
-import {FieldEditView} from '../../../components/Fields/FieldView';
+import {FieldInput} from '../../../components/Fields/Fields';
 
 class FormView extends Component {
     constructor(props) {
@@ -54,7 +54,7 @@ class FormView extends Component {
                     <Col>
                         <FormGroup>
                             <Label><T>{field.label}</T></Label>
-                            <FieldEditView type={field.type} name={fieldName} required={field.required || false}
+                            <FieldInput type={field.type} name={fieldName} required={field.required || false}
                                            value={this.getVal(fieldName)}
                                            onChange={this.handleInputChange}/>
                         </FormGroup>

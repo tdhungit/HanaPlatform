@@ -11,7 +11,7 @@ import {Link} from 'react-router-dom';
 import {vsprintf} from 'sprintf-js';
 
 import {t, T} from '/imports/common/Translation';
-import {FieldDetailView} from '../../../components/Fields/FieldView';
+import {FieldView} from '../../../components/Fields/Fields';
 
 class DetailComponent extends Component {
     renderFields(model, record) {
@@ -23,7 +23,7 @@ class DetailComponent extends Component {
                 <dl className="row" key={fieldName}>
                     <dt className="col-sm-3"><T>{field.label || fieldName}</T></dt>
                     <dd className="col-sm-9">
-                        <FieldDetailView record={record} field={field}/>
+                        <FieldView record={record} field={field}/>
                     </dd>
                 </dl>
             );

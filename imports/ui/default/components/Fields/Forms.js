@@ -1,7 +1,19 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import {Form as BForm} from 'reactstrap';
 
-export class ReduxForm extends Component {
+export class Form extends Component {
+    render() {
+        const props = this.props;
+        return (
+            <BForm {...props}>
+                {this.props.children}
+            </BForm>
+        );
+    }
+}
+
+export class RForm extends Component {
     propTypes = {
         children: PropTypes.node,
         onSubmit: PropTypes.func,

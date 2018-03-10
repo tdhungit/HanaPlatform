@@ -9,7 +9,7 @@ import BootstrapPaginator from 'react-bootstrap-pagination';
 import {T} from '/imports/common/Translation';
 import container from '/imports/common/Container';
 import Loading from '../../../components/Loading/Loading';
-import {FieldDetailView} from '../../../components/Fields/FieldView';
+import {FieldView} from '../../../components/Fields/Fields';
 
 class ListViewTable extends Component {
     renderHeader() {
@@ -33,7 +33,7 @@ class ListViewTable extends Component {
             field.name = fieldName;
             let col = (
                 <td key={fieldName}>
-                    <FieldDetailView record={record} field={field}/>
+                    <FieldView record={record} field={field}/>
                 </td>
             );
 

@@ -9,7 +9,7 @@ import {SelectHelper, Select2Helper, SelectGroupHelper} from '../../helpers/inpu
 import {DateInput} from '../../helpers/inputs/DateHelper';
 import {TextEditor} from '../../helpers/inputs/TextEditor';
 
-export class FieldDetailView extends Component {
+export class FieldView extends Component {
     render() {
         const {field, record} = this.props;
 
@@ -20,7 +20,7 @@ export class FieldDetailView extends Component {
     }
 }
 
-export class FieldEditView extends Component {
+export class FieldInput extends Component {
     constructor(props) {
         super(props);
 
@@ -121,7 +121,7 @@ const renderFieldEdit = ({input, label, type, meta: {touched, error, warning}}) 
     );
 };
 
-export class ReduxFieldEditView extends Component {
+export class RFieldInput extends Component {
     render() {
         let _props = this.props,
             attributes = utilsHelper.objectWithoutProperties(_props, [

@@ -20,7 +20,7 @@ import {vsprintf} from 'sprintf-js';
 
 import {t, T} from '/imports/common/Translation';
 import {utilsHelper} from '../../../helpers/utils/utils';
-import {FieldEditView} from '../../../components/Fields/FieldView';
+import {FieldInput} from '../../../components/Fields/Fields';
 
 class FormComponent extends Component {
     constructor(props) {
@@ -76,7 +76,7 @@ class FormComponent extends Component {
                     <Col>
                         <FormGroup>
                             <Label><T>{field.label}</T></Label>
-                            <FieldEditView type={field.type} name={fieldName} required={field.required || false}
+                            <FieldInput type={field.type} name={fieldName} required={field.required || false}
                                            placeholder={placeholder}
                                            value={this.getVal(fieldName)}
                                            onChange={this.handleInputChange}/>
