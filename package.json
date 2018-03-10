@@ -31,6 +31,7 @@
     "react-sortable-tree": "^2.0.1",
     "reactstrap": "^5.0.0-alpha.4",
     "redux": "^3.7.2",
+    "redux-form": "^7.3.0",
     "redux-thunk": "^2.2.0",
     "simpl-schema": "^1.4.2",
     "sprintf-js": "^1.1.1"

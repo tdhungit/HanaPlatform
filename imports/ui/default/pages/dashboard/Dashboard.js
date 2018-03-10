@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 
 class Dashboard extends Component {
     render() {
-        console.log(this.props);
         return (
             <div className="index-Dashboard animated fadeIn">
                 <a href="javascript:void(0)" onClick={() => this.props.appLoading()}>Loading</a>

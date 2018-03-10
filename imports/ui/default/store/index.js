@@ -3,9 +3,11 @@ import {combineReducers} from 'redux';
 import thunk from 'redux-thunk';
 
 import appReducer from './app/app.reducer';
+import {reducer as formReducer} from 'redux-form';
 
 const allReducers = combineReducers({
-    app: appReducer
+    app: appReducer,
+    form: formReducer
 });
 
 const store = createStore(
