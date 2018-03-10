@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import {reduxForm} from 'redux-form'
 import {Form as BForm} from 'reactstrap';
 
 export class Form extends Component {
@@ -22,16 +23,7 @@ export class Form extends Component {
     }
 }
 
-export class RForm extends Component {
-    static propTypes = {
-        className: PropTypes.string,
-        children: PropTypes.node,
-        onSubmit: PropTypes.func,
-        reset: PropTypes.func,
-        pristine: PropTypes.bool,
-        submitting: PropTypes.bool
-    };
-
+class RFormInit extends Component {
     static childContextTypes = {
         reset: PropTypes.func,
         pristine: PropTypes.bool,
@@ -53,5 +45,28 @@ export class RForm extends Component {
                 {this.props.children}
             </Form>
         );
+    }
+}
+
+export class RForm extends Component {
+    static propTypes = {
+        name: PropTypes.string.isRequired,
+        className: PropTypes.string,
+        children: PropTypes.node,
+        onSubmit: PropTypes.func,
+        reset: PropTypes.func,
+        pristine: PropTypes.bool,
+        submitting: PropTypes.bool
+    };
+
+    componentWillMount() {
+        this.initForm = reduxForm({
+            form: this.props.name
+        })(RFormInit);
+    }
+
+    render() {
+        const InitForm = this.initForm;
+        return <InitForm {...this.props}/>;
     }
 }

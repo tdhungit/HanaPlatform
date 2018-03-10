@@ -38,9 +38,9 @@ class Dashboard extends Component {
                                     <FieldInput name="test"/>
                                 </Form>
 
-                                {/*<RForm>*/}
-                                    {/*<RFieldInput name="textr"/>*/}
-                                {/*</RForm>*/}
+                                <RForm name="Jacky">
+                                    <RFieldInput name="textr"/>
+                                </RForm>
                             </CardBody>
                         </Card>
                     </Col>

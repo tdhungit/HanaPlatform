@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Input, FormText} from 'reactstrap';
-import {Field} from 'redux-form'
+import {Field} from 'redux-form';
 
 import {t} from '/imports/common/Translation';
 import {utilsHelper} from '../../helpers/utils/utils';
@@ -16,8 +16,8 @@ export {Form, RForm};
 // Fields
 export class FieldView extends Component {
     static propTypes = {
-        field: PropTypes.object,
-        record: PropTypes.object
+        field: PropTypes.object.isRequired,
+        record: PropTypes.object.isRequired
     };
 
     render() {
@@ -32,7 +32,7 @@ export class FieldView extends Component {
 
 export class FieldInput extends Component {
     static propTypes = {
-        name: PropTypes.string,
+        name: PropTypes.string.isRequired,
         type: PropTypes.string,
         className: PropTypes.string,
         placeholder: PropTypes.string,
@@ -146,7 +146,7 @@ const renderFieldEdit = ({input, label, type, meta: {touched, error, warning}}) 
 
 export class RFieldInput extends Component {
     static propTypes = {
-        name: PropTypes.string,
+        name: PropTypes.string.isRequired,
         type: PropTypes.string,
         className: PropTypes.string,
         placeholder: PropTypes.string
