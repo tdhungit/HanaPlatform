@@ -1,17 +1,28 @@
 import React, {Component} from 'react';
 import {
+    Row,
+    Col,
     Table,
     Alert
 } from 'reactstrap';
 import {Link} from 'react-router-dom';
 import BootstrapPaginator from 'react-bootstrap-pagination';
 
-import {T} from '/imports/common/Translation';
+import {t, T} from '/imports/common/Translation';
 import container from '/imports/common/Container';
 import Loading from '../../../components/Loading/Loading';
-import {FieldView} from '../../../components/Fields/Fields';
+import {FieldView, FieldButton, FieldInput} from '../../../components/Fields/Fields';
+import {utilsHelper} from '../../../helpers/utils/utils';
 
 class ListViewTable extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            filters: {}
+        };
+    }
+
     renderHeader() {
         let headers = [];
         for (let fieldName in this.props.model.list.fields) {
@@ -22,6 +33,41 @@ class ListViewTable extends Component {
         headers.push(<th key="actions"></th>);
 
         return headers;
+    }
+
+    renderFilterForm() {
+        let filters = [];
+        for (let fieldName in this.props.model.list.fields) {
+            let field = this.props.model.list.fields[fieldName];
+            filters.push(
+                <td key={fieldName}>
+                    <FieldInput name={fieldName} placeholder={t.__(field.label)}
+                                value={this.getFilter(fieldName)}
+                                onChange={this.onFilter.bind(this)}/>
+                </td>
+            )
+        }
+
+        filters.push(
+            <td key="actions">
+                <FieldButton label="Filter" color="primary" onClick={this.handleFilter.bind(this)}/>
+            </td>
+        );
+
+        return filters;
+    }
+
+    onFilter(event) {
+        const filters = utilsHelper.inputChange(event, this.state.filters);
+        this.setState({filters: filters});
+    }
+
+    getFilter(filter) {
+        return utilsHelper.getField(this.state.filters, filter);
+    }
+
+    handleFilter() {
+        this.props.pagination.filters(this.state.filters);
     }
 
     renderCol(record) {
@@ -68,21 +114,29 @@ class ListViewTable extends Component {
     }
 
     render() {
-        return this.props.records.length > 0 ? (
-            <div>
-                <Table responsive hover>
-                    <thead>
-                    <tr>{this.renderHeader()}</tr>
-                    </thead>
-                    <tbody>
-                    {this.renderRows()}
-                    </tbody>
-                </Table>
-                <BootstrapPaginator pagination={this.props.pagination}
-                                    limit={this.props.limit}
-                                    containerClass="text-right"/>
-            </div>
-        ) : <Alert color="warning"><T>Empty Data.</T></Alert>
+        return (
+            <Row className="modelTable">
+                <Col>
+                    <Table responsive hover>
+                        <thead>
+                        <tr>{this.renderHeader()}</tr>
+                        </thead>
+                        <tbody>
+                        <tr>{this.renderFilterForm()}</tr>
+                        {this.props.records.length > 0
+                            ? this.renderRows()
+                            : null}
+                        </tbody>
+                    </Table>
+                    {this.props.records.length <= 0
+                        ? <Alert color="warning"><T>Empty Data.</T></Alert>
+                        : null}
+                    <BootstrapPaginator pagination={this.props.pagination}
+                                        limit={this.props.limit}
+                                        containerClass="text-right"/>
+                </Col>
+            </Row>
+        );
     }
 }
 

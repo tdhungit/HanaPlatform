@@ -24,7 +24,7 @@ for (let idx in models) {
         // add collections
         collections[model.model] = collection;
         // list
-        publishPagination(collection);
+        publishPagination(collection, {});
     }
 }
 
