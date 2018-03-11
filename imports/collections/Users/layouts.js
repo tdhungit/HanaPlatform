@@ -9,7 +9,12 @@ export const userLayouts = {
             },
             email: {
                 type: "text",
-                label: "Username"
+                label: "Email",
+                alias: 'emails',
+                display: {
+                    type: 'array',
+                    fields: ['address']
+                }
             },
             "profile.firstName": {
                 type: "text",
@@ -30,7 +35,12 @@ export const userLayouts = {
             },
             email: {
                 type: "text",
-                label: "Email"
+                label: "Email",
+                alias: 'emails',
+                display: {
+                    type: 'array',
+                    fields: ['address']
+                }
             },
             "profile.firstName": {
                 type: "text",

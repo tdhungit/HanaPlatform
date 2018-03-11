@@ -27,9 +27,26 @@ export class FieldView extends Component {
 
     render() {
         const {field, record} = this.props;
+        let fieldName = field.name;
+        if (field.alias) {
+            fieldName = field.alias;
+        }
 
-        const fieldName = field.name;
-        const value = utilsHelper.getField(record, fieldName);
+        let value = utilsHelper.getField(record, fieldName);
+        if (field.display) {
+            if (field.display.type === 'array') {
+                let fieldDisplay = '';
+                for (let idx in value) {
+                    let item = value[idx];
+                    for (let idx2 in field.display.fields) {
+                        let displayKey = field.display.fields[idx2];
+                        fieldDisplay += item[displayKey] + ' ';
+                    }
+                }
+
+                value = fieldDisplay;
+            }
+        }
 
         return <div>{value}</div>;
     }
