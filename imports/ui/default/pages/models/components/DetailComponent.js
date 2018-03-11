@@ -14,6 +14,13 @@ import {t, T} from '/imports/common/Translation';
 import {FieldView} from '../../../components/Fields/Fields';
 
 class DetailComponent extends Component {
+    static propTypes = {
+        title: PropTypes.string,
+        model: PropTypes.object,
+        record: PropTypes.object,
+        editLink: PropTypes.string
+    };
+
     renderFields(model, record) {
         let fieldRender = [];
         for (let fieldName in model.view.fields) {
@@ -61,12 +68,5 @@ class DetailComponent extends Component {
         );
     }
 }
-
-DetailComponent.propTypes = {
-    title: PropTypes.string,
-    model: PropTypes.object,
-    record: PropTypes.object,
-    editLink: PropTypes.string
-};
 
 export default withRouter(DetailComponent);

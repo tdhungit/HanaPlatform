@@ -20,6 +20,15 @@ import {utilsHelper} from '../../../helpers/utils/utils';
 import {t} from '/imports/common/Translation';
 
 class ListComponent extends Component {
+    static propTypes = {
+        model: PropTypes.object,
+        pagination: PropTypes.object,
+        limit: PropTypes.number,
+        detailLink: PropTypes.string,
+        editLink: PropTypes.string,
+        records: PropTypes.array
+    };
+
     constructor(props) {
         super(props);
 
@@ -132,7 +141,7 @@ class ListComponent extends Component {
                         <tr>{this.renderHeader()}</tr>
                         </thead>
                         <tbody>
-                        {this.renderFilterForm()}
+                        <tr>{this.renderFilterForm()}</tr>
                         {this.props.records.length > 0
                             ? this.renderRows()
                             : null}
@@ -149,15 +158,6 @@ class ListComponent extends Component {
         );
     }
 }
-
-ListComponent.propTypes = {
-    model: PropTypes.object,
-    pagination: PropTypes.object,
-    limit: PropTypes.number,
-    detailLink: PropTypes.string,
-    editLink: PropTypes.string,
-    records: PropTypes.array
-};
 
 export default withRouter(container((props, onData) => {
     if (props.pagination.ready()) {

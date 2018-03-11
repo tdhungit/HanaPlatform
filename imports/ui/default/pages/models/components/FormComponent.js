@@ -23,6 +23,17 @@ import {utilsHelper} from '../../../helpers/utils/utils';
 import {FieldInput} from '../../../components/Fields/Fields';
 
 class FormComponent extends Component {
+    static propTypes = {
+        model: PropTypes.object,
+        record: PropTypes.object,
+        title: PropTypes.string,
+        slogan: PropTypes.string,
+        detailLink: PropTypes.string,
+        listLink: PropTypes.string,
+        onSubmit: PropTypes.func,
+        method: PropTypes.string
+    };
+
     constructor(props) {
         super(props);
 
@@ -134,16 +145,5 @@ class FormComponent extends Component {
         );
     }
 }
-
-FormComponent.propTypes = {
-    model: PropTypes.object,
-    record: PropTypes.object,
-    title: PropTypes.string,
-    slogan: PropTypes.string,
-    detailLink: PropTypes.string,
-    listLink: PropTypes.string,
-    onSubmit: PropTypes.func,
-    method: PropTypes.string
-};
 
 export default withRouter(FormComponent);
