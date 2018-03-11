@@ -11,14 +11,28 @@ import {
     DropdownItem
 } from 'reactstrap';
 import Select, {Async} from 'react-select';
+
 import {ImageTag} from '../tags/MediaImage';
+import Settings from '/imports/collections/Settings/Settings';
+import {AppListStrings} from '/imports/common/AppListStrings';
 
 import 'react-select/dist/react-select.css';
 
 export class SelectHelper extends Component {
     renderOptions(options) {
-        if (typeof options == 'undefined') {
+        if (typeof options === 'undefined') {
             return [];
+        }
+
+        if (typeof options === 'string') {
+            const appListStrings = Settings.getSettings('appListStrings');
+            if (appListStrings[options]) {
+                options = JSON.parse(appListStrings[options]);
+            } else if (AppListStrings[options]) {
+                options = AppListStrings[options];
+            } else {
+                return [];
+            }
         }
 
         if (options.constructor === Array) {
@@ -66,6 +80,17 @@ export class SelectHelper extends Component {
 
 export class Select2Helper extends Component {
     getOptions(options) {
+        if (typeof options === 'string') {
+            const appListStrings = Settings.getSettings('appListStrings');
+            if (appListStrings[options]) {
+                options = JSON.parse(appListStrings[options]);
+            } else if (AppListStrings[options]) {
+                options = AppListStrings[options];
+            } else {
+                return [];
+            }
+        }
+
         if (options.constructor === Array) {
             if (options[0] && options[0].value && options[0].label) {
                 return options;

@@ -41,7 +41,10 @@ class ListViewTable extends Component {
             let field = this.props.model.list.fields[fieldName];
             filters.push(
                 <td key={fieldName}>
-                    <FieldInput name={fieldName} placeholder={t.__(field.label)}
+                    <FieldInput name={fieldName}
+                                type={field.type}
+                                options={field.options}
+                                placeholder={t.__(field.label)}
                                 value={this.getFilter(fieldName)}
                                 onChange={this.onFilter.bind(this)}/>
                 </td>
