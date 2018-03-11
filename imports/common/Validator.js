@@ -1,30 +1,30 @@
 class Validator {
-    error = false;
-    message = '';
-
-    errorMessages = {
-        require: 'This field required'
+    errors = {
+        required: 'This field required',
+        email: 'Invalid email address'
     };
 
-    validate(value, props, type) {
-        if (!props[type]) {
-            return true;
+    get(validate) {
+        let validateVar = [];
+
+        for (let idx in validate) {
+            let func = validate[idx];
+            validateVar.push(this[func]);
         }
 
-        switch (type) {
-            case 'required':
-                return this.required(value);
-            default:
-                return true;
-        }
+        return validateVar;
     }
 
-    required(value) {
-        if (value) {
-            return true;
-        }
+    required = value => {
+        return (value ? undefined : this.errors.required);
+    };
 
-        return false;
+    email = value => {
+        return (
+            value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
+            ? this.errors.email
+            : undefined
+        )
     }
 }
 

@@ -4,11 +4,13 @@ import {
     Col,
     Card,
     CardHeader,
-    CardBody
+    CardBody,
+    FormGroup,
+    Label
 } from 'reactstrap';
 
 import {t, T, PT} from '/imports/common/Translation';
-import {Form, FieldInput, RForm, RFieldInput} from '../../components/Fields/Fields';
+import {Form, FieldInput , FieldButton, RForm, RFieldInput, RFieldButton} from '../../components/Fields/Fields';
 
 class Dashboard extends Component {
     render() {
@@ -35,11 +37,38 @@ class Dashboard extends Component {
                             </CardHeader>
                             <CardBody>
                                 <Form>
-                                    <FieldInput name="test"/>
+                                    <Row>
+                                        <Col>
+                                            <FormGroup>
+                                                <Label>TEST</Label>
+                                                <FieldInput name="test"/>
+                                            </FormGroup>
+                                            <FormGroup>
+                                                <FieldButton label="Submit" color="primary"/>
+                                            </FormGroup>
+                                        </Col>
+                                    </Row>
                                 </Form>
-
+                            </CardBody>
+                        </Card>
+                        <Card>
+                            <CardHeader>
+                                <i className="fa fa-dashboard"/>
+                                <strong>Redux Form</strong>
+                            </CardHeader>
+                            <CardBody>
                                 <RForm name="Jacky">
-                                    <RFieldInput name="textr"/>
+                                    <Row>
+                                        <Col>
+                                            <FormGroup>
+                                                <Label>Test</Label>
+                                                <RFieldInput name="textr" validate={['required', 'email']}/>
+                                            </FormGroup>
+                                            <FormGroup>
+                                                <RFieldButton label="Submit" color="primary"/>
+                                            </FormGroup>
+                                        </Col>
+                                    </Row>
                                 </RForm>
                             </CardBody>
                         </Card>

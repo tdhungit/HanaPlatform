@@ -7,10 +7,7 @@ export class Form extends Component {
     static propTypes = {
         className: PropTypes.string,
         children: PropTypes.node,
-        onSubmit: PropTypes.func,
-        reset: PropTypes.func,
-        pristine: PropTypes.bool,
-        submitting: PropTypes.bool
+        onSubmit: PropTypes.func
     };
 
     render() {
@@ -39,10 +36,10 @@ class RFormInit extends Component {
     }
 
     render() {
-        const {className, onSubmit, pristine, reset, submitting} = this.props;
+        const {className, onSubmit, children, reset, pristine, submitting} = this.props;
         return (
             <Form onSubmit={onSubmit} className={className}>
-                {this.props.children}
+                {children}
             </Form>
         );
     }
@@ -53,10 +50,7 @@ export class RForm extends Component {
         name: PropTypes.string.isRequired,
         className: PropTypes.string,
         children: PropTypes.node,
-        onSubmit: PropTypes.func,
-        reset: PropTypes.func,
-        pristine: PropTypes.bool,
-        submitting: PropTypes.bool
+        onSubmit: PropTypes.func
     };
 
     componentWillMount() {

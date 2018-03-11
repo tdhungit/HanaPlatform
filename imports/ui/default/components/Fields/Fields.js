@@ -5,6 +5,7 @@ import {Field} from 'redux-form';
 
 import {t} from '/imports/common/Translation';
 import {utilsHelper} from '../../helpers/utils/utils';
+import {validator} from '/imports/common/Validator';
 import {SelectHelper, Select2Helper, SelectGroupHelper} from '../../helpers/inputs/SelectHelper';
 import {DateInput} from '../../helpers/inputs/DateHelper';
 import {TextEditor} from '../../helpers/inputs/TextEditor';
@@ -12,6 +13,10 @@ import {TextEditor} from '../../helpers/inputs/TextEditor';
 // Forms
 import {Form, RForm} from './Forms';
 export {Form, RForm};
+
+// Buttons
+import {FieldButton, RFieldButton} from './Buttons';
+export {FieldButton, RFieldButton};
 
 // Fields
 export class FieldView extends Component {
@@ -108,6 +113,7 @@ export class FieldInput extends Component {
     }
 }
 
+// For Redux Form
 const renderFieldEdit = ({input, label, type, meta: {touched, error, warning}}) => {
     let attributes = utilsHelper.objectWithoutProperties(input, []);
 
@@ -149,14 +155,16 @@ export class RFieldInput extends Component {
         name: PropTypes.string.isRequired,
         type: PropTypes.string,
         className: PropTypes.string,
-        placeholder: PropTypes.string
+        placeholder: PropTypes.string,
+        validate: PropTypes.array
     };
 
     render() {
         let _props = this.props,
             attributes = utilsHelper.objectWithoutProperties(_props, [
                 'label',
-                'placeholder'
+                'placeholder',
+                'validate'
             ]);
 
         let placeholder = _props.placeholder;
@@ -164,6 +172,9 @@ export class RFieldInput extends Component {
             placeholder = t.__('Enter here')
         }
 
-        return <Field {...attributes} label={placeholder} component={renderFieldEdit}/>
+        return <Field {...attributes}
+                      label={placeholder}
+                      validate={validator.get(_props.validate)}
+                      component={renderFieldEdit}/>
     }
 }
