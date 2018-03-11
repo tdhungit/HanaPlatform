@@ -51,7 +51,7 @@ class ListView extends Component {
 
         return (
             <div className="module-ListView animated fadeIn">
-                <PT titile={model.model + ' ' + t.__('List')}/>
+                <PT title={model.model + ' ' + t.__('List')}/>
                 <Row>
                     <Col>
                         <Card>
