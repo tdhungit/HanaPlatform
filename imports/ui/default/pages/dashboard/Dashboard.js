@@ -41,7 +41,7 @@ class Dashboard extends Component {
                                         <Col>
                                             <FormGroup>
                                                 <Label>TEST</Label>
-                                                <FieldInput name="test"/>
+                                                <FieldInput name="test" validate={['required', 'email']}/>
                                             </FormGroup>
                                             <FormGroup>
                                                 <FieldButton label="Submit" color="primary"/>

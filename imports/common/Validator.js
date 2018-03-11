@@ -9,10 +9,26 @@ class Validator {
 
         for (let idx in validate) {
             let func = validate[idx];
-            validateVar.push(this[func]);
+            if (this[func]) {
+                validateVar.push(this[func]);
+            }
         }
 
         return validateVar;
+    }
+
+    isError(validate, value) {
+        for (let idx in validate) {
+            let func = validate[idx];
+            if (this[func]) {
+                let error = this[func](value);
+                if (error) {
+                    return error;
+                }
+            }
+        }
+
+        return false;
     }
 
     required = value => {

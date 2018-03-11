@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {reduxForm} from 'redux-form'
+import {reduxForm, formValueSelector} from 'redux-form'
 import {Form as BForm} from 'reactstrap';
+import {utilsHelper} from '../../helpers/utils/utils';
 
 export class Form extends Component {
     static propTypes = {
@@ -59,8 +60,19 @@ export class RForm extends Component {
         })(RFormInit);
     }
 
+    onSubmit(event) {
+        event.preventDefault();
+        const selector = formValueSelector(this.props.name);
+        if (this.props.onSubmit) {
+            this.props.onSubmit(selector);
+        }
+    }
+
     render() {
         const InitForm = this.initForm;
-        return <InitForm {...this.props}/>;
+        const attributes = utilsHelper.objectWithoutProperties(this.props, [
+            'onSubmit'
+        ]);
+        return <InitForm {...this.props} onSubmit={this.onSubmit.bind(this)}/>;
     }
 }

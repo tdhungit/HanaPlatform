@@ -59,16 +59,37 @@ export class FieldInput extends Component {
     }
 
     onChange(event) {
-        // this.setState({className: 'is-invalid'});
-        this.props.onChange(event);
+        if (this.props.validate) {
+            const error = validator.isError(this.props.validate, event.target.value);
+            if (error) {
+                this.setState({
+                    invalid: true,
+                    className: 'is-invalid',
+                    errorMessage: error
+                });
+            }
+        }
+
+        if (this.props.onChange) {
+            this.props.onChange(event);
+        }
     }
 
-    onBlur() {
-        // this.setState({
-        //     invalid: true,
-        //     className: 'is-invalid',
-        //     errorMessage: 'test'
-        // });
+    onBlur(event) {
+        if (this.props.validate) {
+            const error = validator.isError(this.props.validate, event.target.value);
+            if (error) {
+                this.setState({
+                    invalid: true,
+                    className: 'is-invalid',
+                    errorMessage: error
+                });
+            }
+        }
+
+        if (this.props.onBlur) {
+            this.props.onBlur(event);
+        }
     }
 
     render() {
