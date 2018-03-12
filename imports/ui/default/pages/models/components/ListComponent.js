@@ -5,7 +5,8 @@ import {
     Row,
     Col,
     Table,
-    Alert
+    Alert,
+    Button
 } from 'reactstrap';
 import {Link} from 'react-router-dom';
 import {Bert} from 'meteor/themeteorchef:bert';
@@ -33,7 +34,8 @@ class ListComponent extends Component {
         super(props);
 
         this.state = {
-            filters: {}
+            filters: {},
+            sort: {}
         };
     }
 
@@ -43,10 +45,15 @@ class ListComponent extends Component {
         let headers = [];
         for (let fieldName in model.list.fields) {
             let field = model.list.fields[fieldName];
-            headers.push(<th key={fieldName}><T>{field.label || fieldName}</T></th>)
+            headers.push(
+                <th key={fieldName} className={this.getSortClass(fieldName)}
+                    onClick={() => this.handleSort(fieldName)}>
+                    <T>{field.label || fieldName}</T>
+                </th>
+            )
         }
 
-        headers.push(<th key="actions"></th>);
+        headers.push(<th key="actions" className="NoSortLink"></th>);
 
         return headers;
     }
@@ -87,6 +94,35 @@ class ListComponent extends Component {
 
     handleFilter() {
         this.props.pagination.filters(this.state.filters);
+    }
+
+    getSortType(fieldName) {
+        return this.state.sort[fieldName] ? (this.state.sort[fieldName]) : 0;
+    }
+
+    getSortClass(fieldName) {
+        const sortType = this.getSortType(fieldName);
+        if (sortType === -1) {
+            return 'asc';
+        } else if (sortType === 1) {
+            return 'desc'
+        }
+
+        return '';
+    }
+
+    handleSort(fieldName) {
+        let sortType = this.getSortType(fieldName);
+        if (!sortType) {
+            sortType = 1;
+        } else {
+            sortType = 0 - sortType
+        }
+
+        const sort = {[fieldName]: sortType};
+        this.setState({sort: sort});
+
+        this.props.pagination.sort({[fieldName]: sortType});
     }
 
     renderCol(record) {
@@ -136,7 +172,7 @@ class ListComponent extends Component {
         return (
             <Row>
                 <Col>
-                    <Table responsive hover>
+                    <Table responsive hover className="table-sortable">
                         <thead>
                         <tr>{this.renderHeader()}</tr>
                         </thead>

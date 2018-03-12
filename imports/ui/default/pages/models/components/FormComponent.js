@@ -66,7 +66,7 @@ class FormComponent extends Component {
                 if (error) {
                     Bert.alert(error.reason, 'danger');
                 } else {
-                    Bert.alert(t.__('Successful'), 'danger');
+                    Bert.alert(t.__('Successful'), 'success');
                     this.props.history.push(vsprintf(this.props.detailLink, [recordId]));
                 }
             });
