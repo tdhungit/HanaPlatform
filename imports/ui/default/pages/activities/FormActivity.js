@@ -35,6 +35,18 @@ import {TextEditor} from '../../helpers/inputs/TextEditor';
 import {utilsHelper} from '../../helpers/utils/utils';
 
 class FormActivity extends Component {
+    static defaultProps = {
+        title: '',
+        slogan: '',
+        activity: {}
+    };
+
+    static propTypes = {
+        title: PropTypes.string,
+        slogan: PropTypes.string,
+        activity: PropTypes.object
+    };
+
     constructor(props) {
         super(props);
 
@@ -49,9 +61,24 @@ class FormActivity extends Component {
 
         this.loadInviteUsers = this.loadInviteUsers.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.changeNotification = this.changeNotification.bind(this);
     }
 
     componentWillMount() {
+        if (this.props.activity) {
+            let activity = this.props.activity;
+            let invites = {};
+            if (activity.invites) {
+                for (let idx in activity.invites) {
+                    let invite = activity.invites[idx];
+                    invites[invite.userId] = invite;
+                }
+            }
+
+            activity.invites = invites;
+            this.state.activity = activity;
+        }
+
         for (let idx in AppListStrings.ConferencingList) {
             let conferencing = AppListStrings.ConferencingList[idx];
             this.state.conferencingList[conferencing] = {
@@ -62,12 +89,36 @@ class FormActivity extends Component {
     }
 
     handleInputChange(event) {
-        const activity = utilsHelper.inputChange(event, this.state.activity);
+        let activity = utilsHelper.inputChange(event, this.state.activity);
+        if (event.target.name === 'conferencing') {
+            activity.conferencing = {
+                type: event.target.value.selected,
+                name: event.target.value.text
+            };
+        }
+
         this.setState({activity: activity});
     }
 
     getInputValue(name) {
-        return (this.state.activity[name] ? this.state.activity[name] : '');
+        if (name === 'conferencing') {
+            if (this.state.activity.conferencing) {
+                const conferencing = this.state.activity.conferencing;
+                if (conferencing.type && conferencing.name) {
+                    return {
+                        selected: conferencing.type,
+                        text: conferencing.name
+                    };
+                }
+            }
+
+            return {
+                selected: '',
+                text: ''
+            }
+        }
+
+        return utilsHelper.getField(this.state.activity, name);
     }
 
     loadInviteUsers(input, callback) {
@@ -98,7 +149,10 @@ class FormActivity extends Component {
             userId: event.selectedOption.value,
             username: event.selectedOption.label,
             userEmail: user.emails && user.emails[0].address,
-            media: user.profile && user.profile.avatar ? user.profile.avatar : ''
+            media: user.profile && user.profile.avatar ? user.profile.avatar : '',
+            canEdit: false,
+            canInvite: false,
+            canSeeAll: false
         };
         activity.invites = invites;
         this.setState({
@@ -154,6 +208,10 @@ class FormActivity extends Component {
 
     addNotification() {
         let activity = this.state.activity;
+        if (!activity.notifications) {
+            activity.notifications = [];
+        }
+
         const notification = {
             type: 'Email',
             duration: 30,
@@ -170,6 +228,7 @@ class FormActivity extends Component {
         const name = nameArray[0];
         const idx = parseInt(nameArray[1]);
         const value = target.value;
+
         let activity = this.state.activity;
         if (!activity.notifications[idx]) {
             activity.notifications[idx] = {};
@@ -198,12 +257,13 @@ class FormActivity extends Component {
                                         }}>
                             <DropdownToggle caret color="gray-200">{notification.type}</DropdownToggle>
                             <DropdownMenu className={this.state['notifyType' + idx] ? "show" : ""}>
-                                <DropdownItem name={'type.' + idx} value="Email" onClick={this.changeNotification.bind(this)}>Email</DropdownItem>
-                                <DropdownItem name={'type.' + idx} value="Notification" onClick={this.changeNotification.bind(this)}>Notification</DropdownItem>
+                                <DropdownItem name={'type.' + idx} value="Email" onClick={this.changeNotification}>Email</DropdownItem>
+                                <DropdownItem name={'type.' + idx} value="Notification" onClick={this.changeNotification}>Notification</DropdownItem>
                             </DropdownMenu>
                         </ButtonDropdown>
                     </InputGroupAddon>
-                    <Input type="text" name={'duration.' + idx} value={notification.duration} idx={idx} onChange={this.changeNotification.bind(this)}/>
+                    <Input type="text" name={'duration.' + idx} value={notification.duration} idx={idx}
+                           onChange={this.changeNotification}/>
                     <InputGroupAddon addonType="prepend">
                         <ButtonDropdown isOpen={this.state['notifyUnit' + idx]}
                                         toggle={() => {
@@ -211,14 +271,14 @@ class FormActivity extends Component {
                                         }}>
                             <DropdownToggle caret color="gray-200">{notification.unit}</DropdownToggle>
                             <DropdownMenu className={this.state['notifyUnit' + idx] ? "show" : ""}>
-                                <DropdownItem name={'unit.' + idx} value="minutes" onClick={this.changeNotification.bind(this)}>minutes</DropdownItem>
-                                <DropdownItem name={'unit.' + idx} value="hours" onClick={this.changeNotification.bind(this)}>hours</DropdownItem>
-                                <DropdownItem name={'unit.' + idx} value="days" onClick={this.changeNotification.bind(this)}>days</DropdownItem>
-                                <DropdownItem name={'unit.' + idx} value="weeks" onClick={this.changeNotification.bind(this)}>weeks</DropdownItem>
+                                <DropdownItem name={'unit.' + idx} value="minutes" onClick={this.changeNotification}>minutes</DropdownItem>
+                                <DropdownItem name={'unit.' + idx} value="hours" onClick={this.changeNotification}>hours</DropdownItem>
+                                <DropdownItem name={'unit.' + idx} value="days" onClick={this.changeNotification}>days</DropdownItem>
+                                <DropdownItem name={'unit.' + idx} value="weeks" onClick={this.changeNotification}>weeks</DropdownItem>
                             </DropdownMenu>
                         </ButtonDropdown>
                     </InputGroupAddon>
-                    <Button type="button" color="default" onClick={this.removeNotification.bind(this, idx)}><i className="fa fa-remove"/></Button>
+                    <Button type="button" color="default" onClick={() => this.removeNotification(idx)}><i className="fa fa-remove"/></Button>
                 </InputGroup>
             );
         }
@@ -227,7 +287,6 @@ class FormActivity extends Component {
     }
 
     handleSubmit() {
-        console.log(this.state.activity);
         let activity = this.state.activity;
         let invites = [];
         if (activity.invites) {
@@ -238,16 +297,6 @@ class FormActivity extends Component {
         }
 
         activity.invites = invites;
-        console.log(activity);
-        if (this.state.activity.conferencing) {
-            const conferencing = {
-                type: this.state.activity.conferencing.selected,
-                name: this.state.activity.conferencing.text
-            };
-
-            activity.conferencing = conferencing;
-        }
-        console.log(activity);
 
         const existing = this.props.activity && this.props.activity._id;
         const method = existing ? 'activities.update' : 'activities.insert';
@@ -257,7 +306,7 @@ class FormActivity extends Component {
                 Bert.alert(error.reason, 'danger');
             } else {
                 Bert.alert(t.__('Successful!'), 'success');
-                // this.props.history.push('/manager/main-menus/' + menuId + '/edit');
+                this.props.history.push('/manager/activities/' + activityId + '/detail');
             }
         });
     }
@@ -365,17 +414,5 @@ class FormActivity extends Component {
         );
     }
 }
-
-FormActivity.defaultProps = {
-    title: '',
-    slogan: '',
-    activity: {}
-};
-
-FormActivity.propTypes = {
-    title: PropTypes.string,
-    slogan: PropTypes.string,
-    activity: PropTypes.object
-};
 
 export default withRouter(FormActivity);

@@ -189,11 +189,12 @@ export class SelectGroupHelper extends Component {
 
     componentWillMount() {
         this.state.active.label = this.props.label;
-        if (this.props.value) {
+        if (this.props.value && this.props.value.label && this.props.value.selected) {
             this.state.active = {
                 label: this.props.items[this.props.value.selected].label || this.props.value.selected,
                 selected: this.props.value.selected
             };
+
             this.state.text = this.props.value.text
         }
     }
