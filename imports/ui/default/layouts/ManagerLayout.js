@@ -30,9 +30,11 @@ import EditMainMenu from '../pages/main_menus/EditMainMenu';
 
 import SystemSettings from '../pages/settings/SystemSettings';
 
-import ViewActivities from '../pages/activities/ViewActivities';
 import ViewCalendar from '../pages/activities/ViewCalendar';
+import ViewActivities from '../pages/activities/ViewActivities';
 import CreateActivity from '../pages/activities/CreateActivity';
+import EditActivity from '../pages/activities/EditActivity';
+import ViewActivity from '../pages/activities/ViewActivity';
 
 import ViewModels from '../pages/models/ViewModels';
 import CreateModel from '../pages/models/CreateModel';
@@ -77,9 +79,11 @@ class ManagerLayout extends Component {
                             <Authenticate exact path="/manager/main-menus/create" component={CreateMainMenu} {...appProps}/>
                             <Authenticate exact path="/manager/main-menus/:_id/edit" component={EditMainMenu} {...appProps}/>
 
-                            <Authenticate exact path="/manager/activities" component={ViewActivities} {...appProps}/>
                             <Authenticate exact path="/manager/activities/calendar" component={ViewCalendar} {...appProps}/>
+                            <Authenticate exact path="/manager/activities" component={ViewActivities} {...appProps}/>
                             <Authenticate exact path="/manager/activities/create" component={CreateActivity} {...appProps}/>
+                            <Authenticate exact path="/manager/activities/:_id/edit" component={EditActivity} {...appProps}/>
+                            <Authenticate exact path="/manager/activities/:_id/detail" component={ViewActivity} {...appProps}/>
 
                             <Authenticate exact path="/manager/models" component={ViewModels} {...appProps}/>
                             <Authenticate exact path="/manager/models/create" component={CreateModel} {...appProps}/>

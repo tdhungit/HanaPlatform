@@ -55,7 +55,7 @@ class ViewUsers extends Component {
                                     </Link>
                                 </div>
                             </CardHeader>
-                            <CardBody className="card-body">
+                            <CardBody>
                                 <ListComponent
                                     model={model}
                                     pagination={pagination}

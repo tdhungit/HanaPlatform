@@ -94,15 +94,15 @@ const ActivitiesSchema = new SimpleSchema({
         optional: true
     },
     conferencing: {
-        type: Array,
+        type: Object,
         label: 'Use conferencing',
         optional: true
     },
-    "conferencing.$": {
-        type: Object,
+    "conferencing.type": {
+        type: String,
         label: 'Conferencing tool'
     },
-    "conferencing.$.name": {
+    "conferencing.name": {
         type: String,
         label: 'Conferencing tool name'
     },

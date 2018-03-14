@@ -228,6 +228,38 @@ class FormActivity extends Component {
 
     handleSubmit() {
         console.log(this.state.activity);
+        let activity = this.state.activity;
+        let invites = [];
+        if (activity.invites) {
+            for (let userId in activity.invites) {
+                let user = activity.invites[userId];
+                invites.push(user);
+            }
+        }
+
+        activity.invites = invites;
+        console.log(activity);
+        if (this.state.activity.conferencing) {
+            const conferencing = {
+                type: this.state.activity.conferencing.selected,
+                name: this.state.activity.conferencing.text
+            };
+
+            activity.conferencing = conferencing;
+        }
+        console.log(activity);
+
+        const existing = this.props.activity && this.props.activity._id;
+        const method = existing ? 'activities.update' : 'activities.insert';
+
+        Meteor.call(method, activity, (error, activityId) => {
+            if (error) {
+                Bert.alert(error.reason, 'danger');
+            } else {
+                Bert.alert(t.__('Successful!'), 'success');
+                // this.props.history.push('/manager/main-menus/' + menuId + '/edit');
+            }
+        });
     }
 
     render() {

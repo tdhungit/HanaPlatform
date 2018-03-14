@@ -7,11 +7,19 @@ import {
 } from 'reactstrap';
 
 import container from '/imports/common/Container';
-import {T, t, PT} from '/imports/common/Translation';
+import {t, PT} from '/imports/common/Translation';
 import FormMainMenu from './FormMainMenu';
 import MainMenus from '/imports/collections/MainMenus/MainMenus';
 
 class EditMainMenu extends Component {
+    static defaultProps = {
+        menu: {}
+    };
+
+    static propTypes = {
+        menu: PropTypes.object
+    };
+
     constructor(props) {
         super(props);
     }
@@ -34,20 +42,12 @@ class EditMainMenu extends Component {
     }
 }
 
-EditMainMenu.defaultProps = {
-    menu: {}
-};
-
-EditMainMenu.propTypes = {
-    menu: PropTypes.object
-};
-
 export default container((props, onData) => {
     const menuId = props.match.params._id;
     const subscription = Meteor.subscribe('mainMenus.detail', menuId);
     if (subscription && subscription.ready()) {
         onData(null, {
             menu: MainMenus.findOne(menuId)
-        })
-    };
+        });
+    }
 }, EditMainMenu);
