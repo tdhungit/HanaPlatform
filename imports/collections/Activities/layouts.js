@@ -15,6 +15,10 @@ export const activityLayouts = {
             name: {
                 type: "text",
                 label: "Subject"
+            },
+            type: {
+                type: "select",
+                label: "Type"
             }
         }
     }

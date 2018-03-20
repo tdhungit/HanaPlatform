@@ -29,6 +29,7 @@ import ViewMainMenus from '../pages/main_menus/ViewMainMenus';
 import EditMainMenu from '../pages/main_menus/EditMainMenu';
 
 import SystemSettings from '../pages/settings/SystemSettings';
+import AppListStringsSettings from '../pages/settings/AppListStringsSettings';
 
 import ViewCalendar from '../pages/activities/ViewCalendar';
 import ViewActivities from '../pages/activities/ViewActivities';
@@ -49,7 +50,7 @@ class ManagerLayout extends Component {
     render() {
         const appProps = this.props;
         return (
-            <div className="PenguinPlatformManager app">
+            <div className="HanaPlatformManager app">
                 <Header {...appProps}/>
                 <div className="app-body">
                     <AppNavigation {...appProps}/>
@@ -75,6 +76,7 @@ class ManagerLayout extends Component {
                             <Authenticate exact path="/manager/user-groups/:_id/detail" component={ViewUserGroup} {...appProps}/>
 
                             <Authenticate exact path="/manager/settings" component={SystemSettings} {...appProps}/>
+                            <Authenticate exact path="/manager/settings/dropdown-list" component={AppListStringsSettings} {...appProps}/>
                             <Authenticate exact path="/manager/main-menus" component={ViewMainMenus} {...appProps}/>
                             <Authenticate exact path="/manager/main-menus/create" component={CreateMainMenu} {...appProps}/>
                             <Authenticate exact path="/manager/main-menus/:_id/edit" component={EditMainMenu} {...appProps}/>

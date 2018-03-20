@@ -22,6 +22,6 @@ Meteor.startup(() => {
             <Provider store={store}>
                 <App/>
             </Provider>
-        ), document.getElementById('PenguinPlatformContainer')));
+        ), document.getElementById('HanaPlatformContainer')));
     });
 });

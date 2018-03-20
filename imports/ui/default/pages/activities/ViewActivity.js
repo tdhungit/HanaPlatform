@@ -2,40 +2,32 @@ import React, {Component} from 'react';
 import {Meteor} from 'meteor/meteor';
 import {
     Row,
-    Col,
-    Card,
-    CardHeader,
-    CardBody
+    Col
 } from 'reactstrap';
-import {Link} from 'react-router-dom';
 
 import container from '/imports/common/Container';
-import {t, T, PT} from '/imports/common/Translation';
+import {t, PT} from '/imports/common/Translation';
+import Models from '/imports/collections/Models/Models';
 import Activities from '/imports/collections/Activities/Activities';
+import DetailComponent from '../models/components/DetailComponent';
+import {activityLayouts} from '/imports/collections/Activities/layouts';
 
 class ViewActivity extends Component {
     render() {
         const {activity} = this.props;
+
+        const model = Models.getModel('Users') || activityLayouts;
 
         return (
             <div className="activities-ViewActivity">
                 <PT title={activity.name}/>
                 <Row>
                     <Col md="12">
-                        <Card>
-                            <CardHeader>
-                                <i className="fa fa-list"/>
-                                <strong><T>View Activity</T></strong> {activity.name}
-                                <div className="card-actions">
-                                    <Link to={'/manager/activities/' + activity._id + '/edit'} title={t.__('Edit')}>
-                                        <i className="fa fa-edit"/>
-                                    </Link>
-                                </div>
-                            </CardHeader>
-                            <CardBody>
-
-                            </CardBody>
-                        </Card>
+                        <DetailComponent
+                            title={t.__('View Activity')}
+                            model={model}
+                            record={activity}
+                            editLink="/manager/activities/%s/edit"/>
                     </Col>
                 </Row>
             </div>

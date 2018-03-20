@@ -25,7 +25,7 @@ class App extends Component {
         const appProps = this.props;
         return (
             <Router>
-                <div className="PenguinPlatform">
+                <div className="HanaPlatform">
                     {appProps.app.loading ? <Loading/> : null}
                     <Switch>
                         <Public exact path="/signup" component={Signup} {...appProps} />
@@ -59,7 +59,7 @@ const mapDispatchToProps = (dispatch) => {
 
 export default container((props, onData) => {
     Meteor.subscribe('users.user');
-    Meteor.subscribe('settings.systemSettings');
+    Meteor.subscribe('settings.list');
     Meteor.subscribe('models.list');
 
     if (Roles.subscription.ready()) {

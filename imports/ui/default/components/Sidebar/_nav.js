@@ -50,6 +50,11 @@ export default {
                     name: 'Module Builder',
                     url: '/manager/models',
                     icon: 'fa fa-cogs'
+                },
+                {
+                    name: 'Dropdown List',
+                    url: '/manager/settings/dropdown-list',
+                    icon: 'fa fa-cogs'
                 }
             ]
         }

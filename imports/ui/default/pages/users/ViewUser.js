@@ -8,16 +8,18 @@ import {
 
 import container from '/imports/common/Container';
 import {t, PT} from '/imports/common/Translation';
+import Models from '../../../../collections/Models/Models';
 import Users from '/imports/collections/Users/Users';
 import DetailComponent from '../models/components/DetailComponent';
-import Models from '../../../../collections/Models/Models';
 import {userLayouts} from '/imports/collections/Users/layouts';
 
 class ViewUser extends Component {
+    static propTypes = {
+        user: PropTypes.object
+    };
+
     render() {
-        const {
-            user
-        } = this.props;
+        const {user} = this.props;
 
         const model = Models.getModel('Users') || userLayouts;
 
@@ -37,10 +39,6 @@ class ViewUser extends Component {
         );
     }
 }
-
-ViewUser.propTypes = {
-    user: PropTypes.object
-};
 
 export default container((props, onData) => {
     const userId = props.match.params._id;

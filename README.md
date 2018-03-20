@@ -1,4 +1,4 @@
-# Penguin App Platform for data manager in business
+# Hana App Platform for data manager in business
 
 ![alt text](./public/img/app/screenshot.png?raw=true "Penguin Platform")
 

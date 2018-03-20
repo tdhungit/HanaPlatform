@@ -12,7 +12,7 @@ class HomeLayout extends Component {
 
     render() {
         return (
-            <div className="PenguinPlatformHome">
+            <div className="HanaPlatformHome">
                 <main className="mainpage">
                     <Route exact path="/" component={Index}/>
                     <Route exact path="/about-us" component={About}/>

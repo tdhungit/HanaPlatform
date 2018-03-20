@@ -33,6 +33,7 @@ export class FieldView extends Component {
         }
 
         let value = utilsHelper.getField(record, fieldName);
+
         if (field.display) {
             if (field.display.type === 'array') {
                 let fieldDisplay = '';
@@ -48,7 +49,7 @@ export class FieldView extends Component {
             }
         }
 
-        return <div>{value}</div>;
+        return <span>{value}</span>;
     }
 }
 

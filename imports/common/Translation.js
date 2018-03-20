@@ -40,7 +40,33 @@ const getMetaTags = ({
     return metaTags;
 };
 
-class SEO extends Component {
+export class PT extends Component {
+    static defaultProps = {
+        schema: '',
+        title: '',
+        description: '',
+        path: '/',
+        contentType: '',
+        published: '',
+        updated: '',
+        category: '',
+        tags: [],
+        settings: {}
+    };
+
+    static propTypes = {
+        schema: PropTypes.string,
+        title: PropTypes.string,
+        description: PropTypes.string,
+        path: PropTypes.string,
+        contentType: PropTypes.string,
+        published: PropTypes.string,
+        updated: PropTypes.string,
+        category: PropTypes.string,
+        tags: PropTypes.array,
+        settings: PropTypes.object
+    };
+
     render() {
         const {
             schema,
@@ -51,11 +77,19 @@ class SEO extends Component {
             published,
             updated,
             category,
-            tags,
-            settings
+            tags
         } = this.props;
 
-        let pageTitle = settings && ((settings['Systems:title'] && settings['Systems:title'].value) || 'Penguin Platform');
+        const SystemSettings = Settings.find({category: 'Systems', name: 'title'}).fetch();
+
+        let settings = {};
+        for (let idx in SystemSettings) {
+            let setting = SystemSettings[idx];
+            let key = setting.category + ':' + setting.name;
+            settings[key] = setting;
+        }
+
+        let pageTitle = settings && ((settings['Systems:title'] && settings['Systems:title'].value) || 'Hana Platform');
 
         if (title) {
             pageTitle = title + ' | ' + pageTitle;
@@ -86,47 +120,3 @@ class SEO extends Component {
         )
     }
 }
-
-SEO.defaultProps = {
-    schema: '',
-    title: '',
-    description: '',
-    path: '/',
-    contentType: '',
-    published: '',
-    updated: '',
-    category: '',
-    tags: [],
-    settings: {}
-};
-
-SEO.propTypes = {
-    schema: PropTypes.string,
-    title: PropTypes.string,
-    description: PropTypes.string,
-    path: PropTypes.string,
-    contentType: PropTypes.string,
-    published: PropTypes.string,
-    updated: PropTypes.string,
-    category: PropTypes.string,
-    tags: PropTypes.array,
-    settings: PropTypes.object
-};
-
-export const PT = container((props, onData) => {
-    const subscription = Meteor.subscribe('settings.getSetting', 'Systems', 'title');
-    if (subscription && subscription.ready()) {
-        const SystemSettings = Settings.find({category: 'Systems', name: 'title'}).fetch();
-
-        let settings = {};
-        for (let idx in SystemSettings) {
-            let setting = SystemSettings[idx];
-            let key = setting.category + ':' + setting.name;
-            settings[key] = setting;
-        }
-
-        onData(null, {
-            settings: settings
-        });
-    }
-}, SEO);

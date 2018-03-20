@@ -23,7 +23,6 @@ import {
     DropdownMenu,
     DropdownItem
 } from 'reactstrap';
-import {Link} from 'react-router-dom';
 import {Bert} from 'meteor/themeteorchef:bert';
 
 import {T, t} from '/imports/common/Translation';
@@ -406,9 +405,15 @@ class FormActivity extends Component {
                         <i className="fa fa-dot-circle-o"></i>&nbsp;
                         {existing ? <T>Update</T> :<T>Create</T>}
                     </Button>
-                    <Button type="reset" size="sm" color="danger" onClick={() => this.props.history.push('/manager/activities')}>
-                        <i className="fa fa-ban"></i> <T>Cancel</T>
-                    </Button>
+                    {existing
+                        ? <Button type="button" size="sm" color="danger"
+                                  onClick={() => this.props.history.push('/manager/activities/' + this.state.activity._id + '/detail')}>
+                            <i className="fa fa-ban"></i> <T>Cancel</T>
+                          </Button>
+                        : <Button type="button" size="sm" color="danger"
+                                  onClick={() => this.props.history.push('/manager/activities')}>
+                            <i className="fa fa-ban"></i> <T>Cancel</T>
+                          </Button>}
                 </CardFooter>
             </Card>
         );

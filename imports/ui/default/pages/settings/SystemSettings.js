@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
 import {Meteor} from 'meteor/meteor';
 import {
     Row,
@@ -16,7 +15,6 @@ import {
 import {Bert} from 'meteor/themeteorchef:bert';
 
 import {T, t, PT} from '/imports/common/Translation';
-import container from '/imports/common/Container';
 import Settings from '/imports/collections/Settings/Settings';
 
 class SystemSettings extends Component {
@@ -31,13 +29,15 @@ class SystemSettings extends Component {
     }
 
     componentWillMount() {
-        const {
-            settings
-        } = this.props;
-
-        if (settings) {
-            this.state.settings = settings;
+        const systemSettings = Settings.find({category: 'Systems'}).fetch();
+        let settings = {};
+        for (let idx in systemSettings) {
+            let setting = systemSettings[idx];
+            let key = setting.category + ':' + setting.name;
+            settings[key] = setting;
         }
+
+        this.state.settings = settings;
     }
 
     handleInputChange(event) {
@@ -97,7 +97,7 @@ class SystemSettings extends Component {
                                     </Col>
                                     <Col md="9">
                                         <Input type="text" name="Systems:title"
-                                               value={this.state.settings['Systems:title'] && this.state.settings['Systems:title'].value}
+                                               value={this.state.settings['Systems:title'] && this.state.settings['Systems:title'].value || ''}
                                                onChange={this.handleInputChange}/>
                                     </Col>
                                 </FormGroup>
@@ -107,13 +107,15 @@ class SystemSettings extends Component {
                                     </Col>
                                     <Col md="9">
                                         <Input type="text" name="Systems:list_view_limit"
-                                               value={this.state.settings['Systems:list_view_limit'] && this.state.settings['Systems:list_view_limit'].value}
+                                               value={this.state.settings['Systems:list_view_limit'] && this.state.settings['Systems:list_view_limit'].value || ''}
                                                onChange={this.handleInputChange}/>
                                     </Col>
                                 </FormGroup>
                             </CardBody>
                             <CardFooter>
-                                <Button type="button" color="primary" size="sm" onClick={this.handleSubmit.bind(this)}><T>Save</T></Button>
+                                <Button type="button" color="primary" size="sm" onClick={this.handleSubmit.bind(this)}>
+                                    <T>Save</T>
+                                </Button>
                             </CardFooter>
                         </Card>
                     </Col>
@@ -123,27 +125,4 @@ class SystemSettings extends Component {
     }
 }
 
-SystemSettings.defaultProps = {
-    settings: {}
-};
-
-SystemSettings.propTypes = {
-    settings: PropTypes.object
-};
-
-export default container((props, onData) => {
-    const subscription = Meteor.subscribe('settings.getCategory');
-    if (subscription && subscription.ready()) {
-        const systemSettings = Settings.find({category: 'Systems'}).fetch();
-        let settings = {};
-        for (let idx in systemSettings) {
-            let setting = systemSettings[idx];
-            let key = setting.category + ':' + setting.name;
-            settings[key] = setting;
-        }
-
-        onData(null, {
-            settings: settings
-        });
-    }
-}, SystemSettings);
+export default SystemSettings;

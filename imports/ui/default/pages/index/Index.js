@@ -14,7 +14,7 @@ class Index extends Component {
                     <div className="left-grid text-center change-bg">
                         <div className="center-container">
                             <img src="images/1.png" alt=""/>
-                            <h1 className="title-head-w3l text-center">Penguin Platform</h1>
+                            <h1 className="title-head-w3l text-center">Hana Platform</h1>
                             <h2>App Platform</h2>
                             <span>Open Source</span>
 
@@ -59,7 +59,7 @@ class Index extends Component {
 }
 
 // Complete
-const Completionist = () => <h1 className="txt text-center">Welcome to Penguin Platform!</h1>;
+const Completionist = () => <h1 className="txt text-center">Welcome to Hana Platform!</h1>;
 
 // Renderer callback with condition
 const renderer = ({days, hours, minutes, seconds, completed}) => {
