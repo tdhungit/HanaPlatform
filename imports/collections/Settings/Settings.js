@@ -13,16 +13,13 @@ class SettingsCollection extends CollectionBase {
     }
 
     getSettings(category = '', name = '') {
-        let params = {};
-        if (category) {
-            params.category = category;
+        if (category && name) {
+            return this.findOne({category: category, name: name});
+        } else if (category) {
+            return this.find({category: category}).fetch();
         }
 
-        if (name) {
-            params.name = name;
-        }
-
-        return this.find(params).fetch();
+        return this.find({}).fetch();
     }
 
     beforeInsert(doc) {

@@ -49,7 +49,13 @@ export class FieldView extends Component {
             }
         }
 
-        return <span>{value}</span>;
+        switch (field.type) {
+            case 'select':
+            case 'dropdown':
+                return <span></span>
+            default:
+                return <span>{value}</span>;
+        }
     }
 }
 
@@ -127,28 +133,27 @@ export class FieldInput extends Component {
         if (!attributes.placeholder) {
             attributes.placeholder = t.__('Enter here')
         }
-        if (type === 'date' || type === 'datetime') {
-            return <DateInput {...attributes}/>
-        }
-        if (type === 'texteditor') {
-            return <TextEditor {...attributes}/>
-        }
-        if (type === 'dropdown') {
-            return <SelectHelper {...attributes}/>
-        }
-        if (type === 'select2') {
-            return <Select2Helper {...attributes}/>
-        }
-        if (type === 'selectgroup') {
-            return <SelectGroupHelper {...attributes}/>
-        }
 
-        return (
-            <div>
-                <Input {...attributes} onChange={this.onChange} onBlur={this.onBlur}/>
-                {this.state.invalid ? <FormText color="muted">{this.state.errorMessage}</FormText> : null}
-            </div>
-        );
+        switch (type) {
+            case 'date':
+            case 'datetime':
+                return <DateInput {...attributes}/>;
+            case 'texteditor':
+                return <TextEditor {...attributes}/>;
+            case 'dropdown':
+                return <SelectHelper {...attributes}/>;
+            case 'select2':
+                return <Select2Helper {...attributes}/>;
+            case 'selectgroup':
+                return <SelectGroupHelper {...attributes}/>
+            default:
+                return (
+                    <div>
+                        <Input {...attributes} onChange={this.onChange} onBlur={this.onBlur}/>
+                        {this.state.invalid ? <FormText color="muted">{this.state.errorMessage}</FormText> : null}
+                    </div>
+                );
+        }
     }
 }
 
@@ -161,22 +166,27 @@ const renderFieldEdit = ({input, label, type, meta: {touched, error, warning}}) 
         attributes.placeholder = t.__('Enter here')
     }
 
-    let component = <Input {...attributes}/>;
-
-    if (type === 'date' || type === 'datetime') {
-        component = <DateInput {...attributes}/>;
-    }
-    if (type === 'texteditor') {
-        component = <TextEditor {...attributes}/>;
-    }
-    if (type === 'dropdown') {
-        component = <SelectHelper {...attributes}/>;
-    }
-    if (type === 'select2') {
-        component = <Select2Helper {...attributes}/>;
-    }
-    if (type === 'selectgroup') {
-        component = <SelectGroupHelper {...attributes}/>
+    let component = null;
+    switch (type) {
+        case 'date':
+        case 'datetime':
+            component = <DateInput {...attributes}/>;
+            break;
+        case 'texteditor':
+            component = <TextEditor {...attributes}/>;
+            break;
+        case 'dropdown':
+            component = <SelectHelper {...attributes}/>;
+            break;
+        case 'select2':
+            component = <Select2Helper {...attributes}/>;
+            break;
+        case 'selectgroup':
+            component = <SelectGroupHelper {...attributes}/>
+            break;
+        default:
+            component = <Input {...attributes}/>;
+            break;
     }
 
     return (

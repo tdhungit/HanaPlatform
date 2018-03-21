@@ -25,9 +25,9 @@ export class SelectHelper extends Component {
         }
 
         if (typeof options === 'string') {
-            const appListStrings = Settings.getSettings('AppListStrings');
-            if (appListStrings[options]) {
-                options = JSON.parse(appListStrings[options]);
+            const appListStrings = Settings.getSettings('AppListStrings', options);
+            if (appListStrings && appListStrings.value) {
+                options = JSON.parse(appListStrings.value);
             } else if (AppListStrings[options]) {
                 options = AppListStrings[options];
             } else {
@@ -81,9 +81,9 @@ export class SelectHelper extends Component {
 export class Select2Helper extends Component {
     getOptions(options) {
         if (typeof options === 'string') {
-            const appListStrings = Settings.getSettings('AppListStrings');
-            if (appListStrings[options]) {
-                options = JSON.parse(appListStrings[options]);
+            const appListStrings = Settings.getSettings('AppListStrings', options);
+            if (appListStrings && appListStrings.value) {
+                options = JSON.parse(appListStrings.value);
             } else if (AppListStrings[options]) {
                 options = AppListStrings[options];
             } else {
