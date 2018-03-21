@@ -12,7 +12,12 @@ Meteor.methods({
         }
 
         if (updateId) {
-            return Settings.update(updateId, {$set: setting});
+            try {
+                Settings.update(updateId, {$set: setting});
+                return updateId;
+            } catch (exception) {
+                throw new Meteor.Error('500', exception);
+            }
         } else {
             return Settings.insert(setting);
         }

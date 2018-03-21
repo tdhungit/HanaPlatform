@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Meteor} from 'meteor/meteor';
 import {
     Row,
     Col,
@@ -9,6 +10,7 @@ import {
     Button,
     Input
 } from 'reactstrap';
+import {Bert} from 'meteor/themeteorchef:bert';
 
 import {t, T, PT} from '/imports/common/Translation';
 import Settings from '/imports/collections/Settings/Settings';
@@ -20,6 +22,7 @@ class AppListStringsSettings extends Component {
 
         this.state = {
             AppListStrings: {},
+            isAddListString: false,
             dropdownName: '',
             dropdownLabel: '',
             dropdownValue: '',
@@ -60,7 +63,29 @@ class AppListStringsSettings extends Component {
     }
 
     saveListString() {
+        let setting = {};
+        setting.category = 'AppListStrings';
+        if (this.state.dropdownName) {
+            setting.name = this.state.dropdownName;
+            setting.value = JSON.stringify(this.state.listString);
 
+            Meteor.call('settings.update', setting, (error, settingId) => {
+                if (error) {
+                    Bert.alert(error.reason, 'danger');
+                } else {
+                    let allAppListStrings = this.state.AppListStrings;
+                    allAppListStrings[this.state.dropdownName] = this.state.listString;
+                    this.setState({
+                        AppListStrings: allAppListStrings,
+                        dropdownName: '',
+                        listString: {},
+                        isAddListString: false
+                    });
+
+                    Bert.alert(t.__('Successful'), 'success');
+                }
+            });
+        }
     }
 
     renderListStringValueTmp() {
@@ -81,6 +106,54 @@ class AppListStringsSettings extends Component {
         }
 
         return renderValueList;
+    }
+
+    renderFormAddListString() {
+        return (
+            <tfoot>
+            <tr>
+                <td>
+                    <Input type="text"
+                           placeholder={t.__('Enter dropdown key')}
+                           onChange={(event) => this.setState({dropdownName: event.target.value})}
+                           value={this.state.dropdownName}/>
+                    <Button type="button" color="primary" style={{marginTop: 5}} onClick={this.saveListString}>
+                        <i className="fa fa-save"/> <T>Save</T>
+                    </Button>
+                    <Button type="button" color="danger" style={{marginTop: 5}}
+                            onClick={() => this.setState({
+                                dropdownName: '',
+                                listString: {},
+                                isAddListString: false
+                            })}>
+                        <i className="fa fa-ban"/> <T>Cancel</T>
+                    </Button>
+                </td>
+                <td>
+                    {this.renderListStringValueTmp()}
+                    <Row>
+                        <Col md="6">
+                            <Input type="text"
+                                   placeholder={t.__('Enter dropdown value')}
+                                   onChange={(event) => this.setState({dropdownValue: event.target.value})}
+                                   value={this.state.dropdownValue}/>
+                        </Col>
+                        <Col md="5">
+                            <Input type="text"
+                                   placeholder={t.__('Enter dropdown label')}
+                                   onChange={(event) => this.setState({dropdownLabel: event.target.value})}
+                                   value={this.state.dropdownLabel}/>
+                        </Col>
+                        <Col md="1">
+                            <Button type="button" onClick={this.addListStringValue}>
+                                <i className="fa fa-plus"/>
+                            </Button>
+                        </Col>
+                    </Row>
+                </td>
+            </tr>
+            </tfoot>
+        );
     }
 
     renderValueList(listStringValue) {
@@ -126,7 +199,7 @@ class AppListStringsSettings extends Component {
                                 <i className="fa fa-cogs"/>
                                 <strong><T>Dropdown List</T></strong>
                                 <div className="card-actions">
-                                    <Button type="button">
+                                    <Button type="button" onClick={() => this.setState({isAddListString: true})}>
                                         <i className="fa fa-plus-circle"/>
                                     </Button>
                                 </div>
@@ -142,41 +215,7 @@ class AppListStringsSettings extends Component {
                                     <tbody>
                                     {this.renderList()}
                                     </tbody>
-                                    <tfoot>
-                                    <tr>
-                                        <td>
-                                            <Input type="text"
-                                                   placeholder={t.__('Enter dropdown key')}
-                                                   onChange={(event) => this.setState({dropdownName: event.target.value})}
-                                                   value={this.state.dropdownName}/>
-                                            <Button type="button" color="primary" style={{marginTop: 5}} onClick={this.saveListString}>
-                                                <i className="fa fa-save"/> <T>Save</T>
-                                            </Button>
-                                        </td>
-                                        <td>
-                                            {this.renderListStringValueTmp()}
-                                            <Row>
-                                                <Col md="6">
-                                                    <Input type="text"
-                                                           placeholder={t.__('Enter dropdown value')}
-                                                           onChange={(event) => this.setState({dropdownValue: event.target.value})}
-                                                           value={this.state.dropdownValue}/>
-                                                </Col>
-                                                <Col md="5">
-                                                    <Input type="text"
-                                                           placeholder={t.__('Enter dropdown label')}
-                                                           onChange={(event) => this.setState({dropdownLabel: event.target.value})}
-                                                           value={this.state.dropdownLabel}/>
-                                                </Col>
-                                                <Col md="1">
-                                                    <Button type="button" onClick={this.addListStringValue}>
-                                                        <i className="fa fa-plus"/>
-                                                    </Button>
-                                                </Col>
-                                            </Row>
-                                        </td>
-                                    </tr>
-                                    </tfoot>
+                                    {this.state.isAddListString ? this.renderFormAddListString() : null}
                                 </Table>
                             </CardBody>
                         </Card>
