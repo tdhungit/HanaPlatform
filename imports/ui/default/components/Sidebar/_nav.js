@@ -33,6 +33,22 @@ export default {
             ]
         },
         {
+            name: 'Activities',
+            icon: 'fa fa-calendar-check-o',
+            children: [
+                {
+                    name: 'Calendar',
+                    url: '/manager/activities/calendar',
+                    icon: 'icon-calendar'
+                },
+                {
+                    name: 'View Activities',
+                    url: '/manager/activities',
+                    icon: 'fa fa-calendar-check-o'
+                }
+            ]
+        },
+        {
             name: 'Settings',
             icon: 'icon-wrench',
             children: [
@@ -49,12 +65,12 @@ export default {
                 {
                     name: 'Module Builder',
                     url: '/manager/models',
-                    icon: 'fa fa-cogs'
+                    icon: 'icon-wrench'
                 },
                 {
                     name: 'Dropdown List',
                     url: '/manager/settings/dropdown-list',
-                    icon: 'fa fa-cogs'
+                    icon: 'icon-list'
                 }
             ]
         }

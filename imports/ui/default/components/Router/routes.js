@@ -11,6 +11,7 @@ const routes = {
     '/manager/main-menus': 'Main Menu',
     '/manager/main-menus/create': 'Create Menu',
     '/manager/settings': 'System Settings',
+    '/manager/settings/dropdown-list': 'Dropdown List',
     '/manager/models': 'View Models',
     '/manager/activities': 'View Activities',
     '/manager/activities/calendar': 'View Calendar',
