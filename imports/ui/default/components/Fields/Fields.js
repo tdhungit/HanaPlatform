@@ -3,13 +3,18 @@ import PropTypes from 'prop-types';
 import {Input, FormText} from 'reactstrap';
 import {Field} from 'redux-form';
 
-import {t, T} from '/imports/common/Translation';
+import {t} from '/imports/common/Translation';
 import {utilsHelper} from '../../helpers/utils/utils';
 import {validator} from '/imports/common/Validator';
-import {SelectHelper, Select2Helper, SelectGroupHelper} from '../../helpers/inputs/SelectHelper';
+import {
+    SelectHelper,
+    Select2Helper,
+    SelectGroupHelper,
+    SelectValue
+} from '../../helpers/inputs/SelectHelper';
 import {DateInput} from '../../helpers/inputs/DateHelper';
 import {TextEditor} from '../../helpers/inputs/TextEditor';
-import {SelectValue} from '../../helpers/tags/SelectValue';
+import {ArrayFieldValue} from '../../helpers/tags/ArrayValue';
 
 /*----- FORM -----*/
 import {Form, RForm} from './Forms';
@@ -57,6 +62,8 @@ export class FieldView extends Component {
             case 'select':
             case 'dropdown':
                 return <SelectValue options={field.options} value={value}/>;
+            case 'array':
+                return <ArrayFieldValue/>;
             default:
                 return <span>{value}</span>;
         }

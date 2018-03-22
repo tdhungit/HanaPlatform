@@ -38,6 +38,22 @@ export const activityLayouts = {
                     type: "select",
                     label: "Conferencing",
                     options: "ConferencingList"
+                },
+                "conferencing.name": {
+                    type: "text",
+                    label: "Conferencing name"
+                }
+            },
+            {
+                notifications: {
+                    type: "array",
+                    fields: {
+                        type: {
+                            type: "select",
+                            label: "Type"
+                        }
+                    },
+                    label: "Notifications"
                 }
             }
         ]
