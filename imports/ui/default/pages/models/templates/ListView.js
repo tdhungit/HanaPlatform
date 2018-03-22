@@ -15,6 +15,9 @@ import {t, T, PT} from '/imports/common/Translation';
 import Models from '/imports/collections/Models/Models';
 import ListViewTable from './ListViewTable';
 
+/**
+ * list for custom collection
+ */
 class ListView extends Component {
     constructor(props) {
         super(props);

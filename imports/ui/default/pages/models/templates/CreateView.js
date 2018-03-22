@@ -11,6 +11,9 @@ import Loading from '../../../components/Loading/Loading';
 import FormView from './FormView';
 import Models from '/imports/collections/Models/Models';
 
+/**
+ * create a record for custom collection
+ */
 class CreateView extends Component {
     render() {
         const {

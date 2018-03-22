@@ -15,8 +15,11 @@ import {t, T, PT} from '/imports/common/Translation';
 import Loading from '../../../components/Loading/Loading';
 import Models from '/imports/collections/Models/Models';
 import {myModel} from '/imports/common/Model';
-import {FieldView} from '../../../components/Fields/Fields';
+import {FieldDetail} from '../../../components/Fields/Fields';
 
+/**
+ * detail a record for custom collection
+ */
 class DetailView extends Component {
     renderFields(model, record) {
         let fieldRender = [];
@@ -24,12 +27,7 @@ class DetailView extends Component {
             let field = model.view.fields[fieldName];
             field.name = fieldName;
             fieldRender.push(
-                <dl className="row" key={fieldName}>
-                    <dt className="col-sm-3"><T>{field.label || fieldName}</T></dt>
-                    <dd className="col-sm-9">
-                        <FieldView record={record} field={field}/>
-                    </dd>
-                </dl>
+                <FieldDetail key={fieldName} field={field} record={record}/>
             );
         }
 

@@ -20,6 +20,9 @@ import {FieldView, FieldButton, FieldInput} from '../../../components/Fields/Fie
 import {utilsHelper} from '../../../helpers/utils/utils';
 import {t} from '/imports/common/Translation';
 
+/**
+ * list for a collection
+ */
 class ListComponent extends Component {
     static propTypes = {
         model: PropTypes.object,

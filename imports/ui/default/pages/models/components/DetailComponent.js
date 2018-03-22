@@ -11,8 +11,11 @@ import {Link} from 'react-router-dom';
 import {vsprintf} from 'sprintf-js';
 
 import {t, T} from '/imports/common/Translation';
-import {FieldView} from '../../../components/Fields/Fields';
+import {FieldDetail} from '../../../components/Fields/Fields';
 
+/**
+ * tag for view detail a record
+ */
 class DetailComponent extends Component {
     static propTypes = {
         title: PropTypes.string,
@@ -27,12 +30,7 @@ class DetailComponent extends Component {
             let field = model.view.fields[fieldName];
             field.name = fieldName;
             fieldRender.push(
-                <dl className="row" key={fieldName}>
-                    <dt className="col-sm-3"><T>{field.label || fieldName}</T></dt>
-                    <dd className="col-sm-9">
-                        <FieldView record={record} field={field}/>
-                    </dd>
-                </dl>
+                <FieldDetail key={fieldName} field={field} record={record}/>
             );
         }
 

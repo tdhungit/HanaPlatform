@@ -22,6 +22,9 @@ import {t, T} from '/imports/common/Translation';
 import {utilsHelper} from '../../../helpers/utils/utils';
 import {FieldInput} from '../../../components/Fields/Fields';
 
+/**
+ * a tag form for create/edit a record
+ */
 class FormComponent extends Component {
     static propTypes = {
         model: PropTypes.object,

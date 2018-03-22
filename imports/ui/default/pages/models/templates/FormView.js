@@ -19,6 +19,9 @@ import {t, T} from '/imports/common/Translation';
 import {utilsHelper} from '../../../helpers/utils/utils';
 import {FieldInput} from '../../../components/Fields/Fields';
 
+/**
+ * a form create/edit for custom collection
+ */
 class FormView extends Component {
     constructor(props) {
         super(props);

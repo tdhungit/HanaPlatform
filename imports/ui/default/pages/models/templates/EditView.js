@@ -13,6 +13,9 @@ import FormView from './FormView';
 import Models from '/imports/collections/Models/Models';
 import {myModel} from '/imports/common/Model';
 
+/**
+ * edit a record for custom collection
+ */
 class EditView extends Component {
     render() {
         const {

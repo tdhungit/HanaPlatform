@@ -14,6 +14,9 @@ import Loading from '../../../components/Loading/Loading';
 import {FieldView, FieldButton, FieldInput} from '../../../components/Fields/Fields';
 import {utilsHelper} from '../../../helpers/utils/utils';
 
+/**
+ * pagination for custom collection
+ */
 class ListViewTable extends Component {
     constructor(props) {
         super(props);

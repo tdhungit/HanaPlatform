@@ -3,21 +3,23 @@ import PropTypes from 'prop-types';
 import {Input, FormText} from 'reactstrap';
 import {Field} from 'redux-form';
 
-import {t} from '/imports/common/Translation';
+import {t, T} from '/imports/common/Translation';
 import {utilsHelper} from '../../helpers/utils/utils';
 import {validator} from '/imports/common/Validator';
 import {SelectHelper, Select2Helper, SelectGroupHelper} from '../../helpers/inputs/SelectHelper';
 import {DateInput} from '../../helpers/inputs/DateHelper';
 import {TextEditor} from '../../helpers/inputs/TextEditor';
+import {SelectValue} from '../../helpers/tags/SelectValue';
 
-// Forms
+/*----- FORM -----*/
 import {Form, RForm} from './Forms';
 export {Form, RForm};
 
-// Buttons
+/*----- BUTTON -----*/
 import {FieldButton, RFieldButton} from './Buttons';
 export {FieldButton, RFieldButton};
 
+/*----- FIELD DISPLAY -----*/
 /**
  * display field value
  */
@@ -54,13 +56,37 @@ export class FieldView extends Component {
         switch (field.type) {
             case 'select':
             case 'dropdown':
-                return <span></span>
+                return <SelectValue options={field.options} value={value}/>;
             default:
                 return <span>{value}</span>;
         }
     }
 }
 
+/**
+ * detail a field
+ */
+export class FieldDetail extends Component {
+    static propTypes = {
+        field: PropTypes.object.isRequired,
+        record: PropTypes.object.isRequired
+    };
+
+    render() {
+        const {field, record} = this.props;
+
+        return (
+            <dl className="row">
+                <dt className="col-sm-3"><T>{field.label || field.name}</T></dt>
+                <dd className="col-sm-9">
+                    <FieldView record={record} field={field}/>
+                </dd>
+            </dl>
+        );
+    }
+}
+
+/*----- FIELD INPUT -----*/
 /**
  * field input for normal form
  */
