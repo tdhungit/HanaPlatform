@@ -15,7 +15,7 @@ import {t, T, PT} from '/imports/common/Translation';
 import Loading from '../../../components/Loading/Loading';
 import Models from '/imports/collections/Models/Models';
 import {myModel} from '/imports/common/Model';
-import {FieldDetail} from '../../../components/Fields/Fields';
+import {FieldDetail} from '../components/DetailComponent';
 
 /**
  * detail a record for custom collection
@@ -24,9 +24,9 @@ class DetailView extends Component {
     renderFields(model, record) {
         let fieldRender = [];
         for (let idx in model.view.fields) {
-            let fieldsRow = model.view.fields[idx];
+            let fields = model.view.fields[idx];
             fieldRender.push(
-                <FieldDetail key={idx} fieldsRow={fieldsRow} record={record}/>
+                <FieldDetail key={idx} fields={fields} record={record}/>
             );
         }
 

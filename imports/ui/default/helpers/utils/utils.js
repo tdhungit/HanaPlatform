@@ -97,26 +97,6 @@ class UtilsHelper {
         }
         return target;
     }
-
-    /**
-     * get record view field class for label and value
-     * @param fieldsRow
-     * @returns {{labelClass: string, valueClass: string}}
-     */
-    recordViewFieldClass(fieldsRow) {
-        let columns = _.size(fieldsRow);
-        let labelClass = 'col-sm-3';
-        let valueClass = 'col-sm-9';
-        if (columns == 2) {
-            labelClass = 'col-sm-3';
-            valueClass = 'col-sm-3';
-        }
-
-        return {
-            labelClass: labelClass,
-            valueClass: valueClass
-        }
-    }
 }
 
 export const utilsHelper = new UtilsHelper();

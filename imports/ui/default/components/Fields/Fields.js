@@ -63,43 +63,6 @@ export class FieldView extends Component {
     }
 }
 
-/**
- * detail a field
- */
-export class FieldDetail extends Component {
-    static propTypes = {
-        fieldsRow: PropTypes.object.isRequired,
-        record: PropTypes.object.isRequired
-    };
-
-    render() {
-        const {fieldsRow, record} = this.props;
-        const className = utilsHelper.recordViewFieldClass(fieldsRow);
-
-        let renderFields = [];
-        for (let fieldName in fieldsRow) {
-            let field = fieldsRow[fieldName];
-            field.name = fieldName;
-            renderFields.push(
-                <dt key={'label' + fieldName} className={className.labelClass}>
-                    <T>{field.label || field.name}</T>
-                </dt>
-            );
-            renderFields.push(
-                <dd key={'value' + fieldName} className={className.valueClass}>
-                    <FieldView record={record} field={field}/>
-                </dd>
-            );
-        }
-
-        return (
-            <dl className="row">
-                {renderFields}
-            </dl>
-        );
-    }
-}
-
 /*----- FIELD INPUT -----*/
 /**
  * field input for normal form

@@ -48,20 +48,52 @@ class FormView extends Component {
         return utilsHelper.getField(this.state.record, field, '');
     }
 
+    getColumnClassName(fields) {
+        let columns = _.size(fields);
+        let columnClass = '12';
+        if (columns == 2) {
+            columnClass = '6';
+        }
+
+        return columnClass;
+    }
+
     renderFields(fields) {
-        let fieldsRender = [];
+        let columnsField = [];
+        const columnClass = this.getColumnClassName(fields);
         for (let fieldName in fields) {
             let field = fields[fieldName];
+            field.name = fieldName;
+
+            let placeholder = '';
+            if (field.placeholder) {
+                placeholder = field.placeholder;
+            }
+
+            columnsField.push(
+                <Col md={columnClass} key={field.name}>
+                    <FormGroup>
+                        <Label><T>{field.label}</T></Label>
+                        <FieldInput type={field.type} name={field.name} required={field.required || false}
+                                    placeholder={placeholder}
+                                    value={this.getVal(field.name)}
+                                    onChange={this.handleInputChange}/>
+                    </FormGroup>
+                </Col>
+            )
+        }
+
+        return columnsField;
+    }
+
+    renderFieldsRow(fieldsRow) {
+        let fieldsRender = [];
+        for (let idx in fieldsRow) {
+            let fields = fieldsRow[idx];
+
             let row = (
-                <Row key={fieldName}>
-                    <Col>
-                        <FormGroup>
-                            <Label><T>{field.label}</T></Label>
-                            <FieldInput type={field.type} name={fieldName} required={field.required || false}
-                                           value={this.getVal(fieldName)}
-                                           onChange={this.handleInputChange}/>
-                        </FormGroup>
-                    </Col>
+                <Row key={idx}>
+                    {this.renderFields(fields)}
                 </Row>
             );
 
@@ -109,7 +141,7 @@ class FormView extends Component {
                     <strong>{this.props.title}</strong> {this.props.slogan}
                 </CardHeader>
                 <CardBody>
-                    {this.renderFields(recordFields)}
+                    {this.renderFieldsRow(recordFields)}
                 </CardBody>
                 <CardFooter>
                     <Button type="button" size="sm" color="primary" onClick={this.handleSubmit.bind(this)}>
