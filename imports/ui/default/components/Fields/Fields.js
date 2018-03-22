@@ -18,7 +18,9 @@ export {Form, RForm};
 import {FieldButton, RFieldButton} from './Buttons';
 export {FieldButton, RFieldButton};
 
-// Fields
+/**
+ * display field value
+ */
 export class FieldView extends Component {
     static propTypes = {
         field: PropTypes.object.isRequired,
@@ -59,6 +61,9 @@ export class FieldView extends Component {
     }
 }
 
+/**
+ * field input for normal form
+ */
 export class FieldInput extends Component {
     static propTypes = {
         name: PropTypes.string.isRequired,
@@ -157,7 +162,16 @@ export class FieldInput extends Component {
     }
 }
 
-// For Redux Form
+/**
+ * render field input for Redux Form
+ * @param input
+ * @param label
+ * @param type
+ * @param touched
+ * @param error
+ * @param warning
+ * @returns {*}
+ */
 const renderFieldEdit = ({input, label, type, meta: {touched, error, warning}}) => {
     let attributes = utilsHelper.objectWithoutProperties(input, []);
 
@@ -199,6 +213,9 @@ const renderFieldEdit = ({input, label, type, meta: {touched, error, warning}}) 
     );
 };
 
+/**
+ * field input for Redux form
+ */
 export class RFieldInput extends Component {
     static propTypes = {
         name: PropTypes.string.isRequired,

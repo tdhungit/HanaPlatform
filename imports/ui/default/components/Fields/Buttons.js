@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import {Button} from 'reactstrap';
 import {utilsHelper} from '../../helpers/utils/utils';
 
+/**
+ * button for normal field
+ */
 export class FieldButton extends Component {
     static propTypes = {
         label: PropTypes.string.isRequired
@@ -20,7 +23,9 @@ export class FieldButton extends Component {
     }
 }
 
-// for Redux Form
+/**
+ * button for Redux Form
+ */
 export class RFieldButton extends Component {
     static propTypes = {
         label: PropTypes.string.isRequired

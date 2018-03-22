@@ -4,6 +4,9 @@ import {reduxForm, formValueSelector} from 'redux-form'
 import {Form as BForm} from 'reactstrap';
 import {utilsHelper} from '../../helpers/utils/utils';
 
+/**
+ * normal form
+ */
 export class Form extends Component {
     static propTypes = {
         className: PropTypes.string,
@@ -21,6 +24,9 @@ export class Form extends Component {
     }
 }
 
+/**
+ * render redux form
+ */
 class RFormInit extends Component {
     static childContextTypes = {
         reset: PropTypes.func,
@@ -46,6 +52,9 @@ class RFormInit extends Component {
     }
 }
 
+/**
+ * redux form
+ */
 export class RForm extends Component {
     static propTypes = {
         name: PropTypes.string.isRequired,
