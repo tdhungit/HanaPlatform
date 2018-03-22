@@ -29,14 +29,21 @@ Meteor.methods({
             throw new Meteor.Error('500', exception);
         }
     },
+    // only root group
     'userGroups.ROOT': function () {
         return UserGroups.find({}).fetch();
     },
+    // all groups with tree data
     'userGroups.TREE': function () {
         return getTreeUserGroups('ROOT');
     }
 });
 
+/**
+ * get groups with tree data
+ * @param groupId
+ * @returns {Array}
+ */
 function getTreeUserGroups(groupId) {
     let groups = [];
     const group = UserGroups.find({parent: groupId}).fetch();

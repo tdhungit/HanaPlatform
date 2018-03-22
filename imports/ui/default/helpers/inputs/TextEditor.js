@@ -3,6 +3,9 @@ import {Editor, EditorState, RichUtils, convertToRaw, convertFromHTML, ContentSt
 import 'draft-js/dist/Draft.css';
 import {stateToHTML} from 'draft-js-export-html';
 
+/**
+ * a text editor input. user Draft editor
+ */
 export class TextEditor extends Component {
     constructor(props) {
         super(props);

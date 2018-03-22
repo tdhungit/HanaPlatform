@@ -5,15 +5,24 @@ import {Helmet} from 'react-helmet';
 import {Meteor} from 'meteor/meteor';
 import {_} from 'meteor/underscore';
 
-import container from '/imports/common/Container';
 import Settings from '/imports/collections/Settings/Settings';
 
 // Translation
 i18n.setLocale('en-US');
+/**
+ * tag to translate a string
+ */
 export const T = i18n.createComponent();
+/**
+ * object to translate a string
+ */
 export const t = i18n;
 
-// SEO
+/**
+ * tag change page title
+ * @param path
+ * @returns {any}
+ */
 const seoURL = path => Meteor.absoluteUrl(path);
 
 const getMetaTags = ({

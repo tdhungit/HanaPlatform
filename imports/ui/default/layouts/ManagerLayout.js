@@ -46,6 +46,9 @@ import CreateView from '../pages/models/templates/CreateView';
 import EditView from '../pages/models/templates/EditView';
 import DetailView from '../pages/models/templates/DetailView';
 
+/**
+ * Layout & Router for manage page
+ */
 class ManagerLayout extends Component {
     render() {
         const appProps = this.props;

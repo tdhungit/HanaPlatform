@@ -1,3 +1,4 @@
+// system app list strings. Admin user can add more app list string in db settings
 export const AppListStrings = {
     DateFormatList: {
         'YYYY-MM-DD': 'YYYY-MM-DD',

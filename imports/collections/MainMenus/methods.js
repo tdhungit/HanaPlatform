@@ -3,6 +3,7 @@ import {check} from 'meteor/check';
 import MainMenus from './MainMenus';
 
 Meteor.methods({
+    // only get root menu
     'mainMenus.ROOT': function () {
         return MainMenus.find({parent: 'ROOT'}, {
             sort: {
@@ -10,6 +11,7 @@ Meteor.methods({
             }
         }).fetch();
     },
+    // get all menus with tree
     'mainMenus.Nav': function () {
         const menu_root = MainMenus.find({parent: 'ROOT'}, {
             sort: {

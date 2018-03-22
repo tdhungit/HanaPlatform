@@ -4,6 +4,9 @@ import {
     Col
 } from 'reactstrap';
 
+/**
+ * choose icon from simple icon or awesome icon
+ */
 export class SelectSimpleLineIcon extends Component {
     constructor(props) {
         super(props);

@@ -5,6 +5,9 @@ import NotFound from '../pages/index/NotFound';
 import Index from '../pages/index/Index';
 import About from '../pages/index/About';
 
+/**
+ * Layout & Router for public page
+ */
 class HomeLayout extends Component {
     constructor(props) {
         super(props);

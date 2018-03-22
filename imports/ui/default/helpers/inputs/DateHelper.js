@@ -6,6 +6,9 @@ import Settings from '/imports/collections/Settings/Settings';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
+/**
+ * tag input field type date or datetime
+ */
 export class DateInput extends Component {
     constructor(props) {
         super(props);

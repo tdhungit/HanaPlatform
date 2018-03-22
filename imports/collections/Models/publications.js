@@ -28,6 +28,7 @@ for (let idx in models) {
     }
 }
 
+// we need set publish in here because we have all collections here. If we set other place, we will be duplicate collection init
 Meteor.publish('models.detailRecord', (modelName, recordId) => {
     if (collections[modelName]) {
         return collections[modelName].find({_id: recordId});

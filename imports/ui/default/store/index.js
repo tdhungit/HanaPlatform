@@ -5,11 +5,19 @@ import thunk from 'redux-thunk';
 import appReducer from './app/app.reducer';
 import {reducer as formReducer} from 'redux-form';
 
+/**
+ * init redux store reducer
+ * @type {Reducer<any>}
+ */
 const allReducers = combineReducers({
     app: appReducer,
     form: formReducer
 });
 
+/**
+ * init redux store
+ * @type {Store<any>}
+ */
 const store = createStore(
     allReducers,
     compose(

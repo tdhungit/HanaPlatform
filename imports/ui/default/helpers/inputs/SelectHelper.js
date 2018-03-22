@@ -18,6 +18,9 @@ import {AppListStrings} from '/imports/common/AppListStrings';
 
 import 'react-select/dist/react-select.css';
 
+/**
+ * tag input select box with options is app list strings, array or object
+ */
 export class SelectHelper extends Component {
     renderOptions(options) {
         if (typeof options === 'undefined') {
@@ -78,6 +81,9 @@ export class SelectHelper extends Component {
     }
 }
 
+/**
+ * as select but use select2 lib
+ */
 export class Select2Helper extends Component {
     getOptions(options) {
         if (typeof options === 'string') {
@@ -173,6 +179,9 @@ export class Select2Helper extends Component {
     }
 }
 
+/**
+ * a group select box
+ */
 export class SelectGroupHelper extends Component {
     constructor(props) {
         super(props);

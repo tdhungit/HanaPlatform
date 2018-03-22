@@ -3,6 +3,9 @@ import React, {Component} from 'react';
 import Settings from '/imports/collections/Settings/Settings';
 import {AppListStrings} from '/imports/common/AppListStrings';
 
+/**
+ * get label of select box
+ */
 export class SelectValue extends Component {
     render() {
         const {options, value} = this.props;

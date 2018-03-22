@@ -18,6 +18,7 @@ Meteor.publish('users.list', () => {
     Users.find();
 });
 
+// init pagination
 publishPagination(Users, {
     name: 'users.paginatedList'
 });

@@ -2,6 +2,10 @@ import CollectionBase from '/imports/common/CollectionBase';
 import SimpleSchema from 'simpl-schema';
 
 class SettingsCollection extends CollectionBase {
+    /**
+     * get system setting
+     * @returns {{}}
+     */
     getSystemSettings() {
         const settings = this.find({category: 'Systems'}).fetch();
         let systemSettings = {};
@@ -12,6 +16,12 @@ class SettingsCollection extends CollectionBase {
         return systemSettings;
     }
 
+    /**
+     * get settings from category and name
+     * @param category
+     * @param name
+     * @returns {any}
+     */
     getSettings(category = '', name = '') {
         if (category && name) {
             return this.findOne({category: category, name: name});
@@ -22,6 +32,11 @@ class SettingsCollection extends CollectionBase {
         return this.find({}).fetch();
     }
 
+    /**
+     * check data before insert
+     * @param doc
+     * @returns {boolean}
+     */
     beforeInsert(doc) {
         if (doc && doc.category && doc.name) {
             const findUnique = this.find({category: doc.category, name: doc.name}).fetch();
@@ -33,6 +48,12 @@ class SettingsCollection extends CollectionBase {
         return true;
     }
 
+    /**
+     * insert data
+     * @param doc
+     * @param callback
+     * @returns {*|boolean}
+     */
     insert(doc, callback) {
         if (doc) {
             if (!doc.category) {

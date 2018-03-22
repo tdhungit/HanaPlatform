@@ -4,6 +4,9 @@ import {Meteor} from 'meteor/meteor';
 import container from '/imports/common/Container';
 import Media from '/imports/collections/Media/Media';
 
+/**
+ * image tag use media collection
+ */
 class ImageTagClass extends Component {
     render() {
         let mediaLink = this.props.src;

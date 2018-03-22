@@ -20,7 +20,15 @@ import Signup from '../pages/auth/Signup';
 import RecoverPassword from '../pages/auth/RecoverPassword';
 import ResetPassword from '../pages/auth/ResetPassword';
 
+/**
+ * App main layout
+ */
 class App extends Component {
+    static propTypes = {
+        loggingIn: PropTypes.bool,
+        authenticated: PropTypes.bool,
+    };
+
     render() {
         const appProps = this.props;
         return (
@@ -42,21 +50,29 @@ class App extends Component {
     }
 }
 
-App.propTypes = {
-    loggingIn: PropTypes.bool,
-    authenticated: PropTypes.bool,
-};
-
+/**
+ * get state from redux
+ * @param state
+ * @returns {{app: *|string|string|(function(*=, *))}}
+ */
 const mapStateToProps = (state) => {
     return {app: state.app}
 };
 
+/**
+ * function set loading from redux
+ * @param dispatch
+ * @returns {{appLoading: appLoading}|ActionCreator<any>|ActionCreatorsMapObject}
+ */
 const mapDispatchToProps = (dispatch) => {
     return bindActionCreators({
         appLoading: appLoading
     }, dispatch);
 };
 
+/**
+ * Meteor subscribe default need data
+ */
 export default container((props, onData) => {
     Meteor.subscribe('users.user');
     Meteor.subscribe('settings.list');

@@ -2,6 +2,13 @@
 // import Settings from '/imports/collections/Settings/Settings';
 
 class UtilsHelper {
+    /**
+     * get value from input with name as mongo field. example: user.profile.firstName
+     * @param object
+     * @param field
+     * @param defaultValue
+     * @returns {*}
+     */
     getField(object, field, defaultValue = '') {
         let fieldKey = field;
         if (field.indexOf('.') < 0) {
@@ -27,6 +34,12 @@ class UtilsHelper {
         return defaultValue;
     }
 
+    /**
+     * handle when user change value of input form
+     * @param event
+     * @param object
+     * @returns {*}
+     */
     inputChange(event, object) {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -45,6 +58,13 @@ class UtilsHelper {
         return objectClean;
     }
 
+    /**
+     * create recursive object of input name (as field in mongo) when user change value of input
+     * @param value
+     * @param propArr
+     * @param resultingObj
+     * @param index
+     */
     createRecursiveObject(value, propArr, resultingObj, index) {
         let prop;
         for (let j = index || 0, len1 = propArr.length; j < len1; j += 1) {
@@ -62,6 +82,12 @@ class UtilsHelper {
         }
     }
 
+    /**
+     * example some key in object
+     * @param obj
+     * @param keys
+     * @returns {{}}
+     */
     objectWithoutProperties(obj, keys) {
         let target = {};
         for (let i in obj) {

@@ -4,6 +4,7 @@ import {Accounts} from 'meteor/accounts-base';
 import Users from '/imports/collections/Users/Users';
 
 Meteor.methods({
+    // search user with keyword
     'users.searchKeyword': (keyword, limit = 10) => {
         check(keyword, String);
         return Users.find({

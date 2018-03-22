@@ -3,7 +3,15 @@ import Models from '/imports/collections/Models/Models';
 import SimpleSchema from 'simpl-schema';
 import {Meteor} from 'meteor/meteor';
 
+/**
+ * Class core for models were created
+ */
 class MyModel {
+    /**
+     * get collection from model name
+     * @param modelName
+     * @returns {*}
+     */
     getCollection(modelName) {
         const model = Models.findOne({model: modelName});
         if (model && model.collection) {
