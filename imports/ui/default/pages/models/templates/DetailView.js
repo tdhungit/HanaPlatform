@@ -23,11 +23,10 @@ import {FieldDetail} from '../../../components/Fields/Fields';
 class DetailView extends Component {
     renderFields(model, record) {
         let fieldRender = [];
-        for (let fieldName in model.view.fields) {
-            let field = model.view.fields[fieldName];
-            field.name = fieldName;
+        for (let idx in model.view.fields) {
+            let fieldsRow = model.view.fields[idx];
             fieldRender.push(
-                <FieldDetail key={fieldName} field={field} record={record}/>
+                <FieldDetail key={idx} fieldsRow={fieldsRow} record={record}/>
             );
         }
 

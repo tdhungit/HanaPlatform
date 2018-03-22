@@ -68,19 +68,33 @@ export class FieldView extends Component {
  */
 export class FieldDetail extends Component {
     static propTypes = {
-        field: PropTypes.object.isRequired,
+        fieldsRow: PropTypes.object.isRequired,
         record: PropTypes.object.isRequired
     };
 
     render() {
-        const {field, record} = this.props;
+        const {fieldsRow, record} = this.props;
+        const className = utilsHelper.recordViewFieldClass(fieldsRow);
+
+        let renderFields = [];
+        for (let fieldName in fieldsRow) {
+            let field = fieldsRow[fieldName];
+            field.name = fieldName;
+            renderFields.push(
+                <dt key={'label' + fieldName} className={className.labelClass}>
+                    <T>{field.label || field.name}</T>
+                </dt>
+            );
+            renderFields.push(
+                <dd key={'value' + fieldName} className={className.valueClass}>
+                    <FieldView record={record} field={field}/>
+                </dd>
+            );
+        }
 
         return (
             <dl className="row">
-                <dt className="col-sm-3"><T>{field.label || field.name}</T></dt>
-                <dd className="col-sm-9">
-                    <FieldView record={record} field={field}/>
-                </dd>
+                {renderFields}
             </dl>
         );
     }

@@ -11,15 +11,35 @@ export const activityLayouts = {
     },
     view: {
         title: "name",
-        fields: {
-            name: {
-                type: "text",
-                label: "Subject"
+        fields: [
+            {
+                name: {
+                    type: "text",
+                    label: "Subject"
+                },
+                type: {
+                    type: "select",
+                    label: "Type",
+                    options: "ActivityTypes"
+                }
             },
-            type: {
-                type: "select",
-                label: "Type"
+            {
+                dateStart: {
+                    type: "datetime",
+                    label: "Data Start"
+                },
+                dateEnd: {
+                    type: "datetime",
+                    label: "Data End"
+                }
+            },
+            {
+                "conferencing.type": {
+                    type: "select",
+                    label: "Conferencing",
+                    options: "ConferencingList"
+                }
             }
-        }
+        ]
     }
 };
