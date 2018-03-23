@@ -1,4 +1,4 @@
-# Hana App Platform for data manager in business
+# Hana App Platform for data manager in business with Software Service Model
 
 ![alt text](./public/img/app/screenshot.png?raw=true "Penguin Platform")
 
@@ -23,6 +23,5 @@
 
 ### Run
 * meteor
-* http://localhost:3000/login
-* Click Register to create a user
-* http://localhost:3000/manager
+* And now you can access: http://localhost:3000
+* Install and enjoy!
