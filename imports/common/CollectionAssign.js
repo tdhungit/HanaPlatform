@@ -7,21 +7,21 @@ import CollectionBase from './CollectionBase';
  * Db Collection auto assigned when record was created
  */
 class CollectionAssign extends CollectionBase {
+    /**
+     * default add company and assigned field to schema
+     * @param schema
+     */
     static schema(schema) {
         let appSchema = schema;
-        if (!appSchema.sysCompanyId) {
-            appSchema.sysCompanyId = {
-                type: String,
-                required: true
-            };
-        }
+        appSchema.sysCompanyId = {
+            type: String,
+            required: true
+        };
 
-        if (!appSchema.assignedId) {
-            appSchema.assignedId = {
-                type: String,
-                required: true
-            };
-        }
+        appSchema.assignedId = {
+            type: String,
+            required: true
+        };
 
         return new SimpleSchema(appSchema);
     }
@@ -33,7 +33,7 @@ class CollectionAssign extends CollectionBase {
      * @returns {*|boolean}
      */
     insert(doc, callback) {
-        doc.assigned_to_id = Meteor.user()._id;
+        doc.assignedId = Meteor.user()._id;
         return super.insert(doc, callback);
     }
 }

@@ -5,14 +5,16 @@ import SimpleSchema from 'simpl-schema';
  * Db collection for Hana Platform
  */
 class CollectionBase extends Mongo.Collection {
+    /**
+     * default add company field to schema
+     * @param schema
+     */
     static schema(schema) {
         let appSchema = schema;
-        if (!appSchema.sysCompanyId) {
-            appSchema.sysCompanyId = {
-                type: String,
-                required: true
-            };
-        }
+        appSchema.sysCompanyId = {
+            type: String,
+            required: true
+        };
 
         return new SimpleSchema(appSchema);
     }
