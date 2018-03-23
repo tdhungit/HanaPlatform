@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Meteor} from 'meteor/meteor';
 import {
     Row,
     Col
@@ -6,7 +7,19 @@ import {
 import {Link} from 'react-router-dom';
 import Countdown from 'react-countdown-now';
 
+import container from '/imports/common/Container';
+import {t, T, PT} from '/imports/common/Translation';
+import SysCompanies from '/imports/collections/SysCompanies/SysCompanies';
+import Loading from '../../components/Loading/Loading';
+
 class Index extends Component {
+    componentWillMount() {
+        const {installed} = this.props;
+        if (!installed) {
+            this.props.history.push('/install');
+        }
+    }
+
     render() {
         return (
             <div className="index-Index">
@@ -107,4 +120,14 @@ const renderer = ({days, hours, minutes, seconds, completed}) => {
     }
 };
 
-export default  Index;
+export default container((props, onData) => {
+    const sub = Meteor.subscribe('syscompanies.list');
+    if (sub.ready()) {
+        let installed = false;
+        const firstCompany = SysCompanies.findOne({});
+        if (firstCompany && firstCompany._id) {
+            installed = true;
+        }
+        onData(null, {installed: installed});
+    }
+}, Index, {loadingHandler: () => (<Loading/>)});

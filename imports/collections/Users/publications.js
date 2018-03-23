@@ -2,6 +2,7 @@ import {Meteor} from 'meteor/meteor';
 import {publishPagination} from 'meteor/kurounin:pagination';
 import Users from './Users';
 
+// default get user profile
 Meteor.publish('users.user', function() {
     if (this.userId) {
         return Meteor.users.find(this.userId, {
@@ -14,15 +15,15 @@ Meteor.publish('users.user', function() {
     return this.ready();
 });
 
-Meteor.publish('users.list', () => {
-    Users.find();
-});
-
 // init pagination
 publishPagination(Users, {
     name: 'users.paginatedList'
 });
 
+Meteor.publish('users.list', () => {
+    return Users.find({});
+});
+
 Meteor.publish('users.detail', (userId) => {
-    return Meteor.users.find({_id: userId});
+    return Users.find({_id: userId});
 });

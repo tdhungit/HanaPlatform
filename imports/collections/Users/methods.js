@@ -15,6 +15,9 @@ Meteor.methods({
     },
     'users.insert': (user) => {
         check(user, Object);
+        Accounts.onCreateUser(function (options, user) {
+            return (Object.assign({}, user, options));
+        });
         return Accounts.createUser(user);
     },
     'users.update': (user) => {

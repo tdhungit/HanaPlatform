@@ -1,3 +1,6 @@
+import '/imports/collections/SysCompanies/publications';
+import '/imports/collections/SysCompanies/methods';
+
 import '/imports/collections/Users/publications';
 import '/imports/collections/Users/methods';
 
