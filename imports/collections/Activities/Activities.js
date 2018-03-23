@@ -1,4 +1,3 @@
-import SimpleSchema from 'simpl-schema';
 import CollectionAssign from '/imports/common/CollectionAssign';
 
 class ActivitiesCollection extends CollectionAssign {
@@ -19,7 +18,7 @@ Activities.deny({
     remove: () => true,
 });
 
-const ActivitiesSchema = new SimpleSchema({
+const ActivitiesSchema = CollectionAssign.schema({
     createdAt: {
         type: String,
         label: 'The date this record was created.',

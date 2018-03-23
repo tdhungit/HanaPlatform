@@ -1,9 +1,22 @@
 import {Mongo} from 'meteor/mongo';
+import SimpleSchema from 'simpl-schema';
 
 /**
  * Db collection for Hana Platform
  */
 class CollectionBase extends Mongo.Collection {
+    static schema(schema) {
+        let appSchema = schema;
+        if (!appSchema.sysCompanyId) {
+            appSchema.sysCompanyId = {
+                type: String,
+                required: true
+            };
+        }
+
+        return new SimpleSchema(appSchema);
+    }
+
     /**
      * init
      * @param collection

@@ -1,7 +1,10 @@
-import {Mongo} from 'meteor/mongo';
-import SimpleSchema from 'simpl-schema';
+import CollectionBase from '/imports/common/CollectionBase';
 
-const MainMenus = new Mongo.Collection('main_menus');
+class MainMenusCollection extends CollectionBase {
+
+}
+
+const MainMenus = new MainMenusCollection('main_menus');
 
 MainMenus.allow({
     insert: () => false,
@@ -15,7 +18,7 @@ MainMenus.deny({
     remove: () => true,
 });
 
-const MainMenusSchema = new SimpleSchema({
+const MainMenusSchema = CollectionBase.schema({
     createdAt: {
         type: String,
         label: 'The date this menu was created.',

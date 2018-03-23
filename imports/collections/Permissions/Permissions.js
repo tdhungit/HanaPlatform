@@ -1,5 +1,4 @@
 import CollectionBase from '/imports/common/CollectionBase';
-import SimpleSchema from 'simpl-schema';
 
 class PermissionsCollection extends CollectionBase {
     beforeInsert(doc) {
@@ -26,7 +25,7 @@ Permissions.deny({
     remove: () => true,
 });
 
-const PermissionsSchema = new SimpleSchema({
+const PermissionsSchema = CollectionBase.schema({
     createdAt: {
         type: String,
         label: 'The date permission was created.',

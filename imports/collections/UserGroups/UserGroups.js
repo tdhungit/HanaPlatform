@@ -1,7 +1,10 @@
-import {Mongo} from 'meteor/mongo';
-import SimpleSchema from 'simpl-schema';
+import CollectionBase from '/imports/common/CollectionBase';
 
-const UserGroups = new Mongo.Collection('user_groups');
+class UserGroupsCollection extends CollectionBase {
+    
+}
+
+const UserGroups = new UserGroupsCollection('user_groups');
 
 UserGroups.allow({
     insert: () => false,
@@ -15,7 +18,7 @@ UserGroups.deny({
     remove: () => true,
 });
 
-const UserGroupsSchema = new SimpleSchema({
+const UserGroupsSchema = CollectionBase.schema({
     createdAt: {
         type: String,
         label: 'The date this menu was created.',

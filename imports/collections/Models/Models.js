@@ -1,5 +1,4 @@
 import CollectionBase from '/imports/common/CollectionBase';
-import SimpleSchema from 'simpl-schema';
 
 class ModelsCollection extends CollectionBase {
     getModel(modelName) {
@@ -21,7 +20,7 @@ Models.deny({
     remove: () => true,
 });
 
-const ModelsSchema = new SimpleSchema({
+const ModelsSchema = CollectionBase.schema({
     createdAt: {
         type: String,
         label: 'The date that record was created.',

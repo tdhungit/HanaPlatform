@@ -1,5 +1,4 @@
 import CollectionBase from '/imports/common/CollectionBase';
-import SimpleSchema from 'simpl-schema';
 
 class SettingsCollection extends CollectionBase {
     /**
@@ -78,7 +77,7 @@ Settings.deny({
     remove: () => true,
 });
 
-const SettingsSchema = new SimpleSchema({
+const SettingsSchema = CollectionBase.schema({
     createdAt: {
         type: String,
         label: 'The date setting was created.',

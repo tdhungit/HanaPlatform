@@ -1,4 +1,5 @@
 import {Meteor} from 'meteor/meteor';
+import CollectionBase from '/imports/common/CollectionBase';
 import SimpleSchema from 'simpl-schema';
 
 const Users = Meteor.users;
@@ -68,7 +69,7 @@ Schema.UserProfile = new SimpleSchema({
     }
 });
 
-Schema.User = new SimpleSchema({
+Schema.User = CollectionBase.schema({
     username: {
         type: String,
         // For accounts-password, either emails or username is required, but not both. It is OK to make this

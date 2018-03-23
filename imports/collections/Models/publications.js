@@ -2,7 +2,6 @@ import {Meteor} from 'meteor/meteor';
 import CollectionAssign from '/imports/common/CollectionAssign';
 import Models from './Models';
 import {publishPagination} from 'meteor/kurounin:pagination';
-import SimpleSchema from "simpl-schema";
 
 Meteor.publish('models.list', () => {
     return Models.find({});
@@ -18,7 +17,7 @@ for (let idx in models) {
         // add schema
         if (model.schema) {
             const schemaObject = eval('(' + model.schema + ')');
-            const collectionSchema = new SimpleSchema(schemaObject);
+            const collectionSchema = CollectionAssign.schema(schemaObject);
             collection.attachSchema(collectionSchema);
         }
         // add collections

@@ -1,6 +1,5 @@
 import CollectionAssign from '/imports/common/CollectionAssign';
 import Models from '/imports/collections/Models/Models';
-import SimpleSchema from 'simpl-schema';
 import {Meteor} from 'meteor/meteor';
 
 /**
@@ -25,7 +24,7 @@ class MyModel {
             const collection = new CollectionAssign(model.collection);
             if (model.schema) {
                 const schemaObject = eval('(' + model.schema + ')');
-                const collectionSchema = new SimpleSchema(schemaObject);
+                const collectionSchema = CollectionAssign.schema(schemaObject);
                 collection.attachSchema(collectionSchema);
             }
             return collection;
