@@ -12,9 +12,9 @@ const Authenticate = ({loggingIn, authenticated, component, ...rest}) => (
             return <div></div>;
         }
 
-        return authenticated ?
-            (React.createElement(component, {...props, ...state, loggingIn, authenticated})) :
-            (<Redirect to="/login"/>);
+        return authenticated
+            ? (React.createElement(component, {...props, ...state, loggingIn, authenticated}))
+            : (<Redirect to="/login"/>);
     }}/>
 );
 

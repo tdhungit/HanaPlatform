@@ -61,7 +61,6 @@ class Install extends Component {
                 if (error) {
                     Bert.alert(error.reason, 'danger');
                 } else {
-
                     const user = {
                         sysCompanyId: companyId,
                         username: this.state.username.trim() + '@' + this.state.companyDomain,

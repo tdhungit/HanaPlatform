@@ -8,10 +8,12 @@ Meteor.publish('users.user', function() {
         return Meteor.users.find(this.userId, {
             fields: {
                 _id: 1,
+                sysCompanyId: 1,
                 settings: 1
             }
         });
     }
+
     return this.ready();
 });
 

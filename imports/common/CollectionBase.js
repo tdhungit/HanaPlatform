@@ -1,3 +1,4 @@
+import {Meteor} from 'meteor/meteor';
 import {Mongo} from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 
@@ -75,6 +76,9 @@ class CollectionBase extends Mongo.Collection {
      * @returns {*}
      */
     insert(doc, callback) {
+        if (!doc.sysCompanyId) {
+            doc.sysCompanyId = Meteor.user().sysCompanyId;
+        }
         if (this.beforeInsert(doc)) {
             const result = super.insert(doc, callback);
             this.afterInsert(doc, result);
@@ -100,6 +104,52 @@ class CollectionBase extends Mongo.Collection {
         }
 
         return false;
+    }
+
+    /**
+     * find a record in a company
+     * @param query
+     * @param options {{}}
+     * @returns {any}
+     */
+    findOne(query = '', options = {}) {
+        let selector = {};
+
+        if(typeof query === "string") {
+            selector = {_id: query};
+        }
+
+        if (Meteor.isClient) {
+            selector.sysCompanyId = Meteor.user().sysCompanyId;
+        }
+
+        return super.findOne(selector, options);
+    }
+
+    /**
+     * find all record in a company
+     * @param selector
+     * @param options
+     * @returns {Mongo.Cursor}
+     */
+    find(selector = {}, options = {}) {
+        if (Meteor.isClient) {
+            selector.sysCompanyId = Meteor.user().sysCompanyId;
+        }
+
+        return super.find(selector, options);
+    }
+
+    /**
+     * publish data to client
+     * @param user
+     * @param selector
+     * @param options
+     * @returns {Mongo.Cursor}
+     */
+    publish(user, selector = {}, options = {}) {
+        selector.sysCompanyId = user.sysCompanyId;
+        return this.find(selector, options);
     }
 }
 

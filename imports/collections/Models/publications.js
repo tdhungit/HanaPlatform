@@ -4,7 +4,7 @@ import Models from './Models';
 import {publishPagination} from 'meteor/kurounin:pagination';
 
 Meteor.publish('models.list', () => {
-    return Models.find({});
+    return Models.publish(Meteor.user());
 });
 
 // get custom model and add pagination
@@ -23,14 +23,19 @@ for (let idx in models) {
         // add collections
         collections[model.model] = collection;
         // list
-        publishPagination(collection, {});
+        publishPagination(collection, {
+            filters: {
+                sysCompanyId: Meteor.user().sysCompanyId,
+                assignedId: Meteor.userId()
+            }
+        });
     }
 }
 
 // we need set publish in here because we have all collections here. If we set other place, we will be duplicate collection init
 Meteor.publish('models.detailRecord', (modelName, recordId) => {
     if (collections[modelName]) {
-        return collections[modelName].find({_id: recordId});
+        return collections[modelName].publish(Meteor.user(), {_id: recordId});
     }
 });
 

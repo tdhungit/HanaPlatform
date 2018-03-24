@@ -8,11 +8,13 @@ const Public = ({loggingIn, authenticated, component, ...rest}) => (
         state.app = rest.app || {};
         state.appLoading = rest.appLoading || (() => {});
 
-        if (loggingIn) return <div></div>;
+        if (loggingIn) {
+            return <div></div>;
+        }
 
-        return !authenticated ?
-            (React.createElement(component, {...props, ...state, loggingIn, authenticated})) :
-            (<Redirect to="/"/>);
+        return !authenticated
+            ? (React.createElement(component, {...props, ...state, loggingIn, authenticated}))
+            : (<Redirect to="/"/>);
     }}/>
 );
 

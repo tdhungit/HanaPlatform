@@ -33,8 +33,56 @@ class CollectionAssign extends CollectionBase {
      * @returns {*|boolean}
      */
     insert(doc, callback) {
-        doc.assignedId = Meteor.user()._id;
+        if (doc.assignedId) {
+            doc.assignedId = Meteor.user()._id;
+        }
         return super.insert(doc, callback);
+    }
+
+    /**
+     * get a record have assigned to current user
+     * @param query
+     * @param options
+     * @returns {any}
+     */
+    findOne(query = '', options = {}) {
+        let selector = {};
+
+        if(typeof query === "string") {
+            selector = {_id: query};
+        }
+
+        if (Meteor.isClient) {
+            selector.assignedId = Meteor.userId();
+        }
+
+        return super.findOne(selector, options);
+    }
+
+    /**
+     * get all records assigned to current user
+     * @param selector
+     * @param options
+     * @returns {Mongo.Cursor}
+     */
+    find(selector = {}, options = {}) {
+        if (Meteor.isClient) {
+            selector.assignedId = Meteor.userId();
+        }
+
+        return super.find(selector, options);
+    }
+
+    /**
+     * publish data to client
+     * @param user
+     * @param selector
+     * @param options
+     * @returns {Mongo.Cursor}
+     */
+    publish(user, selector = {}, options = {}) {
+        selector.assignedId = user._id;
+        return super.publish(user, selector, options);
     }
 }
 

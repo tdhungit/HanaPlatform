@@ -2,9 +2,9 @@ import {Meteor} from 'meteor/meteor';
 import UserGroups from './UserGroups';
 
 Meteor.publish('userGroups.list', () => {
-    return UserGroups.find({});
+    return UserGroups.publish(Meteor.user(), {});
 });
 
 Meteor.publish('userGroups.detail', (groupId) => {
-    return UserGroups.find({_id: groupId});
+    return UserGroups.publish(Meteor.user(), {_id: groupId});
 });

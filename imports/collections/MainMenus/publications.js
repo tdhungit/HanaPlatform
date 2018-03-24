@@ -2,9 +2,9 @@ import {Meteor} from 'meteor/meteor';
 import MainMenus from './MainMenus';
 
 Meteor.publish('mainMenus.list', () => {
-    return MainMenus.find({});
+    return MainMenus.publish(Meteor.user(), {});
 });
 
 Meteor.publish('mainMenus.detail', (menuId) => {
-    return MainMenus.find({_id: menuId});
+    return MainMenus.publish(Meteor.user(), {_id: menuId});
 });
