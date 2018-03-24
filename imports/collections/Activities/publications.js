@@ -7,9 +7,12 @@ Meteor.publish('activities.list', () => {
 });
 
 publishPagination(Activities, {
-    filters: {
-        // sysCompanyId: Meteor.user().sysCompanyId,
-        // assignedId: Meteor.userId()
+    filters: {},
+    dynamic_filters: function () {
+        return {
+            sysCompanyId: Meteor.user().sysCompanyId,
+            assignedId: Meteor.userId()
+        }
     }
 });
 

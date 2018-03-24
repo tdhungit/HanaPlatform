@@ -22,11 +22,14 @@ for (let idx in models) {
         }
         // add collections
         collections[model.model] = collection;
-        // list
+        // pagination
         publishPagination(collection, {
-            filters: {
-                // sysCompanyId: Meteor.user().sysCompanyId,
-                // assignedId: Meteor.userId()
+            filters: {},
+            dynamic_filters: function () {
+                return {
+                    sysCompanyId: Meteor.user().sysCompanyId,
+                    assignedId: Meteor.userId()
+                }
             }
         });
     }
