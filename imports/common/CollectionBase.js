@@ -79,6 +79,7 @@ class CollectionBase extends Mongo.Collection {
         if (!doc.sysCompanyId) {
             doc.sysCompanyId = Meteor.user().sysCompanyId;
         }
+
         if (this.beforeInsert(doc)) {
             const result = super.insert(doc, callback);
             this.afterInsert(doc, result);

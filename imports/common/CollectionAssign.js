@@ -33,9 +33,10 @@ class CollectionAssign extends CollectionBase {
      * @returns {*|boolean}
      */
     insert(doc, callback) {
-        if (doc.assignedId) {
+        if (!doc.assignedId) {
             doc.assignedId = Meteor.user()._id;
         }
+
         return super.insert(doc, callback);
     }
 
