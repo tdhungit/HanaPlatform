@@ -25,8 +25,8 @@ for (let idx in models) {
         // list
         publishPagination(collection, {
             filters: {
-                sysCompanyId: Meteor.user().sysCompanyId,
-                assignedId: Meteor.userId()
+                // sysCompanyId: Meteor.user().sysCompanyId,
+                // assignedId: Meteor.userId()
             }
         });
     }
