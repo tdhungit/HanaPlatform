@@ -52,6 +52,8 @@ class CollectionAssign extends CollectionBase {
 
         if (typeof query === "string") {
             selector = {_id: query};
+        } else {
+            selector = query;
         }
 
         if (Meteor.isClient) {
@@ -67,8 +69,14 @@ class CollectionAssign extends CollectionBase {
      * @param options
      * @returns {Mongo.Cursor}
      */
-    find(query = {}, options = {}) {
-        let selector = query;
+    find(query = '', options = {}) {
+        let selector = {};
+
+        if (typeof query === "string") {
+            selector = {_id: query};
+        } else {
+            selector = query;
+        }
 
         if (Meteor.isClient) {
             selector.assignedId = Meteor.userId();
@@ -84,8 +92,14 @@ class CollectionAssign extends CollectionBase {
      * @param options
      * @returns {Mongo.Cursor}
      */
-    publish(user, query = {}, options = {}) {
-        let selector = query;
+    publish(user, query = '', options = {}) {
+        let selector = {};
+
+        if (typeof query === "string") {
+            selector = {_id: query};
+        } else {
+            selector = query;
+        }
 
         selector.assignedId = user._id;
         return super.publish(user, selector, options);

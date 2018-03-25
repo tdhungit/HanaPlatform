@@ -5,10 +5,10 @@ import SysCompanies from './SysCompanies';
 // init pagination
 publishPagination(SysCompanies, {});
 
-Meteor.publish('syscompanies.list', () => {
+Meteor.publish('sysCompanies.list', () => {
     return SysCompanies.find({});
 });
 
-Meteor.publish('syscompanies.detail', (companyId) => {
+Meteor.publish('sysCompanies.detail', (companyId) => {
     return SysCompanies.find({_id: companyId});
 });

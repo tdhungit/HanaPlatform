@@ -3,20 +3,6 @@ import {check} from 'meteor/check';
 import {Accounts} from 'meteor/accounts-base';
 import Users from '/imports/collections/Users/Users';
 
-Accounts.onCreateUser(function (options, user) {
-    if (options.sysCompanyId) {
-        user.sysCompanyId = options.sysCompanyId;
-    }
-
-    if (options.profile) {
-        user.profile = options.profile;
-    } else {
-        user.profile = {};
-    }
-
-    return user;
-});
-
 Meteor.methods({
     // search user with keyword
     'users.searchKeyword': (keyword, limit = 10) => {
@@ -29,6 +15,12 @@ Meteor.methods({
     },
     'users.insert': (user) => {
         check(user, Object);
+        Accounts.onCreateUser(function (options, user) {
+            user.sysCompanyId = options.sysCompanyId;
+            user.group = options.group;
+            user.isAdmin = options.isAdmin;
+            return user;
+        });
         return Accounts.createUser(user);
     },
     'users.update': (user) => {

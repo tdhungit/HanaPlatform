@@ -59,6 +59,11 @@ class Login extends Component {
                                     <CardBody>
                                         <h1><T>Login</T></h1>
                                         <p className="text-muted"><T>Sign In to your account</T></p>
+                                        <span className="text-muted">
+                                            <T>Sign with @username.@domain.</T>
+                                        </span>
+                                        <br/>
+                                        <span className="text-muted">Example: admin.up5.vn</span>
                                         <InputGroup className="mb-3">
                                             <div className="input-group-prepend">
                                                 <span className="input-group-text">

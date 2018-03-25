@@ -118,6 +118,8 @@ class CollectionBase extends Mongo.Collection {
 
         if (typeof query === "string") {
             selector = {_id: query};
+        } else {
+            selector = query;
         }
 
         if (Meteor.isClient) {
@@ -136,8 +138,14 @@ class CollectionBase extends Mongo.Collection {
      * @param options
      * @returns {Mongo.Cursor}
      */
-    find(query = {}, options = {}) {
-        let selector = query;
+    find(query = '', options = {}) {
+        let selector = {};
+
+        if (typeof query === "string") {
+            selector = {_id: query};
+        } else {
+            selector = query;
+        }
 
         if (Meteor.isClient) {
             selector.sysCompanyId = '';
@@ -156,8 +164,14 @@ class CollectionBase extends Mongo.Collection {
      * @param options
      * @returns {Mongo.Cursor}
      */
-    publish(user, query = {}, options = {}) {
-        let selector = query;
+    publish(user, query = '', options = {}) {
+        let selector = {};
+
+        if (typeof query === "string") {
+            selector = {_id: query};
+        } else {
+            selector = query;
+        }
 
         selector.sysCompanyId = '';
         if (user && user.sysCompanyId) {

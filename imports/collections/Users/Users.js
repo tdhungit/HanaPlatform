@@ -104,7 +104,12 @@ Schema.User = CollectionBase.schema({
         blackbox: true
     },
     createdAt: {
-        type: Date
+        type: String,
+        label: 'The date this menu was created.',
+        autoValue() {
+            if (this.isInsert) return (new Date()).toISOString();
+            return this.value;
+        },
     },
     profile: {
         type: Schema.UserProfile,
@@ -134,10 +139,23 @@ Schema.User = CollectionBase.schema({
         type: Date,
         optional: true
     },
+    // settings of each user
     settings: {
         type: Object,
         optional: true,
         blackbox: true
+    },
+    // user group
+    // user group for access data
+    // relate with UserGroup Collection
+    group: {
+        type: String,
+        required: true
+    },
+    // user is admin
+    isAdmin: {
+        type: Boolean,
+        defaultValue: false
     }
 });
 

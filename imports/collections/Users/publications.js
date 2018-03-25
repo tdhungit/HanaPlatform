@@ -9,7 +9,9 @@ Meteor.publish('users.user', function () {
             fields: {
                 _id: 1,
                 sysCompanyId: 1,
-                settings: 1
+                settings: 1,
+                group: 1,
+                isAdmin: 1
             }
         });
     }

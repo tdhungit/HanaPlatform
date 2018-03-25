@@ -121,7 +121,7 @@ const renderer = ({days, hours, minutes, seconds, completed}) => {
 };
 
 export default container((props, onData) => {
-    const sub = Meteor.subscribe('syscompanies.list');
+    const sub = Meteor.subscribe('sysCompanies.list');
     if (sub.ready()) {
         let installed = false;
         const firstCompany = SysCompanies.findOne({});

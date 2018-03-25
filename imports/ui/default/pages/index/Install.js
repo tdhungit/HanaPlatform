@@ -57,25 +57,19 @@ class Install extends Component {
                 name: this.state.companyName,
                 domain: this.state.companyDomain
             };
-            Meteor.call('syscompanies.insert', company, (error, companyId) => {
+
+            const user = {
+                username: this.state.username.trim() + '.' + this.state.companyDomain,
+                email: this.state.email,
+                password: this.state.password
+            };
+
+            Meteor.call('sysCompanies.register', company, user, (error, companyId) => {
                 if (error) {
                     Bert.alert(error.reason, 'danger');
                 } else {
-                    const user = {
-                        sysCompanyId: companyId,
-                        username: this.state.username.trim() + '@' + this.state.companyDomain,
-                        email: this.state.email,
-                        password: this.state.password
-                    };
-                    Meteor.call('users.insert', user, (error, userId) => {
-                        if (error) {
-                            Bert.alert(error.reason, 'danger');
-                            // @TODO remove company
-                        } else {
-                            Bert.alert(t.__('Installation successful'), 'success');
-                            this.props.history.push('/');
-                        }
-                    });
+                    Bert.alert(t.__('Installation successful'), 'success');
+                    this.props.history.push('/');
                 }
             });
         } else {
@@ -161,7 +155,7 @@ class Install extends Component {
 }
 
 export default container((props, onData) => {
-    const sub = Meteor.subscribe('syscompanies.list');
+    const sub = Meteor.subscribe('sysCompanies.list');
     if (sub.ready()) {
         let installed = false;
         const firstCompany = SysCompanies.findOne({});
