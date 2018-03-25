@@ -116,12 +116,15 @@ class CollectionBase extends Mongo.Collection {
     findOne(query = '', options = {}) {
         let selector = {};
 
-        if(typeof query === "string") {
+        if (typeof query === "string") {
             selector = {_id: query};
         }
 
         if (Meteor.isClient) {
-            selector.sysCompanyId = Meteor.user().sysCompanyId;
+            selector.sysCompanyId = '';
+            if (Meteor.user() && Meteor.user().sysCompanyId) {
+                selector.sysCompanyId = Meteor.user().sysCompanyId;
+            }
         }
 
         return super.findOne(selector, options);
@@ -129,13 +132,18 @@ class CollectionBase extends Mongo.Collection {
 
     /**
      * find all record in a company
-     * @param selector
+     * @param query
      * @param options
      * @returns {Mongo.Cursor}
      */
-    find(selector = {}, options = {}) {
+    find(query = {}, options = {}) {
+        let selector = query;
+
         if (Meteor.isClient) {
-            selector.sysCompanyId = Meteor.user().sysCompanyId;
+            selector.sysCompanyId = '';
+            if (Meteor.user() && Meteor.user().sysCompanyId) {
+                selector.sysCompanyId = Meteor.user().sysCompanyId;
+            }
         }
 
         return super.find(selector, options);
@@ -144,12 +152,18 @@ class CollectionBase extends Mongo.Collection {
     /**
      * publish data to client
      * @param user
-     * @param selector
+     * @param query
      * @param options
      * @returns {Mongo.Cursor}
      */
-    publish(user, selector = {}, options = {}) {
-        selector.sysCompanyId = user.sysCompanyId;
+    publish(user, query = {}, options = {}) {
+        let selector = query;
+
+        selector.sysCompanyId = '';
+        if (user && user.sysCompanyId) {
+            selector.sysCompanyId = user.sysCompanyId;
+        }
+
         return this.find(selector, options);
     }
 }

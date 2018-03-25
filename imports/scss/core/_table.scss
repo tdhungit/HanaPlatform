@@ -29,12 +29,14 @@
   border-top: 5px solid #ccc;
   border-bottom: 0px solid transparent;
 }
+
 /* !Default */
 
 /* Default sortable indicator:hover */
 .table-sortable > thead > tr > th:hover:after {
   border-top: 5px solid #888;
 }
+
 /* !Default:hover */
 
 /* Ascending sortable indicator */
@@ -44,9 +46,11 @@
   border-top: 0px solid transparent;
   border-bottom: 5px solid #333;
 }
+
 .table-sortable > thead > tr > th.asc:hover:after {
   border-bottom: 5px solid #888;
 }
+
 /* !Ascending */
 
 /* Descending sortable indicator */
@@ -56,6 +60,7 @@
   border-top: 5px solid #333;
   border-bottom: 5px solid transparent;
 }
+
 /* !Descending */
 
 .NoSortLink {

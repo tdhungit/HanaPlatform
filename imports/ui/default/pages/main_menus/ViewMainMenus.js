@@ -39,7 +39,8 @@ class ViewMainMenus extends Component {
                                 <span>{menu.url}</span>&nbsp;&nbsp;&nbsp;
                                 <span>Title: {menu.title ? 'true' : 'false'}</span>&nbsp;&nbsp;&nbsp;
                                 <span>Divider: {menu.divider ? 'true' : 'false'}</span>&nbsp;&nbsp;&nbsp;
-                                {menu.badge && menu.badge.variant ? <span>Badge: {menu.badge.variant} - {menu.badge.text}</span> : null}
+                                {menu.badge && menu.badge.variant ?
+                                    <span>Badge: {menu.badge.variant} - {menu.badge.text}</span> : null}
                             </span>
                         )
                     };
@@ -53,14 +54,16 @@ class ViewMainMenus extends Component {
                                 _id: child_menu._id,
                                 weight: child_menu.weight,
                                 parent: child_menu.parent,
-                                title: (<Link to={'/manager/main-menus/' + child_menu._id + '/edit'}>{child_menu.name}</Link>),
+                                title: (<Link
+                                    to={'/manager/main-menus/' + child_menu._id + '/edit'}>{child_menu.name}</Link>),
                                 subtitle: (
                                     <span>
                                         <i className={child_menu.icon}/>&nbsp;&nbsp;&nbsp;
                                         <span>{child_menu.url}</span>&nbsp;&nbsp;&nbsp;
                                         <span>Title: {child_menu.title ? 'true' : 'false'}</span>&nbsp;&nbsp;&nbsp;
                                         <span>Divider: {child_menu.divider ? 'true' : 'false'}</span>&nbsp;&nbsp;&nbsp;
-                                        {child_menu.badge && child_menu.badge.variant ? <span>Badge: {child_menu.badge.variant} - {child_menu.badge.text}</span> : null}
+                                        {child_menu.badge && child_menu.badge.variant ?
+                                            <span>Badge: {child_menu.badge.variant} - {child_menu.badge.text}</span> : null}
                                     </span>
                                 )
                             });

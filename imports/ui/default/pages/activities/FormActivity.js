@@ -177,26 +177,36 @@ class FormActivity extends Component {
             let invite = this.state.activity.invites[userId];
             indents.push((
                 <ListGroupItem key={userId} className="justify-content-between inviteUser">
-                    <ImageTag media={invite.media ? invite.media : ''} style={{width: 24, height: 24}}/> {invite.username}
+                    <ImageTag media={invite.media ? invite.media : ''}
+                              style={{width: 24, height: 24}}/> {invite.username}
                     <Badge href="javascript:void(0)" className="pull-right" color="default"
                            onClick={this.removeInviteUser.bind(this, userId)}>
                         <i className="fa fa-remove"/>
                     </Badge>
                     <div className="inviteOption">
                         <FormGroup check>
-                            <Input className="form-check-input" type="checkbox" checked={this.state.activity.invites[userId].canEdit || false}
-                                   id={'canEdit' + userId} name={'invites.' + userId + '.canEdit'} onChange={this.handleInputChange}/>
-                            <Label className="form-check-label" htmlFor={'canEdit.' + userId}><T>Can edit event</T></Label>
+                            <Input className="form-check-input" type="checkbox"
+                                   checked={this.state.activity.invites[userId].canEdit || false}
+                                   id={'canEdit' + userId} name={'invites.' + userId + '.canEdit'}
+                                   onChange={this.handleInputChange}/>
+                            <Label className="form-check-label" htmlFor={'canEdit.' + userId}><T>Can edit
+                                event</T></Label>
                         </FormGroup>
                         <FormGroup check>
-                            <Input className="form-check-input" type="checkbox" checked={this.state.activity.invites[userId].canInvite || false}
-                                   id={'canInvite' + userId} name={'invites.' + userId + '.canInvite'} onChange={this.handleInputChange}/>
-                            <Label className="form-check-label" htmlFor={'canInvite.' + userId}><T>Can invite more users</T></Label>
+                            <Input className="form-check-input" type="checkbox"
+                                   checked={this.state.activity.invites[userId].canInvite || false}
+                                   id={'canInvite' + userId} name={'invites.' + userId + '.canInvite'}
+                                   onChange={this.handleInputChange}/>
+                            <Label className="form-check-label" htmlFor={'canInvite.' + userId}><T>Can invite more
+                                users</T></Label>
                         </FormGroup>
                         <FormGroup check>
-                            <Input className="form-check-input" type="checkbox" checked={this.state.activity.invites[userId].canSeeAll || false}
-                                   id={'canSeeAll' + userId} name={'invites.' + userId + '.canSeeAll'} onChange={this.handleInputChange}/>
-                            <Label className="form-check-label" htmlFor={'canSeeAll.' + userId}><T>Can see all invite users</T></Label>
+                            <Input className="form-check-input" type="checkbox"
+                                   checked={this.state.activity.invites[userId].canSeeAll || false}
+                                   id={'canSeeAll' + userId} name={'invites.' + userId + '.canSeeAll'}
+                                   onChange={this.handleInputChange}/>
+                            <Label className="form-check-label" htmlFor={'canSeeAll.' + userId}><T>Can see all invite
+                                users</T></Label>
                         </FormGroup>
                     </div>
                 </ListGroupItem>
@@ -256,8 +266,10 @@ class FormActivity extends Component {
                                         }}>
                             <DropdownToggle caret color="gray-200">{notification.type}</DropdownToggle>
                             <DropdownMenu className={this.state['notifyType' + idx] ? "show" : ""}>
-                                <DropdownItem name={'type.' + idx} value="Email" onClick={this.changeNotification}>Email</DropdownItem>
-                                <DropdownItem name={'type.' + idx} value="Notification" onClick={this.changeNotification}>Notification</DropdownItem>
+                                <DropdownItem name={'type.' + idx} value="Email"
+                                              onClick={this.changeNotification}>Email</DropdownItem>
+                                <DropdownItem name={'type.' + idx} value="Notification"
+                                              onClick={this.changeNotification}>Notification</DropdownItem>
                             </DropdownMenu>
                         </ButtonDropdown>
                     </InputGroupAddon>
@@ -270,14 +282,19 @@ class FormActivity extends Component {
                                         }}>
                             <DropdownToggle caret color="gray-200">{notification.unit}</DropdownToggle>
                             <DropdownMenu className={this.state['notifyUnit' + idx] ? "show" : ""}>
-                                <DropdownItem name={'unit.' + idx} value="minutes" onClick={this.changeNotification}>minutes</DropdownItem>
-                                <DropdownItem name={'unit.' + idx} value="hours" onClick={this.changeNotification}>hours</DropdownItem>
-                                <DropdownItem name={'unit.' + idx} value="days" onClick={this.changeNotification}>days</DropdownItem>
-                                <DropdownItem name={'unit.' + idx} value="weeks" onClick={this.changeNotification}>weeks</DropdownItem>
+                                <DropdownItem name={'unit.' + idx} value="minutes"
+                                              onClick={this.changeNotification}>minutes</DropdownItem>
+                                <DropdownItem name={'unit.' + idx} value="hours"
+                                              onClick={this.changeNotification}>hours</DropdownItem>
+                                <DropdownItem name={'unit.' + idx} value="days"
+                                              onClick={this.changeNotification}>days</DropdownItem>
+                                <DropdownItem name={'unit.' + idx} value="weeks"
+                                              onClick={this.changeNotification}>weeks</DropdownItem>
                             </DropdownMenu>
                         </ButtonDropdown>
                     </InputGroupAddon>
-                    <Button type="button" color="default" onClick={() => this.removeNotification(idx)}><i className="fa fa-remove"/></Button>
+                    <Button type="button" color="default" onClick={() => this.removeNotification(idx)}><i
+                        className="fa fa-remove"/></Button>
                 </InputGroup>
             );
         }
@@ -333,9 +350,10 @@ class FormActivity extends Component {
                         <Col xs="12" md="6">
                             <FormGroup>
                                 <Label><T>Type</T></Label>
-                                <SelectHelper name="type" placeholder={t.__('Choose...')} options={AppListStrings.ActivityTypes}
-                                       value={this.getInputValue('type')}
-                                       onChange={this.handleInputChange}/>
+                                <SelectHelper name="type" placeholder={t.__('Choose...')}
+                                              options={AppListStrings.ActivityTypes}
+                                              value={this.getInputValue('type')}
+                                              onChange={this.handleInputChange}/>
                             </FormGroup>
                         </Col>
                     </Row>
@@ -375,7 +393,8 @@ class FormActivity extends Component {
                                                    onChange={this.handleInputChange}/>
                             </FormGroup>
                             <FormGroup>
-                                <Button type="button" color="gray-200" onClick={this.addNotification.bind(this)}><T>Add Notification</T></Button>
+                                <Button type="button" color="gray-200" onClick={this.addNotification.bind(this)}><T>Add
+                                    Notification</T></Button>
                                 <div className="activityNotifications">
                                     {this.renderNotifications()}
                                 </div>
@@ -390,7 +409,8 @@ class FormActivity extends Component {
                         <Col xs="12" md="4">
                             <FormGroup>
                                 <Label><T>Invites</T></Label>
-                                <Select2Helper name="invites" placeholder={t.__('Choose...')} value={this.state.inviting}
+                                <Select2Helper name="invites" placeholder={t.__('Choose...')}
+                                               value={this.state.inviting}
                                                async={true} loadOptions={this.loadInviteUsers} imgOption={true}
                                                onChange={this.inviteUser.bind(this)}/>
                             </FormGroup>
@@ -403,17 +423,17 @@ class FormActivity extends Component {
                 <CardFooter>
                     <Button type="button" size="sm" color="primary" onClick={this.handleSubmit.bind(this)}>
                         <i className="fa fa-dot-circle-o"></i>&nbsp;
-                        {existing ? <T>Update</T> :<T>Create</T>}
+                        {existing ? <T>Update</T> : <T>Create</T>}
                     </Button>
                     {existing
                         ? <Button type="button" size="sm" color="danger"
                                   onClick={() => this.props.history.push('/manager/activities/' + this.state.activity._id + '/detail')}>
                             <i className="fa fa-ban"></i> <T>Cancel</T>
-                          </Button>
+                        </Button>
                         : <Button type="button" size="sm" color="danger"
                                   onClick={() => this.props.history.push('/manager/activities')}>
                             <i className="fa fa-ban"></i> <T>Cancel</T>
-                          </Button>}
+                        </Button>}
                 </CardFooter>
             </Card>
         );

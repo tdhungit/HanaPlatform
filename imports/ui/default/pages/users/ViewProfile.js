@@ -114,7 +114,8 @@ class ViewProfile extends Component {
                                               className="rounded img-profile" alt={currentUser.username}/>
                                     <div className="upload">
                                         <Button type="button" size="sm">
-                                            {this.state.avatarUploading ? <i className="fa fa-spin fa-spinner"/> : null}&nbsp;
+                                            {this.state.avatarUploading ?
+                                                <i className="fa fa-spin fa-spinner"/> : null}&nbsp;
                                             <i className="fa fa-upload"/> <T>Edit</T>
                                         </Button>
                                         <Input type="file" name="avatar" className="file"

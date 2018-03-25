@@ -6,9 +6,7 @@ const coreCollections = [
     'Activities'
 ];
 
-const customCollections = [
-
-];
+const customCollections = [];
 
 const existCollections = [
     ...coreCollections,

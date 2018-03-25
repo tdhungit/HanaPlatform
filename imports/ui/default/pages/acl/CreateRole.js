@@ -4,17 +4,27 @@ import {
     Col
 } from 'reactstrap';
 
-import {T, t, PT} from '/imports/common/Translation';
-import FormRole from './FormRole';
+import {t, PT} from '/imports/common/Translation';
+import Models from '/imports/collections/Models/Models';
+import {aclRoleLayouts} from '/imports/collections/ACLRoles/layouts';
+import FormComponent from '../models/components/FormComponent';
 
 class CreateRole extends Component {
     render() {
+        const model = Models.getModel('ACLRoles') || aclRoleLayouts;
+        
         return (
             <div className="acl-CreateRole animated fadeIn">
                 <PT title={t.__('Create Role')}/>
                 <Row>
-                    <Col>
-                        <FormRole title={t.__('Create Role')} slogan={t.__('ACL')}/>
+                    <Col md="12">
+                        <FormComponent 
+                            title={t.__('Create new Role')} 
+                            slogan={''} 
+                            model={model} 
+                            method="aclRoles.insert" 
+                            detailLink="/manager/roles/%s/detail" 
+                            listLink="/manager/roles"/>
                     </Col>
                 </Row>
             </div>

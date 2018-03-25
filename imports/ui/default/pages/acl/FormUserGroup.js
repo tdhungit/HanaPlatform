@@ -97,13 +97,15 @@ class FormUserGroup extends Component {
                         <Col xs="12">
                             <FormGroup>
                                 <Label><T>Group name</T></Label>
-                                <Input type="text" name="name" value={this.state.userGroup.name} placeholder={t.__('Enter here')} onChange={this.handleInputChange}/>
+                                <Input type="text" name="name" value={this.state.userGroup.name}
+                                       placeholder={t.__('Enter here')} onChange={this.handleInputChange}/>
                             </FormGroup>
                         </Col>
                         <Col xs="12">
                             <FormGroup>
                                 <Label><T>Description</T></Label>
-                                <Input type="textarea" name="description" value={this.state.userGroup.description} placeholder={t.__('Enter here')} onChange={this.handleInputChange}/>
+                                <Input type="textarea" name="description" value={this.state.userGroup.description}
+                                       placeholder={t.__('Enter here')} onChange={this.handleInputChange}/>
                             </FormGroup>
                         </Col>
                     </Row>
@@ -111,7 +113,8 @@ class FormUserGroup extends Component {
                         <Col>
                             <FormGroup>
                                 <Label><T>Parent</T></Label>
-                                <SelectHelper name="parent" options={this.state.groupRoot} value={this.state.userGroup.parent} onChange={this.handleInputChange}/>
+                                <SelectHelper name="parent" options={this.state.groupRoot}
+                                              value={this.state.userGroup.parent} onChange={this.handleInputChange}/>
                             </FormGroup>
                         </Col>
                     </Row>
@@ -119,9 +122,10 @@ class FormUserGroup extends Component {
                 <CardFooter>
                     <Button type="button" size="sm" color="primary" onClick={this.handleSubmit.bind(this)}>
                         <i className="fa fa-dot-circle-o"></i>&nbsp;
-                        {existing ? <T>Update</T> :<T>Create</T>}
+                        {existing ? <T>Update</T> : <T>Create</T>}
                     </Button>
-                    <Button type="reset" size="sm" color="danger" onClick={() => this.props.history.push('/manager/user-groups')}>
+                    <Button type="reset" size="sm" color="danger"
+                            onClick={() => this.props.history.push('/manager/user-groups')}>
                         <i className="fa fa-ban"></i> <T>Cancel</T>
                     </Button>
                 </CardFooter>

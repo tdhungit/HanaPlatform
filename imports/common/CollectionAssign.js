@@ -2,6 +2,7 @@ import {Meteor} from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
 
 import CollectionBase from './CollectionBase';
+import Users from '../collections/Users/Users';
 
 /**
  * Db Collection auto assigned when record was created
@@ -49,7 +50,7 @@ class CollectionAssign extends CollectionBase {
     findOne(query = '', options = {}) {
         let selector = {};
 
-        if(typeof query === "string") {
+        if (typeof query === "string") {
             selector = {_id: query};
         }
 
@@ -62,11 +63,13 @@ class CollectionAssign extends CollectionBase {
 
     /**
      * get all records assigned to current user
-     * @param selector
+     * @param query
      * @param options
      * @returns {Mongo.Cursor}
      */
-    find(selector = {}, options = {}) {
+    find(query = {}, options = {}) {
+        let selector = query;
+
         if (Meteor.isClient) {
             selector.assignedId = Meteor.userId();
         }
@@ -77,11 +80,13 @@ class CollectionAssign extends CollectionBase {
     /**
      * publish data to client
      * @param user
-     * @param selector
+     * @param query
      * @param options
      * @returns {Mongo.Cursor}
      */
-    publish(user, selector = {}, options = {}) {
+    publish(user, query = {}, options = {}) {
+        let selector = query;
+
         selector.assignedId = user._id;
         return super.publish(user, selector, options);
     }

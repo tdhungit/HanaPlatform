@@ -2,7 +2,7 @@ import {Meteor} from 'meteor/meteor';
 import {publishPagination} from 'meteor/kurounin:pagination';
 import Activities from './Activities';
 
-Meteor.publish('activities.list', () => {
+Meteor.publish('activities.list', function () {
     return Activities.publish(Meteor.user());
 });
 
@@ -16,6 +16,6 @@ publishPagination(Activities, {
     }
 });
 
-Meteor.publish('activities.detail', (activityId) => {
+Meteor.publish('activities.detail', function (activityId) {
     return Activities.publish(Meteor.user(), {_id: activityId});
 });

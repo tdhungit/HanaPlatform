@@ -15,8 +15,9 @@ class UserActivities extends Component {
             <div>
                 <div className="post">
                     <div className="user-block">
-                        <ImageTag media={currentUser.profile && currentUser.profile.avatar ? currentUser.profile.avatar : ''}
-                                  className="img-avatar" alt={currentUser && currentUser.emails[0].address}/>
+                        <ImageTag
+                            media={currentUser.profile && currentUser.profile.avatar ? currentUser.profile.avatar : ''}
+                            className="img-avatar" alt={currentUser && currentUser.emails[0].address}/>
                         <span className="username">{currentUser.username}</span>
                         <span className="description">description</span>
                         <div className="post-detail">Activity</div>

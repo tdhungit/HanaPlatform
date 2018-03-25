@@ -22,10 +22,10 @@ Meteor.methods({
     'users.searchKeyword': (keyword, limit = 10) => {
         check(keyword, String);
         return Users.find({
-                username: {$regex: ".*" + keyword + ".*"}
-            }, {
-                limit: limit
-            }).fetch();
+            username: {$regex: ".*" + keyword + ".*"}
+        }, {
+            limit: limit
+        }).fetch();
     },
     'users.insert': (user) => {
         check(user, Object);

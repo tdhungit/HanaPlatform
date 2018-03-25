@@ -67,10 +67,10 @@ class SystemSettings extends Component {
         for (let category in this.state.settings) {
             let setting = this.state.settings[category];
             Meteor.call('settings.update', setting, (error) => {
-                 if (error) {
-                     updateError = true;
-                     Bert.alert(error.reason, 'danger');
-                 }
+                if (error) {
+                    updateError = true;
+                    Bert.alert(error.reason, 'danger');
+                }
             });
         }
 

@@ -142,7 +142,8 @@ export class Select2Helper extends Component {
     }
 
     renderOptionsImg(option) {
-        let img = <img src={Meteor.absoluteUrl('img/avatars/1.jpg')} className="rounded" style={{width: 24, height: 24}}/>;
+        let img = <img src={Meteor.absoluteUrl('img/avatars/1.jpg')} className="rounded"
+                       style={{width: 24, height: 24}}/>;
         if (option.media) {
             img = <ImageTag media={option.media} style={{width: 24, height: 24}}/>
         }
@@ -272,21 +273,24 @@ export class SelectGroupHelper extends Component {
     render() {
         return (
             <InputGroup>
-                {this.props.first ? <Input type="text" name={this.props.name} disabled={this.state.active.selected ? false : true}
-                                           placeholder={this.props.placeholder} value={this.state.text}
-                                           onChange={this.onInputChange.bind(this)}/> : null}
+                {this.props.first ?
+                    <Input type="text" name={this.props.name} disabled={this.state.active.selected ? false : true}
+                           placeholder={this.props.placeholder} value={this.state.text}
+                           onChange={this.onInputChange.bind(this)}/> : null}
                 <InputGroupAddon addonType="prepend">
                     <ButtonDropdown isOpen={this.state.isOpen}
                                     toggle={() => {
                                         this.setState({isOpen: !this.state.isOpen});
                                     }}>
                         <DropdownToggle caret color="gray-200">{this.state.active.label}</DropdownToggle>
-                        <DropdownMenu className={this.state.isOpen ? "show" : ""}>{this.renderDropdownItem()}</DropdownMenu>
+                        <DropdownMenu
+                            className={this.state.isOpen ? "show" : ""}>{this.renderDropdownItem()}</DropdownMenu>
                     </ButtonDropdown>
                 </InputGroupAddon>
-                {!this.props.first ? <Input type="text" name={this.props.name} disabled={this.state.active.selected ? false : true}
-                                            placeholder={this.props.placeholder} value={this.state.text}
-                                            onChange={this.onInputChange.bind(this)}/> : null}
+                {!this.props.first ?
+                    <Input type="text" name={this.props.name} disabled={this.state.active.selected ? false : true}
+                           placeholder={this.props.placeholder} value={this.state.text}
+                           onChange={this.onInputChange.bind(this)}/> : null}
                 <Button type="button" color="warning"
                         onClick={this.onItemDefault.bind(this)}><i className="fa fa-remove"/></Button>
             </InputGroup>

@@ -132,10 +132,12 @@ class ListViewTable extends Component {
                 <a href="javascript:void(0)" className="btn btn-sm btn-link text-danger">
                     <i className="fa fa-trash"/>
                 </a>
-                <Link to={'/manager/model/' + model.model + '/' + record._id + '/detail'} className="btn btn-sm btn-link">
+                <Link to={'/manager/model/' + model.model + '/' + record._id + '/detail'}
+                      className="btn btn-sm btn-link">
                     <i className="fa fa-eye"/>
                 </Link>
-                <Link to={'/manager/model/' + model.model + '/' + record._id + '/edit'} className="btn btn-sm btn-link text-warning">
+                <Link to={'/manager/model/' + model.model + '/' + record._id + '/edit'}
+                      className="btn btn-sm btn-link text-warning">
                     <i className="fa fa-edit"/>
                 </Link>
             </td>

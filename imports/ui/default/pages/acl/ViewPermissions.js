@@ -13,17 +13,26 @@ import {
     Label
 } from 'reactstrap';
 import {Meteor} from 'meteor/meteor';
-import {Roles} from 'meteor/alanning:roles';
 
 import {coreCollections} from '/imports/collections/collections';
-import {permissionsAclTypes} from '/imports/collections/Permissions/config';
-import Permissions from '/imports/collections/Permissions/Permissions';
+import {permissionsAclTypes} from '/imports/collections/ACLPermissions/config';
+import ACLPermissions from '/imports/collections/ACLPermissions/ACLPermissions';
 import {T, t, PT} from '/imports/common/Translation';
 import {SelectHelper} from '../../helpers/inputs/SelectHelper';
 import container from '/imports/common/Container';
 import {Bert} from 'meteor/themeteorchef:bert';
 
 class ViewPermissions extends Component {
+    static propTypes = {
+        role: PropTypes.string,
+        permissions: PropTypes.object
+    };
+
+    static defaultProps = {
+        role: '',
+        permissions: {}
+    };
+
     constructor(props) {
         super(props);
 
@@ -36,9 +45,7 @@ class ViewPermissions extends Component {
     }
 
     componentWillMount() {
-        const {
-            permissions
-        } = this.props;
+        const {permissions} = this.props;
 
         if (permissions) {
             this.state.permissions = permissions;
@@ -71,11 +78,9 @@ class ViewPermissions extends Component {
     }
 
     handleSubmit() {
-        const {
-            role
-        } = this.props;
+        const {role} = this.props;
 
-        Meteor.call('permissions.update', this.state.permissions, role, (error) => {
+        Meteor.call('aclPermissions.update', this.state.permissions, role, (error) => {
             if (error) {
                 Bert.alert(error.reason, 'danger');
             } else {
@@ -119,35 +124,42 @@ class ViewPermissions extends Component {
                                                 <td>{collection}</td>
                                                 <td>
                                                     <Label className="switch switch-text switch-pill switch-primary">
-                                                        <Input type="checkbox" name={'Access_' + collection} className="switch-input"
+                                                        <Input type="checkbox" name={'Access_' + collection}
+                                                               className="switch-input"
                                                                checked={(this.state.permissions[collection] && this.state.permissions[collection].Access) ? true : false}
                                                                onChange={this.handleInputChange}/>
-                                                        <span className="switch-label" data-on="On" data-off="Off"></span>
+                                                        <span className="switch-label" data-on="On"
+                                                              data-off="Off"></span>
                                                         <span className="switch-handle"></span>
                                                     </Label>
                                                 </td>
                                                 <td>
-                                                    <SelectHelper name={'View_' + collection} options={this.state.acl_types}
+                                                    <SelectHelper name={'View_' + collection}
+                                                                  options={this.state.acl_types}
                                                                   value={this.state.permissions[collection] && this.state.permissions[collection].View}
                                                                   onChange={this.handleInputChange}/>
                                                 </td>
                                                 <td>
-                                                    <SelectHelper name={'Create_' + collection} options={this.state.acl_types}
+                                                    <SelectHelper name={'Create_' + collection}
+                                                                  options={this.state.acl_types}
                                                                   value={this.state.permissions[collection] && this.state.permissions[collection].Create}
                                                                   onChange={this.handleInputChange}/>
                                                 </td>
                                                 <td>
-                                                    <SelectHelper name={'Edit_' + collection} options={this.state.acl_types}
+                                                    <SelectHelper name={'Edit_' + collection}
+                                                                  options={this.state.acl_types}
                                                                   value={this.state.permissions[collection] && this.state.permissions[collection].Edit}
                                                                   onChange={this.handleInputChange}/>
                                                 </td>
                                                 <td>
-                                                    <SelectHelper name={'Approve_' + collection} options={this.state.acl_types}
+                                                    <SelectHelper name={'Approve_' + collection}
+                                                                  options={this.state.acl_types}
                                                                   value={this.state.permissions[collection] && this.state.permissions[collection].Approve}
                                                                   onChange={this.handleInputChange}/>
                                                 </td>
                                                 <td>
-                                                    <SelectHelper name={'Delete_' + collection} options={this.state.acl_types}
+                                                    <SelectHelper name={'Delete_' + collection}
+                                                                  options={this.state.acl_types}
                                                                   value={this.state.permissions[collection] && this.state.permissions[collection].Delete}
                                                                   onChange={this.handleInputChange}/>
                                                 </td>
@@ -162,7 +174,8 @@ class ViewPermissions extends Component {
                                     <i className="fa fa-dot-circle-o"></i>&nbsp;
                                     <T>Save</T>
                                 </Button>
-                                <Button type="reset" size="sm" color="danger" onClick={() => this.props.history.push('/manager/roles')}>
+                                <Button type="reset" size="sm" color="danger"
+                                        onClick={() => this.props.history.push('/manager/roles')}>
                                     <i className="fa fa-ban"></i> <T>Cancel</T>
                                 </Button>
                             </CardFooter>
@@ -174,22 +187,12 @@ class ViewPermissions extends Component {
     }
 }
 
-ViewPermissions.defaultProps = {
-    role: '',
-    permissions: {}
-};
-
-ViewPermissions.propTypes = {
-    role: PropTypes.string,
-    permissions: PropTypes.object
-};
-
 export default container((props, onData) => {
     const role = props.match.params.name;
-    const subscription = Meteor.subscribe('permissions.detail', role);
+    const subscription = Meteor.subscribe('aclPermissions.detail', role);
     if (subscription && subscription.ready()) {
         let permissions = {};
-        const permissionDetail = Permissions.find({role: role}).fetch();
+        const permissionDetail = ACLPermissions.find({role: role}).fetch();
         for (let idx in permissionDetail) {
             let permission = permissionDetail[idx];
             permissions[permission.model] = permission;

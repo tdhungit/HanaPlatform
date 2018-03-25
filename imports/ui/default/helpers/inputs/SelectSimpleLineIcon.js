@@ -16,7 +16,7 @@ export class SelectSimpleLineIcon extends Component {
         const {
             onClick
         } = this.props;
-        
+
         return (
             <Row className="helpers-SelectSimpleLineIcon text-center">
 

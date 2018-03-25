@@ -6,8 +6,10 @@ import '/imports/collections/Users/methods';
 
 import '/imports/collections/UserGroups/publications';
 import '/imports/collections/UserGroups/methods';
-import '/imports/collections/Permissions/publications';
-import '/imports/collections/Permissions/methods'
+import '/imports/collections/ACLRoles/publications';
+import '/imports/collections/ACLRoles/methods';
+import '/imports/collections/ACLPermissions/publications';
+import '/imports/collections/ACLPermissions/methods'
 
 import '/imports/collections/MainMenus/publications';
 import '/imports/collections/MainMenus/methods';

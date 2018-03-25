@@ -91,26 +91,36 @@ class Header extends Component {
                     <NavItem>
                         <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
                             <DropdownToggle className="nav-link dropdown-toggle">
-                                <ImageTag media={currentUser.profile && currentUser.profile.avatar ? currentUser.profile.avatar: ''}
-                                          className="img-avatar" alt={currentUser && currentUser.emails[0].address}/>
+                                <ImageTag
+                                    media={currentUser.profile && currentUser.profile.avatar ? currentUser.profile.avatar : ''}
+                                    className="img-avatar" alt={currentUser && currentUser.emails[0].address}/>
                                 <span className="d-md-down-none">{currentUser && currentUser.username}</span>
                             </DropdownToggle>
                             <DropdownMenu right className={this.state.dropdownOpen ? 'show' : ''}>
-                                <DropdownItem header tag="div" className="text-center"><strong>Account</strong></DropdownItem>
-                                <DropdownItem><i className="fa fa-bell-o"></i> Updates<Badge color="info">42</Badge></DropdownItem>
-                                <DropdownItem><i className="fa fa-envelope-o"></i> Messages<Badge color="success">42</Badge></DropdownItem>
-                                <DropdownItem><i className="fa fa-tasks"></i> Tasks<Badge color="danger">42</Badge></DropdownItem>
-                                <DropdownItem><i className="fa fa-comments"></i> Comments<Badge color="warning">42</Badge></DropdownItem>
-                                <DropdownItem header tag="div" className="text-center"><strong>Settings</strong></DropdownItem>
-                                <DropdownItem onClick={() => this.props.history.push('/manager/me')}><i className="fa fa-user"></i> Profile</DropdownItem>
+                                <DropdownItem header tag="div"
+                                              className="text-center"><strong>Account</strong></DropdownItem>
+                                <DropdownItem><i className="fa fa-bell-o"></i> Updates<Badge
+                                    color="info">42</Badge></DropdownItem>
+                                <DropdownItem><i className="fa fa-envelope-o"></i> Messages<Badge
+                                    color="success">42</Badge></DropdownItem>
+                                <DropdownItem><i className="fa fa-tasks"></i> Tasks<Badge
+                                    color="danger">42</Badge></DropdownItem>
+                                <DropdownItem><i className="fa fa-comments"></i> Comments<Badge
+                                    color="warning">42</Badge></DropdownItem>
+                                <DropdownItem header tag="div"
+                                              className="text-center"><strong>Settings</strong></DropdownItem>
+                                <DropdownItem onClick={() => this.props.history.push('/manager/me')}><i
+                                    className="fa fa-user"></i> Profile</DropdownItem>
                                 <DropdownItem><i className="fa fa-wrench"></i> Settings</DropdownItem>
                                 {/*<DropdownItem divider/>*/}
-                                <DropdownItem onClick={this.handleLogout.bind(this)}><i className="fa fa-lock"></i> Logout</DropdownItem>
+                                <DropdownItem onClick={this.handleLogout.bind(this)}><i
+                                    className="fa fa-lock"></i> Logout</DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
                     </NavItem>
                 </Nav>
-                <NavbarToggler className="d-md-down-none" type="button" onClick={this.asideToggle}>&#9776;</NavbarToggler>
+                <NavbarToggler className="d-md-down-none" type="button"
+                               onClick={this.asideToggle}>&#9776;</NavbarToggler>
             </header>
         )
     }

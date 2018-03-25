@@ -6,7 +6,8 @@ const Public = ({loggingIn, authenticated, component, ...rest}) => (
     <Route {...rest} render={(props) => {
         let state = {};
         state.app = rest.app || {};
-        state.appLoading = rest.appLoading || (() => {});
+        state.appLoading = rest.appLoading || (() => {
+        });
 
         if (loggingIn) {
             return <div></div>;

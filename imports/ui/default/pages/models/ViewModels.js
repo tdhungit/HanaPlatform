@@ -68,16 +68,21 @@ class ViewModels extends Component {
                                                         {model.collection}
                                                     </Link>
                                                 </td>
-                                                <td>{model.status ? <span className="badge badge-info">{t.__('Active')}</span>
-                                                    : <span className="badge badge-gray-200">{t.__('Inactive')}</span>}</td>
+                                                <td>{model.status ?
+                                                    <span className="badge badge-info">{t.__('Active')}</span>
+                                                    : <span
+                                                        className="badge badge-gray-200">{t.__('Inactive')}</span>}</td>
                                                 <td>
-                                                    <a href="javascript:void(0)" className="btn btn-sm btn-link text-danger">
+                                                    <a href="javascript:void(0)"
+                                                       className="btn btn-sm btn-link text-danger">
                                                         <i className="fa fa-trash"/>
                                                     </a>
-                                                    <Link to={'/manager/models/' + model._id + '/detail'} className="btn btn-sm btn-link">
+                                                    <Link to={'/manager/models/' + model._id + '/detail'}
+                                                          className="btn btn-sm btn-link">
                                                         <i className="fa fa-eye"/>
                                                     </Link>
-                                                    <Link to={'/manager/models/' + model._id + '/edit'} className="btn btn-sm btn-link text-warning">
+                                                    <Link to={'/manager/models/' + model._id + '/edit'}
+                                                          className="btn btn-sm btn-link text-warning">
                                                         <i className="fa fa-edit"/>
                                                     </Link>
                                                 </td>

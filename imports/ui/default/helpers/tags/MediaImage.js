@@ -20,7 +20,8 @@ class ImageTagClass extends Component {
         }
 
         return (
-            <img src={mediaLink} id={this.props.id} className={className} alt={this.props.alt} style={this.props.style}/>
+            <img src={mediaLink} id={this.props.id} className={className} alt={this.props.alt}
+                 style={this.props.style}/>
         );
     }
 }

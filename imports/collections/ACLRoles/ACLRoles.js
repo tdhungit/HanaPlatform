@@ -1,24 +1,24 @@
 import CollectionBase from '/imports/common/CollectionBase';
 
-class UserGroupsCollection extends CollectionBase {
+class ACLRolesCollection extends CollectionBase {
 
 }
 
-const UserGroups = new UserGroupsCollection('user_groups');
+const ACLRoles = new ACLRolesCollection('acl_roles');
 
-UserGroups.allow({
+ACLRoles.allow({
     insert: () => false,
     update: () => false,
     remove: () => false,
 });
 
-UserGroups.deny({
+ACLRoles.deny({
     insert: () => true,
     update: () => true,
     remove: () => true,
 });
 
-const UserGroupsSchema = CollectionBase.schema({
+const ACLRolesSchema = CollectionBase.schema({
     createdAt: {
         type: String,
         label: 'The date this menu was created.',
@@ -34,14 +34,9 @@ const UserGroupsSchema = CollectionBase.schema({
     description: {
         type: String,
         label: 'Description for user group'
-    },
-    parent: {
-        type: String,
-        label: 'Parent user group id',
-        defaultValue: 'ROOT'
     }
 });
 
-UserGroups.attachSchema(UserGroupsSchema);
+ACLRoles.attachSchema(ACLRolesSchema);
 
-export default UserGroups;
+export default ACLRoles;

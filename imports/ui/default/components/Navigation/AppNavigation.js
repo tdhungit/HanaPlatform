@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const AppNavigation = ({ authenticated }) => (
+const AppNavigation = ({authenticated}) => (
     authenticated ?
         null :
         null

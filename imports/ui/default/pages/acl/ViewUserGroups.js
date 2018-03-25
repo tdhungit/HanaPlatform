@@ -24,10 +24,10 @@ class ViewUserGroups extends Component {
 
     componentWillMount() {
         Meteor.call('userGroups.TREE', (error, groups) => {
-             if (!error) {
-                 const trees = this.getTrees(groups);
-                 this.setState({userGroups: trees});
-             }
+            if (!error) {
+                const trees = this.getTrees(groups);
+                this.setState({userGroups: trees});
+            }
         });
     }
 

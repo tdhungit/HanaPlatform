@@ -14,7 +14,7 @@ class CreateMainMenu extends Component {
                 <PT title={t.__('Create new menu')}/>
                 <Row>
                     <Col xs="12" lg="12">
-                          <FormMainMenu title={t.__("Create new menu")} slogan={t.__("Sidebar menu")}/>
+                        <FormMainMenu title={t.__("Create new menu")} slogan={t.__("Sidebar menu")}/>
                     </Col>
                 </Row>
             </div>

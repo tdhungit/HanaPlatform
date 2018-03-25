@@ -3,7 +3,7 @@ import CollectionAssign from '/imports/common/CollectionAssign';
 import Models from './Models';
 import {publishPagination} from 'meteor/kurounin:pagination';
 
-Meteor.publish('models.list', () => {
+Meteor.publish('models.list', function () {
     return Models.publish(Meteor.user());
 });
 
@@ -13,7 +13,8 @@ let collections = {};
 for (let idx in models) {
     let model = models[idx];
     if (model.collection) {
-        let collection = new CollectionAssign(model.collection);
+        const collectionName = 'custom_' + model.sysCompanyId + '_' + model.collection;
+        let collection = new CollectionAssign(collectionName);
         // add schema
         if (model.schema) {
             const schemaObject = eval('(' + model.schema + ')');
@@ -36,7 +37,7 @@ for (let idx in models) {
 }
 
 // we need set publish in here because we have all collections here. If we set other place, we will be duplicate collection init
-Meteor.publish('models.detailRecord', (modelName, recordId) => {
+Meteor.publish('models.detailRecord', function (modelName, recordId) {
     if (collections[modelName]) {
         return collections[modelName].publish(Meteor.user(), {_id: recordId});
     }

@@ -5,7 +5,7 @@ class SysCompaniesCollection extends Mongo.Collection {
 
 }
 
-const SysCompanies = new SysCompaniesCollection('syscompanies');
+const SysCompanies = new SysCompaniesCollection('system_companies');
 
 SysCompanies.allow({
     insert: () => false,

@@ -54,7 +54,8 @@ class DetailView extends Component {
                                 <i className={model.icon}/>
                                 <strong>{model.model} <T>Detail</T></strong> {title}
                                 <div className="card-actions">
-                                    <Link to={'/manager/model/' + model.model + '/' + record._id + '/edit'} title={t.__('Edit')}>
+                                    <Link to={'/manager/model/' + model.model + '/' + record._id + '/edit'}
+                                          title={t.__('Edit')}>
                                         <i className="fa fa-edit"/>
                                     </Link>
                                 </div>

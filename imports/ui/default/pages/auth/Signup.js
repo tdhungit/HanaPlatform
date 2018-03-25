@@ -81,13 +81,15 @@ class Signup extends Component {
                                                 <i className="icon-user"></i>
                                             </span>
                                         </div>
-                                        <Input type="text" name="username" placeholder={t.__("Username")} onChange={this.handleInputChange}/>
+                                        <Input type="text" name="username" placeholder={t.__("Username")}
+                                               onChange={this.handleInputChange}/>
                                     </InputGroup>
                                     <InputGroup className="mb-3">
                                         <div className="input-group-prepend">
                                             <span className="input-group-text">@</span>
                                         </div>
-                                        <Input type="text" name="email" placeholder={t.__("Email")} onChange={this.handleInputChange}/>
+                                        <Input type="text" name="email" placeholder={t.__("Email")}
+                                               onChange={this.handleInputChange}/>
                                     </InputGroup>
                                     <InputGroup className="mb-3">
                                         <div className="input-group-prepend">
@@ -95,7 +97,8 @@ class Signup extends Component {
                                                 <i className="icon-lock"></i>
                                             </span>
                                         </div>
-                                        <Input type="password" name="password" placeholder={t.__("Password")} onChange={this.handleInputChange}/>
+                                        <Input type="password" name="password" placeholder={t.__("Password")}
+                                               onChange={this.handleInputChange}/>
                                     </InputGroup>
                                     <InputGroup className="mb-3">
                                         <div className="input-group-prepend">
@@ -103,7 +106,8 @@ class Signup extends Component {
                                                 <i className="icon-lock"></i>
                                             </span>
                                         </div>
-                                        <Input type="password" name="password_confirm" placeholder={t.__("Repeat password")} onChange={this.handleInputChange}/>
+                                        <Input type="password" name="password_confirm"
+                                               placeholder={t.__("Repeat password")} onChange={this.handleInputChange}/>
                                     </InputGroup>
                                     <InputGroup className="mb-3">
                                         <div className="input-group-prepend">
@@ -111,7 +115,8 @@ class Signup extends Component {
                                                 <i className="icon-user"></i>
                                             </span>
                                         </div>
-                                        <Input type="text" name="first_name" placeholder={t.__("First name")} onChange={this.handleInputChange}/>
+                                        <Input type="text" name="first_name" placeholder={t.__("First name")}
+                                               onChange={this.handleInputChange}/>
                                     </InputGroup>
                                     <InputGroup className="mb-3">
                                         <div className="input-group-prepend">
@@ -119,9 +124,11 @@ class Signup extends Component {
                                                 <i className="icon-user"></i>
                                             </span>
                                         </div>
-                                        <Input type="text" name="last_name" placeholder="Last name" onChange={this.handleInputChange}/>
+                                        <Input type="text" name="last_name" placeholder="Last name"
+                                               onChange={this.handleInputChange}/>
                                     </InputGroup>
-                                    <Button color="success" block onClick={this.handleSignup}><T>Create Account</T></Button>
+                                    <Button color="success" block onClick={this.handleSignup}><T>Create
+                                        Account</T></Button>
                                 </CardBody>
                                 <CardFooter className="p-4">
                                     <Row>

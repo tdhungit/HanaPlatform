@@ -70,7 +70,8 @@ class ViewRoles extends Component {
                                                             <T>Permissions</T>
                                                         </Link>
                                                     </Button>
-                                                    <Button type="button" size="sm" color="danger" onClick={this.deleteRole.bind(this, role.name)}>
+                                                    <Button type="button" size="sm" color="danger"
+                                                            onClick={this.deleteRole.bind(this, role.name)}>
                                                         <T>Delete</T>
                                                     </Button>
                                                 </td>

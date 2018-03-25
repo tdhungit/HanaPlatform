@@ -61,47 +61,79 @@ class ManagerLayout extends Component {
                     <main className="main">
                         <Breadcrumb/>
                         <Container fluid>
-                            <Authenticate exact path="/manager" component={Dashboard} {...appProps}/>
-                            <Authenticate exact path="/manager/dashboard" component={Dashboard} {...appProps}/>
-                            <Authenticate exact path="/manager/me" component={ViewProfile} {...appProps}/>
+                            <Authenticate exact path="/manager" 
+                                          component={Dashboard} {...appProps}/>
+                            <Authenticate exact path="/manager/dashboard" 
+                                          component={Dashboard} {...appProps}/>
+                            <Authenticate exact path="/manager/me" 
+                                          component={ViewProfile} {...appProps}/>
 
-                            <Authenticate exact path="/manager/users" component={ViewUsers} {...appProps}/>
-                            <Authenticate exact path="/manager/users/create" component={CreateUser} {...appProps}/>
-                            <Authenticate exact path="/manager/users/:_id/edit" component={EditUser} {...appProps}/>
-                            <Authenticate exact path="/manager/users/:_id/detail" component={ViewUser} {...appProps}/>
+                            <Authenticate exact path="/manager/users" 
+                                          component={ViewUsers} {...appProps}/>
+                            <Authenticate exact path="/manager/users/create" 
+                                          component={CreateUser} {...appProps}/>
+                            <Authenticate exact path="/manager/users/:_id/edit" 
+                                          component={EditUser} {...appProps}/>
+                            <Authenticate exact path="/manager/users/:_id/detail" 
+                                          component={ViewUser} {...appProps}/>
 
-                            <Authenticate exact path="/manager/roles" component={ViewRoles} {...appProps}/>
-                            <Authenticate exact path="/manager/roles/create" component={CreateRole} {...appProps}/>
-                            <Authenticate exact path="/manager/roles/:name/permissions" component={ViewPermissions} {...appProps}/>
-                            <Authenticate exact path="/manager/user-groups" component={ViewUserGroups} {...appProps}/>
-                            <Authenticate exact path="/manager/user-groups/create" component={CreateUserGroup} {...appProps}/>
-                            <Authenticate exact path="/manager/user-groups/:_id/edit" component={EditUserGroup} {...appProps}/>
-                            <Authenticate exact path="/manager/user-groups/:_id/detail" component={ViewUserGroup} {...appProps}/>
+                            <Authenticate exact path="/manager/roles" 
+                                          component={ViewRoles} {...appProps}/>
+                            <Authenticate exact path="/manager/roles/create" 
+                                          component={CreateRole} {...appProps}/>
+                            <Authenticate exact path="/manager/roles/:name/permissions"
+                                          component={ViewPermissions} {...appProps}/>
+                            <Authenticate exact path="/manager/user-groups" 
+                                          component={ViewUserGroups} {...appProps}/>
+                            <Authenticate exact path="/manager/user-groups/create"
+                                          component={CreateUserGroup} {...appProps}/>
+                            <Authenticate exact path="/manager/user-groups/:_id/edit"
+                                          component={EditUserGroup} {...appProps}/>
+                            <Authenticate exact path="/manager/user-groups/:_id/detail"
+                                          component={ViewUserGroup} {...appProps}/>
 
-                            <Authenticate exact path="/manager/settings" component={SystemSettings} {...appProps}/>
-                            <Authenticate exact path="/manager/settings/dropdown-list" component={AppListStringsSettings} {...appProps}/>
-                            <Authenticate exact path="/manager/main-menus" component={ViewMainMenus} {...appProps}/>
-                            <Authenticate exact path="/manager/main-menus/create" component={CreateMainMenu} {...appProps}/>
-                            <Authenticate exact path="/manager/main-menus/:_id/edit" component={EditMainMenu} {...appProps}/>
+                            <Authenticate exact path="/manager/settings" 
+                                          component={SystemSettings} {...appProps}/>
+                            <Authenticate exact path="/manager/settings/dropdown-list"
+                                          component={AppListStringsSettings} {...appProps}/>
+                            <Authenticate exact path="/manager/main-menus" 
+                                          component={ViewMainMenus} {...appProps}/>
+                            <Authenticate exact path="/manager/main-menus/create"
+                                          component={CreateMainMenu} {...appProps}/>
+                            <Authenticate exact path="/manager/main-menus/:_id/edit"
+                                          component={EditMainMenu} {...appProps}/>
 
-                            <Authenticate exact path="/manager/activities/calendar" component={ViewCalendar} {...appProps}/>
-                            <Authenticate exact path="/manager/activities" component={ViewActivities} {...appProps}/>
-                            <Authenticate exact path="/manager/activities/create" component={CreateActivity} {...appProps}/>
-                            <Authenticate exact path="/manager/activities/:_id/edit" component={EditActivity} {...appProps}/>
-                            <Authenticate exact path="/manager/activities/:_id/detail" component={ViewActivity} {...appProps}/>
+                            <Authenticate exact path="/manager/activities/calendar"
+                                          component={ViewCalendar} {...appProps}/>
+                            <Authenticate exact path="/manager/activities" 
+                                          component={ViewActivities} {...appProps}/>
+                            <Authenticate exact path="/manager/activities/create"
+                                          component={CreateActivity} {...appProps}/>
+                            <Authenticate exact path="/manager/activities/:_id/edit"
+                                          component={EditActivity} {...appProps}/>
+                            <Authenticate exact path="/manager/activities/:_id/detail"
+                                          component={ViewActivity} {...appProps}/>
 
-                            <Authenticate exact path="/manager/models" component={ViewModels} {...appProps}/>
-                            <Authenticate exact path="/manager/models/create" component={CreateModel} {...appProps}/>
-                            <Authenticate exact path="/manager/models/:_id/detail" component={ViewModel} {...appProps}/>
-                            <Authenticate exact path="/manager/models/:_id/edit" component={EditModel} {...appProps}/>
-                            <Authenticate exact path="/manager/model/:_model/list" component={ListView} {...appProps}/>
-                            <Authenticate exact path="/manager/model/:_model/create" component={CreateView} {...appProps}/>
-                            <Authenticate exact path="/manager/model/:_model/:_id/edit" component={EditView} {...appProps}/>
-                            <Authenticate exact path="/manager/model/:_model/:_id/detail" component={DetailView} {...appProps}/>
+                            <Authenticate exact path="/manager/models" 
+                                          component={ViewModels} {...appProps}/>
+                            <Authenticate exact path="/manager/models/create" 
+                                          component={CreateModel} {...appProps}/>
+                            <Authenticate exact path="/manager/models/:_id/detail" 
+                                          component={ViewModel} {...appProps}/>
+                            <Authenticate exact path="/manager/models/:_id/edit" 
+                                          component={EditModel} {...appProps}/>
+                            <Authenticate exact path="/manager/model/:_model/list" 
+                                          component={ListView} {...appProps}/>
+                            <Authenticate exact path="/manager/model/:_model/create"
+                                          component={CreateView} {...appProps}/>
+                            <Authenticate exact path="/manager/model/:_model/:_id/edit"
+                                          component={EditView} {...appProps}/>
+                            <Authenticate exact path="/manager/model/:_model/:_id/detail"
+                                          component={DetailView} {...appProps}/>
                         </Container>
                     </main>
                 </div>
-                <Footer />
+                <Footer/>
             </div>
         );
     }

@@ -11,15 +11,15 @@ class PermissionsCollection extends CollectionBase {
     }
 }
 
-const Permissions = new PermissionsCollection('acl_permissions');
+const ACLPermissions = new PermissionsCollection('acl_permissions');
 
-Permissions.allow({
+ACLPermissions.allow({
     insert: () => false,
     update: () => false,
     remove: () => false,
 });
 
-Permissions.deny({
+ACLPermissions.deny({
     insert: () => true,
     update: () => true,
     remove: () => true,
@@ -34,7 +34,7 @@ const PermissionsSchema = CollectionBase.schema({
             return this.value;
         },
     },
-    role: {
+    role: { // ACLRole
         type: String,
         label: 'Role name'
     },
@@ -74,6 +74,6 @@ const PermissionsSchema = CollectionBase.schema({
     },
 });
 
-Permissions.attachSchema(PermissionsSchema);
+ACLPermissions.attachSchema(PermissionsSchema);
 
-export default Permissions;
+export default ACLPermissions;

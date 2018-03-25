@@ -68,7 +68,8 @@ class UserSettings extends Component {
                             <Label><T>Full Name</T></Label>
                         </Col>
                         <Col md="9">
-                            <Input type="select" name="fullName" value={this.getValue('fullName')} onChange={this.handleInputChange}>
+                            <Input type="select" name="fullName" value={this.getValue('fullName')}
+                                   onChange={this.handleInputChange}>
                                 <option value=""></option>
                                 <option value="FL">First name - last name</option>
                                 <option value="LF">Last name - first name</option>
@@ -80,7 +81,8 @@ class UserSettings extends Component {
                             <Label><T>Date Format</T></Label>
                         </Col>
                         <Col md="9">
-                            <SelectHelper options={AppListStrings.DateFormatList} name="dateFormat" value={this.getValue('dateFormat')}
+                            <SelectHelper options={AppListStrings.DateFormatList} name="dateFormat"
+                                          value={this.getValue('dateFormat')}
                                           onChange={this.handleInputChange}/>
                         </Col>
                     </FormGroup>
@@ -89,7 +91,8 @@ class UserSettings extends Component {
                             <Label><T>DateTime Format</T></Label>
                         </Col>
                         <Col md="9">
-                            <SelectHelper options={AppListStrings.DateTimeFormatList} name="dateTimeFormat" value={this.getValue('dateTimeFormat')}
+                            <SelectHelper options={AppListStrings.DateTimeFormatList} name="dateTimeFormat"
+                                          value={this.getValue('dateTimeFormat')}
                                           onChange={this.handleInputChange}/>
                         </Col>
                     </FormGroup>

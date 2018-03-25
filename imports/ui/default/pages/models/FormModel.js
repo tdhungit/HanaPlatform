@@ -160,7 +160,8 @@ class FormModel extends Component {
                         <Col>
                             <FormGroup>
                                 <Label><T>Schema</T></Label>
-                                <Input type="textarea" name="schema" placeholder={t.__('Enter here')} required style={{height: 200}}
+                                <Input type="textarea" name="schema" placeholder={t.__('Enter here')} required
+                                       style={{height: 200}}
                                        value={this.getVal('schema')} onChange={this.handleInputChange}/>
                             </FormGroup>
                         </Col>
@@ -169,7 +170,8 @@ class FormModel extends Component {
                         <Col>
                             <FormGroup>
                                 <Label><T>List View</T></Label>
-                                <Input type="textarea" name="list" placeholder={t.__('Enter here')} required style={{height: 200}}
+                                <Input type="textarea" name="list" placeholder={t.__('Enter here')} required
+                                       style={{height: 200}}
                                        value={this.getVal('list')} onChange={this.handleInputChange}/>
                             </FormGroup>
                         </Col>
@@ -178,7 +180,8 @@ class FormModel extends Component {
                         <Col>
                             <FormGroup>
                                 <Label><T>Record View</T></Label>
-                                <Input type="textarea" name="view" placeholder={t.__('Enter here')} required style={{height: 200}}
+                                <Input type="textarea" name="view" placeholder={t.__('Enter here')} required
+                                       style={{height: 200}}
                                        value={this.getVal('view')} onChange={this.handleInputChange}/>
                             </FormGroup>
                         </Col>

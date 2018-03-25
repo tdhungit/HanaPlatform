@@ -86,7 +86,7 @@ class ProfileUserInfo extends Component {
                         <dt className="col-sm-2"></dt>
                         <dd className="col-sm-4">
                             <Button type="button" size="sm" color="warning"
-                                onClick={() => this.setState({showEdit: true})}><T>Edit</T></Button>
+                                    onClick={() => this.setState({showEdit: true})}><T>Edit</T></Button>
                         </dd>
                     </dl>
                 </div>
@@ -98,7 +98,8 @@ class ProfileUserInfo extends Component {
                                     <Label><T>Username</T></Label>
                                 </Col>
                                 <Col md="9">
-                                    <Input type="text" name="username" value={this.getUserField('username')} onChange={this.handleInputChange}/>
+                                    <Input type="text" name="username" value={this.getUserField('username')}
+                                           onChange={this.handleInputChange}/>
                                 </Col>
                             </FormGroup>
                         </Col>
@@ -110,7 +111,8 @@ class ProfileUserInfo extends Component {
                                     <Label><T>Email</T></Label>
                                 </Col>
                                 <Col md="9">
-                                    <Input type="text" name="email" value={this.getUserField('email')} onChange={this.handleInputChange}/>
+                                    <Input type="text" name="email" value={this.getUserField('email')}
+                                           onChange={this.handleInputChange}/>
                                 </Col>
                             </FormGroup>
                         </Col>
@@ -122,7 +124,8 @@ class ProfileUserInfo extends Component {
                                     <Label><T>First name</T></Label>
                                 </Col>
                                 <Col md="9">
-                                    <Input type="text" name="first_name" value={this.getUserField('profile.firstName')} onChange={this.handleInputChange}/>
+                                    <Input type="text" name="first_name" value={this.getUserField('profile.firstName')}
+                                           onChange={this.handleInputChange}/>
                                 </Col>
                             </FormGroup>
                         </Col>
@@ -134,7 +137,8 @@ class ProfileUserInfo extends Component {
                                     <Label><T>Last name</T></Label>
                                 </Col>
                                 <Col md="9">
-                                    <Input type="text" name="last_name" value={this.getUserField('profile.lastName')} onChange={this.handleInputChange}/>
+                                    <Input type="text" name="last_name" value={this.getUserField('profile.lastName')}
+                                           onChange={this.handleInputChange}/>
                                 </Col>
                             </FormGroup>
                         </Col>
@@ -143,9 +147,9 @@ class ProfileUserInfo extends Component {
                         <Col md="3"></Col>
                         <Col md="9">
                             <Button type="button" size="sm" color="primary"
-                                onClick={this.saveUserInfo.bind(this)}><T>Save</T></Button>
+                                    onClick={this.saveUserInfo.bind(this)}><T>Save</T></Button>
                             <Button type="button" size="sm" color="default"
-                                onClick={() => this.setState({showEdit: false})}><T>Cancel</T></Button>
+                                    onClick={() => this.setState({showEdit: false})}><T>Cancel</T></Button>
                         </Col>
                     </Row>
                 </div>

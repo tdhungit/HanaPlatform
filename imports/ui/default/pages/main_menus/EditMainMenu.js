@@ -23,7 +23,7 @@ class EditMainMenu extends Component {
     constructor(props) {
         super(props);
     }
-    
+
     render() {
         const {
             menu

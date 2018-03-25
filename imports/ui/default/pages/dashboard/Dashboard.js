@@ -10,7 +10,7 @@ import {
 } from 'reactstrap';
 
 import {t, T, PT} from '/imports/common/Translation';
-import {Form, FieldInput , FieldButton, RForm, RFieldInput, RFieldButton} from '../../components/Fields/Fields';
+import {Form, FieldInput, FieldButton, RForm, RFieldInput, RFieldButton} from '../../components/Fields/Fields';
 
 class Dashboard extends Component {
     render() {

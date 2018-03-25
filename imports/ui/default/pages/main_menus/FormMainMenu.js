@@ -148,13 +148,15 @@ class FormMainMenu extends Component {
                         <Col xs="12" lg="6">
                             <FormGroup>
                                 <Label><T>Menu name</T></Label>
-                                <Input type="text" name="name" value={this.state.menu.name} placeholder={t.__("Enter here")} onChange={this.handleInputChange} required/>
+                                <Input type="text" name="name" value={this.state.menu.name}
+                                       placeholder={t.__("Enter here")} onChange={this.handleInputChange} required/>
                             </FormGroup>
                         </Col>
                         <Col xs="12" lg="6">
                             <FormGroup>
                                 <Label><T>Weight</T></Label>
-                                <Input type="text" name="weight" value={this.state.menu.weight} placeholder={t.__("Enter here")} onChange={this.handleInputChange} required/>
+                                <Input type="text" name="weight" value={this.state.menu.weight}
+                                       placeholder={t.__("Enter here")} onChange={this.handleInputChange} required/>
                             </FormGroup>
                         </Col>
                     </Row>
@@ -162,16 +164,19 @@ class FormMainMenu extends Component {
                         <Col xs="12" lg="6">
                             <FormGroup>
                                 <Label><T>Url</T></Label>
-                                <Input type="text" name="url" placeholder={t.__('Enter here')} onChange={this.handleInputChange} value={this.state.menu.url} required/>
+                                <Input type="text" name="url" placeholder={t.__('Enter here')}
+                                       onChange={this.handleInputChange} value={this.state.menu.url} required/>
                             </FormGroup>
                         </Col>
                         <Col xs="12" lg="6">
                             <FormGroup>
                                 <Label><T>Icon</T></Label>
                                 <InputGroup>
-                                    <Input type="text" name="icon" placeholder={t.__("Enter here")} onChange={this.handleInputChange} value={this.state.menu.icon} required/>
+                                    <Input type="text" name="icon" placeholder={t.__("Enter here")}
+                                           onChange={this.handleInputChange} value={this.state.menu.icon} required/>
                                     <InputGroupAddon addonType="append">
-                                        <Button color="primary" onClick={this.toggleModalIcon}><i className="fa fa-search"></i> <T>Search</T></Button>
+                                        <Button color="primary" onClick={this.toggleModalIcon}><i
+                                            className="fa fa-search"></i> <T>Search</T></Button>
                                     </InputGroupAddon>
                                 </InputGroup>
                             </FormGroup>
@@ -191,7 +196,8 @@ class FormMainMenu extends Component {
                             <FormGroup check>
                                 <div className="checkbox">
                                     <Label>
-                                        <Input type="checkbox" name="title" value={this.state.menu.title} onChange={this.handleInputChange}/>
+                                        <Input type="checkbox" name="title" value={this.state.menu.title}
+                                               onChange={this.handleInputChange}/>
                                         <T>Title</T>
                                     </Label>
                                 </div>
@@ -201,7 +207,8 @@ class FormMainMenu extends Component {
                             <FormGroup check>
                                 <div className="checkbox">
                                     <Label>
-                                        <Input type="checkbox" name="divider" value={this.state.menu.divider} onChange={this.handleInputChange}/>
+                                        <Input type="checkbox" name="divider" value={this.state.menu.divider}
+                                               onChange={this.handleInputChange}/>
                                         <T>Divider</T>
                                     </Label>
                                 </div>
@@ -212,7 +219,8 @@ class FormMainMenu extends Component {
                         <Col xs="12" lg="6">
                             <FormGroup>
                                 <Label><T>Badge Variant</T></Label>
-                                <Input type="select" name="badge_variant" value={this.state.menu.badge_variant} onChange={this.handleInputChange}>
+                                <Input type="select" name="badge_variant" value={this.state.menu.badge_variant}
+                                       onChange={this.handleInputChange}>
                                     <option value=""></option>
                                     <option value="info">Info</option>
                                     <option value="warning">Warning</option>
@@ -223,7 +231,8 @@ class FormMainMenu extends Component {
                         <Col xs="12" lg="6">
                             <FormGroup>
                                 <Label><T>Badge Text</T></Label>
-                                <Input type="text" name="badge_text" value={this.state.menu.badge_text} placeholder={t.__("Enter here")} onChange={this.handleInputChange}/>
+                                <Input type="text" name="badge_text" value={this.state.menu.badge_text}
+                                       placeholder={t.__("Enter here")} onChange={this.handleInputChange}/>
                             </FormGroup>
                         </Col>
                     </Row>
@@ -231,7 +240,8 @@ class FormMainMenu extends Component {
                         <Col xs="12" lg="12">
                             <FormGroup>
                                 <Label><T>Parent</T></Label>
-                                <SelectHelper name="parent" options={this.state.root_menus} onChange={this.handleInputChange} value={this.state.menu.parent}/>
+                                <SelectHelper name="parent" options={this.state.root_menus}
+                                              onChange={this.handleInputChange} value={this.state.menu.parent}/>
                             </FormGroup>
                         </Col>
                     </Row>
@@ -239,9 +249,10 @@ class FormMainMenu extends Component {
                 <CardFooter>
                     <Button type="button" size="sm" color="primary" onClick={this.handleSubmit.bind(this)}>
                         <i className="fa fa-dot-circle-o"></i>&nbsp;
-                        {existing ? <T>Update</T> :<T>Create</T>}
+                        {existing ? <T>Update</T> : <T>Create</T>}
                     </Button>
-                    <Button type="reset" size="sm" color="danger" onClick={() => this.props.history.push('/manager/main-menus')}>
+                    <Button type="reset" size="sm" color="danger"
+                            onClick={() => this.props.history.push('/manager/main-menus')}>
                         <i className="fa fa-ban"></i> <T>Cancel</T>
                     </Button>
                 </CardFooter>

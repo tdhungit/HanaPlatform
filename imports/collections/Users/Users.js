@@ -141,6 +141,10 @@ Schema.User = CollectionBase.schema({
     }
 });
 
-Meteor.users.attachSchema(Schema.User);
+Users.attachSchema(Schema.User);
+
+Users.userInGroup = (userId) => {
+    console.log(userId);
+};
 
 export default Users;

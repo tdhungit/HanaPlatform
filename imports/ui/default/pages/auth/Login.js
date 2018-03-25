@@ -65,7 +65,8 @@ class Login extends Component {
                                                     <i className="icon-user"></i>
                                                 </span>
                                             </div>
-                                            <Input type="text" name="username" placeholder={t.__("Username")} value={this.state.username} onChange={this.handleInputChange}/>
+                                            <Input type="text" name="username" placeholder={t.__("Username")}
+                                                   value={this.state.username} onChange={this.handleInputChange}/>
                                         </InputGroup>
                                         <InputGroup className="mb-4">
                                             <div className="input-group-prepend">
@@ -73,11 +74,13 @@ class Login extends Component {
                                                     <i className="icon-lock"></i>
                                                 </span>
                                             </div>
-                                            <Input type="password" name="password" placeholder={t.__("Password")} value={this.state.password} onChange={this.handleInputChange}/>
+                                            <Input type="password" name="password" placeholder={t.__("Password")}
+                                                   value={this.state.password} onChange={this.handleInputChange}/>
                                         </InputGroup>
                                         <Row>
                                             <Col xs="6">
-                                                <Button color="primary" className="px-4" type="button" onClick={this.handleLogin.bind(this)}><T>Login</T></Button>
+                                                <Button color="primary" className="px-4" type="button"
+                                                        onClick={this.handleLogin.bind(this)}><T>Login</T></Button>
                                             </Col>
                                             <Col xs="6" className="text-right">
                                                 <Button color="link" className="px-0">

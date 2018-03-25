@@ -146,7 +146,8 @@ class Install extends Component {
                                     </Row>
                                 </CardBody>
                                 <CardFooter>
-                                    <Button type="button" size="sm" color="primary" onClick={() => this.handleInstall()}>
+                                    <Button type="button" size="sm" color="primary"
+                                            onClick={() => this.handleInstall()}>
                                         <i className="fa fa-dot-circle-o"></i> <T>Install</T>
                                     </Button>
                                 </CardFooter>

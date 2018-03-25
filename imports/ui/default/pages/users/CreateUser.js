@@ -10,10 +10,6 @@ import {userLayouts} from '/imports/collections/Users/layouts';
 import FormComponent from '../models/components/FormComponent';
 
 class CreateUser extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         const model = Models.getModel('Users') || userLayouts;
         return (

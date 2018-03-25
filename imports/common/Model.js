@@ -21,7 +21,8 @@ class MyModel {
                 }
             }
 
-            const collection = new CollectionAssign(model.collection);
+            const collectionName = 'custom_' + model.sysCompanyId + '_' + model.collection;
+            const collection = new CollectionAssign(collectionName);
             if (model.schema) {
                 const schemaObject = eval('(' + model.schema + ')');
                 const collectionSchema = CollectionAssign.schema(schemaObject);
