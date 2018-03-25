@@ -25,3 +25,7 @@
 * meteor
 * And now you can access: http://localhost:3000
 * Install and enjoy!
+
+### Login
+* Access: http://localhost:3000/login
+* Account: @username.@domain (Example: admin@up5.vn)
