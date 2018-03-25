@@ -49,4 +49,3 @@ export default container((props, onData) => {
         });
     }
 }, ViewUser);
-

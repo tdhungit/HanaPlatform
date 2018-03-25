@@ -10,6 +10,10 @@ class UtilsHelper {
      * @returns {*}
      */
     getField(object, field, defaultValue = '') {
+        if (!object) {
+            return defaultValue;
+        }
+
         let fieldKey = field;
         if (field.indexOf('.') < 0) {
             fieldKey = field;
@@ -45,7 +49,7 @@ class UtilsHelper {
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
 
-        let objectClean = object;
+        let objectClean = object || {};
 
         if (name.indexOf('.') < 0) {
             objectClean[name] = value;

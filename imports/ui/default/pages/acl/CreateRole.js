@@ -21,7 +21,8 @@ class CreateRole extends Component {
                         <FormComponent 
                             title={t.__('Create new Role')} 
                             slogan={''} 
-                            model={model} 
+                            model={model}
+                            record={{}}
                             method="aclRoles.insert" 
                             detailLink="/manager/roles/%s/detail" 
                             listLink="/manager/roles"/>

@@ -15,10 +15,12 @@ import {userLayouts} from '/imports/collections/Users/layouts';
 import FormComponent from '../models/components/FormComponent';
 
 class EditUser extends Component {
+    static propTypes = {
+        user: PropTypes.object
+    };
+
     render() {
-        const {
-            user
-        } = this.props;
+        const {user} = this.props;
 
         if (!user || !user._id) {
             return <Alert color="warning"><T>No Data</T></Alert>
@@ -45,10 +47,6 @@ class EditUser extends Component {
         );
     }
 }
-
-EditUser.propTypes = {
-    user: PropTypes.object
-};
 
 export default container((props, onData) => {
     const userId = props.match.params._id;

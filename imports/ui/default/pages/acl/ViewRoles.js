@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Meteor} from "meteor/meteor";
 import {
     Row,
     Col,
@@ -8,34 +9,36 @@ import {
     Table,
     Button
 } from 'reactstrap';
-import {Roles} from 'meteor/alanning:roles';
 import {Link} from 'react-router-dom';
 import {Bert} from 'meteor/themeteorchef:bert';
 
 import {T, t, PT} from '/imports/common/Translation';
+import ACLRoles from '/imports/collections/ACLRoles/ACLRoles';
+import ListComponent from '../models/components/ListComponent';
+import Models from '/imports/collections/Models/Models';
+import {aclRoleLayouts} from '/imports/collections/ACLRoles/layouts';
 
 class ViewRoles extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            roles: []
-        }
-    }
-
     componentWillMount() {
-        let roles = Roles.getAllRoles();
-        this.setState({roles: roles});
-    }
-
-    deleteRole(roleName) {
-        Roles.deleteRole(roleName);
-        Bert.alert(t.__('Successful!'), 'success');
-        let roles = Roles.getAllRoles();
-        this.setState({roles: roles});
+        this.limit = 20;
+        const limit = this.limit;
+        this.pagination = new Meteor.Pagination(ACLRoles, {
+            filters: {},
+            sort: {},
+            perPage: limit,
+            reactive: true,
+            debug: false
+        });
     }
 
     render() {
+        const {
+            pagination,
+            limit
+        } = this;
+
+        const model = Models.getModel('ACLRoles') || aclRoleLayouts;
+
         return (
             <div className="acl-ViewRoles animated fadeIn">
                 <PT title={t.__('View Roles')}/>
@@ -52,34 +55,12 @@ class ViewRoles extends Component {
                                 </div>
                             </CardHeader>
                             <CardBody>
-                                <Table responsive hover className="table-outline">
-                                    <thead>
-                                    <tr>
-                                        <th><T>Role name</T></th>
-                                        <th><T>Action</T></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {this.state.roles.map((role) => {
-                                        return (
-                                            <tr key={role.name}>
-                                                <td>{role.name}</td>
-                                                <td>
-                                                    <Button type="button" size="sm" color="primary">
-                                                        <Link to={'/manager/roles/' + role.name + '/permissions'}>
-                                                            <T>Permissions</T>
-                                                        </Link>
-                                                    </Button>
-                                                    <Button type="button" size="sm" color="danger"
-                                                            onClick={this.deleteRole.bind(this, role.name)}>
-                                                        <T>Delete</T>
-                                                    </Button>
-                                                </td>
-                                            </tr>
-                                        )
-                                    })}
-                                    </tbody>
-                                </Table>
+                                <ListComponent
+                                    model={model}
+                                    pagination={pagination}
+                                    limit={limit}
+                                    detailLink="/manager/roles/%s/detail"
+                                    editLink="/manager/roles/%s/edit"/>
                             </CardBody>
                         </Card>
                     </Col>

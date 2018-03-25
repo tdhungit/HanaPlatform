@@ -16,10 +16,6 @@ import Models from '/imports/collections/Models/Models';
 import {userLayouts} from '/imports/collections/Users/layouts';
 
 class ViewUsers extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     componentWillMount() {
         this.limit = 20;
         const limit = this.limit;
