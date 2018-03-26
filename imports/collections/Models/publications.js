@@ -4,6 +4,10 @@ import Models from './Models';
 import {publishPagination} from 'meteor/kurounin:pagination';
 
 Meteor.publish('models.list', function () {
+    if (!this.userId) {
+        return this.ready();
+    }
+
     return Models.publish(Meteor.user());
 });
 

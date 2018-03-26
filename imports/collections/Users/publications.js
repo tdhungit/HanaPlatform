@@ -4,20 +4,20 @@ import Users from './Users';
 
 // default get user profile
 Meteor.publish('users.user', function () {
-    if (this.userId) {
-        return Meteor.users.find(this.userId, {
-            fields: {
-                _id: 1,
-                sysCompanyId: 1,
-                settings: 1,
-                group: 1,
-                isAdmin: 1,
-                isDeveloper: 1
-            }
-        });
+    if (!this.userId) {
+        return this.ready();
     }
 
-    return this.ready();
+    return Meteor.users.find(this.userId, {
+        fields: {
+            _id: 1,
+            sysCompanyId: 1,
+            settings: 1,
+            group: 1,
+            isAdmin: 1,
+            isDeveloper: 1
+        }
+    });
 });
 
 // init pagination
