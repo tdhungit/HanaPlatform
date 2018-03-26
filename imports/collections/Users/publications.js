@@ -11,7 +11,8 @@ Meteor.publish('users.user', function () {
                 sysCompanyId: 1,
                 settings: 1,
                 group: 1,
-                isAdmin: 1
+                isAdmin: 1,
+                isDeveloper: 1
             }
         });
     }

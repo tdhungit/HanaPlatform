@@ -25,6 +25,13 @@ Meteor.methods({
     'sysCompanies.register': function (company, user) {
         check(company, Object);
         check(user, Object);
+
+        let installation = false;
+        const sysCompany = SysCompanies.findOne();
+        if (!sysCompany || !sysCompany._id) {
+            installation = true;
+        }
+
         // insert company
         const companyId = SysCompanies.insert(company);
         if (companyId) {
@@ -42,11 +49,15 @@ Meteor.methods({
                 userAdmin.sysCompanyId = companyId;
                 userAdmin.group = groupId;
                 userAdmin.isAdmin = true;
+                if (installation) {
+                    userAdmin.isDeveloper = true;
+                }
 
                 Accounts.onCreateUser(function (options, user) {
                     user.sysCompanyId = options.sysCompanyId;
                     user.group = options.group;
                     user.isAdmin = options.isAdmin;
+                    user.isDeveloper = options.isDeveloper;
                     return user;
                 });
                 Accounts.createUser(userAdmin);

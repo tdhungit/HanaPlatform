@@ -156,6 +156,10 @@ Schema.User = CollectionBase.schema({
     isAdmin: {
         type: Boolean,
         defaultValue: false
+    },
+    isDeveloper: {
+        type: Boolean,
+        defaultValue: false
     }
 });
 
