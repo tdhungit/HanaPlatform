@@ -2,7 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Meteor} from 'meteor/meteor';
 import {Route, Redirect} from 'react-router-dom';
+
 import {Loading} from '../Loading/Loading';
+import Users from '/imports/collections/Users/Users';
+import NoAccess from '../../pages/acl/NoAccess';
 
 const Authenticate = ({loggingIn, authenticated, component, ...rest}) => (
     <Route {...rest} render={(props) => {
@@ -18,10 +21,12 @@ const Authenticate = ({loggingIn, authenticated, component, ...rest}) => (
         }
 
         // check permission
-        const sysCompanyId = Meteor.user().sysCompanyId;
+        const isAccess = Users.checkAccess(Meteor.userId());
 
-        return (authenticated)
-            ? (React.createElement(component, {...props, ...state, loggingIn, authenticated}))
+        return authenticated
+            ? isAccess
+                ? (React.createElement(component, {...props, ...state, loggingIn, authenticated}))
+                : (<NoAccess/>)
             : (<Redirect to="/login"/>);
     }}/>
 );

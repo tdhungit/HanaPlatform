@@ -169,4 +169,8 @@ Users.userInGroup = (userId) => {
     console.log(userId);
 };
 
+Users.checkAccess = (userId) => {
+    return true;
+};
+
 export default Users;
