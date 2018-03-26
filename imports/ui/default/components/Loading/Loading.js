@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-class Loading extends Component {
+export class AppLoading extends Component {
     render() {
         return (
             <div className="text text-center">
@@ -10,4 +10,12 @@ class Loading extends Component {
     }
 }
 
-export default Loading;
+export class Loading extends Component {
+    render() {
+        return (
+            <div className="text text-center">
+                <i className="fa fa-refresh fa-spin"/>
+            </div>
+        );
+    }
+}

@@ -8,7 +8,7 @@ import {
 
 import container from '/imports/common/Container';
 import {t, PT} from '/imports/common/Translation';
-import Loading from '../../../components/Loading/Loading';
+import {Loading} from '../../../components/Loading/Loading';
 import FormView from './FormView';
 import Models from '/imports/collections/Models/Models';
 import {myModel} from '/imports/common/Model';

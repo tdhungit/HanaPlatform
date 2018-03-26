@@ -10,7 +10,7 @@ import Countdown from 'react-countdown-now';
 import container from '/imports/common/Container';
 import {t, T, PT} from '/imports/common/Translation';
 import SysCompanies from '/imports/collections/SysCompanies/SysCompanies';
-import Loading from '../../components/Loading/Loading';
+import {Loading} from '../../components/Loading/Loading';
 
 class Index extends Component {
     componentWillMount() {

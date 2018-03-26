@@ -9,7 +9,7 @@ import {
 import {Link} from 'react-router-dom';
 
 import container from '/imports/common/Container';
-import Loading from '../../components/Loading/Loading';
+import {Loading} from '../../components/Loading/Loading';
 import {t, T, PT} from '/imports/common/Translation';
 import Models from '/imports/collections/Models/Models';
 

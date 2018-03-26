@@ -12,7 +12,7 @@ import {Link} from 'react-router-dom';
 
 import container from '/imports/common/Container';
 import {t, T, PT} from '/imports/common/Translation';
-import Loading from '../../../components/Loading/Loading';
+import {Loading} from '../../../components/Loading/Loading';
 import Models from '/imports/collections/Models/Models';
 import {myModel} from '/imports/common/Model';
 import {FieldDetail} from '../components/DetailComponent';

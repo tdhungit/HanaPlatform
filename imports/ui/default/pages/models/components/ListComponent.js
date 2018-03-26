@@ -5,8 +5,7 @@ import {
     Row,
     Col,
     Table,
-    Alert,
-    Button
+    Alert
 } from 'reactstrap';
 import {Link} from 'react-router-dom';
 import {Bert} from 'meteor/themeteorchef:bert';
@@ -15,7 +14,7 @@ import BootstrapPaginator from 'react-bootstrap-pagination';
 
 import {T} from '/imports/common/Translation';
 import container from '/imports/common/Container';
-import Loading from '../../../components/Loading/Loading';
+import {Loading} from '../../../components/Loading/Loading';
 import {FieldView, FieldButton, FieldInput} from '../../../components/Fields/Fields';
 import {utilsHelper} from '../../../helpers/utils/utils';
 import {t} from '/imports/common/Translation';

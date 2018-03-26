@@ -12,8 +12,13 @@ import store from '../imports/ui/default/store';
 import App from '../imports/ui/default/layouts/App';
 
 Meteor.startup(() => {
+    const userSub = Meteor.subscribe('users.user');
+    const settingSub = Meteor.subscribe('settings.list');
+    const modelSub = Meteor.subscribe('models.list');
+
     Tracker.autorun((c) => {
-        if (Meteor.loggingIn() || !Roles.subscription.ready()) {
+        if (Meteor.loggingIn() || !Roles.subscription.ready()
+            || !userSub.ready() || !settingSub.ready() || !modelSub.ready()) {
             return;
         }
 

@@ -13,7 +13,7 @@ import HomeLayout from "./HomeLayout";
 
 import Public from '../components/Router/Public';
 import Authenticate from '../components/Router/Authenticate';
-import Loading from '../components/Loading/Loading';
+import {AppLoading} from '../components/Loading/Loading';
 
 import Login from '../pages/auth/Login';
 import Signup from '../pages/auth/Signup';
@@ -26,7 +26,7 @@ import ResetPassword from '../pages/auth/ResetPassword';
 class App extends Component {
     static propTypes = {
         loggingIn: PropTypes.bool,
-        authenticated: PropTypes.bool,
+        authenticated: PropTypes.bool
     };
 
     render() {
@@ -34,7 +34,7 @@ class App extends Component {
         return (
             <Router>
                 <div className="HanaPlatform">
-                    {appProps.app.loading ? <Loading/> : null}
+                    {appProps.app.loading ? <AppLoading/> : null}
                     <Switch>
                         <Public exact path="/signup" component={Signup} {...appProps} />
                         <Public exact path="/login" component={Login} {...appProps} />
@@ -74,10 +74,6 @@ const mapDispatchToProps = (dispatch) => {
  * Meteor subscribe default need data
  */
 export default container((props, onData) => {
-    Meteor.subscribe('users.user');
-    Meteor.subscribe('settings.list');
-    Meteor.subscribe('models.list');
-
     if (Roles.subscription.ready()) {
         const loggingIn = Meteor.loggingIn();
         const userId = Meteor.userId();
@@ -87,4 +83,4 @@ export default container((props, onData) => {
             authenticated: !loggingIn && !!userId
         });
     }
-}, connect(mapStateToProps, mapDispatchToProps)(App), {loadingHandler: () => (<Loading/>)});
+}, connect(mapStateToProps, mapDispatchToProps)(App), {loadingHandler: () => (<AppLoading/>)});
