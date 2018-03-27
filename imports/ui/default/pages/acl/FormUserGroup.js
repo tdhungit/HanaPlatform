@@ -71,7 +71,7 @@ class FormUserGroup extends Component {
                 if (error) {
                     Bert.alert(error.reason, 'danger');
                 } else {
-                    Bert.alert(t.__('Successful!'), 'success');
+                    Bert.alert(t.__('Successful'), 'success');
                     this.props.history.push('/manager/user-groups/' + groupId + '/detail');
                 }
             });

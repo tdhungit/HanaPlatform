@@ -7,11 +7,19 @@ import {
 } from 'reactstrap';
 
 import container from '/imports/common/Container';
-import {T, t, PT} from '/imports/common/Translation';
+import {t, PT} from '/imports/common/Translation';
 import FormUserGroup from './FormUserGroup';
 import UserGroups from '/imports/collections/UserGroups/UserGroups';
 
 class EditUserGroup extends Component {
+    static propTypes = {
+        userGroup: PropTypes.object
+    };
+
+    static defaultProps = {
+        userGroup: {}
+    };
+
     render() {
         const {
             userGroup
@@ -29,14 +37,6 @@ class EditUserGroup extends Component {
         );
     }
 }
-
-EditUserGroup.defaultProps = {
-    userGroup: {}
-};
-
-EditUserGroup.propTypes = {
-    userGroup: PropTypes.object
-};
 
 export default container((props, onData) => {
     const groupId = props.match.params._id;

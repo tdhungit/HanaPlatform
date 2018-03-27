@@ -13,12 +13,14 @@ import App from '../imports/ui/default/layouts/App';
 
 Meteor.startup(() => {
     const userSub = Meteor.subscribe('users.user');
+    const userGroupSub = Meteor.subscribe('userGroups.list');
     const settingSub = Meteor.subscribe('settings.list');
     const modelSub = Meteor.subscribe('models.list');
 
     Tracker.autorun((c) => {
         if (Meteor.loggingIn() || !Roles.subscription.ready()
-            || !userSub.ready() || !settingSub.ready() || !modelSub.ready()) {
+            || !userSub.ready() || !userGroupSub.ready()
+            || !settingSub.ready() || !modelSub.ready()) {
             return;
         }
 

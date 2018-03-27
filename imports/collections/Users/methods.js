@@ -5,7 +5,7 @@ import Users from '/imports/collections/Users/Users';
 
 Meteor.methods({
     // search user with keyword
-    'users.searchKeyword': (keyword, limit = 10) => {
+    'users.searchKeyword': function (keyword, limit = 10) {
         check(keyword, String);
         return Users.find({
             username: {$regex: ".*" + keyword + ".*"}
@@ -13,7 +13,7 @@ Meteor.methods({
             limit: limit
         }).fetch();
     },
-    'users.insert': (user) => {
+    'users.insert': function (user) {
         check(user, Object);
         Accounts.onCreateUser(function (options, user) {
             user.sysCompanyId = options.sysCompanyId;
@@ -23,7 +23,7 @@ Meteor.methods({
         });
         return Accounts.createUser(user);
     },
-    'users.update': (user) => {
+    'users.update': function (user) {
         check(user, Object);
         let userClean = user;
         if (user.email) {
@@ -40,7 +40,7 @@ Meteor.methods({
             throw new Meteor.Error('500', exception);
         }
     },
-    'users.updateAvatar': (userId, mediaId) => {
+    'users.updateAvatar': function (userId, mediaId) {
         const userData = {
             profile: {
                 avatar: mediaId

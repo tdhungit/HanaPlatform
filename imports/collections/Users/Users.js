@@ -1,6 +1,7 @@
 import {Meteor} from 'meteor/meteor';
 import CollectionBase from '/imports/common/CollectionBase';
 import SimpleSchema from 'simpl-schema';
+import UserGroups from '../UserGroups/UserGroups';
 
 const Users = Meteor.users;
 
@@ -18,6 +19,7 @@ Users.deny({
 
 const Schema = {};
 
+// schema of user country field
 Schema.UserCountry = new SimpleSchema({
     name: {
         type: String
@@ -28,6 +30,7 @@ Schema.UserCountry = new SimpleSchema({
     }
 });
 
+// schema of user profile field
 Schema.UserProfile = new SimpleSchema({
     avatar: {
         type: String,
@@ -69,6 +72,7 @@ Schema.UserProfile = new SimpleSchema({
     }
 });
 
+// user collection schema
 Schema.User = CollectionBase.schema({
     username: {
         type: String,
@@ -165,10 +169,27 @@ Schema.User = CollectionBase.schema({
 
 Users.attachSchema(Schema.User);
 
-Users.userInGroup = (userId) => {
-    console.log(userId);
+/**
+ * get all user child of this user
+ * @param userId
+ * @returns {{}}
+ */
+Users.childrenOfUser = (userId) => {
+    const user = Users.findOne(userId);
+    const groupId = user && user.group || '';
+    if (!groupId) {
+        return {siblings: [], children: []};
+    }
+
+    const group = UserGroups.findOne(groupId);
+    return group.users || {siblings: [], children: []};
 };
 
+/**
+ * check access of this user
+ * @param userId
+ * @returns {boolean}
+ */
 Users.checkAccess = (userId) => {
     return true;
 };
