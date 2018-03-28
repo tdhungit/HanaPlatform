@@ -73,7 +73,8 @@ class DetailComponent extends Component {
         title: PropTypes.string,
         model: PropTypes.object,
         record: PropTypes.object,
-        editLink: PropTypes.string
+        editLink: PropTypes.string,
+        headerLinks: PropTypes.array
     };
 
     renderFields(model, record) {
@@ -86,6 +87,26 @@ class DetailComponent extends Component {
         }
 
         return fieldRender;
+    }
+
+    renderHeaderLinks() {
+        const {record} = this.props;
+
+        if (!this.props.headerLinks) {
+            return null;
+        }
+
+        let headerLinks = [];
+        for (let idx in this.props.headerLinks) {
+            let link = this.props.headerLinks[idx];
+            headerLinks.push(
+                <Link key={link} to={vsprintf(link.url, [record._id])} title={link.title}>
+                    <i className={link.icon}/>
+                </Link>
+            );
+        }
+
+        return headerLinks;
     }
 
     render() {
@@ -105,6 +126,7 @@ class DetailComponent extends Component {
                     <i className={model.icon}/>
                     <strong>{this.props.title}</strong> {title}
                     <div className="card-actions">
+                        {this.renderHeaderLinks()}
                         <Link to={vsprintf(this.props.editLink, [record._id])} title={t.__('Edit')}>
                             <i className="fa fa-edit"/>
                         </Link>

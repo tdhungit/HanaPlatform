@@ -87,7 +87,7 @@ class ManagerLayout extends Component {
                                           component={CreateRole} {...appProps}/>
                             <Authenticate exact path="/manager/roles/:_id/edit"
                                           component={EditRole} {...appProps}/>
-                            <Authenticate exact path="/manager/roles/:name/permissions"
+                            <Authenticate exact path="/manager/roles/:_id/permissions"
                                           component={ViewPermissions} {...appProps}/>
                             <Authenticate exact path="/manager/user-groups" 
                                           component={ViewUserGroups} {...appProps}/>

@@ -17,6 +17,7 @@ import {Meteor} from 'meteor/meteor';
 import {coreCollections} from '/imports/collections/collections';
 import {permissionsAclTypes} from '/imports/collections/ACLPermissions/config';
 import ACLPermissions from '/imports/collections/ACLPermissions/ACLPermissions';
+import ACLRoles from '/imports/collections/ACLRoles/ACLRoles';
 import {T, t, PT} from '/imports/common/Translation';
 import {SelectHelper} from '../../helpers/inputs/SelectHelper';
 import container from '/imports/common/Container';
@@ -24,12 +25,12 @@ import {Bert} from 'meteor/themeteorchef:bert';
 
 class ViewPermissions extends Component {
     static propTypes = {
-        role: PropTypes.string,
+        role: PropTypes.object,
         permissions: PropTypes.object
     };
 
     static defaultProps = {
-        role: '',
+        role: {},
         permissions: {}
     };
 
@@ -80,7 +81,7 @@ class ViewPermissions extends Component {
     handleSubmit() {
         const {role} = this.props;
 
-        Meteor.call('aclPermissions.update', this.state.permissions, role, (error) => {
+        Meteor.call('aclPermissions.update', this.state.permissions, role._id, (error) => {
             if (error) {
                 Bert.alert(error.reason, 'danger');
             } else {
@@ -90,19 +91,18 @@ class ViewPermissions extends Component {
     }
 
     render() {
-        const {
-            role
-        } = this.props;
+        const {role} = this.props;
 
         return (
             <div className="acl-ViewPermissions animated fadeIn">
-                <PT title={role}/>
+                <PT title={role.name}/>
                 <Row>
                     <Col>
                         <Card>
                             <CardHeader>
+                                <i className="fa fa-key"/>
                                 <strong><T>View Permission</T></strong>&nbsp;
-                                {role}
+                                {role.name}
                             </CardHeader>
                             <CardBody>
                                 <Table responsive hover className="table-outline">
@@ -128,9 +128,8 @@ class ViewPermissions extends Component {
                                                                className="switch-input"
                                                                checked={(this.state.permissions[collection] && this.state.permissions[collection].Access) ? true : false}
                                                                onChange={this.handleInputChange}/>
-                                                        <span className="switch-label" data-on="On"
-                                                              data-off="Off"></span>
-                                                        <span className="switch-handle"></span>
+                                                        <span className="switch-label" data-on="On" data-off="Off"/>
+                                                        <span className="switch-handle"/>
                                                     </Label>
                                                 </td>
                                                 <td>
@@ -171,12 +170,12 @@ class ViewPermissions extends Component {
                             </CardBody>
                             <CardFooter>
                                 <Button type="button" size="sm" color="primary" onClick={this.handleSubmit.bind(this)}>
-                                    <i className="fa fa-dot-circle-o"></i>&nbsp;
+                                    <i className="fa fa-dot-circle-o"/>&nbsp;
                                     <T>Save</T>
                                 </Button>
                                 <Button type="reset" size="sm" color="danger"
                                         onClick={() => this.props.history.push('/manager/roles')}>
-                                    <i className="fa fa-ban"></i> <T>Cancel</T>
+                                    <i className="fa fa-ban"/> <T>Cancel</T>
                                 </Button>
                             </CardFooter>
                         </Card>
@@ -188,11 +187,14 @@ class ViewPermissions extends Component {
 }
 
 export default container((props, onData) => {
-    const role = props.match.params.name;
-    const subscription = Meteor.subscribe('aclPermissions.detail', role);
-    if (subscription && subscription.ready()) {
+    const roleId = props.match.params._id;
+    const roleSub = Meteor.subscribe('aclRoles.detail', roleId);
+    const permissionsSub = Meteor.subscribe('aclPermissions.detail', roleId);
+    if (roleSub.ready() && permissionsSub.ready()) {
+        const role = ACLRoles.findOne(roleId);
+
         let permissions = {};
-        const permissionDetail = ACLPermissions.find({role: role}).fetch();
+        const permissionDetail = ACLPermissions.find({roleId: roleId}).fetch();
         for (let idx in permissionDetail) {
             let permission = permissionDetail[idx];
             permissions[permission.model] = permission;

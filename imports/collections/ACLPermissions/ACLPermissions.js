@@ -34,9 +34,9 @@ const PermissionsSchema = CollectionBase.schema({
             return this.value;
         },
     },
-    role: { // ACLRole
+    roleId: { // ACLRole
         type: String,
-        label: 'Role name'
+        label: 'Role ID'
     },
     model: {
         type: String,

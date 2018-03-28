@@ -152,8 +152,9 @@ Schema.User = CollectionBase.schema({
     // user group
     // user group for access data
     // relate with UserGroup Collection
-    group: {
+    groupId: {
         type: String,
+        label: 'Group ID',
         required: true
     },
     // user is admin
@@ -175,6 +176,10 @@ Users.attachSchema(Schema.User);
  * @returns {{}}
  */
 Users.childrenOfUser = (selector) => {
+    if (!selector) {
+        return {siblings: [], children: []};
+    }
+
     let user = {};
     if (typeof selector === 'string') {
         const userId = selector;
@@ -183,7 +188,7 @@ Users.childrenOfUser = (selector) => {
         user = selector;
     }
 
-    const groupId = user && user.group || '';
+    const groupId = user && user.groupId || '';
     if (!groupId) {
         return {siblings: [], children: []};
     }
@@ -198,6 +203,10 @@ Users.childrenOfUser = (selector) => {
  * @returns {boolean}
  */
 Users.checkAccess = (selector) => {
+    if (!selector) {
+        return false;
+    }
+
     let user = {};
     if (typeof selector === 'string') {
         const userId = selector;

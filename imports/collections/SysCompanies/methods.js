@@ -47,7 +47,7 @@ Meteor.methods({
             if (groupId) {
                 let userAdmin = user;
                 userAdmin.sysCompanyId = companyId;
-                userAdmin.group = groupId;
+                userAdmin.groupId = groupId;
                 userAdmin.isAdmin = true;
                 if (installation) {
                     userAdmin.isDeveloper = true;
@@ -55,7 +55,7 @@ Meteor.methods({
 
                 Accounts.onCreateUser(function (options, user) {
                     user.sysCompanyId = options.sysCompanyId;
-                    user.group = options.group;
+                    user.groupId = options.groupId;
                     user.isAdmin = options.isAdmin;
                     user.isDeveloper = options.isDeveloper;
                     return user;

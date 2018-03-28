@@ -20,15 +20,17 @@ const Authenticate = ({loggingIn, authenticated, component, ...rest}) => (
             return <Loading/>;
         }
 
+        if (!authenticated) {
+            return <Redirect to="/login"/>;
+        }
+
         // check permission
         const isAccess = Users.checkAccess(Meteor.userId());
         console.log(Users.childrenOfUser(Meteor.userId()));
 
-        return authenticated
-            ? isAccess
-                ? (React.createElement(component, {...props, ...state, loggingIn, authenticated}))
-                : (<NoAccess/>)
-            : (<Redirect to="/login"/>);
+        return isAccess
+            ? (React.createElement(component, {...props, ...state, loggingIn, authenticated}))
+            : (<NoAccess/>);
     }}/>
 );
 

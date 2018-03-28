@@ -18,6 +18,14 @@ class ViewRole extends Component {
 
         const model = Models.getModel('Users') || aclRoleLayouts;
 
+        const headerLinks = [
+            {
+                title: t.__('Permissions'),
+                url: "/manager/roles/%s/permissions",
+                icon: "fa fa-key"
+            }
+        ];
+
         return (
             <div className="acl-ViewRole animated fadeIn">
                 <PT title={t.__('View Role') + ': ' + role.name}/>
@@ -27,7 +35,8 @@ class ViewRole extends Component {
                             title={t.__('View Role')}
                             model={model}
                             record={role}
-                            editLink="/manager/roles/%s/edit"/>
+                            editLink="/manager/roles/%s/edit"
+                            headerLinks={headerLinks}/>
                     </Col>
                 </Row>
             </div>

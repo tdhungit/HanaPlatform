@@ -13,7 +13,7 @@ Meteor.publish('users.user', function () {
             _id: 1,
             sysCompanyId: 1,
             settings: 1,
-            group: 1,
+            groupId: 1,
             isAdmin: 1,
             isDeveloper: 1
         }

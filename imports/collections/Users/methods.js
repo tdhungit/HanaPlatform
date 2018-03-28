@@ -17,7 +17,7 @@ Meteor.methods({
         check(user, Object);
         Accounts.onCreateUser(function (options, user) {
             user.sysCompanyId = options.sysCompanyId;
-            user.group = options.group;
+            user.groupId = options.groupId;
             user.isAdmin = options.isAdmin;
             return user;
         });
