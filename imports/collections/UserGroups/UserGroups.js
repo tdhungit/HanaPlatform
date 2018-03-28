@@ -48,7 +48,7 @@ class UserGroupsCollection extends CollectionBase {
 
         if (groupId) {
             // user in parent group
-            const users = Users.find({group: groupId}).fetch();
+            const users = Users.find({groupId: groupId}).fetch();
             if (users.length > 0) {
                 for (let idx in users) {
                     let user = users[idx];

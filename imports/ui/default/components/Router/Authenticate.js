@@ -26,6 +26,7 @@ const Authenticate = ({loggingIn, authenticated, component, ...rest}) => (
 
         // check permission
         const isAccess = Users.checkAccess(Meteor.user());
+        console.log(component.name);
         console.log(Users.childrenOfUser(Meteor.user()));
         console.log(Users.userPermissions(Meteor.user()));
 
