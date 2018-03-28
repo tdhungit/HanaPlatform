@@ -171,11 +171,18 @@ Users.attachSchema(Schema.User);
 
 /**
  * get all user child of this user
- * @param userId
+ * @param selector userId or current user
  * @returns {{}}
  */
-Users.childrenOfUser = (userId) => {
-    const user = Users.findOne(userId);
+Users.childrenOfUser = (selector) => {
+    let user = {};
+    if (typeof user === 'string') {
+        const userId = selector;
+        user = Users.findOne(userId);
+    } else {
+        user = selector;
+    }
+
     const groupId = user && user.group || '';
     if (!groupId) {
         return {siblings: [], children: []};
@@ -187,11 +194,27 @@ Users.childrenOfUser = (userId) => {
 
 /**
  * check access of this user
- * @param userId
+ * @param userId userId or current user
  * @returns {boolean}
  */
-Users.checkAccess = (userId) => {
-    return true;
+Users.checkAccess = (selector) => {
+    let user = {};
+    if (typeof user === 'string') {
+        const userId = selector;
+        user = Users.findOne(userId);
+    } else {
+        user = selector;
+    }
+
+    if (user.isDeveloper) {
+        return true;
+    }
+
+    if (user.isAdmin) {
+        return true
+    }
+
+    return false;
 };
 
 export default Users;
