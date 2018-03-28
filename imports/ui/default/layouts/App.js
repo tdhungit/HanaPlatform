@@ -12,6 +12,7 @@ import ManagerLayout from "./ManagerLayout";
 import HomeLayout from "./HomeLayout";
 
 import Public from '../components/Router/Public';
+import Authenticate from '../components/Router/Authenticate';
 import {AppLoading} from '../components/Loading/Loading';
 
 import Login from '../pages/auth/Login';
@@ -40,7 +41,7 @@ class App extends Component {
                         <Route exact path="/recover-password" component={RecoverPassword}/>
                         <Route exact path="/reset-password/:token" component={ResetPassword}/>
 
-                        <Route path="/manager" component={ManagerLayout} {...appProps}/>
+                        <Authenticate path="/manager" component={ManagerLayout} {...appProps}/>
                         <Route path="/" component={HomeLayout} {...appProps}/>
                     </Switch>
                 </div>

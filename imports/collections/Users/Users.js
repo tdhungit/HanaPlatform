@@ -176,7 +176,7 @@ Users.attachSchema(Schema.User);
  */
 Users.childrenOfUser = (selector) => {
     let user = {};
-    if (typeof user === 'string') {
+    if (typeof selector === 'string') {
         const userId = selector;
         user = Users.findOne(userId);
     } else {
@@ -199,7 +199,7 @@ Users.childrenOfUser = (selector) => {
  */
 Users.checkAccess = (selector) => {
     let user = {};
-    if (typeof user === 'string') {
+    if (typeof selector === 'string') {
         const userId = selector;
         user = Users.findOne(userId);
     } else {
