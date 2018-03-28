@@ -180,12 +180,10 @@ Users.childrenOfUser = (selector) => {
         return {siblings: [], children: []};
     }
 
-    let user = {};
+    let user = selector;
     if (typeof selector === 'string') {
         const userId = selector;
         user = Users.findOne(userId);
-    } else {
-        user = selector;
     }
 
     const groupId = user && user.groupId || '';
@@ -207,12 +205,10 @@ Users.checkAccess = (selector) => {
         return false;
     }
 
-    let user = {};
+    let user = selector;
     if (typeof selector === 'string') {
         const userId = selector;
         user = Users.findOne(userId);
-    } else {
-        user = selector;
     }
 
     if (user.isDeveloper) {

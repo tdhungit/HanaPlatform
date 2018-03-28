@@ -1,4 +1,6 @@
 import CollectionBase from '/imports/common/CollectionBase';
+import Users from '/imports/collections/Users/Users';
+import UserGroups from '/imports/collections/UserGroups/UserGroups';
 
 class PermissionsCollection extends CollectionBase {
     beforeInsert(doc) {
@@ -8,6 +10,32 @@ class PermissionsCollection extends CollectionBase {
         }
 
         return true;
+    }
+
+    /**
+     * publication acl permission for user
+     * @param selector
+     * @returns {*}
+     */
+    publishForUser(selector) {
+        let user = selector;
+        if (typeof selector === 'string') {
+            const userId = selector;
+            user = Users.findOne(userId);
+        }
+
+        const groupId = user && user.groupId || '';
+        if (!groupId) {
+            return false;
+        }
+
+        const group = UserGroups.findOne(groupId);
+        const roleId = group && group.roleId || '';
+        if (!groupId) {
+            return false;
+        }
+
+        return ACLPermissions.publish(user, {roleId: roleId});
     }
 }
 

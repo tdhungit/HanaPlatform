@@ -116,10 +116,12 @@ class CollectionBase extends Mongo.Collection {
     findOne(query = '', options = {}) {
         let selector = {};
 
-        if (typeof query === "string") {
-            selector = {_id: query};
-        } else {
-            selector = query;
+        if (query) {
+            if (typeof query === "string") {
+                selector = {_id: query};
+            } else {
+                selector = query;
+            }
         }
 
         if (Meteor.isClient) {
@@ -141,10 +143,12 @@ class CollectionBase extends Mongo.Collection {
     find(query = '', options = {}) {
         let selector = {};
 
-        if (typeof query === "string") {
-            selector = {_id: query};
-        } else {
-            selector = query;
+        if (query) {
+            if (typeof query === "string") {
+                selector = {_id: query};
+            } else {
+                selector = query;
+            }
         }
 
         if (Meteor.isClient) {
@@ -167,10 +171,12 @@ class CollectionBase extends Mongo.Collection {
     publish(user, query = '', options = {}) {
         let selector = {};
 
-        if (typeof query === "string") {
-            selector = {_id: query};
-        } else {
-            selector = query;
+        if (query) {
+            if (typeof query === "string") {
+                selector = {_id: query};
+            } else {
+                selector = query;
+            }
         }
 
         selector.sysCompanyId = '';

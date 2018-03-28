@@ -50,10 +50,12 @@ class CollectionAssign extends CollectionBase {
     findOne(query = '', options = {}) {
         let selector = {};
 
-        if (typeof query === "string") {
-            selector = {_id: query};
-        } else {
-            selector = query;
+        if (query) {
+            if (typeof query === "string") {
+                selector = {_id: query};
+            } else {
+                selector = query;
+            }
         }
 
         if (Meteor.isClient) {
@@ -72,10 +74,12 @@ class CollectionAssign extends CollectionBase {
     find(query = '', options = {}) {
         let selector = {};
 
-        if (typeof query === "string") {
-            selector = {_id: query};
-        } else {
-            selector = query;
+        if (query) {
+            if (typeof query === "string") {
+                selector = {_id: query};
+            } else {
+                selector = query;
+            }
         }
 
         if (Meteor.isClient) {
@@ -95,10 +99,12 @@ class CollectionAssign extends CollectionBase {
     publish(user, query = '', options = {}) {
         let selector = {};
 
-        if (typeof query === "string") {
-            selector = {_id: query};
-        } else {
-            selector = query;
+        if (query) {
+            if (typeof query === "string") {
+                selector = {_id: query};
+            } else {
+                selector = query;
+            }
         }
 
         selector.assignedId = user._id;

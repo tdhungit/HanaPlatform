@@ -126,6 +126,10 @@ const UserGroupsSchema = CollectionBase.schema({
     "users.children.$": {
         type: String,
         optional: true
+    },
+    roleId: {
+        type: String,
+        optional: true
     }
 });
 

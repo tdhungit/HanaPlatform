@@ -13,11 +13,23 @@ import {Link} from 'react-router-dom';
 import container from '/imports/common/Container';
 import {T, t, PT} from '/imports/common/Translation';
 import UserGroups from '/imports/collections/UserGroups/UserGroups';
+import ACLRoles from '../../../../collections/ACLRoles/ACLRoles';
 
 class ViewUserGroup extends Component {
+    static propTypes = {
+        userGroup: PropTypes.object,
+        role: PropTypes.object
+    };
+
+    static defaultProps = {
+        userGroup: {},
+        role: {}
+    };
+
     render() {
         const {
-            userGroup
+            userGroup,
+            role
         } = this.props;
 
         return (
@@ -49,6 +61,10 @@ class ViewUserGroup extends Component {
                                     <dt className="col-sm-3"><T>Parent</T></dt>
                                     <dd className="col-sm-9">{userGroup.parentObject.name}</dd>
                                 </dl>
+                                <dl className="row">
+                                    <dt className="col-sm-3"><T>Role</T></dt>
+                                    <dd className="col-sm-9">{role && role.name || 'N/A'}</dd>
+                                </dl>
                             </CardBody>
                         </Card>
                     </Col>
@@ -58,18 +74,11 @@ class ViewUserGroup extends Component {
     }
 }
 
-ViewUserGroup.defaultProps = {
-    userGroup: {}
-};
-
-ViewUserGroup.propTypes = {
-    userGroup: PropTypes.object
-};
-
 export default container((props, onData) => {
     const groupId = props.match.params._id;
-    const subscription = Meteor.subscribe('userGroups.detail', groupId);
-    if (subscription.ready()) {
+    const groupSub = Meteor.subscribe('userGroups.detail', groupId);
+    const rolesSub = Meteor.subscribe('aclRoles.list');
+    if (groupSub.ready() && rolesSub.ready()) {
         let userGroup = UserGroups.findOne(groupId);
         userGroup.parentObject = {};
         if (!userGroup.parent || userGroup.parent == 'ROOT') {
@@ -84,8 +93,15 @@ export default container((props, onData) => {
                 name: parent.name
             };
         }
+
+        let role = {};
+        if (userGroup.roleId) {
+            role = ACLRoles.findOne(userGroup.roleId);
+        }
+
         onData(null, {
-            userGroup: userGroup
+            userGroup: userGroup,
+            role: role
         });
     }
 }, ViewUserGroup);

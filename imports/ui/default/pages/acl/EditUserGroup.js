@@ -10,19 +10,23 @@ import container from '/imports/common/Container';
 import {t, PT} from '/imports/common/Translation';
 import FormUserGroup from './FormUserGroup';
 import UserGroups from '/imports/collections/UserGroups/UserGroups';
+import ACLRoles from '/imports/collections/ACLRoles/ACLRoles';
 
 class EditUserGroup extends Component {
     static propTypes = {
-        userGroup: PropTypes.object
+        userGroup: PropTypes.object,
+        aclRoles: PropTypes.array
     };
 
     static defaultProps = {
-        userGroup: {}
+        userGroup: {},
+        aclRoles: []
     };
 
     render() {
         const {
-            userGroup
+            userGroup,
+            aclRoles
         } = this.props;
 
         return (
@@ -30,7 +34,10 @@ class EditUserGroup extends Component {
                 <PT title={userGroup.name}/>
                 <Row>
                     <Col>
-                        <FormUserGroup userGroup={userGroup} title={t.__('Edit')} slogan={userGroup.name}/>
+                        <FormUserGroup userGroup={userGroup}
+                                       aclRoles={aclRoles}
+                                       title={t.__('Edit')}
+                                       slogan={userGroup.name}/>
                     </Col>
                 </Row>
             </div>
@@ -40,10 +47,12 @@ class EditUserGroup extends Component {
 
 export default container((props, onData) => {
     const groupId = props.match.params._id;
-    const subscription = Meteor.subscribe('userGroups.detail', groupId);
-    if (subscription && subscription.ready()) {
+    const groupSub = Meteor.subscribe('userGroups.detail', groupId);
+    const rolesSub = Meteor.subscribe('aclRoles.list');
+    if (groupSub.ready() && rolesSub.ready()) {
         onData(null, {
-            userGroup: UserGroups.findOne(groupId)
+            userGroup: UserGroups.findOne(groupId),
+            aclRoles: ACLRoles.find().fetch()
         });
     }
 }, EditUserGroup);

@@ -81,7 +81,8 @@ class FormUserGroup extends Component {
     render() {
         const {
             title,
-            slogan
+            slogan,
+            aclRoles
         } = this.props;
 
         const existing = this.props.userGroup && this.props.userGroup._id;
@@ -97,15 +98,19 @@ class FormUserGroup extends Component {
                         <Col xs="12">
                             <FormGroup>
                                 <Label><T>Group name</T></Label>
-                                <Input type="text" name="name" value={this.state.userGroup.name}
-                                       placeholder={t.__('Enter here')} onChange={this.handleInputChange}/>
+                                <Input type="text" name="name"
+                                       value={this.state.userGroup.name}
+                                       placeholder={t.__('Enter here')}
+                                       onChange={this.handleInputChange}/>
                             </FormGroup>
                         </Col>
                         <Col xs="12">
                             <FormGroup>
                                 <Label><T>Description</T></Label>
-                                <Input type="textarea" name="description" value={this.state.userGroup.description}
-                                       placeholder={t.__('Enter here')} onChange={this.handleInputChange}/>
+                                <Input type="textarea" name="description"
+                                       value={this.state.userGroup.description}
+                                       placeholder={t.__('Enter here')}
+                                       onChange={this.handleInputChange}/>
                             </FormGroup>
                         </Col>
                     </Row>
@@ -114,13 +119,25 @@ class FormUserGroup extends Component {
                             <FormGroup>
                                 <Label><T>Parent</T></Label>
                                 <SelectHelper name="parent" options={this.state.groupRoot}
-                                              value={this.state.userGroup.parent} onChange={this.handleInputChange}/>
+                                              value={this.state.userGroup.parent}
+                                              onChange={this.handleInputChange}/>
+                            </FormGroup>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <FormGroup>
+                                <Label><T>ACL Role</T></Label>
+                                <SelectHelper name="roleId" options={aclRoles}
+                                              value={this.state.userGroup.roleId}
+                                              onChange={this.handleInputChange}/>
                             </FormGroup>
                         </Col>
                     </Row>
                 </CardBody>
                 <CardFooter>
-                    <Button type="button" size="sm" color="primary" onClick={this.handleSubmit.bind(this)}>
+                    <Button type="button" size="sm" color="primary"
+                            onClick={this.handleSubmit.bind(this)}>
                         <i className="fa fa-dot-circle-o"></i>&nbsp;
                         {existing ? <T>Update</T> : <T>Create</T>}
                     </Button>
