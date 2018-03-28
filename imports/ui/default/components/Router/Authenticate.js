@@ -25,8 +25,9 @@ const Authenticate = ({loggingIn, authenticated, component, ...rest}) => (
         }
 
         // check permission
-        const isAccess = Users.checkAccess(Meteor.userId());
-        console.log(Users.childrenOfUser(Meteor.userId()));
+        const isAccess = Users.checkAccess(Meteor.user());
+        console.log(Users.childrenOfUser(Meteor.user()));
+        console.log(Users.userPermissions(Meteor.user()));
 
         return isAccess
             ? (React.createElement(component, {...props, ...state, loggingIn, authenticated}))

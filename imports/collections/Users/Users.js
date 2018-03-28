@@ -2,6 +2,7 @@ import {Meteor} from 'meteor/meteor';
 import CollectionBase from '/imports/common/CollectionBase';
 import SimpleSchema from 'simpl-schema';
 import UserGroups from '../UserGroups/UserGroups';
+import ACLPermissions from '../ACLPermissions/ACLPermissions';
 
 const Users = Meteor.users;
 
@@ -196,8 +197,38 @@ Users.childrenOfUser = (selector) => {
 };
 
 /**
+ * get user permissions
+ * @param selector
+ * @returns {{}}
+ */
+Users.userPermissions = (selector) => {
+    if (!selector) {
+        return {};
+    }
+
+    let user = selector;
+    if (typeof selector === 'string') {
+        const userId = selector;
+        user = Users.findOne(userId);
+    }
+
+    const groupId = user && user.groupId || '';
+    if (!groupId) {
+        return {};
+    }
+
+    const group = UserGroups.findOne(groupId);
+    const roleId = group && group.roleId || '';
+    if (!roleId) {
+        return {};
+    }
+
+    return ACLPermissions.rolePermissions(roleId);
+};
+
+/**
  * check access of this user
- * @param userId userId or current user
+ * @param userId user id or current user
  * @returns {boolean}
  */
 Users.checkAccess = (selector) => {

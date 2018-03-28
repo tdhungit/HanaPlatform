@@ -37,6 +37,22 @@ class PermissionsCollection extends CollectionBase {
 
         return ACLPermissions.publish(user, {roleId: roleId});
     }
+
+    /**
+     * get role permission
+     * @param roleId
+     * @returns {{}}
+     */
+    rolePermissions(roleId) {
+        let rolePermissions = {};
+        const permissions = this.find({roleId: roleId}).fetch();
+        for (let idx in permissions) {
+            let permission = permissions[idx];
+            rolePermissions[permission.model] = permission;
+        }
+
+        return rolePermissions;
+    }
 }
 
 const ACLPermissions = new PermissionsCollection('acl_permissions');
