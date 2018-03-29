@@ -10,8 +10,8 @@ import {
 import container from '/imports/common/Container';
 import {T, t, PT} from '/imports/common/Translation';
 import Users from '/imports/collections/Users/Users';
-import Models from '/imports/collections/Models/Models';
 import {userLayouts} from '/imports/collections/Users/layouts';
+import Models from '/imports/collections/Models/Models';
 import FormComponent from '../models/components/FormComponent';
 
 class EditUser extends Component {
@@ -23,13 +23,13 @@ class EditUser extends Component {
         const {user} = this.props;
 
         if (!user || !user._id) {
-            return <Alert color="warning"><T>No Data</T></Alert>
+            return <Alert color="warning"><T>No Data</T></Alert>;
         }
 
         const model = Models.getModel('Users') || userLayouts;
 
         return (
-            <div className="users-EditUser animated fadeIn">
+            <div className="EditUser animated fadeIn">
                 <PT title={user.username}/>
                 <Row>
                     <Col xs="12" lg="12">

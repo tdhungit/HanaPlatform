@@ -12,6 +12,22 @@ export default {
     ],
     last_items: [
         {
+            name: 'Companies',
+            icon: 'fa fa-building',
+            children: [
+                {
+                    name: 'View Companies',
+                    url: '/manager/companies',
+                    icon: 'fa fa-building'
+                },
+                {
+                    name: 'View Branches',
+                    url: '/manager/branch-offices',
+                    icon: 'fa fa-building'
+                }
+            ]
+        },
+        {
             name: 'Users',
             icon: 'icon-user',
             children: [

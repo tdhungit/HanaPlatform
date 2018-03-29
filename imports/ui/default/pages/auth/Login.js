@@ -49,7 +49,7 @@ class Login extends Component {
 
     render() {
         return (
-            <div className="auth-Login app flex-row align-items-center">
+            <div className="Login app flex-row align-items-center">
                 <PT title={t.__('Login')}/>
                 <Container>
                     <Row className="justify-content-center">

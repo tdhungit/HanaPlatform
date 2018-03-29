@@ -10,7 +10,7 @@ import FormUserGroup from './FormUserGroup';
 class CreateUserGroup extends Component {
     render() {
         return (
-            <div className="acl-FormUserGroup animated fadeIn">
+            <div className="FormUserGroup animated fadeIn">
                 <PT title={t.__('Create User Group')}/>
                 <Row>
                     <Col>

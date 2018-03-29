@@ -103,7 +103,7 @@ class ViewMainMenus extends Component {
 
     render() {
         return (
-            <div className="mainmenu-ViewMainMenus animated fadeIn">
+            <div className="ViewMainMenus animated fadeIn">
                 <PT title={t.__('View Main Menus')}/>
                 <Row>
                     <Col>

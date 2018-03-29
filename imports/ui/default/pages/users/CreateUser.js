@@ -13,7 +13,7 @@ class CreateUser extends Component {
     render() {
         const model = Models.getModel('Users') || userLayouts;
         return (
-            <div className="users-CreateUser animated fadeIn">
+            <div className="CreateUser animated fadeIn">
                 <PT title={t.__("Create new user")}/>
                 <Row>
                     <Col xs="12" lg="12">

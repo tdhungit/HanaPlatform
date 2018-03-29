@@ -20,7 +20,7 @@ class EditActivity extends Component {
         }
 
         return (
-            <div className="activities-EditActivity animated fadeIn">
+            <div className="EditActivity animated fadeIn">
                 <PT title={activity.name}/>
                 <Row>
                     <Col xs="12" lg="12">

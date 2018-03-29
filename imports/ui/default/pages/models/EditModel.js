@@ -13,7 +13,7 @@ import FormModel from './FormModel';
 class EditModel extends Component {
     render() {
         return (
-            <div className="models-CreateModel animated fadeIn">
+            <div className="CreateModel animated fadeIn">
                 <PT title={t.__('Update Model') + ': ' + this.props.model.collection}/>
                 <Row>
                     <Col>

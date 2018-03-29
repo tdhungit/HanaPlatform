@@ -28,7 +28,7 @@ class ViewModels extends Component {
 
     render() {
         return (
-            <div className="models-ViewModels">
+            <div className="ViewModels">
                 <PT title={t.__('View Models')}/>
                 <Row>
                     <Col>

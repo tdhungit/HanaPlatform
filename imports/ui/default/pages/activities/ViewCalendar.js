@@ -72,7 +72,7 @@ class ViewCalendar extends Component {
         };
 
         return (
-            <div className="activities-ViewCalendar animated fadeIn">
+            <div className="ViewCalendar animated fadeIn">
                 <PT title={t.__('View Calendar')}/>
                 <Card>
                     <CardHeader>
@@ -80,7 +80,7 @@ class ViewCalendar extends Component {
                         <strong><T>Calendar</T></strong>
                     </CardHeader>
                     <CardBody>
-                        <div className="activities-calendar">
+                        <div className="calendar">
                             <FullCalendar options={calendarOptions}/>
                         </div>
                     </CardBody>

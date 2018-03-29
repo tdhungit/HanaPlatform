@@ -171,6 +171,23 @@ Schema.User = CollectionBase.schema({
 
 Users.attachSchema(Schema.User);
 
+Users.pagination = (options = {}) => {
+    const limit = 20;
+
+    let filters = options && options.filters || {};
+    if (!filters.companyId) {
+        filters.companyId = Meteor.user().companyId;
+    }
+
+    return new Meteor.Pagination(Users, {
+        filters: filters,
+        sort: options && options.sort || {},
+        perPage: limit,
+        reactive: true,
+        debug: false
+    });
+};
+
 /**
  * get all user child of this user
  * @param selector userId or current user

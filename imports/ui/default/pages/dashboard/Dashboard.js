@@ -15,7 +15,7 @@ import {Form, FieldInput, FieldButton, RForm, RFieldInput, RFieldButton} from '.
 class Dashboard extends Component {
     render() {
         return (
-            <div className="index-Dashboard animated fadeIn">
+            <div className="Dashboard animated fadeIn">
                 <PT title={t.__('Dashboard')}/>
                 <Row>
                     <Col>

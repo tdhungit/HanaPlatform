@@ -65,7 +65,7 @@ class Signup extends Component {
 
     render() {
         return (
-            <div className="auth-Signup app flex-row align-items-center">
+            <div className="Signup app flex-row align-items-center">
                 <PT title={t.__('Signup')}/>
                 <Container>
                     <Row className="justify-content-center">

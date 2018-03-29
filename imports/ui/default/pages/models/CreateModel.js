@@ -10,7 +10,7 @@ import FormModel from './FormModel';
 class CreateModel extends Component {
     render() {
         return (
-            <div className="models-CreateModel animated fadeIn">
+            <div className="CreateModel animated fadeIn">
                 <PT title={t.__('Create new Model')}/>
                 <Row>
                     <Col>

@@ -32,7 +32,7 @@ class ViewModel extends Component {
 
     render() {
         return (
-            <div className="models-ViewModel animated fadeIn">
+            <div className="ViewModel animated fadeIn">
                 <PT title={this.state.model.collection}/>
                 <Row>
                     <Col>

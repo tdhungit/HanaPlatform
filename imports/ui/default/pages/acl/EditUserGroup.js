@@ -30,7 +30,7 @@ class EditUserGroup extends Component {
         } = this.props;
 
         return (
-            <div className="acl-EditUserGroup animated fadeIn">
+            <div className="EditUserGroup animated fadeIn">
                 <PT title={userGroup.name}/>
                 <Row>
                     <Col>

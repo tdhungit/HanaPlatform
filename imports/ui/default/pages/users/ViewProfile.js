@@ -103,7 +103,7 @@ class ViewProfile extends Component {
         const currentUser = Meteor.user();
 
         return (
-            <div className="users-ViewProfile animated fadeIn">
+            <div className="ViewProfile animated fadeIn">
                 <PT title={t.__('My Profile')}/>
                 <Row>
                     <Col xs="12" md="3" className="mb-3">

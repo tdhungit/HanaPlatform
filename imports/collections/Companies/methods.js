@@ -1,19 +1,20 @@
 import {Meteor} from 'meteor/meteor';
 import {check} from 'meteor/check';
 import {Accounts} from 'meteor/accounts-base';
-import SysCompanies from './SysCompanies';
+import Companies from './Companies';
+import BranchOffices from '../BranchOffices/BranchOffices';
 import UserGroups from '../UserGroups/UserGroups';
 
 Meteor.methods({
-    'sysCompanies.insert': function (company) {
+    'companies.insert': function (company) {
         check(company, Object);
-        return SysCompanies.insert(company);
+        return Companies.insert(company);
     },
-    'sysCompanies.update': function (company) {
+    'companies.update': function (company) {
         check(company, Object);
         try {
             const companyId = company._id;
-            SysCompanies.update(companyId, {$set: company});
+            Companies.update(companyId, {$set: company});
             return companyId;
         } catch (exception) {
             throw new Meteor.Error('500', exception);
@@ -22,31 +23,31 @@ Meteor.methods({
     // register a new sys company
     // company: company info for register
     // user: user admin info for register
-    'sysCompanies.register': function (company, user) {
+    'companies.register': function (company, user) {
         check(company, Object);
         check(user, Object);
 
         let installation = false;
-        const sysCompany = SysCompanies.findOne();
-        if (!sysCompany || !sysCompany._id) {
+        const existCompany = Companies.findOne();
+        if (!existCompany || !existCompany._id) {
             installation = true;
         }
 
         // insert company
-        const companyId = SysCompanies.insert(company);
+        const companyId = Companies.insert(company);
         if (companyId) {
             // insert a default group
             const defaultGroup = {
                 name: 'Default',
                 description: 'Default Group',
-                sysCompanyId: companyId
+                companyId: companyId
             };
 
             const groupId = UserGroups.insert(defaultGroup);
             // insert admin user
             if (groupId) {
                 let userAdmin = user;
-                userAdmin.sysCompanyId = companyId;
+                userAdmin.companyId = companyId;
                 userAdmin.groupId = groupId;
                 userAdmin.isAdmin = true;
                 if (installation) {
@@ -54,13 +55,21 @@ Meteor.methods({
                 }
 
                 Accounts.onCreateUser(function (options, user) {
-                    user.sysCompanyId = options.sysCompanyId;
+                    user.companyId = options.companyId;
                     user.groupId = options.groupId;
                     user.isAdmin = options.isAdmin;
                     user.isDeveloper = options.isDeveloper;
                     return user;
                 });
-                Accounts.createUser(userAdmin);
+                const userId = Accounts.createUser(userAdmin);
+
+                // insert a default branch office
+                const defaultBranchOffice = {
+                    name: 'Head Office',
+                    companyId: companyId,
+                    users: [userId]
+                };
+                BranchOffices.insert(defaultBranchOffice);
             }
 
             return companyId;

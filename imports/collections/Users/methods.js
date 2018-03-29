@@ -16,7 +16,7 @@ Meteor.methods({
     'users.insert': function (user) {
         check(user, Object);
         Accounts.onCreateUser(function (options, user) {
-            user.sysCompanyId = options.sysCompanyId;
+            user.companyId = options.companyId;
             user.groupId = options.groupId;
             user.isAdmin = options.isAdmin;
             return user;

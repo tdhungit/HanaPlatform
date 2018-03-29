@@ -81,7 +81,7 @@ class SystemSettings extends Component {
 
     render() {
         return (
-            <div className="settings-SystemSettings animated fadeIn">
+            <div className="SystemSettings animated fadeIn">
                 <PT title={t.__('System Settings')}/>
                 <Row>
                     <Col>

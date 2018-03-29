@@ -190,7 +190,7 @@ class AppListStringsSettings extends Component {
 
     render() {
         return (
-            <div className="settings-AppListStringsSettings animated fadeIn">
+            <div className="AppListStringsSettings animated fadeIn">
                 <PT title={t.__('Config Dropdown List')}/>
                 <Row>
                     <Col md="12">

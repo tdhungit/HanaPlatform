@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {Meteor} from 'meteor/meteor';
 import {
     Card,
     CardHeader,
@@ -15,22 +14,15 @@ import Models from '../../../../collections/Models/Models';
 
 class ViewActivities extends Component {
     componentWillMount() {
-        this.limit = 20;
-        const limit = this.limit;
-        this.pagination = new Meteor.Pagination(Activities, {
-            filters: {},
-            sort: {},
-            perPage: limit,
-            reactive: true,
-            debug: false
-        });
+        this.limit = Activities.getLimit();
+        this.pagination = Activities.pagination();
     }
 
     render() {
         const model = Models.getModel('Activities') || activityLayouts;
 
         return (
-            <div className="activities-ViewActivities animated fadeIn">
+            <div className="ViewActivities animated fadeIn">
                 <PT title={t.__('View Activities')}/>
                 <Card>
                     <CardHeader>

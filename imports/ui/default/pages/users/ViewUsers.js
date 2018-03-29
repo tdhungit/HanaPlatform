@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {Meteor} from 'meteor/meteor';
 import {
     Row,
     Col,
@@ -11,22 +10,14 @@ import {Link} from 'react-router-dom';
 
 import {T, t, PT} from '/imports/common/Translation';
 import Users from '/imports/collections/Users/Users';
-import ListComponent from '../models/components/ListComponent';
-import Models from '/imports/collections/Models/Models';
 import {userLayouts} from '/imports/collections/Users/layouts';
+import Models from '/imports/collections/Models/Models';
+import ListComponent from '../models/components/ListComponent';
 
 class ViewUsers extends Component {
     componentWillMount() {
         this.limit = 20;
-        const limit = this.limit;
-        this.pagination = new Meteor.Pagination(Users, {
-            name: 'users.paginatedList',
-            filters: {},
-            sort: {},
-            perPage: limit,
-            reactive: true,
-            debug: false
-        });
+        this.pagination = Users.pagination();
     }
 
     render() {
@@ -38,7 +29,7 @@ class ViewUsers extends Component {
         const model = Models.getModel('Users') || userLayouts;
 
         return (
-            <div className="users-Users animated fadeIn">
+            <div className="ViewUsers animated fadeIn">
                 <PT title={t.__('View users')}/>
                 <Row>
                     <Col xs="12" lg="12">
@@ -63,7 +54,7 @@ class ViewUsers extends Component {
                     </Col>
                 </Row>
             </div>
-        )
+        );
     }
 }
 

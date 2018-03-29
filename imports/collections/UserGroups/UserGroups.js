@@ -13,7 +13,7 @@ class UserGroupsCollection extends CollectionBase {
             children: []
         };
 
-        super.insert(doc, callback);
+        return super.insert(doc, callback);
     }
 
     /**

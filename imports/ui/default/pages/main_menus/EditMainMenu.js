@@ -30,7 +30,7 @@ class EditMainMenu extends Component {
         } = this.props;
 
         return (
-            <div className="mainmenu-EditMainMenu animated fadeIn">
+            <div className="EditMainMenu animated fadeIn">
                 <PT title={menu.name}/>
                 <Row>
                     <Col xs="12" lg="12">

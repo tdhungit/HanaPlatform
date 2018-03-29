@@ -14,7 +14,7 @@ class CreateRole extends Component {
         const model = Models.getModel('ACLRoles') || aclRoleLayouts;
         
         return (
-            <div className="acl-CreateRole animated fadeIn">
+            <div className="CreateRole animated fadeIn">
                 <PT title={t.__('Create Role')}/>
                 <Row>
                     <Col md="12">

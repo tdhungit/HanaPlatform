@@ -8,10 +8,10 @@ import {
 
 import container from '/imports/common/Container';
 import {t, PT} from '/imports/common/Translation';
-import Models from '../../../../collections/Models/Models';
+import Models from '/imports/collections/Models/Models';
 import Users from '/imports/collections/Users/Users';
-import DetailComponent from '../models/components/DetailComponent';
 import {userLayouts} from '/imports/collections/Users/layouts';
+import DetailComponent from '../models/components/DetailComponent';
 
 class ViewUser extends Component {
     static propTypes = {
@@ -24,7 +24,7 @@ class ViewUser extends Component {
         const model = Models.getModel('Users') || userLayouts;
 
         return (
-            <div className="users-ViewUser animated fadeIn">
+            <div className="ViewUser animated fadeIn">
                 <PT title={t.__('View User') + ': ' + user.username}/>
                 <Row>
                     <Col xs="12" lg="12">

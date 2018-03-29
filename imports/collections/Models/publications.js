@@ -3,21 +3,13 @@ import CollectionAssign from '/imports/common/CollectionAssign';
 import Models from './Models';
 import {publishPagination} from 'meteor/kurounin:pagination';
 
-Meteor.publish('models.list', function () {
-    if (!this.userId) {
-        return this.ready();
-    }
-
-    return Models.publish(Meteor.user());
-});
-
 // get custom model and add pagination
 const models = Models.find({type: 'custom'}).fetch();
 let collections = {};
 for (let idx in models) {
     let model = models[idx];
     if (model.collection) {
-        const collectionName = 'custom_' + model.sysCompanyId + '_' + model.collection;
+        const collectionName = 'custom_' + model.companyId + '_' + model.collection;
         let collection = new CollectionAssign(collectionName);
         // add schema
         if (model.schema) {
@@ -32,13 +24,21 @@ for (let idx in models) {
             filters: {},
             dynamic_filters: function () {
                 return {
-                    sysCompanyId: Meteor.user().sysCompanyId,
+                    companyId: Meteor.user().companyId,
                     assignedId: Meteor.userId()
                 }
             }
         });
     }
 }
+
+Meteor.publish('models.list', function () {
+    if (!this.userId) {
+        return this.ready();
+    }
+
+    return Models.publish(Meteor.user());
+});
 
 // we need set publish in here because we have all collections here. If we set other place, we will be duplicate collection init
 Meteor.publish('models.detailRecord', function (modelName, recordId) {

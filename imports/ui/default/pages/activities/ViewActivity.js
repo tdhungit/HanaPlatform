@@ -19,7 +19,7 @@ class ViewActivity extends Component {
         const model = Models.getModel('Users') || activityLayouts;
 
         return (
-            <div className="activities-ViewActivity">
+            <div className="ViewActivity">
                 <PT title={activity.name}/>
                 <Row>
                     <Col md="12">

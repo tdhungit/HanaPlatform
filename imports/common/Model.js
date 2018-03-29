@@ -1,13 +1,13 @@
+import {Meteor} from 'meteor/meteor';
 import CollectionAssign from '/imports/common/CollectionAssign';
 import Models from '/imports/collections/Models/Models';
-import {Meteor} from 'meteor/meteor';
 
 /**
  * Class core for models were created
  */
 class MyModel {
     /**
-     * get collection from model name
+     * get client collection from model name
      * @param modelName
      * @returns {*}
      */
@@ -21,7 +21,7 @@ class MyModel {
                 }
             }
 
-            const collectionName = 'custom_' + model.sysCompanyId + '_' + model.collection;
+            const collectionName = 'custom_' + model.companyId + '_' + model.collection;
             const collection = new CollectionAssign(collectionName);
             if (model.schema) {
                 const schemaObject = eval('(' + model.schema + ')');

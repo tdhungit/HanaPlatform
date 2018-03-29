@@ -1,5 +1,7 @@
-import '/imports/collections/SysCompanies/publications';
-import '/imports/collections/SysCompanies/methods';
+import '/imports/collections/Companies/publications';
+import '/imports/collections/Companies/methods';
+import '/imports/collections/BranchOffices/publications';
+import '/imports/collections/BranchOffices/methods';
 
 import '/imports/collections/Users/publications';
 import '/imports/collections/Users/methods';

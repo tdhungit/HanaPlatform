@@ -9,15 +9,15 @@ import {
 import {Link} from 'react-router-dom';
 
 import {T, t, PT} from '/imports/common/Translation';
-import ACLRoles from '/imports/collections/ACLRoles/ACLRoles';
-import ListComponent from '../models/components/ListComponent';
+import Companies from '/imports/collections/Companies/Companies';
+import {companyLayouts} from '/imports/collections/Companies/layouts';
 import Models from '/imports/collections/Models/Models';
-import {aclRoleLayouts} from '/imports/collections/ACLRoles/layouts';
+import ListComponent from '../models/components/ListComponent';
 
-class ViewRoles extends Component {
+class ViewCompanies extends Component {
     componentWillMount() {
-        this.limit = ACLRoles.getLimit();
-        this.pagination = ACLRoles.pagination();
+        this.limit = Companies.getLimit();
+        this.pagination = Companies.pagination();
     }
 
     render() {
@@ -26,19 +26,18 @@ class ViewRoles extends Component {
             limit
         } = this;
 
-        const model = Models.getModel('ACLRoles') || aclRoleLayouts;
+        const model = Models.getModel('Companies') || companyLayouts;
 
         return (
-            <div className="ViewRoles animated fadeIn">
-                <PT title={t.__('View Roles')}/>
+            <div className="ViewCompanies animated fadeIn">
+                <PT title={t.__('View users')}/>
                 <Row>
-                    <Col>
+                    <Col xs="12" lg="12">
                         <Card>
                             <CardHeader>
-                                <i className="fa fa-list"/>
-                                <strong><T>View Roles</T></strong>
+                                <i className="fa fa-align-justify"></i> <T>View Companies</T>
                                 <div className="card-actions">
-                                    <Link to={'/manager/roles/create'} title={t.__('Create')}>
+                                    <Link to={'/manager/companies/create'} title={t.__('Create')}>
                                         <i className="fa fa-plus-circle"/>
                                     </Link>
                                 </div>
@@ -48,8 +47,8 @@ class ViewRoles extends Component {
                                     model={model}
                                     pagination={pagination}
                                     limit={limit}
-                                    detailLink="/manager/roles/%s/detail"
-                                    editLink="/manager/roles/%s/edit"/>
+                                    detailLink="/manager/companies/%s/detail"
+                                    editLink="/manager/companies/%s/edit"/>
                             </CardBody>
                         </Card>
                     </Col>
@@ -59,4 +58,4 @@ class ViewRoles extends Component {
     }
 }
 
-export default ViewRoles;
+export default ViewCompanies;

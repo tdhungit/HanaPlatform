@@ -33,7 +33,7 @@ class ViewUserGroup extends Component {
         } = this.props;
 
         return (
-            <div className="acl-ViewUserGroup animated fadeIn">
+            <div className="ViewUserGroup animated fadeIn">
                 <PT title={userGroup.name}/>
                 <Row>
                     <Col>

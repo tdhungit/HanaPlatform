@@ -10,7 +10,7 @@ import FormActivity from './FormActivity';
 class CreateActivity extends Component {
     render() {
         return (
-            <div className="activities-CreateActivities animated fadeIn">
+            <div className="CreateActivities animated fadeIn">
                 <PT title={t.__('Create new activity')}/>
                 <Row>
                     <Col>

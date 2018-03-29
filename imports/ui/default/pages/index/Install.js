@@ -17,7 +17,7 @@ import {Bert} from 'meteor/themeteorchef:bert';
 
 import container from '/imports/common/Container';
 import {t, T, PT} from '/imports/common/Translation';
-import SysCompanies from '/imports/collections/SysCompanies/SysCompanies';
+import Companies from '/imports/collections/Companies/Companies';
 import {Loading} from '../../components/Loading/Loading';
 
 class Install extends Component {
@@ -64,7 +64,7 @@ class Install extends Component {
                 password: this.state.password
             };
 
-            Meteor.call('sysCompanies.register', company, user, (error, companyId) => {
+            Meteor.call('companies.register', company, user, (error, companyId) => {
                 if (error) {
                     Bert.alert(error.reason, 'danger');
                 } else {
@@ -81,7 +81,7 @@ class Install extends Component {
         return (
             <Container>
                 <PT title={t.__('Install Hana Platform')}/>
-                <div className="index-Install animated fadeIn">
+                <div className="Install animated fadeIn">
                     <Row>
                         <Col>
                             <Card>
@@ -155,10 +155,10 @@ class Install extends Component {
 }
 
 export default container((props, onData) => {
-    const sub = Meteor.subscribe('sysCompanies.list');
+    const sub = Meteor.subscribe('companies.list');
     if (sub.ready()) {
         let installed = false;
-        const firstCompany = SysCompanies.findOne({});
+        const firstCompany = Companies.findOne({});
         if (firstCompany && firstCompany._id) {
             installed = true;
         }

@@ -1,25 +1,24 @@
-import {Mongo} from 'meteor/mongo';
-import SimpleSchema from 'simpl-schema';
+import CollectionCore from '/imports/common/CollectionCore';
 
-class SysCompaniesCollection extends Mongo.Collection {
+class CompaniesCollection extends CollectionCore {
 
 }
 
-const SysCompanies = new SysCompaniesCollection('system_companies');
+const Companies = new CompaniesCollection('system_companies');
 
-SysCompanies.allow({
+Companies.allow({
     insert: () => false,
     update: () => false,
     remove: () => false,
 });
 
-SysCompanies.deny({
+Companies.deny({
     insert: () => true,
     update: () => true,
     remove: () => true,
 });
 
-SysCompaniesSchema = new SimpleSchema({
+const CompaniesSchema = CollectionCore.schema({
     createdAt: {
         type: String,
         label: 'The date this record was created.',
@@ -40,6 +39,6 @@ SysCompaniesSchema = new SimpleSchema({
     }
 });
 
-SysCompanies.attachSchema(SysCompaniesSchema);
+Companies.attachSchema(CompaniesSchema);
 
-export default SysCompanies;
+export default Companies;

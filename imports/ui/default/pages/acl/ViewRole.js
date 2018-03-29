@@ -27,7 +27,7 @@ class ViewRole extends Component {
         ];
 
         return (
-            <div className="acl-ViewRole animated fadeIn">
+            <div className="ViewRole animated fadeIn">
                 <PT title={t.__('View Role') + ': ' + role.name}/>
                 <Row>
                     <Col xs="12" lg="12">

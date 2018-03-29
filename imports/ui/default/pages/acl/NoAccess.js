@@ -16,7 +16,7 @@ class NoAccess extends Component {
         return (
             <Container>
                 <PT title={t.__('No Access')}/>
-                <div className="acl-NoAccess animated fadeIn">
+                <div className="NoAccess animated fadeIn">
                     <Row>
                         <Col>
                             <Card>

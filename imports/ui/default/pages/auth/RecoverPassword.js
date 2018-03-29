@@ -14,7 +14,7 @@ import {T, t, PT} from '/imports/common/Translation';
 class RecoverPassword extends Component {
     render() {
         return (
-            <div className="auth-RecoverPassword app flex-row align-items-center">
+            <div className="RecoverPassword app flex-row align-items-center">
                 <PT title={t.__('Forgot Password')}/>
                 <Container>
                     <Row className="justify-content-center">

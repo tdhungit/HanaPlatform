@@ -1,18 +1,18 @@
 import {Meteor} from 'meteor/meteor';
-import {Mongo} from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
+import CollectionCore from './CollectionCore';
 
 /**
  * Db collection for Hana Platform
  */
-class CollectionBase extends Mongo.Collection {
+class CollectionBase extends CollectionCore {
     /**
      * default add company field to schema
      * @param schema
      */
     static schema(schema) {
         let appSchema = schema;
-        appSchema.sysCompanyId = {
+        appSchema.companyId = {
             type: String,
             required: true
         };
@@ -30,63 +30,17 @@ class CollectionBase extends Mongo.Collection {
     }
 
     /**
-     * check data before insert
-     * @param doc
-     * @returns {boolean}
-     */
-    beforeInsert(doc) {
-        return true;
-    }
-
-    /**
-     * process after insert data
-     * @param doc
-     * @param resultInsert
-     */
-    afterInsert(doc, resultInsert) {
-
-    }
-
-    /**
-     * check data before update data
-     * @param selector
-     * @param modifiers
-     * @param options
-     * @returns {boolean}
-     */
-    beforeUpdate(selector, modifiers, options) {
-        return true;
-    }
-
-    /**
-     * process data after update data
-     * @param selector
-     * @param modifiers
-     * @param options
-     * @param resultUpdate
-     */
-    afterUpdate(selector, modifiers, options, resultUpdate) {
-
-    }
-
-    /**
      * insert data
      * @param doc
      * @param callback
      * @returns {*}
      */
     insert(doc, callback) {
-        if (!doc.sysCompanyId) {
-            doc.sysCompanyId = Meteor.user().sysCompanyId;
+        if (!doc.companyId) {
+            doc.companyId = Meteor.user().companyId;
         }
 
-        if (this.beforeInsert(doc)) {
-            const result = super.insert(doc, callback);
-            this.afterInsert(doc, result);
-            return result;
-        }
-
-        return false;
+        return super.insert(doc, callback);
     }
 
     /**
@@ -98,13 +52,7 @@ class CollectionBase extends Mongo.Collection {
      * @returns {*}
      */
     update(selector, modifiers, options, callback) {
-        if (this.beforeUpdate(selector, modifiers, options)) {
-            const result = super.update(selector, modifiers, options, callback);
-            this.afterUpdate(selector, modifiers, options, result);
-            return result;
-        }
-
-        return false;
+        return super.update(selector, modifiers, options, callback);
     }
 
     /**
@@ -125,9 +73,9 @@ class CollectionBase extends Mongo.Collection {
         }
 
         if (Meteor.isClient) {
-            selector.sysCompanyId = '';
-            if (Meteor.user() && Meteor.user().sysCompanyId) {
-                selector.sysCompanyId = Meteor.user().sysCompanyId;
+            selector.companyId = '';
+            if (Meteor.user() && Meteor.user().companyId) {
+                selector.companyId = Meteor.user().companyId;
             }
         }
 
@@ -152,9 +100,9 @@ class CollectionBase extends Mongo.Collection {
         }
 
         if (Meteor.isClient) {
-            selector.sysCompanyId = '';
-            if (Meteor.user() && Meteor.user().sysCompanyId) {
-                selector.sysCompanyId = Meteor.user().sysCompanyId;
+            selector.companyId = '';
+            if (Meteor.user() && Meteor.user().companyId) {
+                selector.companyId = Meteor.user().companyId;
             }
         }
 
@@ -179,12 +127,33 @@ class CollectionBase extends Mongo.Collection {
             }
         }
 
-        selector.sysCompanyId = '';
-        if (user && user.sysCompanyId) {
-            selector.sysCompanyId = user.sysCompanyId;
+        selector.companyId = '';
+        if (user && user.companyId) {
+            selector.companyId = user.companyId;
         }
 
-        return this.find(selector, options);
+        return super.publish(user, selector, options);
+    }
+
+    /**
+     * get client pagination
+     * @param options
+     * @returns {PaginationFactory|*}
+     */
+    pagination(options = {}) {
+        if (!options) {
+            options = {filters: {}};
+        }
+
+        if (!options.filters) {
+            options.filters = {};
+        }
+
+        if (!options.filters.companyId) {
+            options.filters.companyId = Meteor.user().companyId;
+        }
+
+        return super.pagination(options);
     }
 }
 

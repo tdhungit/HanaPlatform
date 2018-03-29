@@ -9,7 +9,7 @@ import Countdown from 'react-countdown-now';
 
 import container from '/imports/common/Container';
 import {t, T, PT} from '/imports/common/Translation';
-import SysCompanies from '/imports/collections/SysCompanies/SysCompanies';
+import Companies from '/imports/collections/Companies/Companies';
 import {Loading} from '../../components/Loading/Loading';
 
 class Index extends Component {
@@ -22,7 +22,7 @@ class Index extends Component {
 
     render() {
         return (
-            <div className="index-Index">
+            <div className="Index">
                 <div className="agile-main-grid">
                     <div className="left-grid text-center change-bg">
                         <div className="center-container">
@@ -121,10 +121,10 @@ const renderer = ({days, hours, minutes, seconds, completed}) => {
 };
 
 export default container((props, onData) => {
-    const sub = Meteor.subscribe('sysCompanies.list');
+    const sub = Meteor.subscribe('companies.list');
     if (sub.ready()) {
         let installed = false;
-        const firstCompany = SysCompanies.findOne({});
+        const firstCompany = Companies.findOne({});
         if (firstCompany && firstCompany._id) {
             installed = true;
         }

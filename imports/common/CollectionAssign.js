@@ -14,7 +14,7 @@ class CollectionAssign extends CollectionBase {
      */
     static schema(schema) {
         let appSchema = schema;
-        appSchema.sysCompanyId = {
+        appSchema.companyId = {
             type: String,
             required: true
         };
@@ -109,6 +109,27 @@ class CollectionAssign extends CollectionBase {
 
         selector.assignedId = user._id;
         return super.publish(user, selector, options);
+    }
+
+    /**
+     * get client pagination
+     * @param options
+     * @returns {PaginationFactory|*}
+     */
+    pagination(options = {}) {
+        if (!options) {
+            options = {filters: {}};
+        }
+
+        if (!options.filters) {
+            options.filters = {};
+        }
+
+        if (!options.filters || !options.filters.assignedId) {
+            options.filters.assignedId = Meteor.userId();
+        }
+
+        return super.pagination(options);
     }
 }
 

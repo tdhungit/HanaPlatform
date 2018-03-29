@@ -72,7 +72,7 @@ class ViewUserGroups extends Component {
 
     render() {
         return (
-            <div className="acl-ViewUserGroups">
+            <div className="ViewUserGroups">
                 <PT title={t.__('View User Groups')}/>
                 <Row>
                     <Col>

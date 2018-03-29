@@ -94,7 +94,7 @@ class ViewPermissions extends Component {
         const {role} = this.props;
 
         return (
-            <div className="acl-ViewPermissions animated fadeIn">
+            <div className="ViewPermissions animated fadeIn">
                 <PT title={role.name}/>
                 <Row>
                     <Col>

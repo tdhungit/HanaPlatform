@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {Meteor} from 'meteor/meteor';
 import {
     Row,
     Col,
@@ -34,15 +33,8 @@ class ListView extends Component {
         if (model._id) {
             const collection = myModel.getCollection(model.model);
 
-            this.limit = 20;
-            const limit = this.limit;
-            this.pagination = new Meteor.Pagination(collection, {
-                filters: {},
-                sort: {},
-                perPage: limit,
-                reactive: true,
-                debug: false
-            });
+            this.limit = collection.getLimit();
+            this.pagination = collection.pagination();
         }
     }
 

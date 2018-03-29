@@ -2,6 +2,16 @@ import {Meteor} from 'meteor/meteor';
 import {publishPagination} from 'meteor/kurounin:pagination';
 import Users from './Users';
 
+// init pagination
+publishPagination(Users, {
+    filters: {},
+    dynamic_filters: function () {
+        return {
+            companyId: Meteor.user().companyId
+        }
+    }
+});
+
 // default get user profile
 Meteor.publish('users.user', function () {
     if (!this.userId) {
@@ -11,18 +21,13 @@ Meteor.publish('users.user', function () {
     return Meteor.users.find(this.userId, {
         fields: {
             _id: 1,
-            sysCompanyId: 1,
+            companyId: 1,
             settings: 1,
             groupId: 1,
             isAdmin: 1,
             isDeveloper: 1
         }
     });
-});
-
-// init pagination
-publishPagination(Users, {
-    name: 'users.paginatedList'
 });
 
 Meteor.publish('users.list', function () {
