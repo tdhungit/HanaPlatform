@@ -91,11 +91,11 @@ UserGroups.deny({
 const UserGroupsSchema = CollectionBase.schema({
     createdAt: {
         type: String,
-        label: 'The date this menu was created.',
+        label: 'The date this record was created.',
         autoValue() {
             if (this.isInsert) return (new Date()).toISOString();
             return this.value;
-        },
+        }
     },
     name: {
         type: String,
