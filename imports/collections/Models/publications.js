@@ -1,7 +1,6 @@
 import {Meteor} from 'meteor/meteor';
 import CollectionAssign from '/imports/common/CollectionAssign';
 import Models from './Models';
-import {publishPagination} from 'meteor/kurounin:pagination';
 
 // get custom model and add pagination
 const models = Models.find({type: 'custom'}).fetch();
@@ -20,15 +19,7 @@ for (let idx in models) {
         // add collections
         collections[model.model] = collection;
         // pagination
-        publishPagination(collection, {
-            filters: {},
-            dynamic_filters: function () {
-                return {
-                    companyId: Meteor.user().companyId,
-                    assignedId: Meteor.userId()
-                }
-            }
-        });
+        collection.publishPagination();
     }
 }
 

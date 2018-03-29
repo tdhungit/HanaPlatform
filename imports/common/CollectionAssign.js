@@ -1,8 +1,6 @@
 import {Meteor} from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
-
 import CollectionBase from './CollectionBase';
-import Users from '../collections/Users/Users';
 
 /**
  * Db Collection auto assigned when record was created
@@ -109,6 +107,20 @@ class CollectionAssign extends CollectionBase {
 
         selector.assignedId = user._id;
         return super.publish(user, selector, options);
+    }
+
+    /**
+     * get filters for owner data
+     * @param user
+     * @param filter
+     * @returns {{}}
+     */
+    filterOwnerData(user, filters = {}) {
+        if (!filters.assignedId) {
+            filters.assignedId = user && user._id || '';
+        }
+
+        return super.filterOwnerData(user, filters);
     }
 
     /**

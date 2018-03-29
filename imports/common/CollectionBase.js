@@ -136,6 +136,20 @@ class CollectionBase extends CollectionCore {
     }
 
     /**
+     * get filters for owner data
+     * @param user
+     * @param filters
+     * @returns {{}}
+     */
+    filterOwnerData(user, filters = {}) {
+        if (!filters.companyId) {
+            filters.companyId = user && user.companyId || '';
+        }
+
+        return super.filterOwnerData(user, filters);
+    }
+
+    /**
      * get client pagination
      * @param options
      * @returns {PaginationFactory|*}

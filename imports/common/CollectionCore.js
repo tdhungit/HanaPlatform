@@ -1,5 +1,6 @@
 import {Meteor} from 'meteor/meteor';
 import {Mongo} from 'meteor/mongo';
+import {publishPagination} from 'meteor/kurounin:pagination';
 import SimpleSchema from 'simpl-schema';
 
 class CollectionCore extends Mongo.Collection {
@@ -119,6 +120,34 @@ class CollectionCore extends Mongo.Collection {
         }
 
         return this.find(selector, options);
+    }
+
+    /**
+     * publish pagination server side
+     * @param filters
+     */
+    publishPagination(filters = {}) {
+        const self = this;
+        publishPagination(this, {
+            filters: {},
+            dynamic_filters: function () {
+                return self.filterOwnerData(Meteor.user(), filters);
+            }
+        });
+    }
+
+    /**
+     * get filters for owner data
+     * @param user
+     * @param filter
+     * @returns {{}}
+     */
+    filterOwnerData(user, filter = {}) {
+        if (!user || !user.companyId) {
+            filter._id = '';
+        }
+
+        return filter;
     }
 
     /**

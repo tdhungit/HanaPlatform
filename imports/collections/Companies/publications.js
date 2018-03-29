@@ -1,9 +1,8 @@
 import {Meteor} from 'meteor/meteor';
-import {publishPagination} from 'meteor/kurounin:pagination';
 import Companies from './Companies';
 
 // init pagination
-publishPagination(Companies, {});
+Companies.publishPagination();
 
 Meteor.publish('companies.list', function () {
     return Companies.find({});

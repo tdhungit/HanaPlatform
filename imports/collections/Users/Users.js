@@ -1,4 +1,5 @@
 import {Meteor} from 'meteor/meteor';
+import {publishPagination} from 'meteor/kurounin:pagination';
 import CollectionBase from '/imports/common/CollectionBase';
 import SimpleSchema from 'simpl-schema';
 import UserGroups from '../UserGroups/UserGroups';
@@ -171,6 +172,25 @@ Schema.User = CollectionBase.schema({
 
 Users.attachSchema(Schema.User);
 
+/**
+ * users pagination server side
+ */
+Users.publishPagination = () => {
+    publishPagination(Users, {
+        filters: {},
+        dynamic_filters: function () {
+            return {
+                companyId: Meteor.user() && Meteor.user().companyId || ''
+            }
+        }
+    });
+};
+
+/**
+ * get client pagination
+ * @param options
+ * @returns {PaginationFactory|*}
+ */
 Users.pagination = (options = {}) => {
     const limit = 20;
 

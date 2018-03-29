@@ -1,16 +1,8 @@
 import {Meteor} from 'meteor/meteor';
-import {publishPagination} from 'meteor/kurounin:pagination';
 import Users from './Users';
 
 // init pagination
-publishPagination(Users, {
-    filters: {},
-    dynamic_filters: function () {
-        return {
-            companyId: Meteor.user().companyId
-        }
-    }
-});
+Users.publishPagination();
 
 // default get user profile
 Meteor.publish('users.user', function () {

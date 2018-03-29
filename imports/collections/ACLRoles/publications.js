@@ -1,15 +1,7 @@
 import {Meteor} from 'meteor/meteor';
-import {publishPagination} from 'meteor/kurounin:pagination';
 import ACLRoles from './ACLRoles';
 
-publishPagination(ACLRoles, {
-    filters: {},
-    dynamic_filters: function () {
-        return {
-            companyId: Meteor.user().companyId
-        }
-    }
-});
+ACLRoles.publishPagination();
 
 Meteor.publish('aclRoles.list', function () {
     return ACLRoles.publish(Meteor.user());
