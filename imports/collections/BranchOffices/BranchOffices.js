@@ -45,14 +45,6 @@ const BranchOfficesSchema = CollectionBase.schema({
         type: String,
         label: 'Branch Description',
         optional: true
-    },
-    users: {
-        type: Array,
-        optional: true
-    },
-    "users.$": {
-        type: String,
-        optional: true
     }
 });
 

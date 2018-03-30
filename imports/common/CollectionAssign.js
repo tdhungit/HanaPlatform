@@ -22,6 +22,16 @@ class CollectionAssign extends CollectionBase {
             required: true
         };
 
+        if (!appSchema.branchOffices) {
+            appSchema.branchOffices = {
+                type: Array,
+                required: true
+            };
+            appSchema["branchOffices.$"] = {
+                type: String
+            };
+        }
+
         return new SimpleSchema(appSchema);
     }
 

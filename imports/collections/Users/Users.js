@@ -151,6 +151,19 @@ Schema.User = CollectionBase.schema({
         optional: true,
         blackbox: true
     },
+    // user must have a company
+    companyId: {
+        type: String,
+        required: true
+    },
+    // user have many branch offices
+    branchOffices: {
+        type: Array,
+        required: true
+    },
+    "branchOffices.$": {
+        type: String
+    },
     // user group
     // user group for access data
     // relate with UserGroup Collection

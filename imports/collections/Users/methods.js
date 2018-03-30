@@ -17,8 +17,10 @@ Meteor.methods({
         check(user, Object);
         Accounts.onCreateUser(function (options, user) {
             user.companyId = options.companyId;
-            user.groupId = options.groupId;
-            user.isAdmin = options.isAdmin;
+            user.branchOffices = options.branchOffices || [''];
+            user.groupId = options.groupId || '';
+            user.isAdmin = options.isAdmin || false;
+            user.isDeveloper = options.isDeveloper || false;
             return user;
         });
         return Accounts.createUser(user);

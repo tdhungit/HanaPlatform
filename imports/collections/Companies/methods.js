@@ -36,41 +36,40 @@ Meteor.methods({
         // insert company
         const companyId = Companies.insert(company);
         if (companyId) {
+            // insert a default branch office
+            const defaultBranchOffice = {
+                name: 'Head Office',
+                companyId: companyId
+            };
+            const branchOfficeId = BranchOffices.insert(defaultBranchOffice);
+
             // insert a default group
             const defaultGroup = {
                 name: 'Default',
                 description: 'Default Group',
                 companyId: companyId
             };
-
             const groupId = UserGroups.insert(defaultGroup);
+
             // insert admin user
-            if (groupId) {
-                let userAdmin = user;
-                userAdmin.companyId = companyId;
-                userAdmin.groupId = groupId;
-                userAdmin.isAdmin = true;
-                if (installation) {
-                    userAdmin.isDeveloper = true;
-                }
-
-                Accounts.onCreateUser(function (options, user) {
-                    user.companyId = options.companyId;
-                    user.groupId = options.groupId;
-                    user.isAdmin = options.isAdmin;
-                    user.isDeveloper = options.isDeveloper;
-                    return user;
-                });
-                const userId = Accounts.createUser(userAdmin);
-
-                // insert a default branch office
-                const defaultBranchOffice = {
-                    name: 'Head Office',
-                    companyId: companyId,
-                    users: [userId]
-                };
-                BranchOffices.insert(defaultBranchOffice);
+            let userAdmin = user;
+            userAdmin.companyId = companyId;
+            userAdmin.branchOffices = [branchOfficeId];
+            userAdmin.groupId = groupId;
+            userAdmin.isAdmin = true;
+            if (installation) {
+                userAdmin.isDeveloper = true;
             }
+
+            Accounts.onCreateUser(function (options, user) {
+                user.companyId = options.companyId;
+                user.branchOffices = options.branchOffices;
+                user.groupId = options.groupId;
+                user.isAdmin = options.isAdmin;
+                user.isDeveloper = options.isDeveloper;
+                return user;
+            });
+            Accounts.createUser(userAdmin);
 
             return companyId;
         } else {
