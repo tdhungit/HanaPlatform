@@ -10,5 +10,9 @@ Meteor.publish('userGroups.detail', function (groupId) {
 });
 
 Meteor.publish('userGroups.forCurrentUser', function () {
-    return UserGroups.publish(Meteor.user(), {_id: Meteor.user().groupId});
+    if (this.userId) {
+        return UserGroups.publish(Meteor.user(), {_id: Meteor.user().groupId});
+    }
+
+    return this.ready();
 });

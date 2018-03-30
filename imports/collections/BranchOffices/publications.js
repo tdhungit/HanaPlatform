@@ -5,7 +5,11 @@ import BranchOffices from './BranchOffices';
 BranchOffices.publishPagination();
 
 Meteor.publish('branchOffices.forCurrentUser', function () {
-    return BranchOffices.publish(Meteor.user(), {_id: {$in: Meteor.user().branchOffices}});
+    if (this.userId) {
+        return BranchOffices.publish(Meteor.user(), {_id: {$in: Meteor.user().branchOffices}});
+    }
+
+    return this.ready();
 });
 
 Meteor.publish('branchOffices.list', function () {
