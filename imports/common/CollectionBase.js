@@ -12,6 +12,7 @@ class CollectionBase extends CollectionCore {
      */
     static schema(schema) {
         let appSchema = schema;
+        // company data
         appSchema.companyId = {
             type: String,
             required: true

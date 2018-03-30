@@ -12,16 +12,19 @@ class CollectionAssign extends CollectionBase {
      */
     static schema(schema) {
         let appSchema = schema;
+        // company data
         appSchema.companyId = {
             type: String,
             required: true
         };
 
+        // assigned to user
         appSchema.assignedId = {
             type: String,
             required: true
         };
 
+        // assigned to branch offices
         if (!appSchema.branchOffices) {
             appSchema.branchOffices = {
                 type: Array,
@@ -30,6 +33,8 @@ class CollectionAssign extends CollectionBase {
             appSchema["branchOffices.$"] = {
                 type: String
             };
+        } else {
+            appSchema.branchOffices.required = true;
         }
 
         return new SimpleSchema(appSchema);

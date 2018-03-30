@@ -12,12 +12,15 @@ import store from '../imports/ui/default/store';
 import App from '../imports/ui/default/layouts/App';
 
 Meteor.startup(() => {
+    // subscribe need ready
     const userSub = Meteor.subscribe('users.user');
     const userGroupSub = Meteor.subscribe('userGroups.forCurrentUser');
     const permissionsSub = Meteor.subscribe('aclPermissions.forCurrentUser');
     const branchSub = Meteor.subscribe('branchOffices.forCurrentUser');
     const settingSub = Meteor.subscribe('settings.list');
     const modelSub = Meteor.subscribe('models.list');
+    // auto subscribe
+    Meteor.subscribe('media.list');
 
     Tracker.autorun((c) => {
         if (Meteor.loggingIn() || !Roles.subscription.ready()
