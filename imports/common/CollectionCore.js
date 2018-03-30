@@ -98,6 +98,60 @@ class CollectionCore extends Mongo.Collection {
     }
 
     /**
+     * get filters for owner data
+     * @param user if user === -1 => only get raw filter
+     * @param filters
+     * @returns {{}}
+     */
+    filterOwnerData(user, filters = {}) {
+        let selector = {};
+        if (!filters) {
+            return selector;
+        }
+
+        // if filters is string: query with _id = string
+        if (typeof filters === 'string') {
+            selector._id = filters;
+        } else {
+            selector = filters;
+        }
+
+        return selector;
+    }
+
+    /**
+     * get a record data
+     * @param query
+     * @param options
+     * @returns {any}
+     */
+    findOne(query = '', options = {}) {
+        let selector = this.filterOwnerData(-1, query);
+
+        if (Meteor.isClient) {
+            selector = this.filterOwnerData(Meteor.user(), selector);
+        }
+
+        return super.findOne(selector, options);
+    }
+
+    /**
+     * get all records data
+     * @param query
+     * @param options
+     * @returns {Mongo.Cursor}
+     */
+    find(query = '', options = {}) {
+        let selector = this.filterOwnerData(-1, query);
+
+        if (Meteor.isClient) {
+            selector = this.filterOwnerData(Meteor.user(), selector);
+        }
+
+        return super.find(selector, options);
+    }
+
+    /**
      * publish data to client
      * @param user
      * @param query
@@ -105,20 +159,7 @@ class CollectionCore extends Mongo.Collection {
      * @returns {Mongo.Cursor}
      */
     publish(user, query = '', options = {}) {
-        let selector = {};
-
-        if (query) {
-            if (typeof query === "string") {
-                selector = {_id: query};
-            } else {
-                selector = query;
-            }
-        }
-
-        if (!user || user._id) {
-            selector._id = '';
-        }
-
+        let selector = this.filterOwnerData(user, query);
         return this.find(selector, options);
     }
 
@@ -134,20 +175,6 @@ class CollectionCore extends Mongo.Collection {
                 return self.filterOwnerData(Meteor.user(), filters);
             }
         });
-    }
-
-    /**
-     * get filters for owner data
-     * @param user
-     * @param filter
-     * @returns {{}}
-     */
-    filterOwnerData(user, filter = {}) {
-        if (!user || !user.companyId) {
-            filter._id = '';
-        }
-
-        return filter;
     }
 
     /**

@@ -40,87 +40,24 @@ class CollectionAssign extends CollectionBase {
     }
 
     /**
-     * get a record have assigned to current user
-     * @param query
-     * @param options
-     * @returns {any}
-     */
-    findOne(query = '', options = {}) {
-        let selector = {};
-
-        if (query) {
-            if (typeof query === "string") {
-                selector = {_id: query};
-            } else {
-                selector = query;
-            }
-        }
-
-        if (Meteor.isClient) {
-            selector.assignedId = Meteor.userId();
-        }
-
-        return super.findOne(selector, options);
-    }
-
-    /**
-     * get all records assigned to current user
-     * @param query
-     * @param options
-     * @returns {Mongo.Cursor}
-     */
-    find(query = '', options = {}) {
-        let selector = {};
-
-        if (query) {
-            if (typeof query === "string") {
-                selector = {_id: query};
-            } else {
-                selector = query;
-            }
-        }
-
-        if (Meteor.isClient) {
-            selector.assignedId = Meteor.userId();
-        }
-
-        return super.find(selector, options);
-    }
-
-    /**
-     * publish data to client
-     * @param user
-     * @param query
-     * @param options
-     * @returns {Mongo.Cursor}
-     */
-    publish(user, query = '', options = {}) {
-        let selector = {};
-
-        if (query) {
-            if (typeof query === "string") {
-                selector = {_id: query};
-            } else {
-                selector = query;
-            }
-        }
-
-        selector.assignedId = user._id;
-        return super.publish(user, selector, options);
-    }
-
-    /**
      * get filters for owner data
-     * @param user
-     * @param filter
+     * @param user if user === -1 => only get raw filter
+     * @param filters
      * @returns {{}}
      */
     filterOwnerData(user, filters = {}) {
-        if (!filters.assignedId) {
-            filters.assignedId = user && user._id || '';
+        let selector = {};
+        if (typeof filters === 'string') {
+            selector._id = filters;
+        } else {
+            selector = filters;
         }
 
-        return super.filterOwnerData(user, filters);
+        if (user !== -1 && !selector.assignedId) {
+            selector.assignedId = user && user._id || '';
+        }
+
+        return super.filterOwnerData(user, selector);
     }
 
     /**

@@ -56,97 +56,24 @@ class CollectionBase extends CollectionCore {
     }
 
     /**
-     * find a record in a company
-     * @param query
-     * @param options {{}}
-     * @returns {any}
-     */
-    findOne(query = '', options = {}) {
-        let selector = {};
-
-        if (query) {
-            if (typeof query === "string") {
-                selector = {_id: query};
-            } else {
-                selector = query;
-            }
-        }
-
-        if (Meteor.isClient) {
-            selector.companyId = '';
-            if (Meteor.user() && Meteor.user().companyId) {
-                selector.companyId = Meteor.user().companyId;
-            }
-        }
-
-        return super.findOne(selector, options);
-    }
-
-    /**
-     * find all record in a company
-     * @param query
-     * @param options
-     * @returns {Mongo.Cursor}
-     */
-    find(query = '', options = {}) {
-        let selector = {};
-
-        if (query) {
-            if (typeof query === "string") {
-                selector = {_id: query};
-            } else {
-                selector = query;
-            }
-        }
-
-        if (Meteor.isClient) {
-            selector.companyId = '';
-            if (Meteor.user() && Meteor.user().companyId) {
-                selector.companyId = Meteor.user().companyId;
-            }
-        }
-
-        return super.find(selector, options);
-    }
-
-    /**
-     * publish data to client
-     * @param user
-     * @param query
-     * @param options
-     * @returns {Mongo.Cursor}
-     */
-    publish(user, query = '', options = {}) {
-        let selector = {};
-
-        if (query) {
-            if (typeof query === "string") {
-                selector = {_id: query};
-            } else {
-                selector = query;
-            }
-        }
-
-        selector.companyId = '';
-        if (user && user.companyId) {
-            selector.companyId = user.companyId;
-        }
-
-        return super.publish(user, selector, options);
-    }
-
-    /**
      * get filters for owner data
-     * @param user
+     * @param user if user === -1 => only get raw filter
      * @param filters
      * @returns {{}}
      */
     filterOwnerData(user, filters = {}) {
-        if (!filters.companyId) {
-            filters.companyId = user && user.companyId || '';
+        let selector = {};
+        if (typeof filters === 'string') {
+            selector._id = filters;
+        } else {
+            selector = filters;
         }
 
-        return super.filterOwnerData(user, filters);
+        if (user !== -1 && !selector.companyId) {
+            selector.companyId = user && user.companyId || '';
+        }
+
+        return super.filterOwnerData(user, selector);
     }
 
     /**
