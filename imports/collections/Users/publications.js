@@ -14,10 +14,11 @@ Meteor.publish('users.user', function () {
         fields: {
             _id: 1,
             companyId: 1,
-            settings: 1,
+            branchOffices: 1,
             groupId: 1,
             isAdmin: 1,
-            isDeveloper: 1
+            isDeveloper: 1,
+            settings: 1
         }
     });
 });

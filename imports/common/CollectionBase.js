@@ -63,6 +63,10 @@ class CollectionBase extends CollectionCore {
      */
     filterOwnerData(user, filters = {}) {
         let selector = {};
+        if (!filters) {
+            return selector;
+        }
+
         if (typeof filters === 'string') {
             selector._id = filters;
         } else {

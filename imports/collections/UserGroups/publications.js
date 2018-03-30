@@ -8,3 +8,7 @@ Meteor.publish('userGroups.list', function () {
 Meteor.publish('userGroups.detail', function (groupId) {
     return UserGroups.publish(Meteor.user(), {_id: groupId});
 });
+
+Meteor.publish('userGroups.forCurrentUser', function () {
+    return UserGroups.publish(Meteor.user(), {_id: Meteor.user().groupId});
+});

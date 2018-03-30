@@ -1,7 +1,23 @@
 import CollectionBase from '/imports/common/CollectionBase';
+import Users from '../Users/Users';
 
 class BranchOfficesCollection extends CollectionBase {
+    /**
+     * get all branch offices of user
+     * @param userParam
+     * @returns {Array}
+     */
+    ofUser(userParam) {
+        let user = {};
+        if (typeof userParam === 'string') {
+            user = Users.findOne(userParam);
+        } else {
+            user = userParam;
+        }
 
+        const branchOffices = this.find({_id: {$in: user.branchOffices}}).fetch();
+        return branchOffices ? branchOffices : [];
+    }
 }
 
 const BranchOffices = new BranchOfficesCollection('branch_offices');
