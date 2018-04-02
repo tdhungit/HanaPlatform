@@ -49,6 +49,7 @@ class ViewBranchOffice extends Component {
                             </CardHeader>
                             <CardBody>
                                 <ListComponent
+                                    type="Panel"
                                     model={userModel}
                                     pagination={pagination}
                                     limit={20}/>

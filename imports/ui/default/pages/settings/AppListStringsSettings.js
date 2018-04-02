@@ -205,7 +205,7 @@ class AppListStringsSettings extends Component {
                                 </div>
                             </CardHeader>
                             <CardBody>
-                                <Table responsive>
+                                <Table bordered>
                                     <thead>
                                     <tr>
                                         <th><T>Dropdown Name</T></th>

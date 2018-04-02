@@ -21,11 +21,7 @@ class ViewCompanies extends Component {
     }
 
     render() {
-        const {
-            pagination,
-            limit
-        } = this;
-
+        const {pagination, limit} = this;
         const model = Models.getModel('Companies') || companyLayouts;
 
         return (
@@ -35,7 +31,7 @@ class ViewCompanies extends Component {
                     <Col xs="12" lg="12">
                         <Card>
                             <CardHeader>
-                                <i className="fa fa-align-justify"></i> <T>View Companies</T>
+                                <i className="fa fa-align-justify"/> <T>View Companies</T>
                                 <div className="card-actions">
                                     <Link to={'/manager/companies/create'} title={t.__('Create')}>
                                         <i className="fa fa-plus-circle"/>

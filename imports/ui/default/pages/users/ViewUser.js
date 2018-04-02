@@ -6,9 +6,13 @@ import {
     Card,
     CardHeader,
     CardBody,
-    Table
+    Table,
+    Modal,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
+    Button
 } from 'reactstrap';
-import {Link} from 'react-router-dom';
 
 import container from '/imports/common/Container';
 import {t, T, PT} from '/imports/common/Translation';
@@ -18,8 +22,25 @@ import {userLayouts} from '/imports/collections/Users/layouts';
 import DetailComponent from '../models/components/DetailComponent';
 import BranchOffices from '../../../../collections/BranchOffices/BranchOffices';
 import {branchOfficeLayouts} from '../../../../collections/BranchOffices/layouts';
+import {ListRecordsComponent} from '../models/components/ListComponent';
 
 class ViewUser extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            selectBranchOffice: false
+        };
+
+        this.toggleBranchOffice = this.toggleBranchOffice.bind(this);
+    }
+
+    toggleBranchOffice() {
+        this.setState({
+            selectBranchOffice: !this.state.selectBranchOffice
+        });
+    }
+
     render() {
         const {user, branchOffices} = this.props;
         const model = Models.getModel('Users') || userLayouts;
@@ -46,13 +67,13 @@ class ViewUser extends Component {
                                 <i className={branchOfficeModel.icon}/>
                                 <strong><T>Branch Offices</T></strong>
                                 <div className="card-actions">
-                                    <Link to={'/manager/branch-offices/select'} title={t.__('Choose Branch Offices')}>
+                                    <Button color="link" onClick={this.toggleBranchOffice}>
                                         <i className="fa fa-plus-circle"/>
-                                    </Link>
+                                    </Button>
                                 </div>
                             </CardHeader>
                             <CardBody>
-                                <Table responsive hover>
+                                <Table bordered hover>
                                     <thead>
                                     <tr>
                                         <th><T>Office Name</T></th>
@@ -72,6 +93,18 @@ class ViewUser extends Component {
                                     })}
                                     </tbody>
                                 </Table>
+
+                                {/* select branch offices */}
+                                <Modal isOpen={this.state.selectBranchOffice} toggle={this.toggleBranchOffice} className="modal-lg">
+                                    <ModalHeader toggle={this.toggleBranchOffice}><T>Select</T> <T>Branch Offices</T></ModalHeader>
+                                    <ModalBody>
+                                        <ListRecordsComponent type="Select" collection={BranchOffices} filters={{}} model={branchOfficeModel}/>
+                                    </ModalBody>
+                                    <ModalFooter>
+                                        <Button color="primary" onClick={this.toggleBranchOffice}><T>Select</T></Button>{' '}
+                                        <Button color="secondary" onClick={this.toggleBranchOffice}><T>Cancel</T></Button>
+                                    </ModalFooter>
+                                </Modal>
                             </CardBody>
                         </Card>
                     </Col>
