@@ -46,7 +46,7 @@ class ViewUser extends Component {
                                 <i className={branchOfficeModel.icon}/>
                                 <strong><T>Branch Offices</T></strong>
                                 <div className="card-actions">
-                                    <Link to={} title={t.__('Edit')}>
+                                    <Link to={'/manager/branch-offices/select'} title={t.__('Choose Branch Offices')}>
                                         <i className="fa fa-plus-circle"/>
                                     </Link>
                                 </div>
