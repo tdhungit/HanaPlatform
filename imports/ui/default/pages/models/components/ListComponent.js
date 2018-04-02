@@ -27,9 +27,10 @@ class ListComponent extends Component {
         model: PropTypes.object,
         pagination: PropTypes.object,
         limit: PropTypes.number,
+        type: PropTypes.string, // type is List OR Panel, default: List
         detailLink: PropTypes.string,
         editLink: PropTypes.string,
-        records: PropTypes.array
+        records: PropTypes.array // from container
     };
 
     constructor(props) {
@@ -145,15 +146,19 @@ class ListComponent extends Component {
 
         cols.push(
             <td key="actions">
+                {this.props.detailLink ?
+                <Link to={vsprintf(this.props.detailLink, [record._id])} className="btn btn-sm btn-link">
+                    <i className="fa fa-eye"/>
+                </Link> : null}
+
+                {this.props.editLink ?
+                <Link to={vsprintf(this.props.editLink, [record._id])} className="btn btn-sm btn-link text-warning">
+                    <i className="fa fa-edit"/>
+                </Link> : null}
+
                 <a href="javascript:void(0)" className="btn btn-sm btn-link text-danger">
                     <i className="fa fa-trash"/>
                 </a>
-                <Link to={vsprintf(this.props.detailLink, [record._id])} className="btn btn-sm btn-link">
-                    <i className="fa fa-eye"/>
-                </Link>
-                <Link to={vsprintf(this.props.editLink, [record._id])} className="btn btn-sm btn-link text-warning">
-                    <i className="fa fa-edit"/>
-                </Link>
             </td>
         );
 

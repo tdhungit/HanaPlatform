@@ -2,7 +2,10 @@ import React, {Component} from 'react';
 import {Meteor} from 'meteor/meteor';
 import {
     Row,
-    Col
+    Col,
+    Card,
+    CardHeader,
+    CardBody
 } from 'reactstrap';
 
 import container from '/imports/common/Container';
@@ -11,23 +14,79 @@ import Models from '/imports/collections/Models/Models';
 import BranchOffices from '/imports/collections/BranchOffices/BranchOffices';
 import {branchOfficeLayouts} from '/imports/collections/BranchOffices/layouts';
 import DetailComponent from '../models/components/DetailComponent';
+import ListComponent from '../models/components/ListComponent';
+import Users from '/imports/collections/Users/Users';
+import {userLayouts} from '../../../../collections/Users/layouts';
 
-class ViewBranchOffice extends Component {
+/**
+ * Detail View
+ */
+class DetailBranchOffice extends Component {
     render() {
         const {branchOffice} = this.props;
-
         const model = Models.getModel('Companies') || branchOfficeLayouts;
 
         return (
-            <div className="ViewBranchOffice animated fadeIn">
+            <Row>
                 <PT title={t.__('View Branch Office') + ': ' + branchOffice.name}/>
+                <Col xs="12" lg="12">
+                    <DetailComponent
+                        title={t.__('View Branch Office')}
+                        model={model}
+                        record={branchOffice}
+                        editLink="/manager/branch-offices/%s/edit"/>
+                </Col>
+            </Row>
+        );
+    }
+}
+
+const DetailView = container((props, onData) => {
+    const branchOfficeId = props._id;
+    const subscription = Meteor.subscribe('branchOffices.detail', branchOfficeId);
+    if (subscription.ready()) {
+        onData(null, {
+            branchOffice: BranchOffices.findOne(branchOfficeId)
+        });
+    }
+}, DetailBranchOffice);
+
+/**
+ * ViewBranchOffice and Related
+ */
+class ViewBranchOffice extends Component {
+    componentWillMount() {
+        const branchOfficeId = this.props.match.params._id;
+        this.pagination = Users.pagination({
+            filters: {
+                branchOffices: branchOfficeId
+            }
+        });
+    }
+
+    render() {
+        const userModel = Models.getModel('Users') || userLayouts;
+        const branchOfficeId = this.props.match.params._id;
+        const {pagination} = this;
+
+        return (
+            <div className="ViewBranchOffice animated fadeIn">
+                <DetailView _id={branchOfficeId}/>
+                {/*Users related*/}
                 <Row>
                     <Col xs="12" lg="12">
-                        <DetailComponent
-                            title={t.__('View Branch Office')}
-                            model={model}
-                            record={branchOffice}
-                            editLink="/manager/branch-offices/%s/edit"/>
+                        <Card>
+                            <CardHeader>
+                                <i className={userModel.icon || 'fa fa-list'}/>
+                                <strong>{t.__('Users')}</strong>
+                            </CardHeader>
+                            <CardBody>
+                                <ListComponent
+                                    model={userModel}
+                                    pagination={pagination}
+                                    limit={20}/>
+                            </CardBody>
+                        </Card>
                     </Col>
                 </Row>
             </div>
@@ -35,12 +94,4 @@ class ViewBranchOffice extends Component {
     }
 }
 
-export default container((props, onData) => {
-    const branchOfficeId = props.match.params._id;
-    const subscription = Meteor.subscribe('branchOffices.detail', branchOfficeId);
-    if (subscription.ready()) {
-        onData(null, {
-            branchOffice: BranchOffices.findOne(branchOfficeId)
-        });
-    }
-}, ViewBranchOffice);
+export default ViewBranchOffice;
