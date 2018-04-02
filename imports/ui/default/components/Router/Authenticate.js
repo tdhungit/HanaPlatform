@@ -6,6 +6,8 @@ import {Route, Redirect} from 'react-router-dom';
 import {Loading} from '../Loading/Loading';
 import Users from '/imports/collections/Users/Users';
 import NoAccess from '../../pages/acl/NoAccess';
+import {utilsHelper} from '../../helpers/utils/utils';
+import {modulesComponent} from '../../../../config/config.inc';
 
 const Authenticate = ({loggingIn, authenticated, component, ...rest}) => (
     <Route {...rest} render={(props) => {
@@ -26,9 +28,10 @@ const Authenticate = ({loggingIn, authenticated, component, ...rest}) => (
 
         // check permission
         const isAccess = Users.checkAccess(Meteor.user());
-        console.log(component.name);
-        console.log(Users.childrenOfUser(Meteor.user()));
-        console.log(Users.userPermissions(Meteor.user()));
+        const currentComponent = utilsHelper.currentComponentName(component);
+        if (modulesComponent.layout.indexOf(currentComponent) < 0) {
+            console.log(modulesComponent.components[currentComponent]);
+        }
 
         return isAccess
             ? (React.createElement(component, {...props, ...state, loggingIn, authenticated}))

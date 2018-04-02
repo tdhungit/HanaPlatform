@@ -101,6 +101,22 @@ class UtilsHelper {
         }
         return target;
     }
+
+    /**
+     * get current view component
+     * @param component
+     */
+    currentComponentName(component) {
+        let displayName = component.name;
+        if (displayName === 'Container') {
+            displayName = component.displayName;
+            displayName = displayName.replace('Container', '');
+            displayName = displayName.replace('(', '');
+            displayName = displayName.replace(')', '');
+        }
+
+        return displayName;
+    }
 }
 
 export const utilsHelper = new UtilsHelper();
