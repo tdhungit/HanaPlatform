@@ -28,5 +28,16 @@ Meteor.publish('users.list', function () {
 });
 
 Meteor.publish('users.detail', function (userId) {
-    return Users.find({_id: userId});
+    return Users.find({_id: userId}, {
+        fields: {
+            _id: 1,
+            companyId: 1,
+            branchOffices: 1,
+            groupId: 1,
+            isAdmin: 1,
+            isDeveloper: 1,
+            settings: 1,
+            profile: 1
+        }
+    });
 });

@@ -19,39 +19,6 @@ import Users from '/imports/collections/Users/Users';
 import {userLayouts} from '../../../../collections/Users/layouts';
 
 /**
- * Detail View
- */
-class DetailBranchOffice extends Component {
-    render() {
-        const {branchOffice} = this.props;
-        const model = Models.getModel('Companies') || branchOfficeLayouts;
-
-        return (
-            <Row>
-                <PT title={t.__('View Branch Office') + ': ' + branchOffice.name}/>
-                <Col xs="12" lg="12">
-                    <DetailComponent
-                        title={t.__('View Branch Office')}
-                        model={model}
-                        record={branchOffice}
-                        editLink="/manager/branch-offices/%s/edit"/>
-                </Col>
-            </Row>
-        );
-    }
-}
-
-const DetailView = container((props, onData) => {
-    const branchOfficeId = props._id;
-    const subscription = Meteor.subscribe('branchOffices.detail', branchOfficeId);
-    if (subscription.ready()) {
-        onData(null, {
-            branchOffice: BranchOffices.findOne(branchOfficeId)
-        });
-    }
-}, DetailBranchOffice);
-
-/**
  * ViewBranchOffice and Related
  */
 class ViewBranchOffice extends Component {
@@ -71,7 +38,7 @@ class ViewBranchOffice extends Component {
 
         return (
             <div className="ViewBranchOffice animated fadeIn">
-                <DetailView _id={branchOfficeId}/>
+                <DetailBranchOfficeTag _id={branchOfficeId}/>
                 {/*Users related*/}
                 <Row>
                     <Col xs="12" lg="12">
@@ -95,3 +62,36 @@ class ViewBranchOffice extends Component {
 }
 
 export default ViewBranchOffice;
+
+/**
+ * Detail View Tag
+ */
+class DetailBranchOffice extends Component {
+    render() {
+        const {branchOffice} = this.props;
+        const model = Models.getModel('Companies') || branchOfficeLayouts;
+
+        return (
+            <Row>
+                <PT title={t.__('View Branch Office') + ': ' + branchOffice.name}/>
+                <Col xs="12" lg="12">
+                    <DetailComponent
+                        title={t.__('View Branch Office')}
+                        model={model}
+                        record={branchOffice}
+                        editLink="/manager/branch-offices/%s/edit"/>
+                </Col>
+            </Row>
+        );
+    }
+}
+
+const DetailBranchOfficeTag = container((props, onData) => {
+    const branchOfficeId = props._id;
+    const subscription = Meteor.subscribe('branchOffices.detail', branchOfficeId);
+    if (subscription.ready()) {
+        onData(null, {
+            branchOffice: BranchOffices.findOne(branchOfficeId)
+        });
+    }
+}, DetailBranchOffice);
