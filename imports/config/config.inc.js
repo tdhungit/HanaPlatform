@@ -5,6 +5,7 @@ export const frameworkConfig = {
 export const modulesComponent = {
     layout: ['ManagerLayout'],
     components: {
+        // users
         ViewUsers: {
             module: 'Users',
             action: 'List'
@@ -20,6 +21,15 @@ export const modulesComponent = {
         EditUser: {
             module: 'Users',
             action: 'Edit'
+        },
+        // roles
+        ViewRoles: {
+            module: 'ACLRoles',
+            action: 'List'
+        },
+        ViewRole: {
+            module: 'ACLRoles',
+            action: 'View'
         }
     }
 };

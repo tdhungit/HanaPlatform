@@ -8,6 +8,7 @@ import {
     CardBody,
     Table
 } from 'reactstrap';
+import {Link} from 'react-router-dom';
 
 import container from '/imports/common/Container';
 import {t, T, PT} from '/imports/common/Translation';
@@ -44,6 +45,11 @@ class ViewUser extends Component {
                             <CardHeader>
                                 <i className={branchOfficeModel.icon}/>
                                 <strong><T>Branch Offices</T></strong>
+                                <div className="card-actions">
+                                    <Link to={} title={t.__('Edit')}>
+                                        <i className="fa fa-plus-circle"/>
+                                    </Link>
+                                </div>
                             </CardHeader>
                             <CardBody>
                                 <Table responsive hover>
