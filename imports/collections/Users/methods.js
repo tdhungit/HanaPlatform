@@ -42,12 +42,23 @@ Meteor.methods({
             throw new Meteor.Error('500', exception);
         }
     },
+    'users.updateElement': function (userId, data) {
+        check(data, Object);
+        try {
+            Users.update(userId, {$set: data});
+            return userId;
+        } catch (exception) {
+            throw new Meteor.Error('500', exception);
+        }
+    },
     'users.updateAvatar': function (userId, mediaId) {
+        check(mediaId, String);
         const userData = {
             profile: {
                 avatar: mediaId
             }
         };
+
         try {
             Users.update(userId, {$set: userData});
             return userId;

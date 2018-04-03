@@ -29,15 +29,37 @@ class ViewUser extends Component {
         super(props);
 
         this.state = {
-            selectBranchOffice: false
+            selectBranchOffice: false,
+            selectedBranchOfficeIds: {}
         };
 
         this.toggleBranchOffice = this.toggleBranchOffice.bind(this);
+        this.onSelected = this.onSelected.bind(this);
     }
 
     toggleBranchOffice() {
         this.setState({
             selectBranchOffice: !this.state.selectBranchOffice
+        });
+    }
+
+    onSelect(selected) {
+        this.setState({selectedBranchOfficeIds: selected});
+    }
+
+    onSelected() {
+        const userId = this.props.match.params._id;
+        const branchOffices = $.map(this.state.selectedBranchOfficeIds, function(value, index) {
+            return [value];
+        });
+
+        Meteor.call('users.updateElement', userId, {branchOffices: branchOffices}, (error, userId) => {
+            if (error) {
+                console.log(error);
+                Bert.alert(error.reason, 'danger');
+            }
+
+            this.setState({selectBranchOffice: false});
         });
     }
 
@@ -98,10 +120,16 @@ class ViewUser extends Component {
                                 <Modal isOpen={this.state.selectBranchOffice} toggle={this.toggleBranchOffice} className="modal-lg">
                                     <ModalHeader toggle={this.toggleBranchOffice}><T>Select</T> <T>Branch Offices</T></ModalHeader>
                                     <ModalBody>
-                                        <ListRecordsComponent type="Select" collection={BranchOffices} filters={{}} model={branchOfficeModel}/>
+                                        <ListRecordsComponent
+                                            type="Select"
+                                            collection={BranchOffices}
+                                            filters={{}}
+                                            model={branchOfficeModel}
+                                            selected={user.branchOffices}
+                                            onClick={(selected) => this.onSelect(selected)}/>
                                     </ModalBody>
                                     <ModalFooter>
-                                        <Button color="primary" onClick={this.toggleBranchOffice}><T>Select</T></Button>{' '}
+                                        <Button color="primary" onClick={this.onSelected}><T>Select</T></Button>{' '}
                                         <Button color="secondary" onClick={this.toggleBranchOffice}><T>Cancel</T></Button>
                                     </ModalFooter>
                                 </Modal>

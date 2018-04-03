@@ -32,7 +32,8 @@ class ListContainer extends Component {
 
         this.state = {
             filters: {},
-            sort: {}
+            sort: {},
+            selected: {}
         };
 
         this.onFilter = this.onFilter.bind(this);
@@ -40,7 +41,7 @@ class ListContainer extends Component {
     }
 
     componentWillMount() {
-        const {type, model} = this.props;
+        const {type, model, selected} = this.props;
         this.listFields = model.list.fields;
 
         if (type === 'Panel' && model.panel && model.panel.fields) {
@@ -49,6 +50,13 @@ class ListContainer extends Component {
 
         if (type === 'Select' && model.select && model.select.fields) {
             this.listFields = model.select.fields;
+        }
+
+        if (selected) {
+            for (let idx in selected) {
+                let selectedId = selected[idx];
+                this.state.selected[selectedId] = selectedId;
+            }
         }
     }
 
@@ -145,13 +153,36 @@ class ListContainer extends Component {
         this.props.pagination.sort({[fieldName]: sortType});
     }
 
+    onClick(recordId) {
+        this.selectChange(recordId);
+        if (this.props.onClick) {
+            this.props.onClick(this.state.selected);
+        }
+    }
+
+    selectChange(recordId) {
+        let selected = this.state.selected;
+        if (selected[recordId]) {
+            delete selected[recordId];
+        } else {
+            selected[recordId] = recordId;
+        }
+
+        this.setState({selected: selected});
+    }
+
     renderCol(record) {
         let cols = [];
         // input column
         if (this.props.type === 'Select') {
+            const selected = this.state.selected;
             cols.push(
                 <td key="input">
-                    <Input type="checkbox" className="initEl"/>
+                    <Input
+                        type="checkbox"
+                        checked={(selected && selected[record._id]) ? true : false}
+                        onChange={() => {}}
+                        className="initEl"/>
                 </td>
             );
         }
@@ -193,7 +224,7 @@ class ListContainer extends Component {
     renderRows() {
         return this.props.records.map((record) => {
             return (
-                <tr key={record._id}>
+                <tr key={record._id} onClick={() => this.onClick(record._id)}>
                     {this.renderCol(record)}
                 </tr>
             );
@@ -252,6 +283,8 @@ ListComponent.propTypes = {
     type: PropTypes.string, // type is List OR Panel, default: List
     detailLink: PropTypes.string,
     editLink: PropTypes.string,
+    onClick: PropTypes.func,
+    selected: PropTypes.array,
     records: PropTypes.array // from container
 };
 
@@ -268,7 +301,9 @@ export class ListRecordsComponent extends Component {
         model:  PropTypes.object,
         createLink: PropTypes.string,
         editLink: PropTypes.string,
-        detailLink: PropTypes.string
+        detailLink: PropTypes.string,
+        selected: PropTypes.array,
+        onClick: PropTypes.func
     };
 
     componentWillMount() {
@@ -280,7 +315,7 @@ export class ListRecordsComponent extends Component {
 
     render() {
         const {limit, pagination} = this;
-        const {type, model, editLink, detailLink} = this.props;
+        const {type, model, editLink, detailLink, selected, onClick} = this.props;
 
         return (
             <ListComponent
@@ -289,7 +324,9 @@ export class ListRecordsComponent extends Component {
                 pagination={pagination}
                 limit={limit}
                 detailLink={detailLink}
-                editLink={editLink}/>
+                editLink={editLink}
+                selected={selected}
+                onClick={onClick}/>
         );
     }
 }
@@ -305,12 +342,14 @@ export class ListViewComponent extends Component {
         createLink: PropTypes.string,
         editLink: PropTypes.string,
         detailLink: PropTypes.string,
+        selected: PropTypes.array,
+        onClick: PropTypes.func,
         className: PropTypes.string,
         title: PropTypes.string
     };
 
     render() {
-        const {className, title, collection, filters, model, createLink, editLink, detailLink} = this.props;
+        const {className, title, collection, filters, model, createLink, editLink, detailLink, selected, onClick} = this.props;
 
         return (
             <div className={className + ' animated fadeIn'}>
@@ -333,7 +372,9 @@ export class ListViewComponent extends Component {
                                     filters={filters}
                                     model={model}
                                     detailLink={detailLink}
-                                    editLink={editLink}/>
+                                    editLink={editLink}
+                                    selected={selected}
+                                    onClick={onClick}/>
                             </CardBody>
                         </Card>
                     </Col>
