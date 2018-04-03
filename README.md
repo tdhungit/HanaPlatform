@@ -20,6 +20,10 @@
 * git clone 
 * cd PenguinPlatform
 * meteor npm install
+* Install redux dev tool: https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd
+* If want not to use redux dev tool:
+    * access: imports/ui/default/store/index.js
+    * comment: window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 
 ### Run
 * meteor
