@@ -10,10 +10,15 @@ import {
     NavLink,
     NavbarToggler,
     NavbarBrand,
-    DropdownToggle
+    DropdownToggle,
+    Modal,
+    ModalHeader,
+    ModalBody,
+    Table
 } from 'reactstrap';
 import {Link} from 'react-router-dom';
 
+import {T} from '/imports/common/Translation';
 import {ImageTag} from '../../helpers/tags/MediaImage';
 import BranchOffices from '/imports/collections/BranchOffices/BranchOffices';
 
@@ -24,12 +29,14 @@ class Header extends Component {
         this.state = {
             branchOfficeDropdownOpen: false,
             userDropdownOpen: false,
+            selectBranchOffice: false,
             branchOffices: []
         };
     }
 
     componentWillMount() {
         this.state.branchOffices = BranchOffices.ofUser(Meteor.user());
+        //this.state.selectBranchOffice = true;
     }
 
     toggle(dropdown) {
@@ -163,6 +170,24 @@ class Header extends Component {
 
                 <NavbarToggler className="d-md-down-none" type="button"
                                onClick={this.asideToggle}>&#9776;</NavbarToggler>
+
+                {/* check branch office */}
+                <Modal isOpen={this.state.selectBranchOffice}>
+                    <ModalHeader><T>Select</T> <T>Branch Offices</T></ModalHeader>
+                    <ModalBody>
+                        <Table bordered hover>
+                            <tbody>
+                            {this.state.branchOffices.map((branchOffice) => {
+                                return (
+                                    <tr key={branchOffice._id}>
+                                        <td>{branchOffice.name}</td>
+                                    </tr>
+                                );
+                            })}
+                            </tbody>
+                        </Table>
+                    </ModalBody>
+                </Modal>
             </header>
         )
     }
