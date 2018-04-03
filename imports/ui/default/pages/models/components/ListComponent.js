@@ -54,7 +54,10 @@ class ListContainer extends Component {
 
     renderHeader() {
         let headers = [];
-        headers.push(<th key="input" className="NoSortLink"></th>);
+        // input column
+        if (this.props.type === 'Select') {
+            headers.push(<th key="input" className="NoSortLink"></th>);
+        }
 
         for (let fieldName in this.listFields) {
             let field = this.listFields[fieldName];
@@ -72,7 +75,10 @@ class ListContainer extends Component {
 
     renderFilterForm() {
         let filters = [];
-        filters.push(<td key="input"></td>);
+        // input column
+        if (this.props.type === 'Select') {
+            filters.push(<td key="input"></td>);
+        }
 
         for (let fieldName in this.listFields) {
             let field = this.listFields[fieldName];
