@@ -82,12 +82,14 @@ class ViewProfile extends Component {
             });
             uploadInstance.on('end', (error, fileObj) => {
                 if (error) {
-                    Bert.alert(error.reason, 'danger');
+                    console.log(error);
+                    Bert.alert(t.__('Error! Please contact with Admin'), 'danger');
                 } else {
                     const userId = Meteor.userId();
                     Meteor.call('users.updateAvatar', userId, fileObj._id, (error) => {
                         if (error) {
-                            Bert.alert(error.reason, 'danger');
+                            console.log(error);
+                            Bert.alert(t.__('Error! Please contact with Admin'), 'danger');
                         } else {
                             Bert.alert(t.__('Successful!'), 'success');
                         }

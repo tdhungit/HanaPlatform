@@ -66,7 +66,8 @@ class Install extends Component {
 
             Meteor.call('companies.register', company, user, (error, companyId) => {
                 if (error) {
-                    Bert.alert(error.reason, 'danger');
+                    console.log(error);
+                    Bert.alert(t.__('Error! Please contact with Admin'), 'danger');
                 } else {
                     Bert.alert(t.__('Installation successful'), 'success');
                     this.props.history.push('/');

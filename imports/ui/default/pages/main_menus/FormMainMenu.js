@@ -121,7 +121,8 @@ class FormMainMenu extends Component {
 
             Meteor.call(method, this.state.menu, (error, menuId) => {
                 if (error) {
-                    Bert.alert(error.reason, 'danger');
+                    console.log(error);
+                    Bert.alert(t.__('Error! Please contact with Admin'), 'danger');
                 } else {
                     Bert.alert(t.__('Successful!'), 'success');
                     this.props.history.push('/manager/main-menus/' + menuId + '/edit');

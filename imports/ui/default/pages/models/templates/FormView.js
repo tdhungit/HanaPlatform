@@ -117,7 +117,8 @@ class FormView extends Component {
 
         Meteor.call(method, model.model, this.state.record, (error, recordId) => {
             if (error) {
-                Bert.alert(error.reason, 'danger');
+                console.log(error);
+                Bert.alert(t.__('Error! Please contact with Admin'), 'danger');
             } else {
                 Bert.alert(t.__('Successful'), 'success');
                 this.props.history.push('/manager/model/' + model.model + '/' + recordId + '/detail');

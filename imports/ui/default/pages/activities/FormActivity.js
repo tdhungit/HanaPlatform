@@ -319,7 +319,8 @@ class FormActivity extends Component {
 
         Meteor.call(method, activity, (error, activityId) => {
             if (error) {
-                Bert.alert(error.reason, 'danger');
+                console.log(error);
+                Bert.alert(t.__('Error! Please contact with Admin'), 'danger');
             } else {
                 Bert.alert(t.__('Successful!'), 'success');
                 this.props.history.push('/manager/activities/' + activityId + '/detail');

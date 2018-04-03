@@ -87,7 +87,8 @@ class FormModel extends Component {
         if (!errorStatus) {
             Meteor.call(method, model, (error, modelId) => {
                 if (error) {
-                    Bert.alert(error.reason, 'danger');
+                    console.log(error);
+                    Bert.alert(t.__('Error! Please contact with Admin'), 'danger');
                 } else {
                     Bert.alert(t.__('Successful!'), 'success');
                     this.props.history.push('/manager/models/' + modelId + '/detail');

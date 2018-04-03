@@ -69,7 +69,8 @@ class SystemSettings extends Component {
             Meteor.call('settings.update', setting, (error) => {
                 if (error) {
                     updateError = true;
-                    Bert.alert(error.reason, 'danger');
+                    console.log(error);
+                    Bert.alert(t.__('Error! Please contact with Admin'), 'danger');
                 }
             });
         }

@@ -50,7 +50,8 @@ class UserSettings extends Component {
         console.log(user);
         Meteor.call('users.update', user, (error, userId) => {
             if (error) {
-                Bert.alert(error.reason, 'danger');
+                console.log(error);
+                Bert.alert(t.__('Error! Please contact with Admin'), 'danger');
             } else {
                 Bert.alert(t.__('Successful!'), 'success');
             }

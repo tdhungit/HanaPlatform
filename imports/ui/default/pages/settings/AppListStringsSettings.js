@@ -71,7 +71,8 @@ class AppListStringsSettings extends Component {
 
             Meteor.call('settings.update', setting, (error, settingId) => {
                 if (error) {
-                    Bert.alert(error.reason, 'danger');
+                    console.log(error);
+                    Bert.alert(t.__('Error! Please contact with Admin'), 'danger');
                 } else {
                     let allAppListStrings = this.state.AppListStrings;
                     allAppListStrings[this.state.dropdownName] = this.state.listString;

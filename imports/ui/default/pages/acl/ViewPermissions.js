@@ -83,7 +83,8 @@ class ViewPermissions extends Component {
 
         Meteor.call('aclPermissions.update', this.state.permissions, role._id, (error) => {
             if (error) {
-                Bert.alert(error.reason, 'danger');
+                console.log(error);
+                Bert.alert(t.__('Error! Please contact with Admin'), 'danger');
             } else {
                 Bert.alert(t.__('Successful!'), 'success');
             }

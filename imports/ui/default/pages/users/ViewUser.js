@@ -56,7 +56,7 @@ class ViewUser extends Component {
         Meteor.call('users.updateElement', userId, {branchOffices: branchOffices}, (error, userId) => {
             if (error) {
                 console.log(error);
-                Bert.alert(error.reason, 'danger');
+                Bert.alert(t.__('Error! Please contact with Admin'), 'danger');
             }
 
             this.setState({selectBranchOffice: false});

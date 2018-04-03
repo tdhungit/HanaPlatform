@@ -69,7 +69,8 @@ class FormUserGroup extends Component {
         if (this.state.userGroup.name) {
             Meteor.call(method, this.state.userGroup, (error, groupId) => {
                 if (error) {
-                    Bert.alert(error.reason, 'danger');
+                    console.log(error);
+                    Bert.alert(t.__('Error! Please contact with Admin'), 'danger');
                 } else {
                     Bert.alert(t.__('Successful'), 'success');
                     this.props.history.push('/manager/user-groups/' + groupId + '/detail');

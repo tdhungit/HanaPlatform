@@ -17,8 +17,9 @@ import {
     Table
 } from 'reactstrap';
 import {Link} from 'react-router-dom';
+import {Bert} from 'meteor/themeteorchef:bert';
 
-import {T} from '/imports/common/Translation';
+import {t, T} from '/imports/common/Translation';
 import {ImageTag} from '../../helpers/tags/MediaImage';
 import BranchOffices from '/imports/collections/BranchOffices/BranchOffices';
 
@@ -27,16 +28,28 @@ class Header extends Component {
         super(props);
 
         this.state = {
-            branchOfficeDropdownOpen: false,
-            userDropdownOpen: false,
-            selectBranchOffice: false,
-            branchOffices: []
+            branchOfficeDropdownOpen: false, // dropdown
+            userDropdownOpen: false, // dropdown
+            selectBranchOffice: false, // dropdown
+            branchOffices: [],
+            currentBranchOffice: {}
         };
     }
 
     componentWillMount() {
-        this.state.branchOffices = BranchOffices.ofUser(Meteor.user());
-        //this.state.selectBranchOffice = true;
+        const currentUser = Meteor.user();
+        this.state.branchOffices = BranchOffices.ofUser(currentUser);
+        // get current branch office
+        if (currentUser.settings && currentUser.settings.branchOfficeId) {
+            this.state.currentBranchOffice = BranchOffices.findOne(currentUser.settings.branchOfficeId);
+
+        }
+        // check current branch office
+        if (this.state.currentBranchOffice && this.state.currentBranchOffice._id) {
+            this.state.selectBranchOffice = false;
+        } else {
+            this.state.selectBranchOffice = true;
+        }
     }
 
     toggle(dropdown) {
@@ -71,6 +84,22 @@ class Header extends Component {
         });
     }
 
+    chooseBranchOffice(branchOfficeId) {
+        let settings = Meteor.user().settings || {};
+        settings.branchOfficeId = branchOfficeId;
+        Meteor.call('users.updateElement', Meteor.userId(), {settings: settings}, (error, userId) => {
+            if (error) {
+                console.log(error);
+                Bert.alert(t.__('Error! Please contact with Admin'), 'danger');
+            } else {
+                this.setState({
+                    selectBranchOffice: false,
+                    currentBranchOffice: BranchOffices.findOne(branchOfficeId)
+                });
+            }
+        });
+    }
+
     render() {
         const currentUser = Meteor.user();
 
@@ -97,13 +126,13 @@ class Header extends Component {
                         <Dropdown isOpen={this.state.branchOfficeDropdownOpen}
                                   toggle={() => this.toggle('branchOfficeDropdownOpen')}>
                             <DropdownToggle className="nav-link dropdown-toggle">
-                                Branch Office
+                                {this.state.selectBranchOffice ? t.__('Branch Office') : this.state.currentBranchOffice.name}
                             </DropdownToggle>
 
                             <DropdownMenu right className={this.state.branchOfficeDropdownOpen ? 'show' : ''}>
                                 {this.state.branchOffices.map((branchOffice) => {
                                     return (
-                                        <DropdownItem key={branchOffice._id}>
+                                        <DropdownItem key={branchOffice._id} onClick={() => this.chooseBranchOffice(branchOffice._id)}>
                                             {branchOffice.name}
                                         </DropdownItem>
                                     );
@@ -179,7 +208,7 @@ class Header extends Component {
                             <tbody>
                             {this.state.branchOffices.map((branchOffice) => {
                                 return (
-                                    <tr key={branchOffice._id}>
+                                    <tr key={branchOffice._id} onClick={() => this.chooseBranchOffice(branchOffice._id)}>
                                         <td>{branchOffice.name}</td>
                                     </tr>
                                 );
