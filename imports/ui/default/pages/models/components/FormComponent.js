@@ -102,7 +102,7 @@ class FormComponent extends Component {
         };
 
         if (component) {
-            return React.createElement(component, {...props, record});
+            return React.createElement(component, {...props, record: record || {}});
         } else if (field.renderField && helpers && helpers[field.renderField]) {
             return helpers[field.renderField](field, value, record, 'Input');
         } else {
