@@ -53,7 +53,7 @@ export default container((props, onData) => {
     const subscription = Meteor.subscribe('users.detail', userId);
     if (subscription.ready()) {
         onData(null, {
-            user: Users.findOne(userId)
+            user: Users.getOne(userId)
         });
     }
 }, EditUser);

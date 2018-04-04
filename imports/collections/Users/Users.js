@@ -186,15 +186,68 @@ Schema.User = CollectionBase.schema({
 Users.attachSchema(Schema.User);
 
 /**
+ * get filter user
+ * @param user
+ * @param filters
+ * @returns {{}}
+ */
+Users.filterOwnerData = (user, filters) => {
+    let selector = {};
+    if (!filters) {
+        return selector;
+    }
+
+    if (typeof filters === 'string') {
+        selector._id = filters;
+    } else {
+        selector = filters;
+    }
+
+    if (user !== -1 && !selector.companyId) {
+        selector.companyId = user && user.companyId || '';
+    }
+
+    return selector;
+};
+
+/**
+ * find one user
+ * @param userSelector
+ * @param options
+ * @returns {any}
+ */
+Users.getOne = (userSelector, options) => {
+    let selector = Users.filterOwnerData(-1, userSelector);
+    if (Meteor.isClient) {
+        selector = Users.filterOwnerData(Meteor.user(), selector);
+    }
+
+    return Users.findOne(selector, options);
+};
+
+/**
+ * find users
+ * @param userSelector
+ * @param options
+ * @returns {Mongo.Cursor}
+ */
+Users.getAll = (userSelector, options) => {
+    let selector = Users.filterOwnerData(-1, userSelector);
+    if (Meteor.isClient) {
+        selector = Users.filterOwnerData(Meteor.user(), selector);
+    }
+
+    return Users.find(selector, options);
+};
+
+/**
  * users pagination server side
  */
 Users.publishPagination = () => {
     publishPagination(Users, {
         filters: {},
         dynamic_filters: function () {
-            return {
-                companyId: Meteor.user() && Meteor.user().companyId || ''
-            }
+            return Users.filterOwnerData(Meteor.user(), {});
         }
     });
 };
@@ -207,10 +260,8 @@ Users.publishPagination = () => {
 Users.pagination = (options = {}) => {
     const limit = 20;
 
-    let filters = options && options.filters || {};
-    if (!filters.companyId) {
-        filters.companyId = Meteor.user().companyId;
-    }
+    const selector = options && options.filters || {};
+    const filters = Users.filterOwnerData(Meteor.user(), selector);
 
     return new Meteor.Pagination(Users, {
         filters: filters,
@@ -234,7 +285,7 @@ Users.childrenOfUser = (selector) => {
     let user = selector;
     if (typeof selector === 'string') {
         const userId = selector;
-        user = Users.findOne(userId);
+        user = Users.getOne(userId);
     }
 
     const groupId = user && user.groupId || '';
@@ -259,7 +310,7 @@ Users.userPermissions = (selector) => {
     let user = selector;
     if (typeof selector === 'string') {
         const userId = selector;
-        user = Users.findOne(userId);
+        user = Users.getOne(userId);
     }
 
     const groupId = user && user.groupId || '';
@@ -289,7 +340,7 @@ Users.checkAccess = (selector) => {
     let user = selector;
     if (typeof selector === 'string') {
         const userId = selector;
-        user = Users.findOne(userId);
+        user = Users.getOne(userId);
     }
 
     if (user.isDeveloper) {

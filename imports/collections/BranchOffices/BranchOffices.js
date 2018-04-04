@@ -10,7 +10,7 @@ class BranchOfficesCollection extends CollectionBase {
     ofUser(userParam) {
         let user = {};
         if (typeof userParam === 'string') {
-            user = Users.findOne(userParam);
+            user = Users.getOne(userParam);
         } else {
             user = userParam;
         }

@@ -21,7 +21,7 @@ class PermissionsCollection extends CollectionBase {
         let user = selector;
         if (typeof selector === 'string') {
             const userId = selector;
-            user = Users.findOne(userId);
+            user = Users.getOne(userId);
         }
 
         const groupId = user && user.groupId || '';

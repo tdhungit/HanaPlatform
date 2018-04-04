@@ -10,7 +10,7 @@ Meteor.publish('users.user', function () {
         return this.ready();
     }
 
-    return Meteor.users.find(this.userId, {
+    return Users.getAll(this.userId, {
         fields: {
             _id: 1,
             companyId: 1,
@@ -24,11 +24,11 @@ Meteor.publish('users.user', function () {
 });
 
 Meteor.publish('users.list', function () {
-    return Users.find({});
+    return Users.getAll({});
 });
 
 Meteor.publish('users.detail', function (userId) {
-    return Users.find({_id: userId}, {
+    return Users.getAll({_id: userId}, {
         fields: {
             _id: 1,
             companyId: 1,

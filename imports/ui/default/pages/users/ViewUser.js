@@ -146,7 +146,7 @@ export default container((props, onData) => {
     const userId = props.match.params._id;
     const subscription = Meteor.subscribe('users.detail', userId);
     if (subscription.ready()) {
-        const user = Users.findOne(userId);
+        const user = Users.getOne(userId);
         const branchOfficeIds = user.branchOffices;
         const branchOffices = BranchOffices.find({_id: {$in: branchOfficeIds}}).fetch();
         onData(null, {
