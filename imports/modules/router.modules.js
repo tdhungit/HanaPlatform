@@ -1,3 +1,3 @@
-export const RouterModules = {
+const RouterModules = {};
 
-};
+export {RouterModules};

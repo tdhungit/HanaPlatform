@@ -41,7 +41,7 @@ import CreateBranchOffice from '../pages/companies/CreateBranchOffice';
 import EditBranchOffice from '../pages/companies/EditBranchOffice';
 import ViewBranchOffice from '../pages/companies/ViewBranchOffice';
 
-const ManagerRouters = {
+let ManagerRouters = {
     "/manager": {
         title: "Dashboard",
         component: Dashboard
@@ -212,9 +212,5 @@ const ManagerRouters = {
     }
 };
 
-for (let path in RouterModules) {
-    let router = RouterModules[path];
-    ManagerRouters[path] = router;
-}
-
+ManagerRouters = Object.assign(ManagerRouters, RouterModules);
 export {ManagerRouters};
