@@ -204,7 +204,12 @@ Users.filterOwnerData = (user, filters) => {
     }
 
     if (user !== -1 && !selector.companyId) {
-        selector.companyId = user && user.companyId || '';
+        if (!user.isDeveloper) {
+            selector.companyId = user && user.companyId || '';
+            if (!user.isAdmin) {
+                selector.branchOffices = user.settings && user.settings.branchOfficeId || ''
+            }
+        }
     }
 
     return selector;

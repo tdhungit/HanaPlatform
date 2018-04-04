@@ -51,6 +51,11 @@ class CollectionAssign extends CollectionBase {
             doc.assignedId = Meteor.user()._id;
         }
 
+        if (!doc.branchOffices) {
+            const branchOfficeId = Meteor.user().settings && Meteor.user().settings.branchOfficeId;
+            doc.branchOffices = [branchOfficeId];
+        }
+
         return super.insert(doc, callback);
     }
 
@@ -74,6 +79,12 @@ class CollectionAssign extends CollectionBase {
 
         if (user !== -1 && !selector.assignedId) {
             selector.assignedId = user && user._id || '';
+            if (!user.isDeveloper) {
+                selector.companyId = user && user.companyId || '';
+                if (!user.isAdmin) {
+                    selector.branchOffices = user.settings && user.settings.branchOfficeId || ''
+                }
+            }
         }
 
         return super.filterOwnerData(user, selector);
