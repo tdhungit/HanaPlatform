@@ -146,10 +146,8 @@ class FormComponent extends Component {
     }
 
     render() {
-        const {
-            model,
-            record
-        } = this.props;
+        const {model} = this.props;
+        const record = this.props.record || {};
 
         if (!model) {
             return <Alert color="warning"><T>No Config</T></Alert>
@@ -162,7 +160,7 @@ class FormComponent extends Component {
             <Card>
                 <CardHeader>
                     <i className={model.icon}/>
-                    <strong>{this.props.title}</strong> {this.props.slogan}
+                    <strong>{this.props.title}</strong> {this.props.slogan || ''}
                 </CardHeader>
                 <CardBody>
                     {this.renderFieldsRow(recordFields)}

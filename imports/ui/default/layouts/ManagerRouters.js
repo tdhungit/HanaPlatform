@@ -1,3 +1,4 @@
+import {RouterModules} from '../../../modules/router.modules';
 import Dashboard from '../pages/dashboard/Dashboard';
 import ViewProfile from '../pages/users/ViewProfile';
 import ViewUsers from '../pages/users/ViewUsers';
@@ -40,7 +41,7 @@ import CreateBranchOffice from '../pages/companies/CreateBranchOffice';
 import EditBranchOffice from '../pages/companies/EditBranchOffice';
 import ViewBranchOffice from '../pages/companies/ViewBranchOffice';
 
-export const ManagerRouters = {
+const ManagerRouters = {
     "/manager": {
         title: "Dashboard",
         component: Dashboard
@@ -210,3 +211,10 @@ export const ManagerRouters = {
         component: DetailView
     }
 };
+
+for (let path in RouterModules) {
+    let router = RouterModules[path];
+    ManagerRouters[path] = router;
+}
+
+export {ManagerRouters};

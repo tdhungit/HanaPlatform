@@ -28,4 +28,4 @@ import '/imports/collections/Activities/methods';
 import '/imports/collections/Models/publications';
 import '/imports/collections/Models/methods';
 
-import '/imports/modules/server_modules';
+import '/imports/modules/server.modules';
