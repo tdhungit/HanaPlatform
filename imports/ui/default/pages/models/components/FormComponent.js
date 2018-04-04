@@ -35,6 +35,7 @@ class FormComponent extends Component {
         listLink: PropTypes.string,
         onSubmit: PropTypes.func,
         method: PropTypes.string,
+        component: PropTypes.func,
         helpers: PropTypes.object
     };
 
@@ -89,19 +90,23 @@ class FormComponent extends Component {
     }
 
     renderField(field) {
-        const {helpers, record} = this.props;
+        const {helpers, component, record} = this.props;
         const value = this.getVal(field.name);
+        const props = {
+            type: field.type,
+            name: field.name,
+            required: field.required || false,
+            placeholder: field.placeholder,
+            value: value,
+            onChange: this.handleInputChange
+        };
 
-        if (field.renderField && helpers[field.renderField]) {
-            return helpers[field.renderField](field, value, record);
+        if (component) {
+            return React.createElement(component, {...props, record});
+        } else if (field.renderField && helpers && helpers[field.renderField]) {
+            return helpers[field.renderField](field, value, record, 'Input');
         } else {
-            return <FieldInput
-                type={field.type}
-                name={field.name}
-                required={field.required || false}
-                placeholder={field.placeholder}
-                value={value}
-                onChange={this.handleInputChange}/>
+            return <FieldInput {...props}/>
         }
     }
 
