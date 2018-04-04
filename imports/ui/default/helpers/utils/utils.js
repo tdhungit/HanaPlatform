@@ -1,5 +1,8 @@
 // import {Meteor} from 'meteor/meteor';
 // import Settings from '/imports/collections/Settings/Settings';
+import Media from '../../../../collections/Media/Media';
+import {Meteor} from "meteor/meteor";
+import {t} from '../../../../common/Translation';
 
 class UtilsHelper {
     /**
@@ -116,6 +119,27 @@ class UtilsHelper {
         }
 
         return displayName;
+    }
+
+    /**
+     * file upload
+     * @param file
+     * @param start function when upload start
+     * @param callback function when upload done
+     */
+    fileUpload(file, start, callback) {
+        const uploadInstance = Media.insert({
+            file: file,
+            streams: 'dynamic',
+            chunkSize: 'dynamic'
+        }, false);
+        uploadInstance.on('start', () => {
+            start();
+        });
+        uploadInstance.on('end', (error, fileObj) => {
+            callback(error, fileObj);
+        });
+        uploadInstance.start();
     }
 }
 

@@ -20,7 +20,6 @@ import classnames from 'classnames';
 import {Bert} from 'meteor/themeteorchef:bert';
 
 import {T, t, PT} from '/imports/common/Translation';
-import Media from '/imports/collections/Media/Media';
 import {ImageTag} from '../../helpers/tags/MediaImage';
 import {utilsHelper} from '../../helpers/utils/utils';
 import UserActivities from './UserActivities';
@@ -72,15 +71,9 @@ class ViewProfile extends Component {
         const target = event.target;
         const file = target.files && target.files[0];
         if (file) {
-            const uploadInstance = Media.insert({
-                file: file,
-                streams: 'dynamic',
-                chunkSize: 'dynamic'
-            }, false);
-            uploadInstance.on('start', () => {
+            utilsHelper.fileUpload(file, () => {
                 this.setState({avatarUploading: true});
-            });
-            uploadInstance.on('end', (error, fileObj) => {
+            }, (error, fileObj) => {
                 if (error) {
                     console.log(error);
                     Bert.alert(t.__('Error! Please contact with Admin'), 'danger');
@@ -97,7 +90,6 @@ class ViewProfile extends Component {
                 }
                 this.setState({avatarUploading: false});
             });
-            uploadInstance.start();
         }
     }
 
