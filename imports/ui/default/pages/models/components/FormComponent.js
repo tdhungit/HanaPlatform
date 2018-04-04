@@ -34,7 +34,8 @@ class FormComponent extends Component {
         detailLink: PropTypes.string,
         listLink: PropTypes.string,
         onSubmit: PropTypes.func,
-        method: PropTypes.string
+        method: PropTypes.string,
+        helpers: PropTypes.object
     };
 
     constructor(props) {
@@ -87,6 +88,23 @@ class FormComponent extends Component {
         }
     }
 
+    renderField(field) {
+        const {helpers, record} = this.props;
+        const value = this.getVal(field.name);
+
+        if (field.renderField && helpers[field.renderField]) {
+            return helpers[field.renderField](field, value, record);
+        } else {
+            return <FieldInput
+                type={field.type}
+                name={field.name}
+                required={field.required || false}
+                placeholder={field.placeholder}
+                value={value}
+                onChange={this.handleInputChange}/>
+        }
+    }
+
     renderFields(fields) {
         let columnsField = [];
         const columnClass = this.getColumnClassName(fields);
@@ -94,19 +112,14 @@ class FormComponent extends Component {
             let field = fields[fieldName];
             field.name = fieldName;
 
-            let placeholder = '';
-            if (field.placeholder) {
-                placeholder = field.placeholder;
-            }
+            const placeholder = field.placeholder || '';
+            field.placeholder = placeholder;
 
             columnsField.push(
                 <Col md={columnClass} key={field.name}>
                     <FormGroup>
                         <Label><T>{field.label}</T></Label>
-                        <FieldInput type={field.type} name={field.name} required={field.required || false}
-                                    placeholder={placeholder}
-                                    value={this.getVal(field.name)}
-                                    onChange={this.handleInputChange}/>
+                        {this.renderField(field)}
                     </FormGroup>
                 </Col>
             )
@@ -156,17 +169,17 @@ class FormComponent extends Component {
                 </CardBody>
                 <CardFooter>
                     <Button type="button" size="sm" color="primary" onClick={this.onSubmit}>
-                        <i className="fa fa-dot-circle-o"></i> <T>{existingRecord ? 'Update' : 'Create'}</T>
+                        <i className="fa fa-dot-circle-o"/> <T>{existingRecord ? 'Update' : 'Create'}</T>
                     </Button>
                     <Button type="button" size="sm" color="danger">
                         {existingRecord
                             ?
                             <Link to={vsprintf(this.props.detailLink, [record._id])}>
-                                <i className="fa fa-ban"></i> <T>Cancel</T>
+                                <i className="fa fa-ban"/> <T>Cancel</T>
                             </Link>
                             :
                             <Link to={this.props.listLink}>
-                                <i className="fa fa-ban"></i> <T>Cancel</T>
+                                <i className="fa fa-ban"/> <T>Cancel</T>
                             </Link>
                         }
                     </Button>
