@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Meteor} from 'meteor/meteor';
 import PropTypes from 'prop-types';
-import Media from '/imports/collections/Media/Media';
+import Medias from '/imports/collections/Medias/Medias';
 
 /**
  * image tag use media collection
@@ -16,7 +16,7 @@ export class ImageTag extends Component {
 
     render() {
         const mediaId = this.props.media;
-        const media = Media.findOne(mediaId);
+        const media = Medias.findOne(mediaId);
         let mediaLink = media && media.link() || false;
         if (!mediaLink) {
             mediaLink = Meteor.absoluteUrl('img/avatars/1.jpg');

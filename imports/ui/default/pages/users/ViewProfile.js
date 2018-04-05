@@ -26,6 +26,7 @@ import UserActivities from './UserActivities';
 import UserTimeline from './UserTimeline';
 import ProfileUserInfo from './ProfileUserInfo';
 import UserSettings from './UserSettings';
+import Medias from '../../../../collections/Medias/Medias';
 
 class ViewProfile extends Component {
     constructor(props) {
@@ -71,7 +72,7 @@ class ViewProfile extends Component {
         const target = event.target;
         const file = target.files && target.files[0];
         if (file) {
-            utilsHelper.fileUpload(file, () => {
+            Medias.upload(file, 'Local', () => {
                 this.setState({avatarUploading: true});
             }, (error, fileObj) => {
                 if (error) {
