@@ -26,9 +26,6 @@ const Medias = new FilesCollection({
     storagePath() {
         return 'assets/uploads/medias';
     },
-    downloadRoute() {
-        return 'medias'
-    },
     onBeforeUpload(file) {
         if (this.user()) {
             // Allow upload files under 10MB, and only in png/jpg/jpeg formats
@@ -50,12 +47,12 @@ Medias.collection.attachSchema(new SimpleSchema(mediasSchema));
  * @param file
  * @param fileLocator
  * @param start function when upload start
- * @param callback function when upload done
- * @param progress function
  * @param end function
+ * @param uploaded function when upload done
+ * @param progress function
  */
-Medias.upload = (file, fileLocator = 'Local', start, callback, progress, end) => {
-    const uploadInstance = Medias.insert({
+Medias.upload = (file, fileLocator = 'Local', start, end, uploaded, progress) => {
+    Medias.insert({
         file: file,
         meta: {
             locator: fileLocator || 'Local',
@@ -64,25 +61,20 @@ Medias.upload = (file, fileLocator = 'Local', start, callback, progress, end) =>
         },
         streams: 'dynamic',
         chunkSize: 'dynamic'
-    }, false);
-
-    uploadInstance.on('start', () => {
-        start && start();
-    });
-
-    uploadInstance.on('progress', function (progressPercent, fileObj) {
-        progress && progress(progressPercent, fileObj);
-    });
-
-    uploadInstance.on('end', (error, fileObj) => {
-        end && end(error, fileObj);
-    });
-
-    uploadInstance.on('uploaded', function (error, fileObj) {
-        callback && callback(error, fileObj);
-    });
-
-    uploadInstance.start();
+    }, false)
+        .on('start', () => {
+            start && start();
+        })
+        .on('progress', function (progressPercent, fileObj) {
+            progress && progress(progressPercent, fileObj);
+        })
+        .on('end', (error, fileObj) => {
+            end && end(error, fileObj);
+        })
+        .on('uploaded', function (error, fileObj) {
+            uploaded && uploaded(error, fileObj);
+        })
+        .start();
 };
 
 export default Medias;

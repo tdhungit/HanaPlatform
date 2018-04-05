@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Meteor} from 'meteor/meteor';
+import {_} from 'meteor/underscore';
 import PropTypes from 'prop-types';
 import {withRouter} from 'react-router';
 import {

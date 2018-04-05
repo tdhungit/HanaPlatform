@@ -52,6 +52,10 @@ class UtilsHelper {
 
         let objectClean = object || {};
 
+        if (!name) {
+            return objectClean;
+        }
+
         if (name.indexOf('.') < 0) {
             objectClean[name] = value;
         } else {
