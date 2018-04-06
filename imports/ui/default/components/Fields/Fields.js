@@ -34,43 +34,37 @@ import {ArrayFieldValue} from '../../helpers/inputs/ArrayFieldHelper';
 export class FieldView extends Component {
     static propTypes = {
         field: PropTypes.object.isRequired,
-        record: PropTypes.object.isRequired
+        record: PropTypes.object
     };
 
     render() {
         const {field, record} = this.props;
-        let fieldName = field.name;
-        if (field.alias) {
-            fieldName = field.alias;
-        }
+        let value = this.props.value;
+        let fieldDisplay = field;
 
-        let value = utilsHelper.getField(record, fieldName);
+        if (record) {
+            let fieldName = field.name;
+            if (field.alias) {
+                fieldName = field.alias;
+            }
 
-        if (field.display) {
-            if (field.display.type === 'array') {
-                let fieldDisplay = '';
-                for (let idx in value) {
-                    let item = value[idx];
-                    for (let idx2 in field.display.fields) {
-                        let displayKey = field.display.fields[idx2];
-                        fieldDisplay += item[displayKey] + ' ';
-                    }
-                }
+            value = utilsHelper.getField(record, fieldName);
 
-                value = fieldDisplay;
+            if (field.display) {
+                fieldDisplay = field.display;
             }
         }
 
-        switch (field.type) {
+        switch (fieldDisplay.type) {
             case 'select':
             case 'dropdown':
-                return <SelectValue options={field.options} value={value} className={field.className || ''}/>;
+                return <SelectValue options={fieldDisplay.options} value={value} className={fieldDisplay.className || ''}/>;
             case 'array':
-                return <ArrayFieldValue fields={field.fields || false} value={value} className={field.className || ''}/>;
+                return <ArrayFieldValue fields={fieldDisplay.fields || false} value={value} className={fieldDisplay.className || ''}/>;
             case 'images':
-                return <ImagesView fields={field.fields || false} value={value} className={field.className || ''}/>;
+                return <ImagesView fields={fieldDisplay.fields || false} value={value} className={fieldDisplay.className || ''}/>;
             default:
-                return <div className={field.className || ''}>{value}</div>;
+                return <div className={fieldDisplay.className || ''}>{value}</div>;
         }
     }
 }

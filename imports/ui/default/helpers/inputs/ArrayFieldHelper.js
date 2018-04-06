@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
  */
 export class ArrayFieldValue extends Component {
     static propTypes = {
-        fields: PropTypes.array,
+        fields: PropTypes.node,
         value: PropTypes.array,
         renderRow: PropTypes.func
 

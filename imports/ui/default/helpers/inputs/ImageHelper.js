@@ -291,7 +291,6 @@ export class ImagesInput extends Component {
  */
 export class ImagesView extends Component {
     static propTypes = {
-        fields: PropTypes.array,
         value: PropTypes.array
     };
 
@@ -302,7 +301,7 @@ export class ImagesView extends Component {
         _.each(fields, (field) => {
             fieldsRender.push(
                 <div key={field}>
-                    <ImageTag mediaId={record && record[field] || ''}/>
+                    <ImageTag mediaId={record}/>
                 </div>
             )
         });
@@ -311,10 +310,13 @@ export class ImagesView extends Component {
     }
 
     render() {
-        const {fields, value} = this.props;
+        const {value} = this.props;
 
         return (
-            <ArrayFieldValue fields={fields} value={value} renderRow={(record) => this.renderRow(record)}/>
+            <ArrayFieldValue
+                fields={false}
+                value={value}
+                renderRow={(record) => this.renderRow(record)}/>
         );
     }
 }

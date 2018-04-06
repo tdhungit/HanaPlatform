@@ -20,7 +20,9 @@ import {FieldView} from '../../../components/Fields/Fields';
 export class FieldDetail extends Component {
     static propTypes = {
         fields: PropTypes.object.isRequired,
-        record: PropTypes.object.isRequired
+        record: PropTypes.object.isRequired,
+        component: PropTypes.func,
+        helpers: PropTypes.object
     };
 
     getColumnClassName(fields) {
@@ -38,22 +40,36 @@ export class FieldDetail extends Component {
         }
     }
 
+    renderFieldView(field) {
+        const {record, component, helpers} = this.props;
+
+        if (component) {
+            return React.createElement(component, {field, record: record || {}});
+        } else if (field.renderField && helpers && helpers[field.renderField]) {
+            return helpers[field.renderField](field, value, record, 'View');
+        } else {
+            return <FieldView record={record} field={field}/>;
+        }
+    }
+
     render() {
-        const {fields, record} = this.props;
+        const {fields} = this.props;
         const className = this.getColumnClassName(fields);
 
         let renderFields = [];
         for (let fieldName in fields) {
             let field = fields[fieldName];
             field.name = fieldName;
+
             renderFields.push(
                 <dt key={'label' + fieldName} className={className.labelClass}>
                     <T>{field.label || field.name}</T>
                 </dt>
             );
+
             renderFields.push(
                 <dd key={'value' + fieldName} className={className.valueClass}>
-                    <FieldView record={record} field={field}/>
+                    {this.renderFieldView(field)}
                 </dd>
             );
         }
@@ -75,15 +91,19 @@ class DetailComponent extends Component {
         model: PropTypes.object,
         record: PropTypes.object,
         editLink: PropTypes.string,
-        headerLinks: PropTypes.array
+        headerLinks: PropTypes.array,
+        component: PropTypes.func,
+        helpers: PropTypes.object
     };
 
     renderFields(model, record) {
+        const {component, helpers} = this.props;
+
         let fieldRender = [];
         for (let idx in model.view.fields) {
             let fields = model.view.fields[idx];
             fieldRender.push(
-                <FieldDetail key={idx} fields={fields} record={record}/>
+                <FieldDetail key={idx} fields={fields} record={record} component={component} helpers={helpers}/>
             );
         }
 
@@ -111,10 +131,7 @@ class DetailComponent extends Component {
     }
 
     render() {
-        const {
-            model,
-            record
-        } = this.props;
+        const {model, record} = this.props;
 
         if (!model || !record || !record._id) {
             return <Alert color="danger"><T>No Data</T></Alert>;
