@@ -23,6 +23,7 @@ export {Form, RForm};
 
 /*----- BUTTON -----*/
 import {FieldButton, RFieldButton} from './Buttons';
+import {ImageInput, ImagesInput} from '../../helpers/inputs/ImageHelper';
 
 export {FieldButton, RFieldButton};
 
@@ -73,6 +74,36 @@ export class FieldView extends Component {
 }
 
 /*----- FIELD INPUT -----*/
+/**
+ * get component input
+ * @param type
+ * @param attributes
+ * @param invalid
+ * @param errorMessage
+ * @returns {*}
+ */
+const componentInput = (type, attributes, invalid = false, errorMessage = '') => {
+    switch (type) {
+        case 'date':
+        case 'datetime':
+            return <DateInput {...attributes}/>;
+        case 'texteditor':
+            return <TextEditor {...attributes}/>;
+        case 'dropdown':
+            return <SelectHelper {...attributes}/>;
+        case 'select2':
+            return <Select2Helper {...attributes}/>;
+        case 'selectgroup':
+            return <SelectGroupHelper {...attributes}/>;
+        case 'image':
+            return <ImageInput {...attributes}/>;
+        case 'images':
+            return <ImagesInput {...attributes}/>;
+        default:
+            return false;
+    }
+};
+
 /**
  * field input for normal form
  */
@@ -137,8 +168,11 @@ export class FieldInput extends Component {
         let _props = this.props,
             type = _props.type,
             attributes = utilsHelper.objectWithoutProperties(_props, [
+                'type',
                 'onChange',
-                'onBlur'
+                'onBlur',
+                'invalid',
+                'errorMessage'
             ]);
 
         if (!type) {
@@ -146,31 +180,21 @@ export class FieldInput extends Component {
         }
 
         attributes.className = attributes.className ? (this.state.className + ' ' + attributes.className) : this.state.className;
-
         if (!attributes.placeholder) {
             attributes.placeholder = t.__('Enter here')
         }
 
-        switch (type) {
-            case 'date':
-            case 'datetime':
-                return <DateInput {...attributes}/>;
-            case 'texteditor':
-                return <TextEditor {...attributes}/>;
-            case 'dropdown':
-                return <SelectHelper {...attributes}/>;
-            case 'select2':
-                return <Select2Helper {...attributes}/>;
-            case 'selectgroup':
-                return <SelectGroupHelper {...attributes}/>
-            default:
-                return (
-                    <div>
-                        <Input {...attributes} onChange={this.onChange} onBlur={this.onBlur}/>
-                        {this.state.invalid ? <FormText color="muted">{this.state.errorMessage}</FormText> : null}
-                    </div>
-                );
+        const component = componentInput(type, attributes, this.state.invalid, this.state.errorMessage);
+        if (component === false) {
+            return (
+                <div>
+                    <Input type={type} {...attributes} onChange={this.onChange} onBlur={this.onBlur}/>
+                    {this.state.invalid ? <FormText color="muted">{this.state.errorMessage}</FormText> : null}
+                </div>
+            );
         }
+
+        return component;
     }
 }
 
@@ -192,27 +216,9 @@ const renderFieldEdit = ({input, label, type, meta: {touched, error, warning}}) 
         attributes.placeholder = t.__('Enter here')
     }
 
-    let component = null;
-    switch (type) {
-        case 'date':
-        case 'datetime':
-            component = <DateInput {...attributes}/>;
-            break;
-        case 'texteditor':
-            component = <TextEditor {...attributes}/>;
-            break;
-        case 'dropdown':
-            component = <SelectHelper {...attributes}/>;
-            break;
-        case 'select2':
-            component = <Select2Helper {...attributes}/>;
-            break;
-        case 'selectgroup':
-            component = <SelectGroupHelper {...attributes}/>
-            break;
-        default:
-            component = <Input {...attributes}/>;
-            break;
+    let component = componentInput(type, attributes);
+    if (component === false) {
+        component = <Input {...attributes}/>;
     }
 
     return (

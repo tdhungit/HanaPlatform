@@ -116,7 +116,7 @@ class DetailComponent extends Component {
             record
         } = this.props;
 
-        if (!model || !record) {
+        if (!model || !record || !record._id) {
             return <Alert color="danger"><T>No Data</T></Alert>;
         }
 

@@ -10,10 +10,125 @@ import {t} from '../../../../common/Translation';
 import {ImageTag} from '../tags/MediaImage';
 import Medias from '../../../../collections/Medias/Medias';
 
+/**
+ * upload one image
+ */
 export class ImageInput extends Component {
+    static propTypes = {
+        name: PropTypes.string,
+        type: PropTypes.string,
+        className: PropTypes.string,
+        btnClass: PropTypes.string,
+        btnColor: PropTypes.string,
+        btnIcon: PropTypes.string,
+        value: PropTypes.string,
+        onChange: PropTypes.func,
+        renderImages: PropTypes.object,
+        renderUpload: PropTypes.object
+    };
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            uploading: false,
+            uploadedId: ''
+        };
+
+        this.upload = this.upload.bind(this);
+    }
+
+    componentWillMount() {
+        this.state.uploading = false;
+        this.state.uploadedId = this.props.value || '';
+    }
+
+    upload(event) {
+        const target = event.target;
+        const file = target.files && target.files[0] || false;
+        if (file) {
+            Medias.upload(file, 'Local', () => {
+                this.setState({uploading: true});
+            }, (error, fileObj) => {
+                this.setState({uploading: false});
+                if (error) {
+                    console.log(error);
+                    Bert.alert(t.__('Error! Please contact with Admin'), 'danger');
+                } else {
+                    this.setState({uploadedId: fileObj._id});
+                    if (this.props.onChange) {
+                        const eventOutput = {
+                            target: {
+                                name: this.props.name,
+                                type: this.props.type,
+                                value: this.state.uploadedId
+                            }
+                        };
+
+                        this.props.onChange(eventOutput);
+                    }
+                }
+            });
+        }
+    }
+
+    renderUpload() {
+        const {renderUpload, btnClass, btnColor, btnIcon} = this.props;
+
+        if (renderUpload) {
+            return renderUpload;
+        }
+
+        return (
+            <div className="imageUploadContainer">
+                <Button type="button" className={btnClass || ''} color={btnColor || 'secondary'}>
+                    {this.state.uploading ? <i className="fa fa-refresh fa-spin"/> : <i className={btnIcon || 'fa fa-image'}/>}
+                    <Input type="file" onChange={this.upload}/>
+                </Button>
+            </div>
+        );
+    }
+
+    renderImages() {
+        const renderImages = this.props.renderImages;
+        if (renderImages) {
+            return renderImages;
+        }
+
+        if (!this.state.uploadedId) {
+            return null;
+        }
+
+        return (
+            <ul className="imagePreview">
+                <li>
+                    <ImageTag media={this.state.uploadedId}/>
+                    <Button type="button"
+                            color="link"
+                            className="remove text-danger"
+                            onClick={() => this.setState({uploadedId: ''})}>
+                        <i className="fa fa-remove"/>
+                    </Button>
+                </li>
+            </ul>
+        );
+    }
+
+    render() {
+        const {className} = this.props;
+
+        return (
+            <div className={className || 'imagesInput'}>
+                {this.renderUpload()}
+                {this.renderImages()}
+            </div>
+        );
+    }
 }
 
+/**
+ * upload multiple images
+ */
 export class ImagesInput extends Component {
     static propTypes = {
         name: PropTypes.string,
@@ -136,7 +251,7 @@ export class ImagesInput extends Component {
                             <ImageTag media={mediaId}/>
                             <Button type="button"
                                     color="link"
-                                    className="remove text-warning"
+                                    className="remove text-danger"
                                     onClick={() => this.remove(mediaId)}>
                                 <i className="fa fa-remove"/>
                             </Button>
