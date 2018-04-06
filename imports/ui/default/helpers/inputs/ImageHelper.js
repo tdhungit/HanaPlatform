@@ -213,7 +213,7 @@ export class ImagesInput extends Component {
         let uploadedIds = this.state.uploadedIds;
         _.each(uploadedIds, (mediaId, i) => {
             if (removeMediaId === mediaId) {
-                delete uploadedIds[i];
+                uploadedIds.splice(i, 1);
                 return true;
             }
         });
