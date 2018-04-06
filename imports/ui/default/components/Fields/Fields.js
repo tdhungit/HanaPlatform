@@ -165,18 +165,9 @@ export class FieldInput extends Component {
     }
 
     render() {
-        let _props = this.props,
-            type = _props.type,
-            attributes = utilsHelper.objectWithoutProperties(_props, [
-                'type',
-                'onChange',
-                'onBlur',
-                'invalid',
-                'errorMessage'
-            ]);
-
-        if (!type) {
-            type = 'text';
+        let attributes = this.props;
+        if (!attributes.type) {
+            attributes.type = 'text';
         }
 
         attributes.className = attributes.className ? (this.state.className + ' ' + attributes.className) : this.state.className;
@@ -184,11 +175,18 @@ export class FieldInput extends Component {
             attributes.placeholder = t.__('Enter here')
         }
 
-        const component = componentInput(type, attributes, this.state.invalid, this.state.errorMessage);
+        const component = componentInput(attributes.type, attributes, this.state.invalid, this.state.errorMessage);
         if (component === false) {
+            attributes = utilsHelper.objectWithoutProperties(attributes, [
+                'type',
+                'onChange',
+                'onBlur',
+                'invalid',
+                'errorMessage'
+            ]);
             return (
                 <div>
-                    <Input type={type} {...attributes} onChange={this.onChange} onBlur={this.onBlur}/>
+                    <Input {...attributes} onChange={this.onChange} onBlur={this.onBlur}/>
                     {this.state.invalid ? <FormText color="muted">{this.state.errorMessage}</FormText> : null}
                 </div>
             );
