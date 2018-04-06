@@ -143,21 +143,25 @@ class FormActivity extends Component {
     inviteUser(event) {
         let activity = this.state.activity;
         let invites = activity.invites;
-        let user = event.selectedOption.user;
-        invites[event.selectedOption.value] = {
-            userId: event.selectedOption.value,
-            username: event.selectedOption.label,
-            userEmail: user.emails && user.emails[0].address,
-            media: user.profile && user.profile.avatar ? user.profile.avatar : '',
-            canEdit: false,
-            canInvite: false,
-            canSeeAll: false
-        };
-        activity.invites = invites;
-        this.setState({
-            inviting: event.selectedOption.value,
-            activity: activity
-        });
+        const user = event.selectedOption && event.selectedOption.user || false;
+
+        if (user) {
+            invites[event.selectedOption.value] = {
+                userId: event.selectedOption.value,
+                username: event.selectedOption.label,
+                userEmail: user.emails && user.emails[0].address,
+                media: user.profile && user.profile.avatar ? user.profile.avatar : '',
+                canEdit: false,
+                canInvite: false,
+                canSeeAll: false
+            };
+
+            activity.invites = invites;
+            this.setState({
+                inviting: event.selectedOption.value,
+                activity: activity
+            });
+        }
     }
 
     removeInviteUser(userId) {

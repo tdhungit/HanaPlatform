@@ -24,6 +24,7 @@ export {Form, RForm};
 /*----- BUTTON -----*/
 import {FieldButton, RFieldButton} from './Buttons';
 import {ImageInput, ImagesInput} from '../../helpers/inputs/ImageHelper';
+import {AddressInput} from '../../helpers/inputs/AddressHelper';
 
 export {FieldButton, RFieldButton};
 
@@ -99,6 +100,8 @@ const componentInput = (type, attributes, invalid = false, errorMessage = '') =>
             return <ImageInput {...attributes}/>;
         case 'images':
             return <ImagesInput {...attributes}/>;
+        case 'address':
+            return <AddressInput {...attributes}/>;
         default:
             return false;
     }

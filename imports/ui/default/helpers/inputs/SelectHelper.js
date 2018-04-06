@@ -85,6 +85,12 @@ export class SelectHelper extends Component {
  * as select but use select2 lib
  */
 export class Select2Helper extends Component {
+    constructor(props) {
+        super(props);
+
+        this.handleChange = this.handleChange.bind(this);
+    }
+
     getOptions(options) {
         if (typeof options === 'string') {
             const appListStrings = Settings.getSettings('AppListStrings', options);
@@ -135,18 +141,23 @@ export class Select2Helper extends Component {
             target: {
                 name: this.props.name,
                 type: 'select',
-                value: selectedOption.value
+                value: selectedOption && selectedOption.value || ''
             }
         };
-        this.props.onChange(event);
+
+        this.props.onChange && this.props.onChange(event);
     }
 
     renderOptionsImg(option) {
-        let img = <img src={Meteor.absoluteUrl('img/avatars/1.jpg')} className="rounded"
+        let img = <img src={Meteor.absoluteUrl('img/avatars/1.jpg')}
+                       className="rounded"
                        style={{width: 24, height: 24}}/>;
+
         if (option.media) {
-            img = <ImageTag media={option.media} style={{width: 24, height: 24}}/>
+            img = <ImageTag media={option.media}
+                            style={{width: 24, height: 24}}/>
         }
+
         return (
             <div title={option.label}>
                 {img}&nbsp;
@@ -158,22 +169,25 @@ export class Select2Helper extends Component {
     render() {
         let optionRenderer = this.props.optionRenderer;
         let valueRenderer = this.props.valueRenderer;
-        if (this.props.imgOption) {
+        const {async, name, value, placeholder, options, loadOptions, imgOption} = this.props;
+
+        if (imgOption) {
             optionRenderer = this.renderOptionsImg;
             valueRenderer = this.renderOptionsImg;
         }
-        if (this.props.async) {
+
+        if (async) {
             return (
-                <Async name={this.props.name} placeholder={this.props.placeholder} value={this.props.value}
-                       onChange={this.handleChange.bind(this)}
-                       loadOptions={this.props.loadOptions}
+                <Async name={name} placeholder={placeholder} value={value}
+                       onChange={this.handleChange}
+                       loadOptions={loadOptions}
                        optionRenderer={optionRenderer} valueRenderer={valueRenderer}/>
             );
         } else {
             return (
-                <Select name={this.props.name} placeholder={this.props.placeholder} value={this.props.value}
-                        onChange={this.handleChange.bind(this)}
-                        options={this.getOptions(this.props.options)}
+                <Select name={name} placeholder={placeholder} value={value}
+                        onChange={this.handleChange}
+                        options={this.getOptions(options)}
                         optionRenderer={optionRenderer} valueRenderer={valueRenderer}/>
             );
         }
