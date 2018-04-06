@@ -9,6 +9,7 @@ import {
 import {t} from '../../../../common/Translation';
 import {ImageTag} from '../tags/MediaImage';
 import Medias from '../../../../collections/Medias/Medias';
+import {ArrayFieldValue} from './ArrayFieldHelper';
 
 /**
  * upload one image
@@ -122,6 +123,17 @@ export class ImageInput extends Component {
                 {this.renderUpload()}
                 {this.renderImages()}
             </div>
+        );
+    }
+}
+
+/**
+ * view image field
+ */
+export class ImageView extends Component {
+    render() {
+        return (
+            <span></span>
         );
     }
 }
@@ -270,6 +282,39 @@ export class ImagesInput extends Component {
                 {this.renderUpload()}
                 {this.renderImages()}
             </div>
+        );
+    }
+}
+
+/**
+ * view multiple images field
+ */
+export class ImagesView extends Component {
+    static propTypes = {
+        fields: PropTypes.array,
+        value: PropTypes.array
+    };
+
+    renderRow(record) {
+        const {fields} = this.props;
+
+        let fieldsRender = [];
+        _.each(fields, (field) => {
+            fieldsRender.push(
+                <div key={field}>
+                    <ImageTag mediaId={record && record[field] || ''}/>
+                </div>
+            )
+        });
+
+        return fieldsRender;
+    }
+
+    render() {
+        const {fields, value} = this.props;
+
+        return (
+            <ArrayFieldValue fields={fields} value={value} renderRow={(record) => this.renderRow(record)}/>
         );
     }
 }

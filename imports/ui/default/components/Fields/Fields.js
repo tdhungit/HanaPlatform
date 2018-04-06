@@ -14,21 +14,20 @@ import {
 } from '../../helpers/inputs/SelectHelper';
 import {DateInput} from '../../helpers/inputs/DateHelper';
 import {TextEditor} from '../../helpers/inputs/TextEditor';
-import {ArrayFieldValue} from '../../helpers/tags/ArrayValue';
 
 /*----- FORM -----*/
 import {Form, RForm} from './Forms';
-
 export {Form, RForm};
 
 /*----- BUTTON -----*/
 import {FieldButton, RFieldButton} from './Buttons';
-import {ImageInput, ImagesInput} from '../../helpers/inputs/ImageHelper';
-import {AddressInput} from '../../helpers/inputs/AddressHelper';
-
 export {FieldButton, RFieldButton};
 
 /*----- FIELD DISPLAY -----*/
+import {ImageInput, ImagesInput, ImagesView} from '../../helpers/inputs/ImageHelper';
+import {AddressInput} from '../../helpers/inputs/AddressHelper';
+import {ArrayFieldValue} from '../../helpers/inputs/ArrayFieldHelper';
+
 /**
  * display field value
  */
@@ -65,11 +64,13 @@ export class FieldView extends Component {
         switch (field.type) {
             case 'select':
             case 'dropdown':
-                return <SelectValue options={field.options} value={value}/>;
+                return <SelectValue options={field.options} value={value} className={field.className || ''}/>;
             case 'array':
-                return <ArrayFieldValue/>;
+                return <ArrayFieldValue fields={field.fields || false} value={value} className={field.className || ''}/>;
+            case 'images':
+                return <ImagesView fields={field.fields || false} value={value} className={field.className || ''}/>;
             default:
-                return <span>{value}</span>;
+                return <div className={field.className || ''}>{value}</div>;
         }
     }
 }
