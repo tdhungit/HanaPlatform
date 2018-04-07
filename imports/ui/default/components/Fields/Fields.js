@@ -25,8 +25,8 @@ export {FieldButton, RFieldButton};
 
 /*----- FIELD DISPLAY -----*/
 import {ImageInput, ImagesInput, ImagesView} from '../../helpers/inputs/ImageHelper';
-import {AddressInput} from '../../helpers/inputs/AddressHelper';
-import {ArrayFieldValue} from '../../helpers/inputs/ArrayFieldHelper';
+import {AddressInput, AddressView} from '../../helpers/inputs/AddressHelper';
+import {ArrayFieldInput, ArrayFieldView} from '../../helpers/inputs/ArrayFieldHelper';
 
 /**
  * display field value
@@ -55,14 +55,25 @@ export class FieldView extends Component {
             }
         }
 
+        const childrenProps = fieldDisplay.props || {};
+        const displayProps = fieldDisplay.viewProps || {};
+        const fieldProps = Object.assign(childrenProps, displayProps);
         switch (fieldDisplay.type) {
             case 'select':
             case 'dropdown':
-                return <SelectValue options={fieldDisplay.options} value={value} className={fieldDisplay.className || ''}/>;
+                return <SelectValue options={fieldDisplay.options}
+                                    className={fieldDisplay.className || ''}
+                                    value={value} {...fieldProps}/>;
             case 'array':
-                return <ArrayFieldValue fields={fieldDisplay.fields || false} value={value} className={fieldDisplay.className || ''}/>;
+                return <ArrayFieldView fields={fieldDisplay.fields || false}
+                                        className={fieldDisplay.className || ''}
+                                        value={value} {...fieldProps}/>;
             case 'images':
-                return <ImagesView fields={fieldDisplay.fields || false} value={value} className={fieldDisplay.className || ''}/>;
+                return <ImagesView fields={fieldDisplay.fields || false}
+                                   className={fieldDisplay.className || ''}
+                                   value={value} {...fieldProps}/>;
+            case 'address':
+                return <AddressView value={value}/>;
             default:
                 return <div className={fieldDisplay.className || ''}>{value}</div>;
         }
@@ -97,6 +108,8 @@ const componentInput = (type, attributes, invalid = false, errorMessage = '') =>
             return <ImagesInput {...attributes}/>;
         case 'address':
             return <AddressInput {...attributes}/>;
+        case 'array':
+            return <ArrayFieldInput {...attributes}/>;
         default:
             return false;
     }

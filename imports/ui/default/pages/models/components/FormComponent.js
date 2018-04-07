@@ -93,13 +93,17 @@ class FormComponent extends Component {
     renderField(field) {
         const {helpers, component, record} = this.props;
         const value = this.getVal(field.name);
+        const inputProps = field.inputProps || {};
+        const childrenProps = field.props || {};
         const props = {
             type: field.type,
             name: field.name,
             required: field.required || false,
             placeholder: field.placeholder,
             value: value,
-            onChange: this.handleInputChange
+            onChange: this.handleInputChange,
+            ...inputProps,
+            ...childrenProps
         };
 
         if (component) {

@@ -8,6 +8,59 @@ import {
 import {t} from '../../../../common/Translation';
 import {Select2Helper} from './SelectHelper';
 
+/**
+ * address field view
+ */
+export class AddressView extends Component {
+    static propTypes = {
+        addressType: PropTypes.string,
+        renderAddress: PropTypes.object
+    };
+
+    renderEUAddress() {
+        const {value} = this.props;
+        if (value) {
+            return (
+                <div className="AddressRow">
+                    {value.street ? <span>{value.street}</span> : null}
+                    {value.city ? <span> ,{value.city}</span> : null}
+                    {value.state ? <span> ,{value.state}</span> : null}
+                    {value.zipCode ? <span> ,{value.zipCode}</span> : null}
+                    {value.country ? <span> ,{value.country}</span> : null}
+                </div>
+            );
+        }
+    }
+
+    renderVNAddress() {
+        const {value} = this.props;
+        if (value) {
+            return (
+                <div className="AddressRow">
+                    {value.street ? <span>{value.street}</span> : null}
+                    {value.ward ? <span> ,{value.ward}</span> : null}
+                    {value.district ? <span> ,{value.district}</span> : null}
+                    {value.city ? <span> ,{value.city}</span> : null}
+                    {value.country ? <span> ,{value.country}</span> : null}
+                </div>
+            );
+        }
+    }
+
+    render() {
+        const {className, addressType} = this.props;
+
+        return (
+            <div className={className || ''}>
+                {addressType === 'EU' ? this.renderEUAddress() : this.renderVNAddress()}
+            </div>
+        );
+    }
+}
+
+/**
+ * address field input
+ */
 export class AddressInput extends Component {
     static propTypes = {
         addressType: PropTypes.string,
@@ -34,20 +87,22 @@ export class AddressInput extends Component {
     }
 
     componentWillMount() {
-
+        if (this.props.value) {
+            this.state.address = this.props.value;
+        }
     }
 
     inputChange(event) {
         const target = event.target;
-        const name = target.name;
+        const addressField = target.name;
         const value = target.value;
 
         let address = this.state.address;
-        address[name] = value;
+        address[addressField] = value;
 
         this.setState({address: address});
 
-        const {type, onChange} = this.props;
+        const {type, name, onChange} = this.props;
         const eventOut = {
             target: {
                 name: name,

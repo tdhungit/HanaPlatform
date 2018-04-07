@@ -9,7 +9,7 @@ import {
 import {t} from '../../../../common/Translation';
 import {ImageTag} from '../tags/MediaImage';
 import Medias from '../../../../collections/Medias/Medias';
-import {ArrayFieldValue} from './ArrayFieldHelper';
+import {ArrayFieldView} from './ArrayFieldHelper';
 
 /**
  * upload one image
@@ -313,7 +313,7 @@ export class ImagesView extends Component {
         const {value} = this.props;
 
         return (
-            <ArrayFieldValue
+            <ArrayFieldView
                 fields={false}
                 value={value}
                 renderRow={(record) => this.renderRow(record)}/>
