@@ -1,4 +1,4 @@
-import {RouterModules} from '../../../modules/router.modules';
+import {HomeRouterModules, RouterModules} from '../../../modules/router.modules';
 import Dashboard from '../pages/dashboard/Dashboard';
 import ViewProfile from '../pages/users/ViewProfile';
 import ViewUsers from '../pages/users/ViewUsers';
@@ -40,6 +40,20 @@ import ViewBranchOffices from '../pages/companies/ViewBranchOffices';
 import CreateBranchOffice from '../pages/companies/CreateBranchOffice';
 import EditBranchOffice from '../pages/companies/EditBranchOffice';
 import ViewBranchOffice from '../pages/companies/ViewBranchOffice';
+import Index from '../pages/index/Index';
+import Install from '../pages/index/Install';
+import About from '../pages/index/About';
+import NotFound from '../pages/index/NotFound';
+
+let HomeRouters = {
+    "/": {component: Index},
+    "/install": {component: Install},
+    "/about-us": {component: About},
+    "/404": {component: NotFound}
+};
+
+HomeRouters = Object.assign(HomeRouters, HomeRouterModules);
+export {HomeRouters};
 
 let ManagerRouters = {
     "/manager": {
