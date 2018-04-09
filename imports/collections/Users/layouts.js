@@ -8,7 +8,6 @@ export const userLayouts = {
                 label: "Username"
             },
             email: {
-                type: "text",
                 label: "Email",
                 alias: 'emails',
                 display: {
@@ -35,7 +34,6 @@ export const userLayouts = {
                     label: "Username"
                 },
                 email: {
-                    type: "text",
                     label: "Email",
                     alias: 'emails',
                     display: {

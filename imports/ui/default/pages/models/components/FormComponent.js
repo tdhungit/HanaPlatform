@@ -91,11 +91,19 @@ class FormComponent extends Component {
     }
 
     renderField(field) {
+        if (field.display) {
+            field = Object.assign({}, field, field.display);
+        }
+
+        if (field.alias) {
+            field.name = field.alias;
+        }
+
         const {helpers, component, record} = this.props;
         const value = this.getVal(field.name);
         const inputProps = field.inputProps || {};
         const childrenProps = field.props || {};
-        const props = {
+        let props = {
             type: field.type,
             name: field.name,
             required: field.required || false,
@@ -105,6 +113,10 @@ class FormComponent extends Component {
             ...inputProps,
             ...childrenProps
         };
+
+        if (field.fields) {
+            props.fields = field.fields;
+        }
 
         if (component) {
             return React.createElement(component, {...props, record: record || {}});

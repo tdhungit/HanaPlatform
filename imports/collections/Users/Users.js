@@ -98,7 +98,8 @@ Schema.User = CollectionBase.schema({
         regEx: SimpleSchema.RegEx.Email
     },
     "emails.$.verified": {
-        type: Boolean
+        type: Boolean,
+        defaultValue: false
     },
     // Use this registered_emails field if you are using splendido:meteor-accounts-emails-field / splendido:meteor-accounts-meld
     registered_emails: {

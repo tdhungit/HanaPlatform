@@ -87,9 +87,20 @@ export class AddressInput extends Component {
     }
 
     componentWillMount() {
-        if (this.props.value) {
-            this.state.address = this.props.value;
-        }
+        this.defaultAddress();
+    }
+
+    defaultAddress() {
+        const value = this.props.value || {};
+        this.state.address = {
+            street: value.street || '',
+            ward: value.ward || '',
+            district: value.district || '',
+            city: value.city || '',
+            state: value.state || '',
+            zipCode: value.zipCode || '',
+            country: value.country || ''
+        };
     }
 
     inputChange(event) {
@@ -192,6 +203,7 @@ export class AddressInput extends Component {
     }
 
     render() {
+        this.defaultAddress();
         const {className} = this.props;
 
         return (

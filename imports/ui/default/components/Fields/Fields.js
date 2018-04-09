@@ -51,7 +51,7 @@ export class FieldView extends Component {
             value = utilsHelper.getField(record, fieldName);
 
             if (field.display) {
-                fieldDisplay = field.display;
+                fieldDisplay = Object.assign({}, field, field.display);
             }
         }
 
@@ -153,9 +153,7 @@ export class FieldInput extends Component {
             }
         }
 
-        if (this.props.onChange) {
-            this.props.onChange(event);
-        }
+        this.props.onChange && this.props.onChange(event);
     }
 
     onBlur(event) {
@@ -189,7 +187,6 @@ export class FieldInput extends Component {
         const component = componentInput(attributes.type, attributes, this.state.invalid, this.state.errorMessage);
         if (component === false) {
             attributes = utilsHelper.objectWithoutProperties(attributes, [
-                'type',
                 'onChange',
                 'onBlur',
                 'invalid',
