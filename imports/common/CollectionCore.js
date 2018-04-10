@@ -1,5 +1,6 @@
 import {Meteor} from 'meteor/meteor';
 import {Mongo} from 'meteor/mongo';
+import {_} from 'meteor/underscore';
 import {publishPagination} from 'meteor/kurounin:pagination';
 import SimpleSchema from 'simpl-schema';
 
@@ -200,6 +201,41 @@ class CollectionCore extends Mongo.Collection {
             reactive: true,
             debug: false
         });
+    }
+
+    /**
+     * import data to collection
+     * @param data
+     * @returns {{successes: Array, errors: Array}}
+     */
+    importData(data) {
+        let result = {
+            successes: [],
+            errors: []
+        };
+
+        _.each(data, (record) => {
+            try {
+                let recordId = record._id || '';
+                if (recordId) {
+                    this.update(recordId, {$set: record});
+                } else {
+                    recordId = this.insert(record);
+                }
+
+                result.successes.push({
+                    _id: recordId,
+                    record: record
+                });
+            } catch (exception) {
+                result.errors.push({
+                    record: record,
+                    error: exception
+                });
+            }
+        });
+
+        return result;
     }
 }
 
