@@ -25,7 +25,13 @@ Meteor.methods({
         };
         _.each(data, (branchOffice) => {
             try {
-                let branchOfficeId = BranchOffices.insert(branchOffice);
+                let branchOfficeId = branchOffice._id || '';
+                if (branchOfficeId) {
+                    BranchOffices.update(branchOfficeId, {$set: branchOffice});
+                } else {
+                    branchOfficeId = BranchOffices.insert(branchOffice);
+                }
+
                 let branchOfficeSuccess = {
                     _id: branchOfficeId,
                     record: branchOffice
@@ -43,5 +49,8 @@ Meteor.methods({
         });
 
         return branchOffices;
+    },
+    'branchOffices.export': function () {
+        return BranchOffices.find().fetch();
     }
 });
