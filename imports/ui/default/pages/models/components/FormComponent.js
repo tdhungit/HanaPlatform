@@ -138,7 +138,7 @@ class FormComponent extends Component {
             field.placeholder = placeholder;
 
             columnsField.push(
-                <Col md={columnClass} key={field.name}>
+                <Col lg={columnClass} sm="12" key={field.name}>
                     <FormGroup>
                         <Label><T>{field.label}</T></Label>
                         {this.renderField(field)}

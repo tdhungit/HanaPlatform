@@ -1,5 +1,6 @@
 import {Meteor} from 'meteor/meteor';
 import {check} from 'meteor/check';
+import {_} from 'meteor/underscore';
 import BranchOffices from './BranchOffices';
 
 Meteor.methods({
@@ -16,5 +17,31 @@ Meteor.methods({
         } catch (exception) {
             throw new Meteor.Error('500', exception);
         }
+    },
+    'branchOffices.import': function (data) {
+        let branchOffices = {
+            successes: [],
+            errors: []
+        };
+        _.each(data, (branchOffice) => {
+            try {
+                let branchOfficeId = BranchOffices.insert(branchOffice);
+                let branchOfficeSuccess = {
+                    _id: branchOfficeId,
+                    record: branchOffice
+                };
+
+                branchOffices.successes.push(branchOfficeSuccess);
+            } catch (exception) {
+                let branchOfficeError = {
+                    record: branchOffice,
+                    error: exception
+                };
+
+                branchOffices.errors.push(branchOfficeError);
+            }
+        });
+
+        return branchOffices;
     }
 });

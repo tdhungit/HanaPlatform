@@ -44,6 +44,7 @@ import Index from '../pages/index/Index';
 import Install from '../pages/index/Install';
 import About from '../pages/index/About';
 import NotFound from '../pages/index/NotFound';
+import ImportData from '../pages/settings/ImportData';
 
 let HomeRouters = {
     "/": {component: Index},
@@ -223,6 +224,10 @@ let ManagerRouters = {
     "/manager/model/:_model/:_id/detail": {
         title: "Detail View",
         component: DetailView
+    },
+    "/manager/import/:_collection": {
+        title: "Import Data",
+        component: ImportData
     }
 };
 

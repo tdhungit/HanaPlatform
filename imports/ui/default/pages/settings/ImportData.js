@@ -1,0 +1,169 @@
+import React, {Component} from 'react';
+import {Meteor} from 'meteor/meteor';
+import {
+    Row, Col,
+    Card, CardHeader, CardBody, CardFooter,
+    FormGroup, Label,
+    Input, Button,
+    ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText
+} from 'reactstrap';
+import ReactJson from 'react-json-view';
+import {Bert} from 'meteor/themeteorchef:bert';
+
+import {PT, T, t} from '../../../../common/Translation';
+
+class ImportData extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            csv: null,
+            data: null,
+            method: '',
+            importStatus: null
+        };
+
+        this.onImport = this.onImport.bind(this);
+        this.onAddCSV = this.onAddCSV.bind(this);
+        this.updateData = this.updateData.bind(this);
+        this.import = this.import.bind(this);
+    }
+
+    componentWillMount() {
+        const collectionName = this.props.match.params._collection;
+        this.state.method = collectionName.charAt(0).toLowerCase() + collectionName.slice(1) + '.import';
+    }
+
+    onAddCSV(event) {
+        const file = event.target.files && event.target.files[0] || false;
+        if (file) {
+            this.setState({
+                csv: file,
+                data: null
+            });
+        }
+    }
+
+    onImport() {
+        if (this.state.csv) {
+            const Papa = require("papaparse/papaparse.min");
+            Papa.parse(this.state.csv, {
+                header: true,
+                download: true,
+                skipEmptyLines: true,
+                complete: this.updateData
+            });
+        }
+    }
+
+    updateData(result) {
+        const data = result.data || [];
+        this.setState({data: data});
+    }
+
+    import() {
+        Meteor.call(this.state.method, this.state.data, (error, data) => {
+            if (error) {
+                console.log(error);
+                Bert.alert(t.__('Error! Please contact with Admin'), 'danger');
+            } else {
+                Bert.alert(t.__('Successful!'), 'success');
+                this.setState({
+                    csv: null,
+                    data: null,
+                    importStatus: data
+                })
+            }
+        });
+    }
+
+    renderImportStatus() {
+        if (!this.state.importStatus) {
+            return null;
+        }
+
+        const successes = (
+            <ListGroup>
+                {this.state.importStatus.successes.map((successData, i) => {
+                    return (
+                        <ListGroupItem key={i} color="success">
+                            <ListGroupItemHeading>{successData._id}</ListGroupItemHeading>
+                            <ListGroupItemText>{JSON.stringify(successData.record)}</ListGroupItemText>
+                        </ListGroupItem>
+                    );
+                })}
+            </ListGroup>
+        );
+
+        const errors = (
+            <ListGroup>
+                {this.state.importStatus.errors.map((errorData, i) => {
+                    return (
+                        <ListGroupItem key={i} color="danger">
+                            <ListGroupItemHeading>{JSON.stringify(errorData.record)}</ListGroupItemHeading>
+                            <ListGroupItemText>{JSON.stringify(errorData.error)}</ListGroupItemText>
+                        </ListGroupItem>
+                    );
+                })}
+            </ListGroup>
+        );
+
+        return (
+            <Row>
+                <Col sm="12" lg="12">
+                    {successes}
+                    {errors}
+                </Col>
+            </Row>
+        );
+    }
+
+    render() {
+        const collectionName = this.props.match.params._collection;
+        const title = t.__('Import Data') + ' ' + collectionName;
+
+        return (
+            <div className="ImportData animated fadeIn">
+                <PT title={title}/>
+                <Row>
+                    <Col sm="12" lg="12">
+                        <Card>
+                            <CardHeader>
+                                <i className="fa fa-code"/>
+                                <strong>{title}</strong>
+                            </CardHeader>
+                            <CardBody>
+                                <Row>
+                                    <Col sm="12" lg="12">
+                                        <FormGroup>
+                                            <Label><T>Import CSV</T></Label>
+                                            <Input type="file" onChange={this.onAddCSV}/>
+                                        </FormGroup>
+                                    </Col>
+                                </Row>
+                                {this.state.data ?
+                                    <Row>
+                                        <Col sm="12" lg="12">
+                                            <ReactJson src={this.state.data}/>
+                                        </Col>
+                                    </Row> : null}
+                                {this.renderImportStatus()}
+                            </CardBody>
+                            <CardFooter>
+                                {this.state.data ?
+                                    <Button type="button" color="danger" onClick={this.import}>
+                                        <i className="fa fa-send"/> <T>Import</T>
+                                    </Button> :
+                                    <Button type="button" color="primary" onClick={this.onImport}>
+                                        <i className="fa fa-dot-circle-o"/> <T>Upload</T>
+                                    </Button>}
+                            </CardFooter>
+                        </Card>
+                    </Col>
+                </Row>
+            </div>
+        );
+    }
+}
+
+export default ImportData;
