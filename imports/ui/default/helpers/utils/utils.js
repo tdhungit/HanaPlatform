@@ -1,7 +1,3 @@
-import {Meteor} from 'meteor/meteor';
-import Settings from '/imports/collections/Settings/Settings';
-import Medias from '../../../../collections/Medias/Medias';
-
 class UtilsHelper {
     /**
      * get value from input with name as mongo field. example: user.profile.firstName

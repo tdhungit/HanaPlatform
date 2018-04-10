@@ -11,6 +11,7 @@ import ReactJson from 'react-json-view';
 import {Bert} from 'meteor/themeteorchef:bert';
 
 import {PT, T, t} from '../../../../common/Translation';
+import {utilsHelper} from '../../helpers/utils/utils';
 
 class ImportData extends Component {
     constructor(props) {
@@ -58,7 +59,24 @@ class ImportData extends Component {
 
     updateData(result) {
         const data = result.data || [];
-        this.setState({data: data});
+        let dataImport = [];
+        _.each(data, (record) => {
+            let recordImport = {};
+            for (let name in record) {
+                let value = record[name];
+                if (name.indexOf('.') < 0) {
+                    recordImport[name] = value;
+                } else {
+                    let nameArray = name.split('.');
+                    nameArray.push(value);
+                    utilsHelper.createRecursiveObject(value, nameArray, recordImport);
+                }
+            }
+
+            dataImport.push(recordImport);
+        });
+
+        this.setState({data: dataImport});
     }
 
     import() {
@@ -72,7 +90,7 @@ class ImportData extends Component {
                     csv: null,
                     data: null,
                     importStatus: data
-                })
+                });
             }
         });
     }
@@ -87,7 +105,7 @@ class ImportData extends Component {
                 {this.state.importStatus.successes.map((successData, i) => {
                     return (
                         <ListGroupItem key={i} color="success">
-                            <ListGroupItemHeading>{successData._id}</ListGroupItemHeading>
+                            <ListGroupItemHeading><T>Successful!</T>: {successData._id}</ListGroupItemHeading>
                             <ListGroupItemText>{JSON.stringify(successData.record)}</ListGroupItemText>
                         </ListGroupItem>
                     );
@@ -98,10 +116,11 @@ class ImportData extends Component {
         const errors = (
             <ListGroup>
                 {this.state.importStatus.errors.map((errorData, i) => {
+                    let errorMessage = errorData.error.sanitizedError && errorData.error.sanitizedError.reason || t.__('System Error!');
                     return (
                         <ListGroupItem key={i} color="danger">
-                            <ListGroupItemHeading>{JSON.stringify(errorData.record)}</ListGroupItemHeading>
-                            <ListGroupItemText>{JSON.stringify(errorData.error)}</ListGroupItemText>
+                            <ListGroupItemHeading>{errorMessage}</ListGroupItemHeading>
+                            <ListGroupItemText>{JSON.stringify(errorData.record)}</ListGroupItemText>
                         </ListGroupItem>
                     );
                 })}
