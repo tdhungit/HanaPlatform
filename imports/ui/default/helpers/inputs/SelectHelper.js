@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Meteor} from 'meteor/meteor';
+import {_} from 'meteor/underscore';
 import {
     Button,
     Input,
@@ -136,16 +137,25 @@ export class Select2Helper extends Component {
     }
 
     handleChange(selectedOption) {
+        const {name, multi, onChange} = this.props;
+        let value = selectedOption && selectedOption.value || '';
+        if (multi) {
+            value = [];
+            _.each(selectedOption, (selected) => {
+                value.push(selected.value);
+            });
+        }
+
         const event = {
             selectedOption: selectedOption,
             target: {
-                name: this.props.name,
+                name: name,
                 type: 'select',
-                value: selectedOption && selectedOption.value || ''
+                value: value
             }
         };
 
-        this.props.onChange && this.props.onChange(event);
+        onChange && onChange(event);
     }
 
     renderOptionsImg(option) {
@@ -169,7 +179,7 @@ export class Select2Helper extends Component {
     render() {
         let optionRenderer = this.props.optionRenderer;
         let valueRenderer = this.props.valueRenderer;
-        const {async, name, value, placeholder, options, loadOptions, imgOption} = this.props;
+        const {async, name, value, placeholder, options, loadOptions, imgOption, multi} = this.props;
 
         if (imgOption) {
             optionRenderer = this.renderOptionsImg;
@@ -179,6 +189,7 @@ export class Select2Helper extends Component {
         if (async) {
             return (
                 <Async name={name} placeholder={placeholder} value={value}
+                       multi={multi || false}
                        onChange={this.handleChange}
                        loadOptions={loadOptions}
                        optionRenderer={optionRenderer} valueRenderer={valueRenderer}/>
@@ -186,6 +197,7 @@ export class Select2Helper extends Component {
         } else {
             return (
                 <Select name={name} placeholder={placeholder} value={value}
+                        multi={multi || false}
                         onChange={this.handleChange}
                         options={this.getOptions(options)}
                         optionRenderer={optionRenderer} valueRenderer={valueRenderer}/>
