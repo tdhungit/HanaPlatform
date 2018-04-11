@@ -28,6 +28,7 @@
     "react-json-view": "^1.16.1",
     "react-komposer": "^2.0.0",
     "react-moment": "^0.7.0",
+    "react-number-format": "^3.3.0",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
     "react-select": "^1.2.1",

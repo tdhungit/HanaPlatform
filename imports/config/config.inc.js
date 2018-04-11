@@ -1,5 +1,9 @@
 export const frameworkConfig = {
-
+    currency: {
+        symbol: 'đ',
+        symbolPos: 'suffix',
+        format: null
+    }
 };
 
 export const modulesComponent = {
