@@ -131,16 +131,16 @@ export class AddressInput extends Component {
                 <Col md="12" className="addressRow">
                     <Input type="text" name="street" placeholder={t.__('Street')} value={this.state.address.street}/>
                 </Col>
-                <Col md="12" className="addressRow">
+                <Col md="6" className="addressRow">
                     <Input type="text" name="city" placeholder={t.__('City')} value={this.state.address.city}/>
                 </Col>
-                <Col md="4" className="addressRow">
+                <Col md="6" className="addressRow">
                     <Input type="text" name="state" placeholder={t.__('State')} value={this.state.address.state}/>
                 </Col>
-                <Col md="8" className="addressRow">
+                <Col md="6" className="addressRow">
                     <Input type="text" name="zipCode" placeholder={t.__('Zip Code')} value={this.state.address.zipCode}/>
                 </Col>
-                <Col md="12">
+                <Col md="6">
                     <Input type="text" name="country" placeholder={t.__('Country')} value={this.state.address.country}/>
                 </Col>
             </Row>
@@ -157,28 +157,28 @@ export class AddressInput extends Component {
                            placeholder={t.__('Street')}
                            onChange={this.inputChange}/>
                 </Col>
-                <Col md="12" className="addressRow">
+                <Col md="6" className="addressRow">
                     <Select2Helper name="city"
                                    value={this.state.address.city}
                                    placeholder={t.__('City')}
                                    options={["VietName", "HongKong"]}
                                    onChange={this.inputChange}/>
                 </Col>
-                <Col md="12" className="addressRow">
+                <Col md="6" className="addressRow">
                     <Select2Helper name="district"
                                    value={this.state.address.district}
                                    placeholder={t.__('District')}
                                    options={["VietName", "HongKong"]}
                                    onChange={this.inputChange}/>
                 </Col>
-                <Col md="12" className="addressRow">
+                <Col md="6" className="addressRow">
                     <Select2Helper name="ward"
                                    value={this.state.address.ward}
                                    placeholder={t.__('Ward')}
                                    options={["VietName", "HongKong"]}
                                    onChange={this.inputChange}/>
                 </Col>
-                <Col md="12">
+                <Col md="6">
                     <Select2Helper name="country"
                                    value={this.state.address.country}
                                    placeholder={t.__('Country')}
@@ -190,7 +190,7 @@ export class AddressInput extends Component {
     }
 
     renderAddress() {
-        const {addressType,renderAddress} = this.props;
+        const {addressType, renderAddress} = this.props;
         if (renderAddress) {
             return renderAddress;
         }
