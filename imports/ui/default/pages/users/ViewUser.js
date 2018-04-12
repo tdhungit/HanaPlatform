@@ -144,14 +144,12 @@ class ViewUser extends Component {
 
 export default container((props, onData) => {
     const userId = props.match.params._id;
-    const subscription = Meteor.subscribe('users.detail', userId);
-    if (subscription.ready()) {
-        const user = Users.getOne(userId);
-        const branchOfficeIds = user.branchOffices;
-        const branchOffices = BranchOffices.find({_id: {$in: branchOfficeIds}}).fetch();
-        onData(null, {
-            user: user,
-            branchOffices: branchOffices
-        });
-    }
+    Meteor.subscribe('users.detail', userId);
+    const user = Users.getOne(userId);
+    const branchOfficeIds = user.branchOffices;
+    const branchOffices = BranchOffices.find({_id: {$in: branchOfficeIds}}).fetch();
+    onData(null, {
+        user: user,
+        branchOffices: branchOffices
+    });
 }, ViewUser);

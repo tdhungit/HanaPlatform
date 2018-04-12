@@ -21,10 +21,7 @@ class ViewBranchOffices extends Component {
     }
 
     render() {
-        const {
-            pagination,
-            limit
-        } = this;
+        const {pagination, limit} = this;
 
         const model = Models.getModel('BranchOffices') || branchOfficeLayouts;
 
@@ -37,6 +34,9 @@ class ViewBranchOffices extends Component {
                             <CardHeader>
                                 <i className="fa fa-align-justify"/> <T>View Branch Offices</T>
                                 <div className="card-actions">
+                                    <Link to={'/manager/import/BranchOffices'} title={t.__('Import')}>
+                                        <i className="fa fa-file-archive-o"/>
+                                    </Link>
                                     <Link to={'/manager/branch-offices/create'} title={t.__('Create')}>
                                         <i className="fa fa-plus-circle"/>
                                     </Link>
