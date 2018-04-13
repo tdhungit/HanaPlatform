@@ -89,7 +89,12 @@ export class Select2Helper extends Component {
     constructor(props) {
         super(props);
 
+        this.state = {
+            value: null
+        };
+
         this.handleChange = this.handleChange.bind(this);
+        this.loadOptions = this.loadOptions.bind(this);
     }
 
     getOptions(options) {
@@ -136,6 +141,11 @@ export class Select2Helper extends Component {
         return optionsFixed;
     }
 
+    loadOptions(input, cb) {
+        const {loadOptions} = this.props;
+        loadOptions && loadOptions(input, cb);
+    }
+
     handleChange(selectedOption) {
         const {name, multi, onChange} = this.props;
         let value = selectedOption && selectedOption.value || '';
@@ -155,6 +165,7 @@ export class Select2Helper extends Component {
             }
         };
 
+        this.setState({value});
         onChange && onChange(event);
     }
 
@@ -180,7 +191,12 @@ export class Select2Helper extends Component {
         let optionRenderer = this.props.optionRenderer;
         let valueRenderer = this.props.valueRenderer;
         const {async, name, value, placeholder,
-            options, loadOptions, imgOption, multi, onValueClick} = this.props;
+            options, imgOption, multi, onValueClick} = this.props;
+
+        let autoload = this.props.autoload;
+        if (typeof autoload === 'undefined') {
+            autoload = true;
+        }
 
         if (imgOption) {
             optionRenderer = this.renderOptionsImg;
@@ -193,8 +209,13 @@ export class Select2Helper extends Component {
                        value={value}
                        multi={multi || false}
                        onChange={this.handleChange}
+                       loadOptions={this.loadOptions}
+                       autoload={autoload}
                        onValueClick={onValueClick}
-                       loadOptions={loadOptions}
+                       cache={false}
+                       selectedLabel="default label display on Select.Async"
+                       selectedValue ="default_value"
+                       onCloseResetsInput={false}
                        optionRenderer={optionRenderer}
                        valueRenderer={valueRenderer}/>
             );

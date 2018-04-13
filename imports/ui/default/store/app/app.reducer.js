@@ -20,6 +20,13 @@ const appReducer = (state = {}, action) => {
             }
         }
 
+        case 'SET_APP_VAR': {
+            return {
+                ...state,
+                [action.payload.name]: action.payload.value
+            };
+        }
+
         default: {
             return state;
         }

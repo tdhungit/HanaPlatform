@@ -16,6 +16,9 @@ const Authenticate = ({loggingIn, authenticated, component, ...rest}) => (
         state.appLoading = rest.appLoading || (() => {
 
         });
+        state.appSetVar = rest.appSetVar || (() => {
+
+        });
 
         // check logging in
         if (loggingIn) {

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'; // or HashRouter
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {appLoading} from '../store/app/app.actions';
+import {appLoading, appSetVar} from '../store/app/app.actions';
 
 import container from '/imports/common/Container';
 import ManagerLayout from "./ManagerLayout";
@@ -42,7 +42,7 @@ class App extends Component {
                         <Route exact path="/reset-password/:token" component={ResetPassword}/>
 
                         <Authenticate path="/manager" component={ManagerLayout} {...appProps}/>
-                        <Route path="/" component={HomeLayout} {...appProps}/>
+                        <Authenticate path="/" component={HomeLayout} {...appProps}/>
                     </Switch>
                 </div>
             </Router>
@@ -66,7 +66,8 @@ const mapStateToProps = (state) => {
  */
 const mapDispatchToProps = (dispatch) => {
     return bindActionCreators({
-        appLoading: appLoading
+        appLoading: appLoading,
+        appSetVar: appSetVar
     }, dispatch);
 };
 

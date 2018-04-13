@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Route} from 'react-router-dom';
 import {HomeRouters} from './ManagerRouters';
+import Authenticate from '../components/Router/Authenticate';
 
 /**
  * Layout & Router for public page
@@ -15,9 +16,17 @@ class HomeLayout extends Component {
         let routers = [];
         for (let path in HomeRouters) {
             let route = HomeRouters[path];
-            routers.push(
-                <Route key={path} exact path={path} component={route.component} {...appProps}/>
-            )
+            if (route.authenticated) {
+                routers.push(
+                    <Authenticate exact {...appProps} key={path}
+                                  path={path}
+                                  component={route.component}/>
+                );
+            } else {
+                routers.push(
+                    <Route key={path} exact path={path} component={route.component} {...appProps}/>
+                );
+            }
         }
 
         return routers;
