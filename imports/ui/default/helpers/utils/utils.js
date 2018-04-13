@@ -1,3 +1,7 @@
+import {Meteor} from 'meteor/meteor';
+import Settings from '../../../../collections/Settings/Settings';
+import moment from 'moment';
+
 class UtilsHelper {
     /**
      * get value from input with name as mongo field. example: user.profile.firstName
@@ -117,6 +121,76 @@ class UtilsHelper {
         }
 
         return displayName;
+    }
+
+    /**
+     * get system date format
+     * @returns {{date: {}|string, datetime: {}|string|*}}
+     */
+    getSystemDateFormat() {
+        const systemSettings = Settings.getSystemSettings();
+        const dateFormat = systemSettings && systemSettings.dateFormat && systemSettings.dateFormat.value
+            || 'YYYY-MM-DD';
+        const dateTimeFormat = systemSettings && systemSettings.dateTimeFormat && systemSettings.dateTimeFormat.value
+            || 'YYYY-MM-DD HH:mm';
+
+        return {
+            date: dateFormat,
+            datetime: dateTimeFormat
+        };
+    }
+
+    /**
+     * get user date format
+     * @returns {{date: {}|string, datetime: *}}
+     */
+    getUserDateFormat() {
+        const currentUser = Meteor.user();
+        const userSettings = currentUser.settings || null
+        const systemDateFormat = this.getSystemDateFormat();
+
+        let dateFormat = systemDateFormat.date;
+        if (userSettings && userSettings.dateFormat) {
+            dateFormat = userSettings.dateFormat;
+        }
+
+        let dateTimeFormat = systemDateFormat.datetime;
+        if (userSettings && userSettings.dateTimeFormat) {
+            dateTimeFormat = userSettings.dateTimeFormat;
+        }
+
+        return {
+            date: dateFormat,
+            datetime: dateTimeFormat
+        };
+    }
+
+    /**
+     * display date
+     * @param date
+     * @returns {string}
+     */
+    toDateDisplay(date = null) {
+        const format = this.getUserDateFormat().date;
+        if (date) {
+            return moment(date).format(format);
+        }
+
+        return moment().format(format);
+    }
+
+    /**
+     * display date time
+     * @param datetime
+     * @returns {string}
+     */
+    toDateTimeDisplay(datetime = null) {
+        const format = this.getUserDateFormat().datetime;
+        if (datetime) {
+            return moment(datetime).format(format);
+        }
+
+        return moment().format(format);
     }
 }
 

@@ -75,7 +75,7 @@ export class SelectHelper extends Component {
         return (
             <Input type="select" name={this.props.name} id={this.props.id} onChange={this.props.onChange}
                    required={this.props.required} value={this.props.value}>
-                <option value="">{this.props.placeholder}</option>
+                {!this.props.required ? <option value="">{this.props.placeholder}</option> : null}
                 {this.renderOptions(this.props.options)}
             </Input>
         );
