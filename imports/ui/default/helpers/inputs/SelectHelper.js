@@ -179,7 +179,8 @@ export class Select2Helper extends Component {
     render() {
         let optionRenderer = this.props.optionRenderer;
         let valueRenderer = this.props.valueRenderer;
-        const {async, name, value, placeholder, options, loadOptions, imgOption, multi} = this.props;
+        const {async, name, value, placeholder,
+            options, loadOptions, imgOption, multi, onValueClick} = this.props;
 
         if (imgOption) {
             optionRenderer = this.renderOptionsImg;
@@ -188,19 +189,25 @@ export class Select2Helper extends Component {
 
         if (async) {
             return (
-                <Async name={name} placeholder={placeholder} value={value}
+                <Async name={name} placeholder={placeholder}
+                       value={value}
                        multi={multi || false}
                        onChange={this.handleChange}
+                       onValueClick={onValueClick}
                        loadOptions={loadOptions}
-                       optionRenderer={optionRenderer} valueRenderer={valueRenderer}/>
+                       optionRenderer={optionRenderer}
+                       valueRenderer={valueRenderer}/>
             );
         } else {
             return (
-                <Select name={name} placeholder={placeholder} value={value}
+                <Select name={name} placeholder={placeholder}
+                        value={value}
                         multi={multi || false}
                         onChange={this.handleChange}
+                        onValueClick={onValueClick}
                         options={this.getOptions(options)}
-                        optionRenderer={optionRenderer} valueRenderer={valueRenderer}/>
+                        optionRenderer={optionRenderer}
+                        valueRenderer={valueRenderer}/>
             );
         }
     }
