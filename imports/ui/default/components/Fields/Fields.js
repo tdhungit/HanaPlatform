@@ -27,6 +27,7 @@ export {FieldButton, RFieldButton};
 import {ImageInput, ImagesInput, ImagesView} from '../../helpers/inputs/ImageHelper';
 import {AddressInput, AddressView} from '../../helpers/inputs/AddressHelper';
 import {ArrayFieldInput, ArrayFieldView} from '../../helpers/inputs/ArrayFieldHelper';
+import {CurrencyView} from '../../helpers/inputs/NumberHelper';
 
 /**
  * display field value
@@ -74,6 +75,8 @@ export class FieldView extends Component {
                                    value={value} {...fieldProps}/>;
             case 'address':
                 return <AddressView value={value}/>;
+            case 'currency':
+                return <CurrencyView value={value}/>;
             default:
                 return <div className={fieldDisplay.className || ''}>{value}</div>;
         }

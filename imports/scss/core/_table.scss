@@ -3,8 +3,6 @@
   position: relative;
 }
 
-.table-sortable > thead > tr > th:after,
-.table-sortable > thead > tr > th:after,
 .table-sortable > thead > tr > th:after {
   content: ' ';
   position: absolute;
@@ -28,6 +26,10 @@
   border-right: 5px solid transparent;
   border-top: 5px solid #ccc;
   border-bottom: 0px solid transparent;
+}
+
+.table-sortable.table-sm > thead > tr > th:after {
+  top: 13px;
 }
 
 /* !Default */

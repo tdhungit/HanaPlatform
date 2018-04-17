@@ -64,7 +64,7 @@ class ListContainer extends Component {
         let headers = [];
         // input column
         if (this.props.type === 'Select') {
-            headers.push(<th key="input" className="NoSortLink"></th>);
+            headers.push(<th key="input" className="NoSortLink" width="1%"></th>);
         }
 
         for (let fieldName in this.listFields) {
@@ -162,6 +162,11 @@ class ListContainer extends Component {
 
     selectChange(recordId) {
         let selected = this.state.selected;
+        const {once} = this.props;
+        if (once) {
+            selected = {};
+        }
+
         if (selected[recordId]) {
             delete selected[recordId];
         } else {
@@ -180,7 +185,7 @@ class ListContainer extends Component {
                 <td key="input">
                     <Input
                         type="checkbox"
-                        checked={(selected && selected[record._id]) ? true : false}
+                        checked={!!(selected && selected[record._id])}
                         onChange={() => {}}
                         className="initEl"/>
                 </td>
@@ -232,10 +237,12 @@ class ListContainer extends Component {
     }
 
     render() {
+        const size = this.props.size || '';
+
         return (
             <Row>
                 <Col>
-                    <Table bordered hover className="table-sortable">
+                    <Table bordered hover className="table-sortable" size={size}>
                         <thead>
                         <tr>{this.renderHeader()}</tr>
                         </thead>
@@ -315,11 +322,13 @@ export class ListRecordsComponent extends Component {
 
     render() {
         const {limit, pagination} = this;
-        const {type, model, editLink, detailLink, selected, onClick} = this.props;
+        const {type, model, editLink, detailLink, selected, onClick, size, once} = this.props;
 
         return (
             <ListComponent
                 type={type}
+                size={size}
+                once={once}
                 model={model}
                 pagination={pagination}
                 limit={limit}
