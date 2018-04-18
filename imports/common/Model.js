@@ -7,7 +7,7 @@ import Models from '/imports/collections/Models/Models';
  */
 class MyModel {
     /**
-     * get client collection from model name
+     * get client collection from model name (collection define by system)
      * @param modelName
      * @returns {*}
      */
@@ -32,6 +32,25 @@ class MyModel {
         }
 
         return false;
+    }
+
+    /**
+     * get a object collection that user define
+     * @param modelName
+     * @param moduleName
+     * @param callback
+     */
+    getCollectionClass(modelName, moduleName = '', callback) {
+        let filePath;
+        if (moduleName) {
+            filePath = '/imports/modules/' + moduleName + '/collections/' + modelName + '/' + modelName;
+        } else {
+            filePath = '/imports/collections/' + modelName + '/' + modelName;
+        }
+
+        import(filePath).then(object => {
+            callback && callback(object.default);
+        });
     }
 }
 

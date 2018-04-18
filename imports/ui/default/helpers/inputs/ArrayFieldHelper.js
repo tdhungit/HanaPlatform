@@ -18,8 +18,7 @@ import {utilsHelper} from '../utils/utils';
 export class ArrayFieldView extends Component {
     static propTypes = {
         renderRow: PropTypes.func,
-        itemType: PropTypes.string,
-        value: PropTypes.array
+        itemType: PropTypes.string
     };
 
     renderRow(record) {
@@ -44,7 +43,8 @@ export class ArrayFieldView extends Component {
     }
 
     render() {
-        const {className, value} = this.props;
+        const {className} = this.props;
+        const value = this.props.value || [];
 
         return (
             <div className={className || ''}>

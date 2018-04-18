@@ -1,8 +1,19 @@
 import {Meteor} from 'meteor/meteor';
+import {_} from 'meteor/underscore';
 import Settings from '../../../../collections/Settings/Settings';
 import moment from 'moment';
 
 class UtilsHelper {
+    getRecordTitle(record, fields) {
+        let title = '';
+        _.each(fields, (fieldName) => {
+            let fieldValue = record && record[fieldName] || '';
+            title += fieldValue + ' ';
+        });
+
+        return this.trimSpace(title);
+    }
+
     /**
      * get value from input with name as mongo field. example: user.profile.firstName
      * @param object
@@ -191,6 +202,15 @@ class UtilsHelper {
         }
 
         return moment().format(format);
+    }
+
+    /**
+     * trim white space
+     * @param str
+     * @returns {*}
+     */
+    trimSpace(str) {
+        return str.replace(/^\s+|\s+$/gm,'');
     }
 }
 

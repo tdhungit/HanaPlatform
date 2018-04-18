@@ -28,6 +28,7 @@ import {ImageInput, ImagesInput, ImagesView} from '../../helpers/inputs/ImageHel
 import {AddressInput, AddressView} from '../../helpers/inputs/AddressHelper';
 import {ArrayFieldInput, ArrayFieldView} from '../../helpers/inputs/ArrayFieldHelper';
 import {CurrencyView} from '../../helpers/inputs/NumberHelper';
+import {RelateInput, RelateView} from "../../helpers/inputs/RelateHelper";
 
 /**
  * display field value
@@ -74,9 +75,11 @@ export class FieldView extends Component {
                                    className={fieldDisplay.className || ''}
                                    value={value} {...fieldProps}/>;
             case 'address':
-                return <AddressView value={value}/>;
+                return <AddressView value={value} {...fieldProps}/>;
             case 'currency':
-                return <CurrencyView value={value}/>;
+                return <CurrencyView value={value} {...fieldProps}/>;
+            case 'relate':
+                return <RelateView value={value} {...fieldProps}/>;
             default:
                 return <div className={fieldDisplay.className || ''}>{value}</div>;
         }
@@ -113,6 +116,8 @@ const componentInput = (type, attributes, invalid = false, errorMessage = '') =>
             return <AddressInput {...attributes}/>;
         case 'array':
             return <ArrayFieldInput {...attributes}/>;
+        case 'relate':
+            return <RelateInput {...attributes}/>;
         default:
             return false;
     }
