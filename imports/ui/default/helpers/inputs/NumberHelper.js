@@ -88,7 +88,7 @@ export class NumberInput extends Component {
         return <NumberFormat type={type || 'text'}
                              name={name}
                              thousandSeparator={true}
-                             className={className || 'form-control' + ' text-right'}
+                             className={(className || 'form-control') + ' text-right'}
                              prefix={prefix || ''}
                              suffix={suffix || ''}
                              value={this.state.value}

@@ -170,6 +170,7 @@ class FormComponent extends Component {
     render() {
         const {model} = this.props;
         const record = this.props.record || {};
+        this.state.record = record;
 
         if (!model) {
             return <Alert color="warning"><T>No Config</T></Alert>
