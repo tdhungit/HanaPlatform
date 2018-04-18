@@ -155,9 +155,7 @@ class ListContainer extends Component {
 
     onClick(recordId) {
         this.selectChange(recordId);
-        if (this.props.onClick) {
-            this.props.onClick(this.state.selected);
-        }
+        this.props.onClick && this.props.onClick(this.state.selected);
     }
 
     selectChange(recordId) {
@@ -258,7 +256,7 @@ class ListContainer extends Component {
                         : null}
                     <BootstrapPaginator pagination={this.props.pagination}
                                         limit={this.props.limit}
-                                        containerClass="text-right"/>
+                                        containerClass="pagination-sm"/>
                 </Col>
             </Row>
         );
