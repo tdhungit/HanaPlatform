@@ -117,7 +117,7 @@ export class RelateInput extends Component {
         }
     }
 
-    onSelected(selected) {
+    onSelect(selected) {
         const {titleField} = this.props;
         let relate = {...this.state.relate};
 
@@ -129,18 +129,20 @@ export class RelateInput extends Component {
         });
 
         this.setState({relate, isModal: false});
-    }
 
-    onChange() {
         const event = {
             target: {
                 name: this.props.name,
                 type: this.props.type || 'relate',
-                value: this.state.relate._id
+                value: relate._id
             }
         };
 
         this.props.onChange && this.props.onChange(event);
+    }
+
+    onChange() {
+
     }
 
     renderModal() {
@@ -162,7 +164,7 @@ export class RelateInput extends Component {
                         filters={{}}
                         model={model}
                         selected={[]}
-                        onClick={(selected) => this.onSelected(selected)}/>
+                        onClick={(selected) => this.onSelect(selected)}/>
                 </ModalBody>
             </Modal>
         );

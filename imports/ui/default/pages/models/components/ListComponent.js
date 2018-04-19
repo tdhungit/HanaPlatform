@@ -153,14 +153,9 @@ class ListContainer extends Component {
         this.props.pagination.sort({[fieldName]: sortType});
     }
 
-    onClick(recordId) {
-        this.selectChange(recordId);
-        this.props.onClick && this.props.onClick(this.state.selected);
-    }
-
-    selectChange(record) {
+    onClick(record) {
         const recordId = record._id;
-        let selected = this.state.selected;
+        let selected = {...this.state.selected};
         const {once} = this.props;
         if (once) {
             selected = {};
@@ -173,6 +168,7 @@ class ListContainer extends Component {
         }
 
         this.setState({selected: selected});
+        this.props.onClick && this.props.onClick(selected);
     }
 
     renderCol(record) {
