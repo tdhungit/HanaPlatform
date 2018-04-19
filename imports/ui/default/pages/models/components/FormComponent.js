@@ -51,6 +51,17 @@ class FormComponent extends Component {
         this.onSubmit = this.onSubmit.bind(this);
     }
 
+    shouldComponentUpdate(nextProps, nextState) {
+        if (nextProps.record && nextProps.record._id) {
+            if (!this.state.record._id
+                || this.state.record._id !== nextProps.record._id) {
+                nextState.record = nextProps.record;
+            }
+        }
+
+        return true;
+    }
+
     componentWillMount() {
         this.state.record = this.props.record;
     }
@@ -170,7 +181,6 @@ class FormComponent extends Component {
     render() {
         const {model} = this.props;
         const record = this.props.record || {};
-        this.state.record = record;
 
         if (!model) {
             return <Alert color="warning"><T>No Config</T></Alert>

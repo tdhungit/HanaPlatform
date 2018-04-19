@@ -104,13 +104,16 @@ export class RelateInput extends Component {
     getRelate() {
         const {modelName, moduleName, titleField, value} = this.props;
 
-        if (modelName && value) {
+        if (modelName) {
             myModel.getCollectionClass(modelName, moduleName, (collection) => {
-                const record = collection.findOne(value);
-                const relate = {
-                    _id: record._id,
-                    name: utilsHelper.getRecordTitle(record, titleField)
-                };
+                let relate = {...this.state.relate};
+                if (value) {
+                    const record = collection.findOne(value);
+                    relate = {
+                        _id: record._id,
+                        name: utilsHelper.getRecordTitle(record, titleField)
+                    };
+                }
 
                 this.setState({collection, relate});
             });
