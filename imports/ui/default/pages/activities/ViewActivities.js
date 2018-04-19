@@ -8,7 +8,6 @@ import {Link} from 'react-router-dom';
 
 import {T, t, PT} from '/imports/common/Translation';
 import Activities from '/imports/collections/Activities/Activities';
-import {activityLayouts} from '/imports/collections/Activities/layouts';
 import ListComponent from '../models/components/ListComponent';
 import Models from '../../../../collections/Models/Models';
 
@@ -19,7 +18,7 @@ class ViewActivities extends Component {
     }
 
     render() {
-        const model = Models.getModel('Activities') || activityLayouts;
+        const model = Models.getModel('Activities') || Activities.getLayouts();
 
         return (
             <div className="ViewActivities animated fadeIn">

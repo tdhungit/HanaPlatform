@@ -7,7 +7,6 @@ import {
 } from 'reactstrap';
 
 import Models from '/imports/collections/Models/Models';
-import {aclRoleLayouts} from '/imports/collections/ACLRoles/layouts';
 import {t, PT} from '/imports/common/Translation';
 import FormComponent from '../models/components/FormComponent';
 import ACLRoles from '/imports/collections/ACLRoles/ACLRoles';
@@ -21,7 +20,7 @@ class EditRole extends Component {
             return <Alert color="warning"><T>No Data</T></Alert>
         }
 
-        const model = Models.getModel('ACLRoles') || aclRoleLayouts;
+        const model = Models.getModel('ACLRoles') || ACLRoles.getLayouts();
 
         return (
             <div className="users-EditUser animated fadeIn">

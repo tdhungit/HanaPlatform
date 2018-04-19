@@ -6,12 +6,12 @@ import {
 
 import {t, PT} from '/imports/common/Translation';
 import Models from '/imports/collections/Models/Models';
-import {branchOfficeLayouts} from '/imports/collections/BranchOffices/layouts';
 import FormComponent from '../models/components/FormComponent';
+import BranchOffices from '../../../../collections/BranchOffices/BranchOffices';
 
 class CreateBranchOffice extends Component {
     render() {
-        const model = Models.getModel('BranchOffices') || branchOfficeLayouts;
+        const model = Models.getModel('BranchOffices') || BranchOffices.getLayouts();
 
         return (
             <div className="CreateBranchOffice animated fadeIn">

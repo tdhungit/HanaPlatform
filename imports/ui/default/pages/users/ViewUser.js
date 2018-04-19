@@ -18,10 +18,8 @@ import container from '/imports/common/Container';
 import {t, T, PT} from '/imports/common/Translation';
 import Models from '/imports/collections/Models/Models';
 import Users from '/imports/collections/Users/Users';
-import {userLayouts} from '/imports/collections/Users/layouts';
 import DetailComponent from '../models/components/DetailComponent';
 import BranchOffices from '../../../../collections/BranchOffices/BranchOffices';
-import {branchOfficeLayouts} from '../../../../collections/BranchOffices/layouts';
 import {ListRecordsComponent} from '../models/components/ListComponent';
 
 class ViewUser extends Component {
@@ -49,8 +47,8 @@ class ViewUser extends Component {
 
     onSelected() {
         const userId = this.props.match.params._id;
-        const branchOffices = $.map(this.state.selectedBranchOfficeIds, function(value, index) {
-            return [value];
+        const branchOffices = $.map(this.state.selectedBranchOfficeIds, (value, _id) => {
+            return [_id];
         });
 
         Meteor.call('users.updateElement', userId, {branchOffices: branchOffices}, (error, userId) => {
@@ -65,8 +63,8 @@ class ViewUser extends Component {
 
     render() {
         const {user, branchOffices} = this.props;
-        const model = Models.getModel('Users') || userLayouts;
-        const branchOfficeModel = Models.getModel('BranchOffices') || branchOfficeLayouts;
+        const model = Models.getModel('Users') || Users.getLayouts();
+        const branchOfficeModel = Models.getModel('BranchOffices') || BranchOffices.getLayouts();
 
         return (
             <div className="ViewUser animated fadeIn">

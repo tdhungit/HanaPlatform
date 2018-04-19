@@ -6,12 +6,12 @@ import {
 
 import {t, PT} from '/imports/common/Translation';
 import Models from '/imports/collections/Models/Models';
-import {userLayouts} from '/imports/collections/Users/layouts';
 import FormComponent from '../models/components/FormComponent';
+import Users from '../../../../collections/Users/Users';
 
 class CreateUser extends Component {
     render() {
-        const model = Models.getModel('Users') || userLayouts;
+        const model = Models.getModel('Users') || Users.getLayouts();
         return (
             <div className="CreateUser animated fadeIn">
                 <PT title={t.__("Create new user")}/>

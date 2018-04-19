@@ -6,12 +6,12 @@ import {
 
 import {t, PT} from '/imports/common/Translation';
 import Models from '/imports/collections/Models/Models';
-import {companyLayouts} from '/imports/collections/Companies/layouts';
 import FormComponent from '../models/components/FormComponent';
+import Companies from '../../../../collections/Companies/Companies';
 
 class CreateCompany extends Component {
     render() {
-        const model = Models.getModel('Companies') || companyLayouts;
+        const model = Models.getModel('Companies') || Companies.getLayouts();
 
         return (
             <div className="CreateCompany animated fadeIn">

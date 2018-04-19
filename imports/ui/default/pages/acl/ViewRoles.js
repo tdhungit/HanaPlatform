@@ -12,7 +12,6 @@ import {T, t, PT} from '/imports/common/Translation';
 import ACLRoles from '/imports/collections/ACLRoles/ACLRoles';
 import ListComponent from '../models/components/ListComponent';
 import Models from '/imports/collections/Models/Models';
-import {aclRoleLayouts} from '/imports/collections/ACLRoles/layouts';
 
 class ViewRoles extends Component {
     componentWillMount() {
@@ -26,7 +25,7 @@ class ViewRoles extends Component {
             limit
         } = this;
 
-        const model = Models.getModel('ACLRoles') || aclRoleLayouts;
+        const model = Models.getModel('ACLRoles') || ACLRoles.getLayouts();
 
         return (
             <div className="ViewRoles animated fadeIn">

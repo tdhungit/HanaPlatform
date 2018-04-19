@@ -158,7 +158,8 @@ class ListContainer extends Component {
         this.props.onClick && this.props.onClick(this.state.selected);
     }
 
-    selectChange(recordId) {
+    selectChange(record) {
+        const recordId = record._id;
         let selected = this.state.selected;
         const {once} = this.props;
         if (once) {
@@ -168,7 +169,7 @@ class ListContainer extends Component {
         if (selected[recordId]) {
             delete selected[recordId];
         } else {
-            selected[recordId] = recordId;
+            selected[recordId] = {...record};
         }
 
         this.setState({selected: selected});
@@ -227,7 +228,7 @@ class ListContainer extends Component {
     renderRows() {
         return this.props.records.map((record) => {
             return (
-                <tr key={record._id} onClick={() => this.onClick(record._id)}>
+                <tr key={record._id} onClick={() => this.onClick(record)}>
                     {this.renderCol(record)}
                 </tr>
             );
@@ -314,13 +315,17 @@ export class ListRecordsComponent extends Component {
     componentWillMount() {
         const {collection, filters} = this.props;
         let options = filters ? {filters: filters} : {};
-        this.pagination = collection.pagination(options);
-        this.limit = collection.getLimit();
+        this.pagination = collection && collection.pagination(options) || null;
+        this.limit = collection && collection.getLimit();
     }
 
     render() {
         const {limit, pagination} = this;
         const {type, model, editLink, detailLink, selected, onClick, size, once} = this.props;
+
+        if (!pagination) {
+            return <div>...</div>;
+        }
 
         return (
             <ListComponent

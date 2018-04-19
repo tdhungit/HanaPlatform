@@ -25,6 +25,14 @@ class CollectionCore extends Mongo.Collection {
     }
 
     /**
+     * get default layouts
+     * @returns {{}}
+     */
+    getLayouts() {
+        return {};
+    }
+
+    /**
      * check data before insert
      * @param doc
      * @returns {boolean}
@@ -183,7 +191,7 @@ class CollectionCore extends Mongo.Collection {
      * @returns {number}
      */
     getLimit() {
-        return 20;
+        return 5;
     }
 
     /**

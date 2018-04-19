@@ -8,7 +8,6 @@ import {
 import {t, PT} from '/imports/common/Translation';
 import DetailComponent from '../models/components/DetailComponent';
 import Models from '/imports/collections/Models/Models';
-import {aclRoleLayouts} from '/imports/collections/ACLRoles/layouts';
 import ACLRoles from '/imports/collections/ACLRoles/ACLRoles';
 import container from '/imports/common/Container';
 
@@ -16,7 +15,7 @@ class ViewRole extends Component {
     render() {
         const {role} = this.props;
 
-        const model = Models.getModel('Users') || aclRoleLayouts;
+        const model = Models.getModel('Users') || ACLRoles.getLayouts();
 
         const headerLinks = [
             {

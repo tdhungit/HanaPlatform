@@ -1,7 +1,13 @@
 import CollectionCore from '/imports/common/CollectionCore';
+import {companyLayouts} from './layouts';
 
 class CompaniesCollection extends CollectionCore {
-
+    /**
+     * get default layouts
+     */
+    getLayouts() {
+        return companyLayouts;
+    }
 }
 
 const Companies = new CompaniesCollection('system_companies');

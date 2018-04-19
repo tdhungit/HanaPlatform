@@ -10,7 +10,6 @@ import {Link} from 'react-router-dom';
 
 import {T, t, PT} from '/imports/common/Translation';
 import BranchOffices from '/imports/collections/BranchOffices/BranchOffices';
-import {branchOfficeLayouts} from '/imports/collections/BranchOffices/layouts';
 import Models from '/imports/collections/Models/Models';
 import ListComponent from '../models/components/ListComponent';
 
@@ -23,7 +22,7 @@ class ViewBranchOffices extends Component {
     render() {
         const {pagination, limit} = this;
 
-        const model = Models.getModel('BranchOffices') || branchOfficeLayouts;
+        const model = Models.getModel('BranchOffices') || BranchOffices.getLayouts();
 
         return (
             <div className="ViewBranchOffices animated fadeIn">

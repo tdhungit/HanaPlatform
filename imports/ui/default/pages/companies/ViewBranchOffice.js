@@ -12,11 +12,9 @@ import container from '/imports/common/Container';
 import {t, PT} from '/imports/common/Translation';
 import Models from '/imports/collections/Models/Models';
 import BranchOffices from '/imports/collections/BranchOffices/BranchOffices';
-import {branchOfficeLayouts} from '/imports/collections/BranchOffices/layouts';
 import DetailComponent from '../models/components/DetailComponent';
 import ListComponent from '../models/components/ListComponent';
 import Users from '/imports/collections/Users/Users';
-import {userLayouts} from '../../../../collections/Users/layouts';
 
 /**
  * ViewBranchOffice and Related
@@ -32,7 +30,7 @@ class ViewBranchOffice extends Component {
     }
 
     render() {
-        const userModel = Models.getModel('Users') || userLayouts;
+        const userModel = Models.getModel('Users') || Users.getLayouts();
         const branchOfficeId = this.props.match.params._id;
         const {pagination} = this;
 
@@ -70,7 +68,7 @@ export default ViewBranchOffice;
 class DetailBranchOffice extends Component {
     render() {
         const {branchOffice} = this.props;
-        const model = Models.getModel('Companies') || branchOfficeLayouts;
+        const model = Models.getModel('BranchOffices') || BranchOffices.getLayouts();
 
         return (
             <Row>

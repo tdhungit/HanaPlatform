@@ -10,7 +10,6 @@ import {Link} from 'react-router-dom';
 
 import {T, t, PT} from '/imports/common/Translation';
 import Companies from '/imports/collections/Companies/Companies';
-import {companyLayouts} from '/imports/collections/Companies/layouts';
 import Models from '/imports/collections/Models/Models';
 import ListComponent from '../models/components/ListComponent';
 
@@ -22,7 +21,7 @@ class ViewCompanies extends Component {
 
     render() {
         const {pagination, limit} = this;
-        const model = Models.getModel('Companies') || companyLayouts;
+        const model = Models.getModel('Companies') || Companies.getLayouts();
 
         return (
             <div className="ViewCompanies animated fadeIn">

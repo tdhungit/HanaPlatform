@@ -1,7 +1,13 @@
 import CollectionAssign from '/imports/common/CollectionAssign';
+import {activityLayouts} from './layouts';
 
 class ActivitiesCollection extends CollectionAssign {
-
+    /**
+     * get default layouts
+     */
+    getLayouts() {
+        return activityLayouts;
+    }
 }
 
 const Activities = new ActivitiesCollection('activities');

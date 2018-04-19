@@ -4,6 +4,7 @@ import CollectionBase from '/imports/common/CollectionBase';
 import SimpleSchema from 'simpl-schema';
 import UserGroups from '../UserGroups/UserGroups';
 import ACLPermissions from '../ACLPermissions/ACLPermissions';
+import {userLayouts} from './layouts';
 
 const Users = Meteor.users;
 
@@ -186,6 +187,8 @@ Schema.User = CollectionBase.schema({
 
 Users.attachSchema(Schema.User);
 
+Users.getLayouts = () => {return userLayouts};
+
 /**
  * get filter user
  * @param user
@@ -264,7 +267,7 @@ Users.publishPagination = () => {
  * @returns {PaginationFactory|*}
  */
 Users.pagination = (options = {}) => {
-    const limit = 20;
+    const limit = Users.getLimit();
 
     const selector = options && options.filters || {};
     const filters = Users.filterOwnerData(Meteor.user(), selector);
@@ -277,6 +280,12 @@ Users.pagination = (options = {}) => {
         debug: false
     });
 };
+
+/**
+ * get limit for users list
+ * @returns {number}
+ */
+Users.getLimit = () => {return 20};
 
 /**
  * get all user child of this user

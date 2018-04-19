@@ -1,5 +1,6 @@
 import CollectionBase from '/imports/common/CollectionBase';
 import Users from '../Users/Users';
+import {branchOfficeLayouts} from './layouts';
 
 class BranchOfficesCollection extends CollectionBase {
     /**
@@ -17,6 +18,13 @@ class BranchOfficesCollection extends CollectionBase {
 
         const branchOffices = this.find({_id: {$in: user.branchOffices}}).fetch();
         return branchOffices ? branchOffices : [];
+    }
+
+    /**
+     * get default layouts
+     */
+    getLayouts() {
+        return branchOfficeLayouts;
     }
 }
 

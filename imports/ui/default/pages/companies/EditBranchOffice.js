@@ -9,7 +9,6 @@ import {
 import container from '/imports/common/Container';
 import {T, t, PT} from '/imports/common/Translation';
 import BranchOffices from '/imports/collections/BranchOffices/BranchOffices';
-import {branchOfficeLayouts} from '/imports/collections/BranchOffices/layouts';
 import Models from '/imports/collections/Models/Models';
 import FormComponent from '../models/components/FormComponent';
 
@@ -21,7 +20,7 @@ class EditBranchOffice extends Component {
             return <Alert color="warning"><T>No Data</T></Alert>;
         }
 
-        const model = Models.getModel('BranchOffices') || branchOfficeLayouts;
+        const model = Models.getModel('BranchOffices') || BranchOffices.getLayouts();
 
         return (
             <div className="EditBranchOffice animated fadeIn">

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {
     Button, Input,
     InputGroup, InputGroupAddon,
-    Modal, ModalBody, ModalHeader, ModalFooter
+    Modal, ModalBody, ModalHeader
 } from 'reactstrap';
 import {Link} from 'react-router-dom';
 import {sprintf} from 'sprintf-js';
@@ -12,6 +12,8 @@ import {sprintf} from 'sprintf-js';
 import {utilsHelper} from '../utils/utils';
 import {myModel} from '../../../../common/Model';
 import {T} from '../../../../common/Translation';
+import Models from '../../../../collections/Models/Models';
+import {ListRecordsComponent} from '../../pages/models/components/ListComponent';
 
 /**
  * view value for relate field type
@@ -43,8 +45,8 @@ export class RelateView extends Component {
         const {modelName, moduleName, titleField, value} = this.props;
 
         if (modelName && value) {
-            myModel.getCollectionClass(modelName, moduleName, (model) => {
-                const record = model.findOne(value);
+            myModel.getCollectionClass(modelName, moduleName, (collection) => {
+                const record = collection.findOne(value);
                 const relate = {
                     _id: record._id,
                     name: utilsHelper.getRecordTitle(record, titleField)
@@ -84,12 +86,15 @@ export class RelateInput extends Component {
         super(props);
 
         this.state = {
+            collection: null,
             relate: {
                 _id: '',
                 name: ''
             },
             isModal: false
         };
+
+        this.onChange = this.onChange.bind(this);
     }
 
     componentDidMount() {
@@ -100,20 +105,48 @@ export class RelateInput extends Component {
         const {modelName, moduleName, titleField, value} = this.props;
 
         if (modelName && value) {
-            myModel.getCollectionClass(modelName, moduleName, (model) => {
-                const record = model.findOne(value);
+            myModel.getCollectionClass(modelName, moduleName, (collection) => {
+                const record = collection.findOne(value);
                 const relate = {
                     _id: record._id,
                     name: utilsHelper.getRecordTitle(record, titleField)
                 };
 
-                this.setState({relate});
+                this.setState({collection, relate});
             });
         }
     }
 
+    onSelected(selected) {
+        const {titleField} = this.props;
+        let relate = {...this.state.relate};
+
+        $.map(selected, (record, recordId) => {
+            relate = {
+                _id: record._id,
+                name: utilsHelper.getRecordTitle(record, titleField)
+            }
+        });
+
+        this.setState({relate, isModal: false});
+    }
+
+    onChange() {
+        const event = {
+            target: {
+                name: this.props.name,
+                type: this.props.type || 'relate',
+                value: this.state.relate._id
+            }
+        };
+
+        this.props.onChange && this.props.onChange(event);
+    }
+
     renderModal() {
         const {modelName} = this.props;
+        const model = Models.getModel(modelName)
+            || (this.state.collection && this.state.collection.getLayouts()) || {};
 
         return (
             <Modal isOpen={this.state.isModal}
@@ -122,7 +155,14 @@ export class RelateInput extends Component {
                     <i className="fa fa-list-ul"/> <T>Choose</T> <T>{modelName}</T>
                 </ModalHeader>
                 <ModalBody>
-
+                    <ListRecordsComponent
+                        type="Select"
+                        once={true}
+                        collection={this.state.collection}
+                        filters={{}}
+                        model={model}
+                        selected={[]}
+                        onClick={(selected) => this.onSelected(selected)}/>
                 </ModalBody>
             </Modal>
         );
@@ -132,8 +172,12 @@ export class RelateInput extends Component {
         return (
             <div className="controls">
                 <InputGroup>
-                    <Input type="text" name="name"/>
-                    <Input type="hidden" name="id"/>
+                    <Input type="text" name="name"
+                           value={this.state.relate.name}
+                           onChange={this.onChange}/>
+                    <Input type="hidden" name="id"
+                           value={this.state.relate._id}
+                           onChange={this.onChange}/>
                     <InputGroupAddon addonType="append">
                         <Button color="secondary" onClick={() => this.setState({isModal: true})}>
                             <i className="fa fa-mouse-pointer"/>
@@ -145,3 +189,4 @@ export class RelateInput extends Component {
         );
     }
 }
+

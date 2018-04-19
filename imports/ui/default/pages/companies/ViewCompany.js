@@ -9,14 +9,13 @@ import container from '/imports/common/Container';
 import {t, PT} from '/imports/common/Translation';
 import Models from '/imports/collections/Models/Models';
 import Companies from '/imports/collections/Companies/Companies';
-import {companyLayouts} from '/imports/collections/Companies/layouts';
 import DetailComponent from '../models/components/DetailComponent';
 
 class ViewCompany extends Component {
     render() {
         const {company} = this.props;
 
-        const model = Models.getModel('Companies') || companyLayouts;
+        const model = Models.getModel('Companies') || Companies.getLayouts();
 
         return (
             <div className="ViewCompany animated fadeIn">

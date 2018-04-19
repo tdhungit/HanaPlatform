@@ -10,7 +10,6 @@ import {
 import container from '/imports/common/Container';
 import {T, t, PT} from '/imports/common/Translation';
 import Users from '/imports/collections/Users/Users';
-import {userLayouts} from '/imports/collections/Users/layouts';
 import Models from '/imports/collections/Models/Models';
 import FormComponent from '../models/components/FormComponent';
 
@@ -26,7 +25,7 @@ class EditUser extends Component {
             return <Alert color="warning"><T>No Data</T></Alert>;
         }
 
-        const model = Models.getModel('Users') || userLayouts;
+        const model = Models.getModel('Users') || Users.getLayouts();
 
         return (
             <div className="EditUser animated fadeIn">

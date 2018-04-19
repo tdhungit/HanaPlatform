@@ -6,12 +6,12 @@ import {
 
 import {t, PT} from '/imports/common/Translation';
 import Models from '/imports/collections/Models/Models';
-import {aclRoleLayouts} from '/imports/collections/ACLRoles/layouts';
 import FormComponent from '../models/components/FormComponent';
+import ACLRoles from '../../../../collections/ACLRoles/ACLRoles';
 
 class CreateRole extends Component {
     render() {
-        const model = Models.getModel('ACLRoles') || aclRoleLayouts;
+        const model = Models.getModel('ACLRoles') || ACLRoles.getLayouts();
         
         return (
             <div className="CreateRole animated fadeIn">

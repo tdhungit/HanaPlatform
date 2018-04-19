@@ -10,13 +10,12 @@ import {t, PT} from '/imports/common/Translation';
 import Models from '/imports/collections/Models/Models';
 import Activities from '/imports/collections/Activities/Activities';
 import DetailComponent from '../models/components/DetailComponent';
-import {activityLayouts} from '/imports/collections/Activities/layouts';
 
 class ViewActivity extends Component {
     render() {
         const {activity} = this.props;
 
-        const model = Models.getModel('Users') || activityLayouts;
+        const model = Models.getModel('Activities') || Activities.getLayouts();
 
         return (
             <div className="ViewActivity">

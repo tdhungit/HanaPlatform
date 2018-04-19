@@ -1,7 +1,13 @@
 import CollectionBase from '/imports/common/CollectionBase';
+import {aclRoleLayouts} from './layouts';
 
 class ACLRolesCollection extends CollectionBase {
-
+    /**
+     * get default layouts
+     */
+    getLayouts() {
+        return aclRoleLayouts;
+    }
 }
 
 const ACLRoles = new ACLRolesCollection('acl_roles');

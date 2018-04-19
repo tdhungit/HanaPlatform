@@ -10,7 +10,6 @@ import {Link} from 'react-router-dom';
 
 import {T, t, PT} from '/imports/common/Translation';
 import Users from '/imports/collections/Users/Users';
-import {userLayouts} from '/imports/collections/Users/layouts';
 import Models from '/imports/collections/Models/Models';
 import ListComponent from '../models/components/ListComponent';
 
@@ -26,7 +25,7 @@ class ViewUsers extends Component {
             limit
         } = this;
 
-        const model = Models.getModel('Users') || userLayouts;
+        const model = Models.getModel('Users') || Users.getLayouts();
 
         return (
             <div className="ViewUsers animated fadeIn">
@@ -35,7 +34,7 @@ class ViewUsers extends Component {
                     <Col xs="12" lg="12">
                         <Card>
                             <CardHeader>
-                                <i className="fa fa-align-justify"></i> <T>View Users</T>
+                                <i className="fa fa-align-justify"/> <T>View Users</T>
                                 <div className="card-actions">
                                     <Link to={'/manager/users/create'} title={t.__('Create')}>
                                         <i className="fa fa-plus-circle"/>

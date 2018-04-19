@@ -9,7 +9,6 @@ import {
 import container from '/imports/common/Container';
 import {T, t, PT} from '/imports/common/Translation';
 import Companies from '/imports/collections/Companies/Companies';
-import {companyLayouts} from '/imports/collections/Companies/layouts';
 import Models from '/imports/collections/Models/Models';
 import FormComponent from '../models/components/FormComponent';
 
@@ -21,7 +20,7 @@ class EditCompany extends Component {
             return <Alert color="warning"><T>No Data</T></Alert>;
         }
 
-        const model = Models.getModel('Companies') || companyLayouts;
+        const model = Models.getModel('Companies') || Companies.getLayouts();
 
         return (
             <div className="EditCompany animated fadeIn">
