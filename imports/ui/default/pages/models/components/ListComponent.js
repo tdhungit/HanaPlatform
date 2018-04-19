@@ -82,6 +82,7 @@ class ListContainer extends Component {
     }
 
     renderFilterForm() {
+        const size = this.props.size || '';
         let filters = [];
         // input column
         if (this.props.type === 'Select') {
@@ -94,6 +95,7 @@ class ListContainer extends Component {
                 <td key={fieldName}>
                     <FieldInput name={fieldName}
                                 type={field.type}
+                                bsSize={size}
                                 options={field.options}
                                 placeholder={t.__(field.label)}
                                 value={this.getFilter(fieldName)}
@@ -104,7 +106,7 @@ class ListContainer extends Component {
 
         filters.push(
             <td key="actions">
-                <FieldButton label="Filter" color="primary" onClick={this.handleFilter}/>
+                <FieldButton size={size} label="Filter" color="primary" onClick={this.handleFilter}/>
             </td>
         );
 
@@ -121,7 +123,8 @@ class ListContainer extends Component {
     }
 
     handleFilter() {
-        this.props.pagination.filters(this.state.filters);
+        const queryFilters = utilsHelper.filtersToQuery(this.state.filters);
+        this.props.pagination.filters(queryFilters);
     }
 
     getSortType(fieldName) {

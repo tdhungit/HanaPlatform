@@ -212,6 +212,23 @@ class UtilsHelper {
     trimSpace(str) {
         return str.replace(/^\s+|\s+$/gm,'');
     }
+
+    /**
+     * get query filter for collection
+     * @param filters
+     */
+    filtersToQuery(filters) {
+        let query = {};
+
+        for (let key in filters) {
+            let value = filters[key];
+            if (value) {
+                query[key] = {$regex: ".*" + value + ".*", $options: "i"};
+            }
+        }
+
+        return query;
+    }
 }
 
 export const utilsHelper = new UtilsHelper();
