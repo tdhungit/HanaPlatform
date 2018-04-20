@@ -51,27 +51,22 @@ class FormComponent extends Component {
         this.onSubmit = this.onSubmit.bind(this);
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        if (nextProps.record && nextProps.record._id) {
-            if (!this.state.record._id
-                || this.state.record._id !== nextProps.record._id) {
-                nextState.record = nextProps.record;
-            }
-        }
-
-        return true;
-    }
-
     componentWillMount() {
         this.state.record = this.props.record;
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (this.props.record !== nextProps.record) {
+            this.setState({record: nextProps.record});
+        }
+    }
+
     componentDidMount() {
-        this.props.onRef(this);
+        this.props.onRef && this.props.onRef(this);
     }
 
     componentWillUnmount() {
-        this.props.onRef(undefined);
+        this.props.onRef && this.props.onRef(undefined);
     }
 
     getVal(field) {

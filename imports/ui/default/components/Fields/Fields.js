@@ -27,7 +27,7 @@ export {FieldButton, RFieldButton};
 import {ImageInput, ImagesInput, ImagesView} from '../../helpers/inputs/ImageHelper';
 import {AddressInput, AddressView} from '../../helpers/inputs/AddressHelper';
 import {ArrayFieldInput, ArrayFieldView} from '../../helpers/inputs/ArrayFieldHelper';
-import {CurrencyView} from '../../helpers/inputs/NumberHelper';
+import {CurrencyInput, CurrencyView} from '../../helpers/inputs/NumberHelper';
 import {RelateInput, RelateView} from "../../helpers/inputs/RelateHelper";
 
 /**
@@ -116,6 +116,10 @@ const componentInput = (type, attributes, invalid = false, errorMessage = '') =>
             return <AddressInput {...attributes}/>;
         case 'array':
             return <ArrayFieldInput {...attributes}/>;
+        case 'currency':
+            let props = utilsHelper.objectWithoutProperties(attributes, ['type', 'textLeft']);
+            props.textLeft = true;
+            return <CurrencyInput {...props}/>;
         case 'relate':
             return <RelateInput {...attributes}/>;
         default:

@@ -85,10 +85,13 @@ export class NumberInput extends Component {
         const {prefix, suffix, format, className, type, name, value} = this.props;
         this.state.value = value;
 
+        const align = this.props.textLeft ? 'text-left' : 'text-right';
+
         return <NumberFormat type={type || 'text'}
                              name={name}
+                             disabled={this.props.disabled}
                              thousandSeparator={true}
-                             className={(className || 'form-control') + ' text-right'}
+                             className={(className || 'form-control') + ' ' + align}
                              prefix={prefix || ''}
                              suffix={suffix || ''}
                              value={this.state.value}
@@ -153,8 +156,10 @@ export class CurrencyInput extends Component {
 
         return <NumberInput type={type}
                             name={name}
+                            disabled={this.props.disabled}
                             className={className}
                             value={value}
+                            textLeft={this.props.textLeft}
                             format={frameworkConfig.currency.format}
                             prefix={prefix}
                             suffix={suffix}
