@@ -213,8 +213,7 @@ export class Select2Helper extends Component {
                        autoload={autoload}
                        onValueClick={onValueClick}
                        cache={false}
-                       selectedLabel="default label display on Select.Async"
-                       selectedValue ="default_value"
+
                        onCloseResetsInput={false}
                        optionRenderer={optionRenderer}
                        valueRenderer={valueRenderer}/>
@@ -370,14 +369,18 @@ export class SelectValue extends Component {
                 if (appListString[value]) {
                     return <span>{appListString[value]}</span>
                 }
-                return <span></span>
+
+                return <span> </span>;
             } else if (AppListStrings[options]) {
                 const appListString = AppListStrings[options];
                 if (appListString[value]) {
                     return <span>{appListString[value]}</span>
                 }
-                return <span></span>
+
+                return <span> </span>;
             }
         }
+
+        return <span> </span>;
     }
 }

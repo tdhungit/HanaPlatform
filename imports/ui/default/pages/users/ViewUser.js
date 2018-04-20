@@ -21,6 +21,7 @@ import Users from '/imports/collections/Users/Users';
 import DetailComponent from '../models/components/DetailComponent';
 import BranchOffices from '../../../../collections/BranchOffices/BranchOffices';
 import {ListRecordsComponent} from '../models/components/ListComponent';
+import {UserFieldView} from './fields/UserFields';
 
 class ViewUser extends Component {
     constructor(props) {
@@ -76,7 +77,8 @@ class ViewUser extends Component {
                             title={t.__('View User')}
                             model={model}
                             record={user}
-                            editLink="/manager/users/%s/edit"/>
+                            editLink="/manager/users/%s/edit"
+                            component={UserFieldView}/>
                     </Col>
                 </Row>
 
@@ -144,7 +146,7 @@ export default container((props, onData) => {
     const userId = props.match.params._id;
     Meteor.subscribe('users.detail', userId);
     const user = Users.getOne(userId);
-    const branchOfficeIds = user.branchOffices;
+    const branchOfficeIds = user.branchOffices || [];
     const branchOffices = BranchOffices.find({_id: {$in: branchOfficeIds}}).fetch();
     onData(null, {
         user: user,

@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Meteor} from 'meteor/meteor';
 import {
     Row,
     Col
@@ -8,8 +9,27 @@ import {t, PT} from '/imports/common/Translation';
 import Models from '/imports/collections/Models/Models';
 import FormComponent from '../models/components/FormComponent';
 import Users from '../../../../collections/Users/Users';
+import Companies from '../../../../collections/Companies/Companies';
+import {UserFieldInput} from './fields/UserFields';
 
 class CreateUser extends Component {
+    constructor(props) {
+        super(props);
+
+        this.beforeSave = this.beforeSave.bind(this);
+    }
+
+    beforeSave(record) {
+        const company = Companies.findOne(Meteor.user().companyId);
+        record.companyId = company._id;
+        record.branchOffices = [Meteor.user().settings.branchOfficeId];
+        if (record.username) {
+            record.username = record.username + '.' + company.domain;
+        }
+
+        return record;
+    }
+
     render() {
         const model = Models.getModel('Users') || Users.getLayouts();
         return (
@@ -22,9 +42,11 @@ class CreateUser extends Component {
                             slogan={t.__("User for Employee")}
                             model={model}
                             record={{}}
+                            beforeSubmit={this.beforeSave}
                             method="users.insert"
                             detailLink="/manager/users/%s/detail"
-                            listLink="/manager/users"/>
+                            listLink="/manager/users"
+                            component={UserFieldInput}/>
                     </Col>
                 </Row>
             </div>

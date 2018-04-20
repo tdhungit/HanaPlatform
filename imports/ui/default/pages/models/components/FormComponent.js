@@ -89,19 +89,26 @@ class FormComponent extends Component {
     }
 
     onSubmit() {
-        const {onSubmit, method, detailLink, afterSubmit} = this.props;
+        const {onSubmit, method, detailLink, beforeSubmit, afterSubmit} = this.props;
 
         if (onSubmit) {
             onSubmit(this.state.record);
         } else if (method) {
-            Meteor.call(method, this.state.record, (error, recordId) => {
+            let saveRecord;
+            if (beforeSubmit) {
+                saveRecord = beforeSubmit(this.state.record);
+            } else {
+                saveRecord = {...this.state.record};
+            }
+
+            Meteor.call(method, saveRecord, (error, recordId) => {
                 if (error) {
                     console.log(error);
                     Bert.alert(t.__('Error! Please contact with Admin'), 'danger');
                 } else {
                     Bert.alert(t.__('Successful'), 'success');
                     if (afterSubmit) {
-                        let record = {...this.state.record};
+                        let record = {...saveRecord};
                         if (!record._id) {
                             record._id = recordId;
                         }
