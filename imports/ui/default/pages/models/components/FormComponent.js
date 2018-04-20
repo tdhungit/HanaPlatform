@@ -66,6 +66,14 @@ class FormComponent extends Component {
         this.state.record = this.props.record;
     }
 
+    componentDidMount() {
+        this.props.onRef(this);
+    }
+
+    componentWillUnmount() {
+        this.props.onRef(undefined);
+    }
+
     getVal(field) {
         return utilsHelper.getField(this.state.record, field, '');
     }
@@ -86,16 +94,27 @@ class FormComponent extends Component {
     }
 
     onSubmit() {
-        if (this.props.onSubmit) {
-            this.props.onSubmit(this.state.record);
-        } else if (this.props.method) {
-            Meteor.call(this.props.method, this.state.record, (error, recordId) => {
+        const {onSubmit, method, detailLink, afterSubmit} = this.props;
+
+        if (onSubmit) {
+            onSubmit(this.state.record);
+        } else if (method) {
+            Meteor.call(method, this.state.record, (error, recordId) => {
                 if (error) {
                     console.log(error);
                     Bert.alert(t.__('Error! Please contact with Admin'), 'danger');
                 } else {
                     Bert.alert(t.__('Successful'), 'success');
-                    this.props.history.push(vsprintf(this.props.detailLink, [recordId]));
+                    if (afterSubmit) {
+                        let record = {...this.state.record};
+                        if (!record._id) {
+                            record._id = recordId;
+                        }
+
+                        afterSubmit(record);
+                    } else {
+                        this.props.history.push(vsprintf(detailLink, [recordId]));
+                    }
                 }
             });
         }
@@ -178,22 +197,20 @@ class FormComponent extends Component {
         return fieldsRender;
     }
 
-    render() {
-        const {model} = this.props;
-        const record = this.props.record || {};
-
-        if (!model) {
-            return <Alert color="warning"><T>No Config</T></Alert>
-        }
-
+    renderFullForm(model, record) {
+        const {title, slogan, detailLink, listLink, onlyForm} = this.props;
         const existingRecord = record && record._id;
         const recordFields = model.view.fields;
+
+        if (onlyForm) {
+            return this.renderFieldsRow(recordFields);
+        }
 
         return (
             <Card>
                 <CardHeader>
                     <i className={model.icon}/>
-                    <strong>{this.props.title}</strong> {this.props.slogan || ''}
+                    <strong>{title}</strong> {slogan || ''}
                 </CardHeader>
                 <CardBody>
                     {this.renderFieldsRow(recordFields)}
@@ -205,11 +222,11 @@ class FormComponent extends Component {
                     <Button type="button" size="sm" color="danger">
                         {existingRecord
                             ?
-                            <Link to={vsprintf(this.props.detailLink, [record._id])}>
+                            <Link to={vsprintf(detailLink, [record._id])}>
                                 <i className="fa fa-ban"/> <T>Cancel</T>
                             </Link>
                             :
-                            <Link to={this.props.listLink}>
+                            <Link to={listLink}>
                                 <i className="fa fa-ban"/> <T>Cancel</T>
                             </Link>
                         }
@@ -217,6 +234,17 @@ class FormComponent extends Component {
                 </CardFooter>
             </Card>
         );
+    }
+
+    render() {
+        const {model} = this.props;
+        const record = this.props.record || {};
+
+        if (!model) {
+            return <Alert color="warning"><T>No Config</T></Alert>
+        }
+
+        return this.renderFullForm(model, record);
     }
 }
 

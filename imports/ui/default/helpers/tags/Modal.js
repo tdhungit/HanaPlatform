@@ -10,7 +10,6 @@ import {T} from '/imports/common/Translation';
 export class ShowModal extends Component {
     constructor(props) {
         super(props);
-
         this.toggle = this.toggle.bind(this);
         this.onOk = this.onOk.bind(this);
         this.onCancel = this.onCancel.bind(this);
@@ -21,7 +20,7 @@ export class ShowModal extends Component {
     }
 
     onOk() {
-        this.props.mdOk && this.props.mdOk();
+        this.props.mdOk && this.props.mdOk(this.child);
     }
 
     onCancel() {
@@ -34,17 +33,19 @@ export class ShowModal extends Component {
 
     render() {
         const {isOpen, mdIcon, mdTitle, mdComponent} = this.props;
-        const props = utilsHelper.objectWithoutProperties(this.props, [
+        let props = utilsHelper.objectWithoutProperties(this.props, [
             'isOpen',
             'mdIcon',
             'mdTitle',
             'mdComponent',
             'mdToggle',
             'mdOk',
-            'mdCancel'
+            'mdCancel',
+            'onRef'
         ]);
 
-        const component = React.createElement(mdComponent, {...props});
+        props.onRef = ((ref) => {this.child = ref});
+        const ChildComponent = React.createElement(mdComponent, {...props});
 
         return (
             <Modal isOpen={isOpen}
@@ -54,7 +55,7 @@ export class ShowModal extends Component {
                     <i className={mdIcon || 'fa fa-list'}/> {mdTitle}
                 </ModalHeader>
                 <ModalBody>
-                    {component}
+                    {ChildComponent}
                 </ModalBody>
                 <ModalFooter>
                     <Button color="primary"
