@@ -4,7 +4,7 @@ import {
     Row, Col
 } from 'reactstrap';
 
-import {t, T, PT} from '/imports/common/Translation';
+import {t, PT} from '/imports/common/Translation';
 import Models from '/imports/collections/Models/Models';
 import FormComponent from '../models/components/FormComponent';
 import Companies from '../../../../collections/Companies/Companies';
@@ -14,6 +14,7 @@ class CreateCompany extends Component {
         let user = {...company.user};
         user.companyId = company.extra.companyId;
         user.groupId = company.extra.groupId;
+        user.username = user.username + company.domain;
         Meteor.call('users.insert', user, (error) => {
             if (error) {
                 console.log(error);
@@ -26,7 +27,7 @@ class CreateCompany extends Component {
 
     render() {
         const model = Models.getModel('Companies') || Companies.getLayouts();
-        let createLayout = model.view.fields;
+        let createLayout = model.view.fields.slice();
         createLayout.push({
             'user.username': {
                 type: 'text',
@@ -43,6 +44,14 @@ class CreateCompany extends Component {
             }
         });
 
+        const newModelLayout = {
+            icon: model.icon,
+            view: {
+                title: model.view.title,
+                fields: createLayout
+            }
+        };
+
         return (
             <div className="CreateCompany animated fadeIn">
                 <PT title={t.__("Create new company")}/>
@@ -51,7 +60,7 @@ class CreateCompany extends Component {
                         <FormComponent
                             title={t.__("Create new company")}
                             slogan={t.__("Service for company")}
-                            model={model}
+                            model={newModelLayout}
                             record={{}}
                             afterSubmit={(record) => this.afterSubmit(record)}
                             method="companies.insert"
