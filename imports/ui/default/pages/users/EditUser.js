@@ -12,6 +12,7 @@ import {T, t, PT} from '/imports/common/Translation';
 import Users from '/imports/collections/Users/Users';
 import Models from '/imports/collections/Models/Models';
 import FormComponent from '../models/components/FormComponent';
+import {UserFieldInput} from './fields/UserFields';
 
 class EditUser extends Component {
     static propTypes = {
@@ -39,7 +40,8 @@ class EditUser extends Component {
                             record={user}
                             method="users.update"
                             detailLink="/manager/users/%s/detail"
-                            listLink="/manager/users"/>
+                            listLink="/manager/users"
+                            component={UserFieldInput}/>
                     </Col>
                 </Row>
             </div>

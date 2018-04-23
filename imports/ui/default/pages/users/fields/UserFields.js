@@ -63,13 +63,15 @@ class UserGroupFieldRender extends Component {
 
     render() {
         let attributes = utilsHelper.objectWithoutProperties(this.props, ['groups', 'GFViewType']);
-        attributes.field.type = 'dropdown';
-        attributes.field.options = this.props.groups;
 
         if (this.props.GFViewType === 'input') {
+            attributes.type = 'dropdown';
+            attributes.options = this.props.groups;
             return this.renderInput(attributes);
         }
 
+        attributes.field.type = 'dropdown';
+        attributes.field.options = this.props.groups;
         return this.renderView(attributes);
     }
 }

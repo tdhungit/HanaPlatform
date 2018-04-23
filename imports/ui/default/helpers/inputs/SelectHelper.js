@@ -370,17 +370,32 @@ export class SelectValue extends Component {
                     return <span>{appListString[value]}</span>
                 }
 
-                return <span> </span>;
+                return <span>{value}</span>;
             } else if (AppListStrings[options]) {
                 const appListString = AppListStrings[options];
                 if (appListString[value]) {
                     return <span>{appListString[value]}</span>
                 }
 
-                return <span> </span>;
+                return <span>{value}</span>;
             }
         }
 
-        return <span> </span>;
+        if (options[value]) {
+            return <span>{options[value]}</span>;
+        }
+
+        for (let idx in options) {
+            let option = options[idx];
+            if (option._id && option._id === value) {
+                return <span>{option.name}</span>;
+            }
+
+            if (option.value && option.label && option.value === value) {
+                return <span>{option.label}</span>;
+            }
+        }
+
+        return <span>{value}</span>;
     }
 }

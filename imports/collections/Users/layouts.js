@@ -7,9 +7,8 @@ export const userLayouts = {
                 type: "text",
                 label: "Username"
             },
-            email: {
-                label: "Email",
-                alias: 'emails',
+            emails: {
+                label: "Emails",
                 display: {
                     type: 'array',
                     fields: ['address']
@@ -33,9 +32,8 @@ export const userLayouts = {
                     type: "text",
                     label: "Username"
                 },
-                email: {
-                    label: "Email",
-                    alias: 'emails',
+                emails: {
+                    label: "Emails",
                     display: {
                         type: 'array',
                         fields: ['address']

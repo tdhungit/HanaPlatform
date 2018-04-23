@@ -37,7 +37,8 @@ Meteor.publish('users.detail', function (userId) {
             isAdmin: 1,
             isDeveloper: 1,
             settings: 1,
-            profile: 1
+            profile: 1,
+            emails: 1
         }
     });
 });
