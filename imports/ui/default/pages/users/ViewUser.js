@@ -2,57 +2,22 @@ import React, {Component} from 'react';
 import {Meteor} from 'meteor/meteor';
 import {
     Row,
-    Col,
-    Card,
-    CardHeader,
-    CardBody,
-    Table,
-    Modal,
-    ModalHeader,
-    ModalBody,
-    ModalFooter,
-    Button
+    Col
 } from 'reactstrap';
 
 import container from '/imports/common/Container';
-import {t, T, PT} from '/imports/common/Translation';
+import {t, PT} from '/imports/common/Translation';
 import Models from '/imports/collections/Models/Models';
 import Users from '/imports/collections/Users/Users';
 import DetailComponent from '../models/components/DetailComponent';
-import BranchOffices from '../../../../collections/BranchOffices/BranchOffices';
-import {ListRecordsComponent} from '../models/components/ListComponent';
 import {UserFieldView} from './fields/UserFields';
+import {PanelBranchOffices} from '../companies/PanelBranchOffices';
 
 class ViewUser extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            selectBranchOffice: false,
-            selectedBranchOfficeIds: {}
-        };
-
-        this.toggleBranchOffice = this.toggleBranchOffice.bind(this);
-        this.onSelected = this.onSelected.bind(this);
-    }
-
-    toggleBranchOffice() {
-        this.setState({
-            selectBranchOffice: !this.state.selectBranchOffice
-        });
-    }
-
-    onSelect(selected) {
-        this.setState({selectedBranchOfficeIds: selected});
-    }
-
-    onSelected() {
+    onSelected(selectedBranchOfficeIds) {
         const userId = this.props.match.params._id;
-        const branchOffices = $.map(this.state.selectedBranchOfficeIds, (value, _id) => {
-            return [_id];
-        });
 
-        Meteor.call('users.updateElement', userId, {branchOffices: branchOffices}, (error, userId) => {
+        Meteor.call('users.updateElement', userId, {branchOffices: selectedBranchOfficeIds}, (error, userId) => {
             if (error) {
                 console.log(error);
                 Bert.alert(t.__('Error! Please contact with Admin'), 'danger');
@@ -63,9 +28,8 @@ class ViewUser extends Component {
     }
 
     render() {
-        const {user, branchOffices} = this.props;
+        const {user} = this.props;
         const model = Models.getModel('Users') || Users.getLayouts();
-        const branchOfficeModel = Models.getModel('BranchOffices') || BranchOffices.getLayouts();
 
         return (
             <div className="ViewUser animated fadeIn">
@@ -84,57 +48,9 @@ class ViewUser extends Component {
 
                 <Row>
                     <Col xs="12" lg="12">
-                        <Card>
-                            <CardHeader>
-                                <i className={branchOfficeModel.icon}/>
-                                <strong><T>Branch Offices</T></strong>
-                                <div className="card-actions">
-                                    <Button color="link" onClick={this.toggleBranchOffice}>
-                                        <i className="fa fa-plus-circle"/>
-                                    </Button>
-                                </div>
-                            </CardHeader>
-                            <CardBody>
-                                <Table bordered hover>
-                                    <thead>
-                                    <tr>
-                                        <th><T>Office Name</T></th>
-                                        <th><T>Phone</T></th>
-                                        <th><T>Address</T></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {branchOffices.map((branchOffice) => {
-                                        return (
-                                            <tr key={branchOffice._id}>
-                                                <td>{branchOffice.name}</td>
-                                                <td>{branchOffice.phone}</td>
-                                                <td>{branchOffice.address}</td>
-                                            </tr>
-                                        )
-                                    })}
-                                    </tbody>
-                                </Table>
-
-                                {/* select branch offices */}
-                                <Modal isOpen={this.state.selectBranchOffice} toggle={this.toggleBranchOffice} className="modal-lg">
-                                    <ModalHeader toggle={this.toggleBranchOffice}><T>Select</T> <T>Branch Offices</T></ModalHeader>
-                                    <ModalBody>
-                                        <ListRecordsComponent
-                                            type="Select"
-                                            collection={BranchOffices}
-                                            filters={{}}
-                                            model={branchOfficeModel}
-                                            selected={user.branchOffices}
-                                            onClick={(selected) => this.onSelect(selected)}/>
-                                    </ModalBody>
-                                    <ModalFooter>
-                                        <Button color="primary" onClick={this.onSelected}><T>Select</T></Button>{' '}
-                                        <Button color="secondary" onClick={this.toggleBranchOffice}><T>Cancel</T></Button>
-                                    </ModalFooter>
-                                </Modal>
-                            </CardBody>
-                        </Card>
+                        <PanelBranchOffices
+                            currentBranches={user.branchOffices}
+                            onSelected={(selectedBranchOfficeIds) => this.onSelected(selectedBranchOfficeIds)}/>
                     </Col>
                 </Row>
             </div>
@@ -146,10 +62,7 @@ export default container((props, onData) => {
     const userId = props.match.params._id;
     Meteor.subscribe('users.detail', userId);
     const user = Users.getOne(userId);
-    const branchOfficeIds = user.branchOffices || [];
-    const branchOffices = BranchOffices.find({_id: {$in: branchOfficeIds}}).fetch();
     onData(null, {
-        user: user,
-        branchOffices: branchOffices
+        user: user
     });
 }, ViewUser);
