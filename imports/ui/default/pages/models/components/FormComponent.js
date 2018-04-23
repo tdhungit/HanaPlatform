@@ -109,8 +109,10 @@ class FormComponent extends Component {
                     Bert.alert(t.__('Successful'), 'success');
                     if (afterSubmit) {
                         let record = {...saveRecord};
-                        if (!record._id) {
+                        if (!record._id && typeof recordId === 'string') {
                             record._id = recordId;
+                        } else {
+                            record.extra = recordId;
                         }
 
                         afterSubmit(record);

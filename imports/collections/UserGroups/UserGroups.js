@@ -103,7 +103,8 @@ const UserGroupsSchema = CollectionBase.schema({
     },
     description: {
         type: String,
-        label: 'Description for user group'
+        label: 'Description for user group',
+        optional: true
     },
     parent: {
         type: String,
@@ -111,17 +112,20 @@ const UserGroupsSchema = CollectionBase.schema({
         defaultValue: 'ROOT'
     },
     users: {
-        type: Object
+        type: Object,
+        optional: true
     },
     "users.siblings": {
-        type: Array
+        type: Array,
+        optional: true
     },
     "users.siblings.$": {
         type: String,
         optional: true
     },
     "users.children": {
-        type: Array
+        type: Array,
+        optional: true
     },
     "users.children.$": {
         type: String,

@@ -8,7 +8,28 @@ import UserGroups from '../UserGroups/UserGroups';
 Meteor.methods({
     'companies.insert': function (company) {
         check(company, Object);
-        return Companies.insert(company);
+        const companyId = Companies.insert(company);
+        // auto create new branch office
+        const branchOffice = {
+            companyId: companyId,
+            name: 'Head Office'
+        };
+
+        const branchOfficeId = BranchOffices.insert(branchOffice);
+
+        // auto create group user
+        const userGroup = {
+            companyId: companyId,
+            name: 'Default'
+        };
+
+        const groupId = UserGroups.insert(userGroup);
+
+        return {
+            companyId: companyId,
+            branchOfficeId: branchOfficeId,
+            groupId: groupId
+        };
     },
     'companies.update': function (company) {
         check(company, Object);

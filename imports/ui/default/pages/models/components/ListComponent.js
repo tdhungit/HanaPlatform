@@ -175,10 +175,11 @@ class ListContainer extends Component {
     }
 
     renderCol(record) {
+        const {type, selected, detailLink, editLink, onDelete} = this.props;
+
         let cols = [];
         // input column
-        if (this.props.type === 'Select') {
-            const selected = this.state.selected;
+        if (type === 'Select') {
             cols.push(
                 <td key="input">
                     <Input
@@ -204,18 +205,20 @@ class ListContainer extends Component {
         // action column
         cols.push(
             <td key="actions">
-                {this.props.detailLink ?
-                <Link to={vsprintf(this.props.detailLink, [record._id])} className="btn btn-sm btn-link">
+                {detailLink ?
+                <Link to={vsprintf(detailLink, [record._id])} className="btn btn-sm btn-link">
                     <i className="fa fa-eye"/>
                 </Link> : null}
 
-                {this.props.editLink ?
-                <Link to={vsprintf(this.props.editLink, [record._id])} className="btn btn-sm btn-link text-warning">
+                {editLink ?
+                <Link to={vsprintf(editLink, [record._id])} className="btn btn-sm btn-link text-warning">
                     <i className="fa fa-edit"/>
                 </Link> : null}
 
-                {this.props.type !== 'Select' ?
-                <a href="javascript:void(0)" className="btn btn-sm btn-link text-danger">
+                {type !== 'Select' && onDelete ?
+                <a href="javascript:void(0)"
+                   onClick={() => onDelete(record._id)}
+                   className="btn btn-sm btn-link text-danger">
                     <i className="fa fa-trash"/>
                 </a> : null}
             </td>

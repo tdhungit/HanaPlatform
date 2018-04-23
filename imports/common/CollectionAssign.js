@@ -79,11 +79,8 @@ class CollectionAssign extends CollectionBase {
 
         if (user !== -1 && !selector.assignedId) {
             selector.assignedId = user && user._id || '';
-            if (!user.isDeveloper) {
-                selector.companyId = user && user.companyId || '';
-                if (!user.isAdmin) {
-                    selector.branchOffices = user.settings && user.settings.branchOfficeId || ''
-                }
+            if (!user.isAdmin) {
+                selector.branchOffices = user.settings && user.settings.branchOfficeId || ''
             }
         }
 

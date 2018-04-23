@@ -3,6 +3,10 @@ export const frameworkConfig = {
         symbol: 'đ',
         symbolPos: 'suffix',
         format: null
+    },
+    Permissions: {
+        defaultAccess: true,
+        defaultData: 'ALL'
     }
 };
 
