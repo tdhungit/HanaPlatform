@@ -25,7 +25,7 @@ class Sidebar extends Component {
     componentWillMount() {
         Meteor.call('mainMenus.Nav', (error, response) => {
             if (!error) {
-                let navItems = nav.first_items;
+                let navItems = nav.first_items.slice();
                 for (let idx in response) {
                     let menu = response[idx];
                     navItems.push(menu);

@@ -31,27 +31,33 @@ Meteor.methods({
     },
     // only root group
     'userGroups.ROOT': function () {
-        return UserGroups.find({}).fetch();
+        const user = Meteor.user();
+        return UserGroups.find({companyId: user.companyId}).fetch();
     },
     // all groups with tree data
     'userGroups.TREE': function () {
-        return getTreeUserGroups('ROOT');
+        const user = Meteor.user();
+        return getTreeUserGroups(user, 'ROOT');
     }
 });
 
 /**
  * get groups with tree data
+ * @param user
  * @param groupId
  * @returns {Array}
  */
-function getTreeUserGroups(groupId) {
+function getTreeUserGroups(user, groupId) {
     let groups = [];
-    const group = UserGroups.find({parent: groupId}).fetch();
+    const group = UserGroups.find({
+        companyId: user.companyId,
+        parent: groupId}).fetch();
+
     if (group.length > 0) {
         for (let idx in group) {
             let item = group[idx];
             // search children item
-            item.children = getTreeUserGroups(item._id);
+            item.children = getTreeUserGroups(user, item._id);
             groups.push(item);
         }
     }

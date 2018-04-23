@@ -8,6 +8,30 @@ class CompaniesCollection extends CollectionCore {
     getLayouts() {
         return companyLayouts;
     }
+
+    /**
+     * filterOwnerData
+     * @param user
+     * @param filters
+     */
+    filterOwnerData(user, filters = {}) {
+        let selector = {};
+        if (filters) {
+            if (typeof filters === 'string') {
+                selector._id = filters;
+            } else {
+                selector = filters;
+            }
+        }
+
+        if (user && user._id) {
+            if (!user.isDeveloper) {
+                selector._id = user.companyId;
+            }
+        }
+
+        return selector;
+    }
 }
 
 const Companies = new CompaniesCollection('system_companies');

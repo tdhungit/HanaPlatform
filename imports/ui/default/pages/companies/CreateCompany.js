@@ -13,8 +13,10 @@ class CreateCompany extends Component {
     afterSubmit(company) {
         let user = {...company.user};
         user.companyId = company.extra.companyId;
+        user.branchOffices = [company.extra.branchOfficeId];
         user.groupId = company.extra.groupId;
-        user.username = user.username + company.domain;
+        user.username = user.username + '.' + company.domain;
+        user.isAdmin = true;
         Meteor.call('users.insert', user, (error) => {
             if (error) {
                 console.log(error);

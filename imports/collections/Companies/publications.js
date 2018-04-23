@@ -5,9 +5,9 @@ import Companies from './Companies';
 Companies.publishPagination();
 
 Meteor.publish('companies.list', function () {
-    return Companies.find({});
+    return Companies.publish(Meteor.user(), {});
 });
 
 Meteor.publish('companies.detail', function (companyId) {
-    return Companies.find({_id: companyId});
+    return Companies.publish(Meteor.user(), {_id: companyId});
 });
