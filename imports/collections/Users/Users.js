@@ -1,10 +1,10 @@
 import {Meteor} from 'meteor/meteor';
 import {publishPagination} from 'meteor/kurounin:pagination';
-import CollectionBase from '/imports/common/CollectionBase';
 import SimpleSchema from 'simpl-schema';
 import UserGroups from '../UserGroups/UserGroups';
 import ACLPermissions from '../ACLPermissions/ACLPermissions';
 import {userLayouts} from './layouts';
+import {permissionsAclDataTypes} from '../ACLPermissions/config';
 
 const Users = Meteor.users;
 
@@ -76,7 +76,7 @@ Schema.UserProfile = new SimpleSchema({
 });
 
 // user collection schema
-Schema.User = CollectionBase.schema({
+Schema.User = new SimpleSchema({
     username: {
         type: String,
         // For accounts-password, either emails or username is required, but not both. It is OK to make this
@@ -344,12 +344,18 @@ Users.userPermissions = (selector) => {
 
 /**
  * check access of this user
- * @param userId user id or current user
+ * @param selector user id or current user
+ * @param controllerName
+ * @param actionName
  * @returns {boolean}
  */
-Users.checkAccess = (selector) => {
+Users.checkAccess = (selector, controllerName, actionName) => {
     if (!selector) {
         return false;
+    }
+
+    if (!controllerName || !actionName) {
+        return true;
     }
 
     let user = selector;
@@ -367,8 +373,45 @@ Users.checkAccess = (selector) => {
     }
 
     const permissions = Users.userPermissions(user);
+    if (!permissions[controllerName]) {
+        return true;
+    }
 
-    return false;
+    return permissions[controllerName][actionName] || true;
+};
+
+/**
+ * get acl access data type
+ * @param selector
+ * @param modelName
+ * @param actionName
+ * @returns {*}
+ */
+Users.accessDataType = (selector, modelName, actionName) => {
+    if (!selector) {
+        return false;
+    }
+
+    let user = selector;
+    if (typeof selector === 'string') {
+        const userId = selector;
+        user = Users.getOne(userId);
+    }
+
+    if (user.isDeveloper) {
+        return permissionsAclDataTypes.All;
+    }
+
+    if (user.isAdmin) {
+        return permissionsAclDataTypes.All;
+    }
+
+    const permissions = Users.userPermissions(user);
+    if (!permissions[modelName]) {
+        return permissionsAclDataTypes.All;
+    }
+
+    return permissions[modelName][actionName] || permissionsAclDataTypes.All;
 };
 
 export default Users;

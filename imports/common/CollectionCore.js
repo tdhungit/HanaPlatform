@@ -25,14 +25,6 @@ class CollectionCore extends Mongo.Collection {
     }
 
     /**
-     * get default layouts
-     * @returns {{}}
-     */
-    getLayouts() {
-        return {};
-    }
-
-    /**
      * check data before insert
      * @param doc
      * @returns {boolean}
@@ -70,6 +62,23 @@ class CollectionCore extends Mongo.Collection {
      */
     afterUpdate(selector, modifiers, options, resultUpdate) {
 
+    }
+
+    /**
+     * get current Model Name
+     * @returns {string}
+     */
+    getModelName() {
+        const className = this.constructor.name;
+        return className.replace('Collection', '');
+    }
+
+    /**
+     * get default layouts
+     * @returns {{}}
+     */
+    getLayouts() {
+        return {};
     }
 
     /**
