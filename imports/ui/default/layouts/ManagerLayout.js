@@ -37,7 +37,7 @@ class ManagerLayout extends Component {
                     <AppNavigation {...appProps}/>
                     <Sidebar {...appProps}/>
                     <main className="main">
-                        <Breadcrumb/>
+                        <Breadcrumb {...appProps}/>
                         <Container fluid>
                             {this.renderRouters()}
                         </Container>

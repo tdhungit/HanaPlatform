@@ -1,20 +1,32 @@
 import React from 'react';
-import {Route, Link} from 'react-router-dom';
+import {Route, Link, matchPath} from 'react-router-dom';
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap';
-import routes from '../Router/routes';
+import {ManagerRouters} from '../../layouts/ManagerRouters';
 
-const findRouteName = url => routes[url];
+const findRouteName = url => {
+    for (let routerPath in ManagerRouters) {
+        const match = matchPath(url, routerPath);
+        if (match && match.isExact) {
+            return ManagerRouters[routerPath].title;
+        }
+    }
+
+    return null;
+};
 
 const getPaths = (pathname) => {
     const paths = ['/'];
 
-    if (pathname === '/') return paths;
+    if (pathname === '/') {
+        return paths;
+    }
 
     pathname.split('/').reduce((prev, curr, index) => {
         const currPath = `${prev}/${curr}`;
         paths.push(currPath);
         return currPath;
     });
+
     return paths;
 };
 
@@ -35,13 +47,16 @@ const BreadcrumbsItem = ({match, ...rest}) => {
                 )
         );
     }
+
     return null;
 };
 
 const Breadcrumbs = ({location: {pathname}, match, ...rest}) => {
     const paths = getPaths(pathname);
-    // const i = 0;
-    const items = paths.map((path, i) => <Route key={i++} path={path} component={BreadcrumbsItem}/>);
+    const items = paths.map((path, i) => {
+        return <Route key={i++} path={path} component={BreadcrumbsItem}/>
+    });
+
     return (
         <Breadcrumb>
             {items}
@@ -49,8 +64,10 @@ const Breadcrumbs = ({location: {pathname}, match, ...rest}) => {
     );
 };
 
-export default props => (
-    <div>
-        <Route path="/:path" component={Breadcrumbs} {...props} />
-    </div>
-);
+export default props => {
+    return (
+        <div>
+            <Route path="/:path" component={Breadcrumbs} {...props} />
+        </div>
+    );
+};
