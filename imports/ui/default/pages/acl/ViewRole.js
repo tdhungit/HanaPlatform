@@ -12,6 +12,8 @@ import ACLRoles from '/imports/collections/ACLRoles/ACLRoles';
 import container from '/imports/common/Container';
 
 class ViewRole extends Component {
+    static viewInfo = {controller: 'ACL', action: 'View'};
+
     render() {
         const {role} = this.props;
 

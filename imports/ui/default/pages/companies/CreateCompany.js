@@ -10,6 +10,8 @@ import FormComponent from '../models/components/FormComponent';
 import Companies from '../../../../collections/Companies/Companies';
 
 class CreateCompany extends Component {
+    static viewInfo = {controller: 'Companies', action: 'Create'};
+
     afterSubmit(company) {
         let user = {...company.user};
         user.companyId = company.extra.companyId;

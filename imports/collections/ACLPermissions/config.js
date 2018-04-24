@@ -1,5 +1,4 @@
-const permissionsAclTypes = {
-    Disable: 'Disable',
+const permissionsAclDataTypes = {
     Owner: 'Owner',
     Children: 'Children',
     Group: 'Group',
@@ -7,5 +6,5 @@ const permissionsAclTypes = {
 };
 
 export {
-    permissionsAclTypes
+    permissionsAclDataTypes
 }

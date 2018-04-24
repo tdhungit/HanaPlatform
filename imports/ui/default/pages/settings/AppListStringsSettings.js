@@ -17,6 +17,8 @@ import Settings from '/imports/collections/Settings/Settings';
 import {AppListStrings} from '/imports/common/AppListStrings';
 
 class AppListStringsSettings extends Component {
+    static viewInfo = {controller: 'Settings', action: 'Edit'};
+
     constructor(props) {
         super(props);
 

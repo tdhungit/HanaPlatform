@@ -13,6 +13,8 @@ import Models from '/imports/collections/Models/Models';
 import FormComponent from '../models/components/FormComponent';
 
 class EditBranchOffice extends Component {
+    static viewInfo = {controller: 'BranchOffices', action: 'Edit'};
+
     render() {
         const {branchOffice} = this.props;
 

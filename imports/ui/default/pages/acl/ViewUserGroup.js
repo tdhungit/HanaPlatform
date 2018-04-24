@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {Meteor} from 'meteor/meteor';
-import PropTypes from 'prop-types';
 import {
     Row,
     Col,
@@ -16,15 +15,7 @@ import UserGroups from '/imports/collections/UserGroups/UserGroups';
 import ACLRoles from '../../../../collections/ACLRoles/ACLRoles';
 
 class ViewUserGroup extends Component {
-    static propTypes = {
-        userGroup: PropTypes.object,
-        role: PropTypes.object
-    };
-
-    static defaultProps = {
-        userGroup: {},
-        role: {}
-    };
+    static viewInfo = {controller: 'ACL', action: 'View'};
 
     render() {
         const {

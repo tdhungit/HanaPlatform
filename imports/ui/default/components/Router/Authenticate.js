@@ -30,12 +30,35 @@ const Authenticate = ({loggingIn, authenticated, component, ...rest}) => (
         }
 
         // check permission
-        const isAccess = Users.checkAccess(Meteor.user());
+        let noDefined = false;
         const currentComponent = utilsHelper.currentComponentName(component);
         if (modulesComponent.layout.indexOf(currentComponent) < 0) {
-            console.log(modulesComponent.components[currentComponent]);
+            console.log(component.viewInfo);
+            if (!component.viewInfo
+                || !component.viewInfo.controller
+                || !component.viewInfo.action) {
+                noDefined = true;
+            }
         }
 
+        if (noDefined) {
+            return (
+                <code>
+                    Please defined viewInfo in {currentComponent} component.<br/>
+                    Example:<br/>
+                    class {currentComponent} extends React.Component {'{'}<br/>
+                        {' '} static viewInfo = {'{'}
+                            controller: 'Employees',
+                            action: 'List'
+                        {'}'};<br/>
+                        {' '} render() {'{'}{'}'}<br/>
+                    {'}'}
+                </code>
+            );
+        }
+
+        // check permission access
+        const isAccess = Users.checkAccess(Meteor.user());
         return isAccess
             ? (React.createElement(component, {...props, ...state, loggingIn, authenticated}))
             : (<NoAccess/>);

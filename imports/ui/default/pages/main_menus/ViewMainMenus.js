@@ -14,6 +14,8 @@ import 'react-sortable-tree/style.css';
 import {T, t, PT} from '/imports/common/Translation';
 
 class ViewMainMenus extends Component {
+    static viewInfo = {controller: 'MainMenus', action: 'List'};
+
     constructor(props) {
         super(props);
 

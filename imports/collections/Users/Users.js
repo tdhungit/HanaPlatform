@@ -366,6 +366,8 @@ Users.checkAccess = (selector) => {
         return true
     }
 
+    const permissions = Users.userPermissions(user);
+
     return false;
 };
 

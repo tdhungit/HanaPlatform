@@ -10,6 +10,8 @@ import FormComponent from '../models/components/FormComponent';
 import ACLRoles from '../../../../collections/ACLRoles/ACLRoles';
 
 class CreateRole extends Component {
+    static viewInfo = {controller: 'ACL', action: 'Create'};
+
     render() {
         const model = Models.getModel('ACLRoles') || ACLRoles.getLayouts();
         

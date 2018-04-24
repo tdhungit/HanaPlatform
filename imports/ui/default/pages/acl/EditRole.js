@@ -13,6 +13,8 @@ import ACLRoles from '/imports/collections/ACLRoles/ACLRoles';
 import container from '../../../../common/Container';
 
 class EditRole extends Component {
+    static viewInfo = {controller: 'ACL', action: 'Edit'};
+
     render() {
         const {role} = this.props;
 

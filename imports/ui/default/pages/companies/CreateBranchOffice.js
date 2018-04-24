@@ -10,6 +10,8 @@ import FormComponent from '../models/components/FormComponent';
 import BranchOffices from '../../../../collections/BranchOffices/BranchOffices';
 
 class CreateBranchOffice extends Component {
+    static viewInfo = {controller: 'BranchOffices', action: 'Create'};
+
     render() {
         const model = Models.getModel('BranchOffices') || BranchOffices.getLayouts();
 

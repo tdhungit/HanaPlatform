@@ -14,6 +14,8 @@ import Models from '/imports/collections/Models/Models';
 import ListComponent from '../models/components/ListComponent';
 
 class ViewBranchOffices extends Component {
+    static viewInfo = {controller: 'BranchOffices', action: 'List'};
+
     componentWillMount() {
         this.limit = BranchOffices.getLimit();
         this.pagination = BranchOffices.pagination();

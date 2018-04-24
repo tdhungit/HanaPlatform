@@ -12,6 +12,8 @@ import FormActivity from './FormActivity';
 import Activities from '/imports/collections/Activities/Activities';
 
 class EditActivity extends Component {
+    static viewInfo = {controller: 'Activities', action: 'Edit'};
+
     render() {
         const {activity} = this.props;
 

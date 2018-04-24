@@ -20,6 +20,8 @@ import Users from '/imports/collections/Users/Users';
  * ViewBranchOffice and Related
  */
 class ViewBranchOffice extends Component {
+    static viewInfo = {controller: 'BranchOffices', action: 'View'};
+
     componentWillMount() {
         const branchOfficeId = this.props.match.params._id;
         this.pagination = Users.pagination({

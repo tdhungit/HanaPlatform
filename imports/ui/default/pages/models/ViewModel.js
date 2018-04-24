@@ -14,6 +14,8 @@ import {t, T, PT} from '/imports/common/Translation';
 import Models from '/imports/collections/Models/Models';
 
 class ViewModel extends Component {
+    static viewInfo = {controller: 'Models', action: 'View'};
+
     constructor(props) {
         super(props);
 

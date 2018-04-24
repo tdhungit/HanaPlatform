@@ -12,6 +12,8 @@ import Companies from '/imports/collections/Companies/Companies';
 import DetailComponent from '../models/components/DetailComponent';
 
 class ViewCompany extends Component {
+    static viewInfo = {controller: 'Companies', action: 'View'};
+
     render() {
         const {company} = this.props;
 

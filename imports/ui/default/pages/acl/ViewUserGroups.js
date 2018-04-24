@@ -14,6 +14,8 @@ import 'react-sortable-tree/style.css';
 import {T, t, PT} from '/imports/common/Translation';
 
 class ViewUserGroups extends Component {
+    static viewInfo = {controller: 'ACL', action: 'List'};
+
     constructor(props) {
         super(props);
 

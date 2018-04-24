@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {Meteor} from 'meteor/meteor';
-import PropTypes from 'prop-types';
 import {
     Row,
     Col
@@ -12,13 +11,7 @@ import FormMainMenu from './FormMainMenu';
 import MainMenus from '/imports/collections/MainMenus/MainMenus';
 
 class EditMainMenu extends Component {
-    static defaultProps = {
-        menu: {}
-    };
-
-    static propTypes = {
-        menu: PropTypes.object
-    };
+    static viewInfo = {controller: 'MainMenus', action: 'Edit'};
 
     constructor(props) {
         super(props);

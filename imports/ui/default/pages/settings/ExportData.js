@@ -12,6 +12,8 @@ import {PT, T, t} from '../../../../common/Translation';
 import {Loading} from '../../components/Loading/Loading';
 
 class ExportData extends Component {
+    static viewInfo = {controller: 'Settings', action: 'Export'};
+
     constructor(props) {
         super(props);
 

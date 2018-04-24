@@ -14,6 +14,8 @@ import {UserFieldView} from './fields/UserFields';
 import {PanelBranchOffices} from '../companies/PanelBranchOffices';
 
 class ViewUser extends Component {
+    static viewInfo = {controller: 'Users', action: 'View'};
+
     onSelected(selectedBranchOfficeIds) {
         const userId = this.props.match.params._id;
 

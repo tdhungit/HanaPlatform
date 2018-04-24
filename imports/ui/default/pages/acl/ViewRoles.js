@@ -14,6 +14,8 @@ import ListComponent from '../models/components/ListComponent';
 import Models from '/imports/collections/Models/Models';
 
 class ViewRoles extends Component {
+    static viewInfo = {controller: 'ACL', action: 'List'};
+
     componentWillMount() {
         this.limit = ACLRoles.getLimit();
         this.pagination = ACLRoles.pagination();

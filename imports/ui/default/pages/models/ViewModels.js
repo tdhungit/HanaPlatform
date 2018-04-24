@@ -13,6 +13,8 @@ import Models from '/imports/collections/Models/Models';
 import {t, T, PT} from '/imports/common/Translation';
 
 class ViewModels extends Component {
+    static viewInfo = {controller: 'Models', action: 'List'};
+
     constructor(props) {
         super(props);
 

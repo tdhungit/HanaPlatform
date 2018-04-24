@@ -11,6 +11,8 @@ import Models from '/imports/collections/Models/Models';
 import FormModel from './FormModel';
 
 class EditModel extends Component {
+    static viewInfo = {controller: 'Models', action: 'Edit'};
+
     render() {
         return (
             <div className="CreateModel animated fadeIn">

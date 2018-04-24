@@ -1,12 +1,13 @@
+import {Meteor} from 'meteor/meteor';
 import CollectionBase from '/imports/common/CollectionBase';
 import Users from '/imports/collections/Users/Users';
 import UserGroups from '/imports/collections/UserGroups/UserGroups';
 
 class PermissionsCollection extends CollectionBase {
     beforeInsert(doc) {
-        const find = this.find({role: doc.role, model: doc.model}).fetch();
+        const find = this.find({roleId: doc.roleId, model: doc.model}).fetch();
         if (find && find.length > 0) {
-            return false;
+            throw new Meteor.Error('500', 'Duplicated Record');
         }
 
         return true;
@@ -35,7 +36,7 @@ class PermissionsCollection extends CollectionBase {
             return false;
         }
 
-        return ACLPermissions.publish(user, {roleId: roleId});
+        return this.publish(user, {roleId: roleId});
     }
 
     /**
@@ -84,7 +85,12 @@ const PermissionsSchema = CollectionBase.schema({
     },
     model: {
         type: String,
-        label: 'Model name'
+        label: 'Model|Module name'
+    },
+    Actions: {
+        type: Object,
+        blackbox: true,
+        optional: true
     },
     Access: {
         type: Boolean,
@@ -94,27 +100,27 @@ const PermissionsSchema = CollectionBase.schema({
     View: {
         type: String,
         label: 'Action View',
-        defaultValue: 'Disable'
+        defaultValue: 'All'
     },
     Create: {
         type: String,
         label: 'Action Create',
-        defaultValue: 'Disable'
+        defaultValue: 'All'
     },
     Edit: {
         type: String,
         label: 'Action Edit',
-        defaultValue: 'Disable'
+        defaultValue: 'All'
     },
     Approve: {
         type: String,
         label: 'Action Approve',
-        defaultValue: 'Disable'
+        defaultValue: 'All'
     },
     Delete: {
         type: String,
         label: 'Action Delete',
-        defaultValue: 'Disable'
+        defaultValue: 'All'
     },
 });
 

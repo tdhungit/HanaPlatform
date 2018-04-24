@@ -14,6 +14,8 @@ import Models from '/imports/collections/Models/Models';
 import ListComponent from '../models/components/ListComponent';
 
 class ViewUsers extends Component {
+    static viewInfo = {controller: 'Users', action: 'List'};
+
     componentWillMount() {
         this.limit = 20;
         this.pagination = Users.pagination();

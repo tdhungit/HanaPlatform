@@ -8,6 +8,8 @@ import {t, PT} from '/imports/common/Translation';
 import FormModel from './FormModel';
 
 class CreateModel extends Component {
+    static viewInfo = {controller: 'Models', action: 'Create'};
+
     render() {
         return (
             <div className="CreateModel animated fadeIn">

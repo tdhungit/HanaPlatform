@@ -14,6 +14,8 @@ import {PT, T, t} from '../../../../common/Translation';
 import {utilsHelper} from '../../helpers/utils/utils';
 
 class ImportData extends Component {
+    static viewInfo = {controller: 'Settings', action: 'Import'};
+
     constructor(props) {
         super(props);
 

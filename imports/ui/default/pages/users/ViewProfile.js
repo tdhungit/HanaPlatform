@@ -29,6 +29,8 @@ import UserSettings from './UserSettings';
 import Medias from '../../../../collections/Medias/Medias';
 
 class ViewProfile extends Component {
+    static viewInfo = {controller: 'Users', action: 'View'};
+
     constructor(props) {
         super(props);
 

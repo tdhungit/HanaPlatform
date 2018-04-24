@@ -18,6 +18,8 @@ import {T, t, PT} from '/imports/common/Translation';
 import Settings from '/imports/collections/Settings/Settings';
 
 class SystemSettings extends Component {
+    static viewInfo = {controller: 'Settings', action: 'Edit'};
+
     constructor(props) {
         super(props);
 

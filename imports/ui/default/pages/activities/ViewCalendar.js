@@ -1,18 +1,16 @@
 import React, {Component} from 'react';
 import {
-    Row,
-    Col,
     Card,
     CardHeader,
-    CardBody,
-    Button
+    CardBody
 } from 'reactstrap';
-import moment from 'moment';
 
 import {T, t, PT} from '/imports/common/Translation';
 import {FullCalendar} from '../../components/FullCalendar/FullCalendar';
 
 class ViewCalendar extends Component {
+    static viewInfo = {controller: 'Activities', action: 'View'};
+
     constructor(props) {
         super(props);
 

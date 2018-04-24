@@ -12,6 +12,8 @@ import ListComponent from '../models/components/ListComponent';
 import Models from '../../../../collections/Models/Models';
 
 class ViewActivities extends Component {
+    static viewInfo = {controller: 'Activities', action: 'View'};
+
     componentWillMount() {
         this.limit = Activities.getLimit();
         this.pagination = Activities.pagination();

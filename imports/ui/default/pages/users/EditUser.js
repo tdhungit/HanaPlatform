@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {Meteor} from 'meteor/meteor';
-import PropTypes from 'prop-types';
 import {
     Row,
     Col,
@@ -15,9 +14,7 @@ import FormComponent from '../models/components/FormComponent';
 import {UserFieldInput} from './fields/UserFields';
 
 class EditUser extends Component {
-    static propTypes = {
-        user: PropTypes.object
-    };
+    static viewInfo = {controller: 'Users', action: 'Edit'};
 
     render() {
         const {user} = this.props;

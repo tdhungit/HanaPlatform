@@ -13,6 +13,8 @@ import {t, T, PT} from '/imports/common/Translation';
 import {Form, FieldInput, FieldButton, RForm, RFieldInput, RFieldButton} from '../../components/Fields/Fields';
 
 class Dashboard extends Component {
+    static viewInfo = {controller: 'Dashboard', action: 'View'};
+
     render() {
         return (
             <div className="Dashboard animated fadeIn">

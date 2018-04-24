@@ -13,6 +13,8 @@ import Companies from '../../../../collections/Companies/Companies';
 import {UserFieldInput} from './fields/UserFields';
 
 class CreateUser extends Component {
+    static viewInfo = {controller: 'Users', action: 'Create'};
+
     constructor(props) {
         super(props);
 

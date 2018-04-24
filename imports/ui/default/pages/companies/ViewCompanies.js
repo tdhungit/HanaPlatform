@@ -14,6 +14,8 @@ import Models from '/imports/collections/Models/Models';
 import ListComponent from '../models/components/ListComponent';
 
 class ViewCompanies extends Component {
+    static viewInfo = {controller: 'Companies', action: 'List'};
+
     componentWillMount() {
         this.limit = Companies.getLimit();
         this.pagination = Companies.pagination();

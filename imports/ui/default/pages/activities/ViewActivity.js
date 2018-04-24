@@ -12,6 +12,8 @@ import Activities from '/imports/collections/Activities/Activities';
 import DetailComponent from '../models/components/DetailComponent';
 
 class ViewActivity extends Component {
+    static viewInfo = {controller: 'Activities', action: 'View'};
+
     render() {
         const {activity} = this.props;
 

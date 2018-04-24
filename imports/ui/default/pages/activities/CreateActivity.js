@@ -8,6 +8,8 @@ import {T, t, PT} from '/imports/common/Translation';
 import FormActivity from './FormActivity';
 
 class CreateActivity extends Component {
+    static viewInfo = {controller: 'Activities', action: 'Create'};
+
     render() {
         return (
             <div className="CreateActivities animated fadeIn">

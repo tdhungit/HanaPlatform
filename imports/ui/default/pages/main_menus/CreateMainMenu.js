@@ -8,6 +8,8 @@ import {T, t, PT} from '/imports/common/Translation';
 import FormMainMenu from './FormMainMenu';
 
 class CreateMainMenu extends Component {
+    static viewInfo = {controller: 'MainMenus', action: 'Create'};
+
     render() {
         return (
             <div className="CreateMainMenu animated fadeIn">

@@ -8,6 +8,8 @@ import {t, PT} from '/imports/common/Translation';
 import FormUserGroup from './FormUserGroup';
 
 class CreateUserGroup extends Component {
+    static viewInfo = {controller: 'ACL', action: 'Create'};
+
     render() {
         return (
             <div className="FormUserGroup animated fadeIn">
