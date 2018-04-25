@@ -3,22 +3,22 @@ import {check} from 'meteor/check';
 import {Accounts} from 'meteor/accounts-base';
 import Users from '/imports/collections/Users/Users';
 import {aclAccess} from './aclUtils';
+import UserGroups from '../UserGroups/UserGroups';
 
 Meteor.methods({
-    // search user with keyword
-    'users.searchKeyword': function (keyword, limit = 10) {
-        check(keyword, String);
-        return Users.getAll({
-            username: {$regex: ".*" + keyword + ".*"}
-        }, {
-            limit: limit
-        }).fetch();
-    },
     'users.insert': function (user) {
         // check permission
         aclAccess('Users', 'Create');
 
         check(user, Object);
+        if (user.username) {
+            user.username = user.username + '.' + user.domain;
+        }
+
+        if (user.groupId) {
+            user.permissions = UserGroups.groupPermissions(Meteor.user(), user.groupId);
+        }
+
         Accounts.onCreateUser(function (options, user) {
             user.companyId = options.companyId;
             user.branchOffices = options.branchOffices || [''];
@@ -27,7 +27,20 @@ Meteor.methods({
             user.isDeveloper = options.isDeveloper || false;
             return user;
         });
-        return Accounts.createUser(user);
+        const result = Accounts.createUser(user);
+
+        try {
+            if (user.groupId) {
+                UserGroups.update(user.groupId, {$set: {
+                        users: UserGroups.usersInGroup(Meteor.user(), {}, user.groupId)
+                }});
+            }
+        } catch (exception) {
+            console.log(exception);
+            throw new Meteor.Error('500', exception);
+        }
+
+        return result;
     },
     'users.update': function (user) {
         // check permission
@@ -44,19 +57,18 @@ Meteor.methods({
 
         try {
             const userId = user._id;
-            Users.update(userId, {$set: userClean});
-            return userId;
-        } catch (exception) {
-            throw new Meteor.Error('500', exception);
-        }
-    },
-    'users.updateElement': function (userId, data) {
-        // check permission
-        aclAccess('Users', 'Edit');
+            if (user.groupId) {
+                user.permissions = UserGroups.groupPermissions(user.groupId);
+            }
 
-        check(data, Object);
-        try {
-            Users.update(userId, {$set: data});
+            Users.update(userId, {$set: userClean});
+
+            if (user.groupId) {
+                UserGroups.update(user.groupId, {
+                    users: UserGroups.usersInGroup({}, user.groupId)
+                });
+            }
+
             return userId;
         } catch (exception) {
             throw new Meteor.Error('500', exception);
@@ -79,5 +91,14 @@ Meteor.methods({
         } catch (exception) {
             throw new Meteor.Error('500', exception);
         }
+    },
+    // search user with keyword
+    'users.searchKeyword': function (keyword, limit = 10) {
+        check(keyword, String);
+        return Users.getAll({
+            username: {$regex: ".*" + keyword + ".*"}
+        }, {
+            limit: limit
+        }).fetch();
     }
 });

@@ -1,5 +1,6 @@
 import CollectionBase from '/imports/common/CollectionBase';
 import Users from '../Users/Users';
+import ACLPermissions from '../ACLPermissions/ACLPermissions';
 
 class UserGroupsCollection extends CollectionBase {
     /**
@@ -24,18 +25,33 @@ class UserGroupsCollection extends CollectionBase {
      * @param callback
      */
     update(selector, modifiers, options, callback) {
-        modifiers.$set.users = this.usersInGroup({}, selector);
+        modifiers.$set.users = this.usersInGroup(Meteor.user(), {}, selector);
         super.update(selector, modifiers, options, callback);
     }
 
     /**
+     * after update group
+     * @param selector
+     * @param modifiers
+     * @param options
+     * @param resultUpdate
+     */
+    afterUpdate(selector, modifiers, options, resultUpdate) {
+        const group = this.queryOne(Meteor.user(), selector);
+        if (group && group._id) {
+            this.updateUsersPermissions(Meteor.user(), group._id);
+        }
+    }
+
+    /**
      * get all users in group
+     * @param currentUser
      * @param usersGroup
      * @param selector
      * @param loop
      * @returns {*}
      */
-    usersInGroup(usersGroup, selector, loop = 0) {
+    usersInGroup(currentUser, usersGroup, selector, loop = 0) {
         if (loop === 0) {
             usersGroup = {
                 siblings: [],
@@ -43,12 +59,12 @@ class UserGroupsCollection extends CollectionBase {
             };
         }
 
-        const currentGroup = this.findOne(selector);
+        const currentGroup = this.queryOne(currentUser, selector);
         const groupId = currentGroup && currentGroup._id || '';
 
         if (groupId) {
             // user in parent group
-            const users = Users.getAll({groupId: groupId}).fetch();
+            const users = Users.query(currentUser, {groupId: groupId}).fetch();
             if (users.length > 0) {
                 for (let idx in users) {
                     let user = users[idx];
@@ -61,16 +77,48 @@ class UserGroupsCollection extends CollectionBase {
             }
 
             // get children group
-            const groups = this.find({parent: groupId}).fetch();
+            const groups = this.query(currentUser, {parent: groupId}).fetch();
             if (groups.length > 0) {
                 for (let idx in groups) {
                     let group = groups[idx];
-                    this.usersInGroup(usersGroup, group._id, 1);
+                    this.usersInGroup(currentUser, usersGroup, group._id, 1);
                 }
             }
         }
 
         return usersGroup;
+    }
+
+    /**
+     * get group permissions
+     * @param currentUser
+     * @param groupId
+     * @returns {{}}
+     */
+    groupPermissions(currentUser, groupId) {
+        const group = this.queryOne(currentUser, groupId);
+        const roleId = group && group.roleId || '';
+        if (!roleId) {
+            return {};
+        }
+
+        return ACLPermissions.rolePermissions(currentUser, roleId);
+    }
+
+    /**
+     * update permissions of users in group
+     * @param currentUser
+     * @param groupId
+     */
+    updateUsersPermissions(currentUser, groupId) {
+        const users = Users.query(currentUser, {groupId: groupId}).fetch();
+        for (let idx in users) {
+            let user = users[idx];
+            if (user.groupId) {
+                user.permissions = this.groupPermissions(currentUser, user.groupId);
+                Users.update(user._id, {$set: user});
+            }
+        }
     }
 }
 

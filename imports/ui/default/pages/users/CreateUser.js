@@ -25,9 +25,7 @@ class CreateUser extends Component {
         const company = Companies.findOne(Meteor.user().companyId);
         record.companyId = company._id;
         record.branchOffices = [Meteor.user().settings.branchOfficeId];
-        if (record.username) {
-            record.username = record.username + '.' + company.domain;
-        }
+        record.domain = company.domain;
 
         return record;
     }

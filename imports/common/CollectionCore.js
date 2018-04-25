@@ -123,10 +123,6 @@ class CollectionCore extends Mongo.Collection {
      */
     filterOwnerData(user, filters = {}) {
         let selector = {};
-        if (!filters) {
-            return selector;
-        }
-
         // if filters is string: query with _id = string
         if (typeof filters === 'string') {
             selector._id = filters;
@@ -143,7 +139,7 @@ class CollectionCore extends Mongo.Collection {
      * @param options
      * @returns {any}
      */
-    findOne(query = '', options = {}) {
+    findOne(query = {}, options = {}) {
         let selector = this.filterOwnerData(-1, query);
 
         if (Meteor.isClient) {
@@ -159,7 +155,7 @@ class CollectionCore extends Mongo.Collection {
      * @param options
      * @returns {Mongo.Cursor}
      */
-    find(query = '', options = {}) {
+    find(query = {}, options = {}) {
         let selector = this.filterOwnerData(-1, query);
 
         if (Meteor.isClient) {
@@ -176,7 +172,7 @@ class CollectionCore extends Mongo.Collection {
      * @param options
      * @returns {any}
      */
-    queryOne(user, query = '', options = {}) {
+    queryOne(user, query = {}, options = {}) {
         const selector = this.filterOwnerData(user, query);
         return super.findOne(selector, options);
     }
@@ -188,7 +184,7 @@ class CollectionCore extends Mongo.Collection {
      * @param options
      * @returns {Mongo.Cursor}
      */
-    query(user, query = '', options = {}) {
+    query(user, query = {}, options = {}) {
         const selector = this.filterOwnerData(user, query);
         return super.find(selector, options);
     }
@@ -200,7 +196,7 @@ class CollectionCore extends Mongo.Collection {
      * @param options
      * @returns {Mongo.Cursor}
      */
-    publish(user, query = '', options = {}) {
+    publish(user, query = {}, options = {}) {
         return this.query(user, query, options);
     }
 

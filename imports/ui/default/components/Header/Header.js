@@ -87,7 +87,11 @@ class Header extends Component {
     chooseBranchOffice(branchOfficeId) {
         let settings = Meteor.user().settings || {};
         settings.branchOfficeId = branchOfficeId;
-        Meteor.call('users.updateElement', Meteor.userId(), {settings: settings}, (error, userId) => {
+        const data = {
+            _id: Meteor.userId(),
+            settings: settings
+        };
+        Meteor.call('users.update', data, (error) => {
             if (error) {
                 console.log(error);
                 Bert.alert(t.__('Error! Please contact with Admin'), 'danger');

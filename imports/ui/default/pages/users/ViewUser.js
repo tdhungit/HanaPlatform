@@ -18,8 +18,12 @@ class ViewUser extends Component {
 
     onSelected(selectedBranchOfficeIds) {
         const userId = this.props.match.params._id;
+        const data = {
+            _id: userId,
+            branchOffices: selectedBranchOfficeIds
+        };
 
-        Meteor.call('users.updateElement', userId, {branchOffices: selectedBranchOfficeIds}, (error, userId) => {
+        Meteor.call('users.update', data, (error) => {
             if (error) {
                 console.log(error);
                 Bert.alert(t.__('Error! Please contact with Admin'), 'danger');

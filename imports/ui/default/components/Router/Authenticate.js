@@ -31,16 +31,12 @@ const Authenticate = ({loggingIn, authenticated, component, ...rest}) => (
 
         // check permission
         let noDefined = false;
-        let controllerName = '';
-        let actionName = '';
         const currentComponent = utilsHelper.currentComponentName(component);
         if (modulesComponent.layout.indexOf(currentComponent) < 0) {
             if (!component.viewInfo
                 || !component.viewInfo.controller
                 || !component.viewInfo.action) {
                 noDefined = true;
-                controllerName = component.viewInfo.controller;
-                actionName = component.viewInfo.action;
             }
         }
 
@@ -61,6 +57,8 @@ const Authenticate = ({loggingIn, authenticated, component, ...rest}) => (
         }
 
         // check permission access
+        const controllerName = component.viewInfo && component.viewInfo.controller || '';
+        const actionName = component.viewInfo && component.viewInfo.action || '';
         const isAccess = Users.checkAccess(Meteor.user(), controllerName, actionName);
         return isAccess
             ? (React.createElement(component, {...props, ...state, loggingIn, authenticated}))

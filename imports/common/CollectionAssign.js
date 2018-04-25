@@ -48,7 +48,7 @@ class CollectionAssign extends CollectionBase {
      */
     insert(doc, callback) {
         if (!doc.assignedId) {
-            doc.assignedId = Meteor.user()._id;
+            doc.assignedId = Meteor.userId();
         }
 
         if (!doc.branchOffices) {
@@ -67,10 +67,6 @@ class CollectionAssign extends CollectionBase {
      */
     filterOwnerData(user, filters = {}) {
         let selector = {};
-        if (!filters) {
-            return selector;
-        }
-
         if (typeof filters === 'string') {
             selector._id = filters;
         } else {

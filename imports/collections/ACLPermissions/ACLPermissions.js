@@ -20,17 +20,12 @@ class PermissionsCollection extends CollectionBase {
      */
     publishForUser(selector) {
         let user = selector;
-        if (typeof selector === 'string') {
-            const userId = selector;
-            user = Users.getOne(userId);
-        }
-
         const groupId = user && user.groupId || '';
         if (!groupId) {
             return false;
         }
 
-        const group = UserGroups.findOne(groupId);
+        const group = UserGroups.queryOne(user, groupId);
         const roleId = group && group.roleId || '';
         if (!groupId) {
             return false;
@@ -41,12 +36,13 @@ class PermissionsCollection extends CollectionBase {
 
     /**
      * get role permission
+     * @param currentUser
      * @param roleId
      * @returns {{}}
      */
-    rolePermissions(roleId) {
+    rolePermissions(currentUser, roleId) {
         let rolePermissions = {};
-        const permissions = this.find({roleId: roleId}).fetch();
+        const permissions = this.query(currentUser, {roleId: roleId}).fetch();
         for (let idx in permissions) {
             let permission = permissions[idx];
             rolePermissions[permission.model] = permission;

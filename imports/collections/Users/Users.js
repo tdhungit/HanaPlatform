@@ -175,6 +175,11 @@ Schema.User = new SimpleSchema({
         label: 'Group ID',
         required: true
     },
+    permissions: {
+        type: Object,
+        optional: true,
+        blackbox: true
+    },
     // user is admin
     isAdmin: {
         type: Boolean,
@@ -196,12 +201,8 @@ Users.getLayouts = () => {return userLayouts};
  * @param filters
  * @returns {{}}
  */
-Users.filterOwnerData = (user, filters) => {
+Users.filterOwnerData = (user, filters = {}) => {
     let selector = {};
-    if (!filters) {
-        return selector;
-    }
-
     if (typeof filters === 'string') {
         selector._id = filters;
     } else {
@@ -226,7 +227,7 @@ Users.filterOwnerData = (user, filters) => {
  * @param options
  * @returns {any}
  */
-Users.getOne = (userSelector, options) => {
+Users.getOne = (userSelector = {}, options = {}) => {
     let selector = Users.filterOwnerData(-1, userSelector);
     if (Meteor.isClient) {
         selector = Users.filterOwnerData(Meteor.user(), selector);
@@ -241,13 +242,37 @@ Users.getOne = (userSelector, options) => {
  * @param options
  * @returns {Mongo.Cursor}
  */
-Users.getAll = (userSelector, options) => {
+Users.getAll = (userSelector = {}, options = {}) => {
     let selector = Users.filterOwnerData(-1, userSelector);
     if (Meteor.isClient) {
         selector = Users.filterOwnerData(Meteor.user(), selector);
     }
 
     return Users.find(selector, options);
+};
+
+/**
+ * find users
+ * @param user
+ * @param userSelector
+ * @param options
+ * @returns {Mongo.Cursor}
+ */
+Users.query = (user, userSelector = {}, options = {}) => {
+    const selector = Users.filterOwnerData(user, userSelector);
+    return Users.find(selector, options);
+};
+
+/**
+ * fine one user
+ * @param user
+ * @param userSelector
+ * @param options
+ * @returns {any}
+ */
+Users.queryOne = (user, userSelector = {}, options = {}) => {
+    const selector = Users.filterOwnerData(user, userSelector);
+    return Users.findOne(selector, options);
 };
 
 /**
@@ -300,8 +325,7 @@ Users.childrenOfUser = (selector) => {
 
     let user = selector;
     if (typeof selector === 'string') {
-        const userId = selector;
-        user = Users.getOne(userId);
+        user = Users.getOne(selector);
     }
 
     const groupId = user && user.groupId || '';
@@ -309,7 +333,7 @@ Users.childrenOfUser = (selector) => {
         return {siblings: [], children: []};
     }
 
-    const group = UserGroups.findOne(groupId);
+    const group = UserGroups.queryOne(user, groupId);
     return group.users || {siblings: [], children: []};
 };
 
@@ -325,22 +349,11 @@ Users.userPermissions = (selector) => {
 
     let user = selector;
     if (typeof selector === 'string') {
-        const userId = selector;
-        user = Users.getOne(userId);
+        user = Users.getOne(selector);
     }
 
     const groupId = user && user.groupId || '';
-    if (!groupId) {
-        return {};
-    }
-
-    const group = UserGroups.findOne(groupId);
-    const roleId = group && group.roleId || '';
-    if (!roleId) {
-        return {};
-    }
-
-    return ACLPermissions.rolePermissions(roleId);
+    return UserGroups.groupPermissions(user, groupId);
 };
 
 /**
@@ -357,8 +370,7 @@ Users.checkAccess = (selector, controllerName, actionName) => {
 
     let user = selector;
     if (typeof selector === 'string') {
-        const userId = selector;
-        user = Users.getOne(userId);
+        user = Users.getOne(selector);
     }
 
     // check admin user
@@ -402,8 +414,7 @@ Users.accessDataType = (selector, modelName, actionName) => {
 
     let user = selector;
     if (typeof selector === 'string') {
-        const userId = selector;
-        user = Users.getOne(userId);
+        user = Users.getOne(selector);
     }
 
     if (user.isDeveloper) {

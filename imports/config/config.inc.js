@@ -11,7 +11,7 @@ export const frameworkConfig = {
 };
 
 export const modulesComponent = {
-    layout: ['ManagerLayout'],
+    layout: ['ManagerLayout', 'HomeLayout'],
     // default actions in a controller
     defaultActions: ['List', 'View', 'Create', 'Edit', 'Delete'],
     // only admin can access
