@@ -1,8 +1,12 @@
 import {Meteor} from 'meteor/meteor';
 import ACLPermissions from './ACLPermissions';
+import {aclAccess} from '../Users/aclUtils';
 
 Meteor.methods({
     'aclPermissions.update': function (aclData, aclActions, roleId) {
+        // check permission
+        aclAccess('ACL', 'Edit');
+
         for (let collection in aclData) {
             let permission = aclData[collection];
             permission.roleId = roleId;

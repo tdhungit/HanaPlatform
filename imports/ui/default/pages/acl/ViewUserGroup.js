@@ -15,7 +15,7 @@ import UserGroups from '/imports/collections/UserGroups/UserGroups';
 import ACLRoles from '../../../../collections/ACLRoles/ACLRoles';
 
 class ViewUserGroup extends Component {
-    static viewInfo = {controller: 'ACL', action: 'View'};
+    static viewInfo = {controller: 'UserGroups', action: 'View'};
 
     render() {
         const {

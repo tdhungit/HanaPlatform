@@ -12,7 +12,7 @@ import UserGroups from '/imports/collections/UserGroups/UserGroups';
 import ACLRoles from '/imports/collections/ACLRoles/ACLRoles';
 
 class EditUserGroup extends Component {
-    static viewInfo = {controller: 'ACL', action: 'Edit'};
+    static viewInfo = {controller: 'UserGroups', action: 'Edit'};
 
     render() {
         const {

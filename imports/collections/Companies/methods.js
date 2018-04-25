@@ -4,9 +4,13 @@ import {Accounts} from 'meteor/accounts-base';
 import Companies from './Companies';
 import BranchOffices from '../BranchOffices/BranchOffices';
 import UserGroups from '../UserGroups/UserGroups';
+import {aclAccess} from '../Users/aclUtils';
 
 Meteor.methods({
     'companies.insert': function (company) {
+        // check permission
+        aclAccess('Companies', 'Create');
+
         check(company, Object);
         const companyId = Companies.insert(company);
         // auto create new branch office
@@ -32,6 +36,9 @@ Meteor.methods({
         };
     },
     'companies.update': function (company) {
+        // check permission
+        aclAccess('Companies', 'Edit');
+
         check(company, Object);
         try {
             const companyId = company._id;

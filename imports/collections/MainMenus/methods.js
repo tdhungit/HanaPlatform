@@ -1,6 +1,7 @@
 import {Meteor} from 'meteor/meteor';
 import {check} from 'meteor/check';
 import MainMenus from './MainMenus';
+import {aclAccess} from '../Users/aclUtils';
 
 Meteor.methods({
     // only get root menu
@@ -58,8 +59,11 @@ Meteor.methods({
         return menus;
     },
     'mainMenus.insert': function (mainMenu) {
+        // check permission
+        aclAccess('MainMenus', 'Create');
+
         check(mainMenu, Object);
-        if (typeof mainMenu.parent != 'undefined') {
+        if (typeof mainMenu.parent !== 'undefined') {
             if (!mainMenu.parent) {
                 mainMenu.parent = 'ROOT';
             }
@@ -68,8 +72,11 @@ Meteor.methods({
         return MainMenus.insert(mainMenu);
     },
     'mainMenus.update': function (mainMenu) {
+        // check permission
+        aclAccess('MainMenus', 'Edit');
+
         check(mainMenu, Object);
-        if (typeof mainMenu.parent != 'undefined') {
+        if (typeof mainMenu.parent !== 'undefined') {
             if (!mainMenu.parent) {
                 mainMenu.parent = 'ROOT';
             }

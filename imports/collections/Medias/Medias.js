@@ -2,6 +2,7 @@ import {Meteor} from 'meteor/meteor';
 import {FilesCollection} from 'meteor/ostrio:files';
 import SimpleSchema from 'simpl-schema';
 import Users from '../Users/Users';
+import {aclAccess} from '../Users/aclUtils';
 
 let mediasSchema = {
     ...FilesCollection.schema,
@@ -52,6 +53,9 @@ Medias.collection.attachSchema(new SimpleSchema(mediasSchema));
  * @param progress function
  */
 Medias.upload = (file, fileLocator = 'Local', start, end, uploaded, progress) => {
+    // check permission
+    aclAccess('Medias', 'Create');
+
     Medias.insert({
         file: file,
         meta: {

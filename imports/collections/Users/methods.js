@@ -2,6 +2,7 @@ import {Meteor} from 'meteor/meteor';
 import {check} from 'meteor/check';
 import {Accounts} from 'meteor/accounts-base';
 import Users from '/imports/collections/Users/Users';
+import {aclAccess} from './aclUtils';
 
 Meteor.methods({
     // search user with keyword
@@ -14,6 +15,9 @@ Meteor.methods({
         }).fetch();
     },
     'users.insert': function (user) {
+        // check permission
+        aclAccess('Users', 'Create');
+
         check(user, Object);
         Accounts.onCreateUser(function (options, user) {
             user.companyId = options.companyId;
@@ -26,6 +30,9 @@ Meteor.methods({
         return Accounts.createUser(user);
     },
     'users.update': function (user) {
+        // check permission
+        aclAccess('Users', 'Edit');
+
         check(user, Object);
         let userClean = {...user};
         if (user.email) {
@@ -44,6 +51,9 @@ Meteor.methods({
         }
     },
     'users.updateElement': function (userId, data) {
+        // check permission
+        aclAccess('Users', 'Edit');
+
         check(data, Object);
         try {
             Users.update(userId, {$set: data});
@@ -53,6 +63,9 @@ Meteor.methods({
         }
     },
     'users.updateAvatar': function (userId, mediaId) {
+        // check permission
+        aclAccess('Users', 'Edit');
+
         check(mediaId, String);
         const userData = {
             profile: {

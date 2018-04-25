@@ -8,7 +8,7 @@ import {t, PT} from '/imports/common/Translation';
 import FormUserGroup from './FormUserGroup';
 
 class CreateUserGroup extends Component {
-    static viewInfo = {controller: 'ACL', action: 'Create'};
+    static viewInfo = {controller: 'UserGroups', action: 'Create'};
 
     render() {
         return (

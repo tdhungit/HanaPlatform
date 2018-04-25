@@ -10,13 +10,21 @@ export const frameworkConfig = {
     }
 };
 
-const controllers = {
-    Users: null,
-    ACL: null,
-    Companies: null
-};
 export const modulesComponent = {
     layout: ['ManagerLayout'],
+    // default actions in a controller
     defaultActions: ['List', 'View', 'Create', 'Edit', 'Delete'],
-    controllers: controllers
+    // only admin can access
+    adminControllers: {
+        ACL: 1,
+        Settings: 1,
+        Users: {
+            Create: 1
+        }
+    },
+    // controllers for set permission
+    controllers: {
+        Users: null,
+        Companies: null
+    }
 };

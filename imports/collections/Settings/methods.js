@@ -1,8 +1,12 @@
 import {Meteor} from 'meteor/meteor';
 import Settings from './Settings';
+import {aclAccess} from '../Users/aclUtils';
 
 Meteor.methods({
     'settings.update': function (setting) {
+        // check permission
+        aclAccess('Settings', 'Edit');
+
         let updateId = '';
         if (setting && setting.category && setting.name) {
             const findUnique = Settings.findOne({category: setting.category, name: setting.name});

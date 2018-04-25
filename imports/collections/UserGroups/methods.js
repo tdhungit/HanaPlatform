@@ -1,11 +1,15 @@
 import {Meteor} from 'meteor/meteor';
 import {check} from 'meteor/check';
 import UserGroups from './UserGroups';
+import {aclAccess} from '../Users/aclUtils';
 
 Meteor.methods({
     'userGroups.insert': function (userGroup) {
+        // check permission
+        aclAccess('UserGroups', 'Create');
+
         check(userGroup, Object);
-        if (typeof userGroup.parent != 'undefined') {
+        if (typeof userGroup.parent !== 'undefined') {
             if (!userGroup.parent) {
                 userGroup.parent = 'ROOT';
             }
@@ -14,8 +18,11 @@ Meteor.methods({
         return UserGroups.insert(userGroup);
     },
     'userGroups.update': function (userGroup) {
+        // check permission
+        aclAccess('UserGroups', 'Edit');
+
         check(userGroup, Object);
-        if (typeof userGroup.parent != 'undefined') {
+        if (typeof userGroup.parent !== 'undefined') {
             if (!userGroup.parent) {
                 userGroup.parent = 'ROOT';
             }

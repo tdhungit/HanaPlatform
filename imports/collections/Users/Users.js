@@ -5,6 +5,7 @@ import UserGroups from '../UserGroups/UserGroups';
 import ACLPermissions from '../ACLPermissions/ACLPermissions';
 import {userLayouts} from './layouts';
 import {permissionsAclDataTypes} from '../ACLPermissions/config';
+import {modulesComponent} from '../../config/config.inc';
 
 const Users = Meteor.users;
 
@@ -354,24 +355,31 @@ Users.checkAccess = (selector, controllerName, actionName) => {
         return false;
     }
 
-    if (!controllerName || !actionName) {
-        return true;
-    }
-
     let user = selector;
     if (typeof selector === 'string') {
         const userId = selector;
         user = Users.getOne(userId);
     }
 
-    if (user.isDeveloper) {
+    // check admin user
+    if (user.isDeveloper || user.isAdmin
+        || !controllerName || !actionName) {
         return true;
     }
 
-    if (user.isAdmin) {
-        return true
+    // check admin controller
+    const adminControllers = modulesComponent.adminControllers;
+    if (adminControllers[controllerName]) {
+        if (adminControllers[controllerName] === 1) {
+            return false;
+        }
+
+        if (adminControllers[controllerName][actionName]) {
+            return false;
+        }
     }
 
+    // check permissions
     const permissions = Users.userPermissions(user);
     if (!permissions[controllerName]) {
         return true;

@@ -170,6 +170,30 @@ class CollectionCore extends Mongo.Collection {
     }
 
     /**
+     * get one record in collection
+     * @param user
+     * @param query
+     * @param options
+     * @returns {any}
+     */
+    queryOne(user, query = '', options = {}) {
+        const selector = this.filterOwnerData(user, query);
+        return super.findOne(selector, options);
+    }
+
+    /**
+     * query data from collection
+     * @param user
+     * @param query
+     * @param options
+     * @returns {Mongo.Cursor}
+     */
+    query(user, query = '', options = {}) {
+        const selector = this.filterOwnerData(user, query);
+        return super.find(selector, options);
+    }
+
+    /**
      * publish data to client
      * @param user
      * @param query
@@ -177,8 +201,7 @@ class CollectionCore extends Mongo.Collection {
      * @returns {Mongo.Cursor}
      */
     publish(user, query = '', options = {}) {
-        let selector = this.filterOwnerData(user, query);
-        return this.find(selector, options);
+        return this.query(user, query, options);
     }
 
     /**
