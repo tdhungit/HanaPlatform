@@ -122,7 +122,7 @@ class CollectionCore extends Mongo.Collection {
      * @param actionName
      * @returns {*}
      */
-    fixedFilters(user, selector, actionName = 'List') {
+    fixedFilters(user, selector, actionName = 'View') {
         return selector;
     }
 
@@ -133,7 +133,7 @@ class CollectionCore extends Mongo.Collection {
      * @param actionName
      * @returns {{}}
      */
-    filterOwnerData(user, filters = {}, actionName = 'List') {
+    filterOwnerData(user, filters = {}, actionName = 'View') {
         if (user === -1) {
             return filters;
         }
@@ -171,7 +171,7 @@ class CollectionCore extends Mongo.Collection {
      * @returns {Mongo.Cursor}
      */
     find(query = {}, options = {}) {
-        const actionName = options && options.actionName || 'List';
+        const actionName = options && options.actionName || 'View';
         let selector = this.filterOwnerData(-1, query, actionName);
 
         if (Meteor.isClient) {
@@ -201,7 +201,7 @@ class CollectionCore extends Mongo.Collection {
      * @returns {Mongo.Cursor}
      */
     query(user, query = {}, options = {}) {
-        const actionName = options && options.actionName || 'List';
+        const actionName = options && options.actionName || 'View';
         const selector = this.filterOwnerData(user, query, actionName);
         return super.find(selector, options);
     }
@@ -226,7 +226,7 @@ class CollectionCore extends Mongo.Collection {
         publishPagination(this, {
             filters: {},
             dynamic_filters: function () {
-                return self.filterOwnerData(Meteor.user(), filters, 'List');
+                return self.filterOwnerData(Meteor.user(), filters, 'View');
             }
         });
     }
@@ -254,7 +254,7 @@ class CollectionCore extends Mongo.Collection {
         }
 
         const limit = this.getLimit();
-        const filters = this.filterOwnerData(Meteor.user(), options.filters, 'List');
+        const filters = this.filterOwnerData(Meteor.user(), options.filters, 'View');
         return new Meteor.Pagination(this, {
             filters: filters,
             sort: options && options.sort || {},

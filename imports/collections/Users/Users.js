@@ -206,15 +206,19 @@ Users.filterOwnerData = (user, filters = {}) => {
     if (typeof filters === 'string') {
         selector._id = filters;
     } else {
-        selector = filters;
+        selector = {...filters};
     }
 
-    if (user !== -1 && !selector.companyId) {
-        if (!user.isDeveloper) {
-            selector.companyId = user && user.companyId || '';
-            if (!user.isAdmin) {
-                selector.branchOffices = user.settings && user.settings.branchOfficeId || ''
+    if (user !== -1) {
+        selector.companyId = user && user.companyId || '';
+        if (user) {
+            if (user.isAdmin || user.isDeveloper) {
+                /* @TODO */
+            } else {
+                selector.branchOffices = user.settings && user.settings.branchOfficeId || '';
             }
+        } else {
+            selector.branchOffices = '';
         }
     }
 

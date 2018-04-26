@@ -11,19 +11,19 @@ export function aclAccess(controllerName, actionName) {
     throw new Meteor.Error('401', 'Permission Denied!');
 }
 
-export function filtersBranch(user, selector) {
+export function filtersBranch(user, selector, fieldName = 'branchOffices') {
     const currentBranch = user.settings && user.settings.branchOfficeId || '';
     let branchIds = [];
-    if (selector.branchOffices) {
-        if (typeof selector.branchOffices === 'string') {
-            branchIds.push(selector.branchOffices);
+    if (selector[fieldName]) {
+        if (typeof selector[fieldName] === 'string') {
+            branchIds.push(selector[fieldName]);
         } else {
-            branchIds = utilsHelper.mergeArray(branchIds, selector.branchOffices);
+            branchIds = utilsHelper.mergeArray(branchIds, selector[fieldName]);
         }
     }
 
     branchIds.push(currentBranch);
-    selector.branchOffices = {$in: branchIds};
+    selector[fieldName] = {$in: branchIds};
     return selector;
 }
 

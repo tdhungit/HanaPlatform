@@ -63,7 +63,7 @@ class CollectionBase extends CollectionCore {
      * @param actionName
      * @returns {{}}
      */
-    fixedFilters(user, selector = {}, actionName = 'List') {
+    fixedFilters(user, selector = {}, actionName = 'View') {
         selector.companyId = user && user.companyId || '';
         return selector;
     }

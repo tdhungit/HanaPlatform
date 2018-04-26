@@ -67,7 +67,7 @@ class CollectionAssign extends CollectionBase {
      * @param actionName
      * @returns {{}}
      */
-    fixedFilters(user, selector = {}, actionName = 'List') {
+    fixedFilters(user, selector = {}, actionName = 'View') {
         if (user) {
             if (user.isAdmin || user.isDeveloper) {
                 /* @TODO */

@@ -3,7 +3,8 @@ const coreCollections = [
     'UserGroups',
     'Permissions',
     'MainMenus',
-    'Activities'
+    'Activities',
+    'SaleOrders'
 ];
 
 const customCollections = [];
