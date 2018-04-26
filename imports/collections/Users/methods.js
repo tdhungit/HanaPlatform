@@ -25,6 +25,8 @@ Meteor.methods({
             user.groupId = options.groupId || '';
             user.isAdmin = options.isAdmin || false;
             user.isDeveloper = options.isDeveloper || false;
+            user.emails = options.emails || [];
+            user.profile = options.profile || {};
             return user;
         });
         const result = Accounts.createUser(user);
@@ -58,15 +60,19 @@ Meteor.methods({
         try {
             const userId = user._id;
             if (user.groupId) {
-                user.permissions = UserGroups.groupPermissions(user.groupId);
+                user.permissions = UserGroups.groupPermissions(Meteor.user(), user.groupId);
             }
 
             Users.update(userId, {$set: userClean});
-
             if (user.groupId) {
-                UserGroups.update(user.groupId, {
-                    users: UserGroups.usersInGroup({}, user.groupId)
-                });
+                UserGroups.update(user.groupId, {$set: {
+                    users: UserGroups.usersInGroup(Meteor.user(), {}, user.groupId)
+                }});
+            }
+
+            // set password
+            if (user.password) {
+                Accounts.setPassword(userId, user.password);
             }
 
             return userId;

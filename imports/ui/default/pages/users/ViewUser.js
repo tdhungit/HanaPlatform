@@ -39,7 +39,7 @@ class ViewUser extends Component {
 
         return (
             <div className="ViewUser animated fadeIn">
-                <PT title={t.__('View User') + ': ' + user.username}/>
+                <PT title={t.__('View User') + ': ' + (user && user.username)}/>
 
                 <Row>
                     <Col xs="12" lg="12">
@@ -55,7 +55,7 @@ class ViewUser extends Component {
                 <Row>
                     <Col xs="12" lg="12">
                         <PanelBranchOffices
-                            currentBranches={user.branchOffices}
+                            currentBranches={user && user.branchOffices}
                             onSelected={(selectedBranchOfficeIds) => this.onSelected(selectedBranchOfficeIds)}/>
                     </Col>
                 </Row>

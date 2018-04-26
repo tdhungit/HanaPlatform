@@ -1,6 +1,7 @@
 import {Meteor} from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
 import CollectionBase from './CollectionBase';
+import Users from '../collections/Users/Users';
 
 /**
  * Db Collection auto assigned when record was created
@@ -74,10 +75,13 @@ class CollectionAssign extends CollectionBase {
         }
 
         if (user !== -1 && !selector.assignedId) {
-            selector.assignedId = user && user._id || '';
-            if (!user.isAdmin) {
+            // check data of branch offices
+            if (!user.isAdmin && !user.isDeveloper) {
                 selector.branchOffices = user.settings && user.settings.branchOfficeId || ''
             }
+            // check data assigned
+            const listUsers = Users.childrenOfUser(user);
+            selector.assignedId = user && user._id || '';
         }
 
         return super.filterOwnerData(user, selector);

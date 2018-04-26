@@ -54,6 +54,10 @@ export const userLayouts = {
                 groupId: {
                     type: "userGroup",
                     label: "Group"
+                },
+                password: {
+                    type: "text",
+                    label: "Password"
                 }
             }
         ]
