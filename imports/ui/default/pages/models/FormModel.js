@@ -16,10 +16,10 @@ import {Link} from 'react-router-dom';
 import {Bert} from 'meteor/themeteorchef:bert';
 
 import {t, T} from '/imports/common/Translation';
-import {modules} from '/imports/collections/collections';
+import {modules} from '/imports/config/collections';
 import {SelectHelper} from '../../helpers/inputs/SelectHelper';
 import {utilsHelper} from '../../helpers/utils/utils';
-import {existCollections} from '/imports/collections/collections';
+import {existCollections} from '/imports/config/collections';
 
 class FormModel extends Component {
     constructor(props) {

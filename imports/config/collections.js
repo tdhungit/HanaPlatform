@@ -1,17 +1,17 @@
+import {modulesCollections} from '../modules/collections.modules';
+
+const customCollections = [...modulesCollections];
 const coreCollections = [
     'Users',
     'UserGroups',
     'Permissions',
     'MainMenus',
     'Activities',
-    'SaleOrders'
+    ...customCollections
 ];
-
-const customCollections = [];
 
 const existCollections = [
     ...coreCollections,
-    ...customCollections,
     'Accounts',
     'Roles',
     'Models',
@@ -24,7 +24,6 @@ const modules = [
 
 export {
     coreCollections,
-    customCollections,
     existCollections,
     modules
 };

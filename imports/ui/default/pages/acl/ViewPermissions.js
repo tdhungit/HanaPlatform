@@ -9,7 +9,7 @@ import {
 } from 'reactstrap';
 import {Meteor} from 'meteor/meteor';
 
-import {coreCollections} from '/imports/collections/collections';
+import {coreCollections} from '/imports/config/collections';
 import ACLPermissions from '/imports/collections/ACLPermissions/ACLPermissions';
 import ACLRoles from '/imports/collections/ACLRoles/ACLRoles';
 import {T, t, PT} from '/imports/common/Translation';
