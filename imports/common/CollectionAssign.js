@@ -73,7 +73,7 @@ class CollectionAssign extends CollectionBase {
             if (user.isAdmin || user.isDeveloper) {
                 /* @TODO */
             } else {
-                selector = filtersBranch(user, selector);
+                selector = filtersBranch(user, selector, 'branchOffices');
                 // check data assigned
                 const modelName = this.getModelName();
                 selector = filtersAssigned(user, modelName, actionName, selector, 'assignedId');

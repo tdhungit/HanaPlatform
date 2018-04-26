@@ -176,6 +176,14 @@ class ListContainer extends Component {
 
     renderCol(record) {
         const {type, selected, detailLink, editLink, onDelete} = this.props;
+        let checked = false;
+        if (typeof selected === 'object') {
+            if (selected.constructor === Array) {
+                checked = selected.includes(record._id);
+            } else {
+                checked = !!(selected && selected[record._id]);
+            }
+        }
 
         let cols = [];
         // input column
@@ -184,7 +192,7 @@ class ListContainer extends Component {
                 <td key="input">
                     <Input
                         type="checkbox"
-                        checked={!!(selected && selected[record._id])}
+                        checked={checked}
                         onChange={() => {}}
                         className="initEl"/>
                 </td>
