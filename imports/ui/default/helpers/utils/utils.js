@@ -229,6 +229,31 @@ class UtilsHelper {
 
         return query;
     }
+
+    /**
+     * merge 2 array
+     * @param array1
+     * @param array2
+     * @returns {Array}
+     */
+    mergeArray(array1, array2) {
+        let result_array = [];
+        let arr = array1.concat(array2);
+        let len = arr.length;
+        let assoc = {};
+
+        while(len--) {
+            let item = arr[len];
+
+            if(!assoc[item])
+            {
+                result_array.unshift(item);
+                assoc[item] = true;
+            }
+        }
+
+        return result_array;
+    }
 }
 
 export const utilsHelper = new UtilsHelper();

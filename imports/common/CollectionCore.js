@@ -116,21 +116,36 @@ class CollectionCore extends Mongo.Collection {
     }
 
     /**
+     * fixed filter for collection
+     * @param user
+     * @param selector
+     * @param actionName
+     * @returns {*}
+     */
+    fixedFilters(user, selector, actionName = 'List') {
+        return selector;
+    }
+
+    /**
      * get filters for owner data
      * @param user if user === -1 => only get raw filter
      * @param filters
+     * @param actionName
      * @returns {{}}
      */
-    filterOwnerData(user, filters = {}) {
+    filterOwnerData(user, filters = {}, actionName = 'List') {
+        if (user === -1) {
+            return filters;
+        }
+
         let selector = {};
-        // if filters is string: query with _id = string
         if (typeof filters === 'string') {
             selector._id = filters;
         } else {
-            selector = filters;
+            selector = {...filters};
         }
 
-        return selector;
+        return this.fixedFilters(user, selector, actionName);
     }
 
     /**
@@ -140,10 +155,10 @@ class CollectionCore extends Mongo.Collection {
      * @returns {any}
      */
     findOne(query = {}, options = {}) {
-        let selector = this.filterOwnerData(-1, query);
+        let selector = this.filterOwnerData(-1, query, 'View');
 
         if (Meteor.isClient) {
-            selector = this.filterOwnerData(Meteor.user(), selector);
+            selector = this.filterOwnerData(Meteor.user(), selector, 'View');
         }
 
         return super.findOne(selector, options);
@@ -156,10 +171,11 @@ class CollectionCore extends Mongo.Collection {
      * @returns {Mongo.Cursor}
      */
     find(query = {}, options = {}) {
-        let selector = this.filterOwnerData(-1, query);
+        const actionName = options && options.actionName || 'List';
+        let selector = this.filterOwnerData(-1, query, actionName);
 
         if (Meteor.isClient) {
-            selector = this.filterOwnerData(Meteor.user(), selector);
+            selector = this.filterOwnerData(Meteor.user(), selector, actionName);
         }
 
         return super.find(selector, options);
@@ -173,7 +189,7 @@ class CollectionCore extends Mongo.Collection {
      * @returns {any}
      */
     queryOne(user, query = {}, options = {}) {
-        const selector = this.filterOwnerData(user, query);
+        const selector = this.filterOwnerData(user, query, 'View');
         return super.findOne(selector, options);
     }
 
@@ -185,7 +201,8 @@ class CollectionCore extends Mongo.Collection {
      * @returns {Mongo.Cursor}
      */
     query(user, query = {}, options = {}) {
-        const selector = this.filterOwnerData(user, query);
+        const actionName = options && options.actionName || 'List';
+        const selector = this.filterOwnerData(user, query, actionName);
         return super.find(selector, options);
     }
 
@@ -209,7 +226,7 @@ class CollectionCore extends Mongo.Collection {
         publishPagination(this, {
             filters: {},
             dynamic_filters: function () {
-                return self.filterOwnerData(Meteor.user(), filters);
+                return self.filterOwnerData(Meteor.user(), filters, 'List');
             }
         });
     }
@@ -219,7 +236,7 @@ class CollectionCore extends Mongo.Collection {
      * @returns {number}
      */
     getLimit() {
-        return 5;
+        return 20;
     }
 
     /**
@@ -228,10 +245,18 @@ class CollectionCore extends Mongo.Collection {
      * @returns {PaginationFactory|*}
      */
     pagination(options = {}) {
-        const limit = this.getLimit();
+        if(!options) {
+            options = {};
+        }
 
+        if (!options.filters) {
+            options.filters = {};
+        }
+
+        const limit = this.getLimit();
+        const filters = this.filterOwnerData(Meteor.user(), options.filters, 'List');
         return new Meteor.Pagination(this, {
-            filters: options && options.filters || {},
+            filters: filters,
             sort: options && options.sort || {},
             perPage: limit,
             reactive: true,

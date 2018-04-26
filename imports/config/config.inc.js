@@ -18,6 +18,7 @@ export const modulesComponent = {
     adminControllers: {
         ACL: 1,
         Settings: 1,
+        Models: 1,
         Users: {
             Create: 1
         }

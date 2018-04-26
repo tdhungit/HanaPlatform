@@ -57,45 +57,15 @@ class CollectionBase extends CollectionCore {
     }
 
     /**
-     * get filters for owner data
-     * @param user if user === -1 => only get raw filter
-     * @param filters
+     * fixed filters for owner data
+     * @param user
+     * @param selector
+     * @param actionName
      * @returns {{}}
      */
-    filterOwnerData(user, filters = {}) {
-        let selector = {};
-        if (typeof filters === 'string') {
-            selector._id = filters;
-        } else {
-            selector = filters;
-        }
-
-        if (user !== -1 && !selector.companyId) {
-            selector.companyId = user && user.companyId || '';
-        }
-
-        return super.filterOwnerData(user, selector);
-    }
-
-    /**
-     * get client pagination
-     * @param options
-     * @returns {PaginationFactory|*}
-     */
-    pagination(options = {}) {
-        if (!options) {
-            options = {filters: {}};
-        }
-
-        if (!options.filters) {
-            options.filters = {};
-        }
-
-        if (!options.filters.companyId) {
-            options.filters.companyId = Meteor.user().companyId;
-        }
-
-        return super.pagination(options);
+    fixedFilters(user, selector = {}, actionName = 'List') {
+        selector.companyId = user && user.companyId || '';
+        return selector;
     }
 }
 

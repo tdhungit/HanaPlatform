@@ -1,7 +1,7 @@
 import {Meteor} from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
 import CollectionBase from './CollectionBase';
-import Users from '../collections/Users/Users';
+import {filtersAssigned, filtersBranch} from '../collections/Users/aclUtils';
 
 /**
  * Db Collection auto assigned when record was created
@@ -61,51 +61,27 @@ class CollectionAssign extends CollectionBase {
     }
 
     /**
-     * get filters for owner data
+     * fixed filters for owner data
      * @param user if user === -1 => only get raw filter
-     * @param filters
+     * @param selector
+     * @param actionName
      * @returns {{}}
      */
-    filterOwnerData(user, filters = {}) {
-        let selector = {};
-        if (typeof filters === 'string') {
-            selector._id = filters;
-        } else {
-            selector = filters;
-        }
-
-        if (user !== -1 && !selector.assignedId) {
-            // check data of branch offices
-            if (!user.isAdmin && !user.isDeveloper) {
-                selector.branchOffices = user.settings && user.settings.branchOfficeId || ''
+    fixedFilters(user, selector = {}, actionName = 'List') {
+        if (user) {
+            if (user.isAdmin || user.isDeveloper) {
+                /* @TODO */
+            } else {
+                selector = filtersBranch(user, selector);
+                // check data assigned
+                const modelName = this.getModelName();
+                selector = filtersAssigned(user, modelName, actionName, selector, 'assignedId');
             }
-            // check data assigned
-            const listUsers = Users.childrenOfUser(user);
-            selector.assignedId = user && user._id || '';
+        } else {
+            selector.branchOffices = '';
         }
 
-        return super.filterOwnerData(user, selector);
-    }
-
-    /**
-     * get client pagination
-     * @param options
-     * @returns {PaginationFactory|*}
-     */
-    pagination(options = {}) {
-        if (!options) {
-            options = {filters: {}};
-        }
-
-        if (!options.filters) {
-            options.filters = {};
-        }
-
-        if (!options.filters || !options.filters.assignedId) {
-            options.filters.assignedId = Meteor.userId();
-        }
-
-        return super.pagination(options);
+        return selector;
     }
 }
 
