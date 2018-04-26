@@ -64,6 +64,7 @@ class CollectionBase extends CollectionCore {
      * @returns {{}}
      */
     fixedFilters(user, selector = {}, actionName = 'View') {
+        selector = super.fixedFilters(user, selector, actionName);
         selector.companyId = user && user.companyId || '';
         return selector;
     }

@@ -68,6 +68,7 @@ class CollectionAssign extends CollectionBase {
      * @returns {{}}
      */
     fixedFilters(user, selector = {}, actionName = 'View') {
+        selector = super.fixedFilters(user, selector, actionName);
         if (user) {
             if (user.isAdmin || user.isDeveloper) {
                 /* @TODO */
