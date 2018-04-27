@@ -37,6 +37,27 @@ export class PanelBranchOffices extends Component {
         this.onSelected = this.onSelected.bind(this);
     }
 
+    componentWillMount() {
+        const {currentBranches} = this.props;
+        const selectedBranches = currentBranches || Meteor.user().branchOffices || [];
+        this.state.selectedBranchOfficeIds = this.convertToObject(selectedBranches);
+    }
+
+    convertToObject(selectedBranches) {
+        let branchIds = {};
+        _.each(selectedBranches, (branchId) => {
+             branchIds[branchId] = branchId;
+        });
+
+        return branchIds;
+    }
+
+    convertToArray(selectedBranches) {
+        return _.map(selectedBranches, (branchId, _id) => {
+            return _id;
+        });
+    }
+
     toggleBranchOffice() {
         this.setState({
             selectBranchOffice: !this.state.selectBranchOffice
@@ -49,22 +70,17 @@ export class PanelBranchOffices extends Component {
 
     onSelected() {
         const {onSelected} = this.props;
-        const branchOffices = $.map(this.state.selectedBranchOfficeIds, (value, _id) => {
-            return [_id];
-        });
+        const branchOffices = this.convertToArray(this.state.selectedBranchOfficeIds);
 
         onSelected && onSelected(branchOffices);
         this.setState({selectBranchOffice: false});
     }
 
     render() {
-        let {currentBranches} = this.props;
-        if (!currentBranches) {
-            currentBranches = Meteor.user().branchOffices;
-        }
+        const currentBranches = this.convertToArray(this.state.selectedBranchOfficeIds);
 
         const branchOfficeModel = Models.getModel('BranchOffices') || BranchOffices.getLayouts();
-        const branchOfficeIds = currentBranches || [];
+        const branchOfficeIds = [...currentBranches];
         const branchOffices = BranchOffices.find({_id: {$in: branchOfficeIds}}).fetch();
 
         return (

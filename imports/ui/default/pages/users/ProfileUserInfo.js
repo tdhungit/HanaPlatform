@@ -41,13 +41,7 @@ class ProfileUserInfo extends Component {
     }
 
     handleInputChange(event) {
-        const target = event.target;
-        const value = target.type === 'checkbox' ? target.checked : target.value;
-        const name = target.name;
-
-        let user = this.state.user;
-        user[name] = value;
-
+        const user = utilsHelper.inputChange(event, this.state.user);
         this.setState({user: user});
     }
 
@@ -66,7 +60,7 @@ class ProfileUserInfo extends Component {
     render() {
         return (
             <div className="ProfileUserInfo">
-                <div className={classnames({'detail': true, hide: this.state.showEdit ? true : false})}>
+                <div className={classnames({'detail': true, hide: this.state.showEdit})}>
                     <dl className="row">
                         <dt className="col-sm-2"><T>Username</T></dt>
                         <dd className="col-sm-4">{this.getUserField('username')}</dd>
@@ -84,14 +78,14 @@ class ProfileUserInfo extends Component {
                         <dd className="col-sm-4">{this.getUserField('profile.lastName')}</dd>
                     </dl>
                     <dl className="row">
-                        <dt className="col-sm-2"></dt>
+                        <dt className="col-sm-2"> </dt>
                         <dd className="col-sm-4">
                             <Button type="button" size="sm" color="warning"
                                     onClick={() => this.setState({showEdit: true})}><T>Edit</T></Button>
                         </dd>
                     </dl>
                 </div>
-                <div className={classnames({edit: true, hide: this.state.showEdit ? false : true})}>
+                <div className={classnames({edit: true, hide: !this.state.showEdit})}>
                     <Row>
                         <Col>
                             <FormGroup row>
@@ -125,7 +119,7 @@ class ProfileUserInfo extends Component {
                                     <Label><T>First name</T></Label>
                                 </Col>
                                 <Col md="9">
-                                    <Input type="text" name="first_name" value={this.getUserField('profile.firstName')}
+                                    <Input type="text" name="profile.firstName" value={this.getUserField('profile.firstName')}
                                            onChange={this.handleInputChange}/>
                                 </Col>
                             </FormGroup>
@@ -138,14 +132,14 @@ class ProfileUserInfo extends Component {
                                     <Label><T>Last name</T></Label>
                                 </Col>
                                 <Col md="9">
-                                    <Input type="text" name="last_name" value={this.getUserField('profile.lastName')}
+                                    <Input type="text" name="profile.lastName" value={this.getUserField('profile.lastName')}
                                            onChange={this.handleInputChange}/>
                                 </Col>
                             </FormGroup>
                         </Col>
                     </Row>
                     <Row>
-                        <Col md="3"></Col>
+                        <Col md="3"> </Col>
                         <Col md="9">
                             <Button type="button" size="sm" color="primary"
                                     onClick={this.saveUserInfo.bind(this)}><T>Save</T></Button>

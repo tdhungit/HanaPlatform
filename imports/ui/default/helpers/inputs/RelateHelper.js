@@ -124,7 +124,7 @@ export class RelateInput extends Component {
         const {titleField} = this.props;
         let relate = {...this.state.relate};
 
-        $.map(selected, (record, recordId) => {
+        _.map(selected, (record) => {
             relate = {
                 _id: record._id,
                 name: utilsHelper.getRecordTitle(record, titleField)

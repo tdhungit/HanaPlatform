@@ -91,6 +91,7 @@ class Header extends Component {
             _id: Meteor.userId(),
             settings: settings
         };
+
         Meteor.call('users.update', data, (error) => {
             if (error) {
                 console.log(error);
@@ -100,6 +101,7 @@ class Header extends Component {
                     selectBranchOffice: false,
                     currentBranchOffice: BranchOffices.findOne(branchOfficeId)
                 });
+                window.location.reload();
             }
         });
     }

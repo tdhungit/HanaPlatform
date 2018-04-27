@@ -71,7 +71,9 @@ class CollectionAssign extends CollectionBase {
         selector = super.fixedFilters(user, selector, actionName);
         if (user) {
             if (user.isAdmin || user.isDeveloper) {
-                /* @TODO */
+                if (!selector.branchOffices && user.settings && user.settings.branchOfficeId) {
+                    selector.branchOffices = user.settings.branchOfficeId;
+                }
             } else {
                 selector = filtersBranch(user, selector, 'branchOffices');
                 // check data assigned

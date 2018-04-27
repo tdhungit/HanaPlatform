@@ -27,9 +27,9 @@ export class UserFieldView extends Component {
 
         switch (field.type) {
             case 'userGroup':
-                return <UserGroupField field={fieldDisplay} value={value}/>;
+                return <UserGroupField GFViewType='view' field={{...fieldDisplay}} value={value}/>;
             default:
-                return <FieldView field={fieldDisplay} value={value}/>;
+                return <FieldView field={{...fieldDisplay}} value={value}/>;
         }
     }
 }
