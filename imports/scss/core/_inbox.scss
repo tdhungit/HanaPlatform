@@ -1,0 +1,122 @@
+.HanaAppContainer {
+  height: calc(100% - 95px);
+}
+
+.ViewChat, .ViewChats {
+  height: 100%;
+}
+
+.email-app {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  height: 100%;
+  background: #fff;
+  border: 1px solid #c2cfd6;
+
+  nav {
+    -ms-flex: 0 0 200px;
+    flex: 0 0 200px;
+    padding: 1rem;
+    border-right: 1px solid #c2cfd6;
+
+    .btn-block {
+      margin-bottom: 15px;
+    }
+
+    .nav {
+      -ms-flex-direction: column;
+      flex-direction: column;
+
+      .nav-item {
+        position: relative;
+
+        .nav-link {
+          color: #151b1e;
+          border-bottom: 1px solid #c2cfd6;
+        }
+      }
+    }
+  }
+
+  main {
+    min-width: 0;
+    -ms-flex: 1;
+    flex: 1;
+    padding: 1rem;
+  }
+
+  .inbox {
+    display: flex;
+    flex-grow: 1;
+
+    .inboxContent {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 auto;
+      width: 50%;
+
+      .messageContent {
+        position: relative;
+        overflow: hidden;
+        flex-grow: 1;
+      }
+
+      .messageInput {
+        flex-shrink: 0;
+        margin: 0;
+      }
+    }
+
+    .toolbar {
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #c2cfd6;
+    }
+
+    .messages {
+      padding: 0;
+      list-style: none;
+    }
+
+    .message {
+      position: relative;
+      padding: 1rem 1rem 1rem 2rem;
+      cursor: pointer;
+      border-bottom: 1px solid #c2cfd6;
+
+      .actions {
+        position: absolute;
+        left: 0;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-direction: column;
+        flex-direction: column;
+      }
+
+      .header {
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-direction: row;
+        flex-direction: row;
+        margin-bottom: .5rem;
+
+        .date {
+          margin-left: auto;
+        }
+      }
+
+      .title {
+        margin-bottom: .5rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .description {
+        font-size: 12px;
+      }
+    }
+  }
+}

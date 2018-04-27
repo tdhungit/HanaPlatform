@@ -82,6 +82,7 @@ class CollectionAssign extends CollectionBase {
             }
         } else {
             selector.branchOffices = '';
+            selector.assignedId = '';
         }
 
         return selector;

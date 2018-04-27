@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
 import {Meteor} from 'meteor/meteor';
+import React, {Component} from 'react';
 import {Roles} from 'meteor/alanning:roles';
 import PropTypes from 'prop-types';
-import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'; // or HashRouter
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {appLoading, appSetVar} from '../store/app/app.actions';

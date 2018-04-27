@@ -1,3 +1,4 @@
+import {_} from 'meteor/underscore';
 import React, {Component} from 'react';
 import {Container} from 'reactstrap';
 
@@ -22,7 +23,7 @@ class ManagerLayout extends Component {
                 <Authenticate exact {...appProps} key={path}
                               path={path}
                               component={route.component}/>
-            )
+            );
         }
 
         return routers;
@@ -30,6 +31,8 @@ class ManagerLayout extends Component {
 
     render() {
         const appProps = this.props;
+        const className = 'HanaAppContainer';
+
         return (
             <div className="HanaPlatformManager app">
                 <Header {...appProps}/>
@@ -38,7 +41,7 @@ class ManagerLayout extends Component {
                     <Sidebar {...appProps}/>
                     <main className="main">
                         <Breadcrumb {...appProps}/>
-                        <Container fluid>
+                        <Container fluid className={className}>
                             {this.renderRouters()}
                         </Container>
                     </main>

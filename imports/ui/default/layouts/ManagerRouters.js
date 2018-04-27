@@ -46,6 +46,8 @@ import About from '../pages/index/About';
 import NotFound from '../pages/index/NotFound';
 import ImportData from '../pages/settings/ImportData';
 import ExportData from '../pages/settings/ExportData';
+import ViewChats from '../pages/chats/ViewChats';
+import ViewChat from '../pages/chats/ViewChat';
 
 let HomeRouters = {
     "/": {component: Index},
@@ -233,6 +235,14 @@ let ManagerRouters = {
     "/manager/export/:_collection": {
         title: "Export Data",
         component: ExportData
+    },
+    "/manager/chats": {
+        title: "Chats",
+        component: ViewChats
+    },
+    "/manager/chats/:channelId": {
+        title: "Chat",
+        component: ViewChat
     }
 };
 

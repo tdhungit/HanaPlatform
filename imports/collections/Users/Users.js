@@ -377,6 +377,10 @@ Users.checkAccess = (selector, controllerName, actionName) => {
         user = Users.getOne(selector);
     }
 
+    if (!user || !user._id) {
+        throw new Meteor.Error('401', 'Permission Denied!');
+    }
+
     // check admin user
     if (user.isDeveloper || user.isAdmin
         || !controllerName || !actionName) {
