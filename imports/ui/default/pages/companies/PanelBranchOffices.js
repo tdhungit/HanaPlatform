@@ -76,12 +76,42 @@ export class PanelBranchOffices extends Component {
         this.setState({selectBranchOffice: false});
     }
 
+    renderPanel(branchOfficeIds) {
+        const branchOffices = BranchOffices.find({_id: {$in: branchOfficeIds}}).fetch();
+        const {renderPanel} = this.props;
+        if (renderPanel) {
+            return renderPanel(branchOffices);
+        }
+
+        return (
+            <Table bordered hover>
+                <thead>
+                <tr>
+                    <th><T>Office Name</T></th>
+                    <th><T>Phone</T></th>
+                    <th><T>Address</T></th>
+                </tr>
+                </thead>
+                <tbody>
+                {branchOffices.map((branchOffice) => {
+                    return (
+                        <tr key={branchOffice._id}>
+                            <td>{branchOffice.name}</td>
+                            <td>{branchOffice.phone}</td>
+                            <td>{branchOffice.address}</td>
+                        </tr>
+                    )
+                })}
+                </tbody>
+            </Table>
+        );
+    }
+
     render() {
         const currentBranches = this.convertToArray(this.state.selectedBranchOfficeIds);
 
         const branchOfficeModel = Models.getModel('BranchOffices') || BranchOffices.getLayouts();
         const branchOfficeIds = [...currentBranches];
-        const branchOffices = BranchOffices.find({_id: {$in: branchOfficeIds}}).fetch();
 
         return (
             <Card>
@@ -95,27 +125,7 @@ export class PanelBranchOffices extends Component {
                     </div>
                 </CardHeader>
                 <CardBody>
-                    <Table bordered hover>
-                        <thead>
-                        <tr>
-                            <th><T>Office Name</T></th>
-                            <th><T>Phone</T></th>
-                            <th><T>Address</T></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {branchOffices.map((branchOffice) => {
-                            return (
-                                <tr key={branchOffice._id}>
-                                    <td>{branchOffice.name}</td>
-                                    <td>{branchOffice.phone}</td>
-                                    <td>{branchOffice.address}</td>
-                                </tr>
-                            )
-                        })}
-                        </tbody>
-                    </Table>
-
+                    {this.renderPanel(branchOfficeIds)}
                     {/* select branch offices */}
                     <Modal isOpen={this.state.selectBranchOffice} toggle={this.toggleBranchOffice} className="modal-lg">
                         <ModalHeader toggle={this.toggleBranchOffice}><T>Select</T> <T>Branch Offices</T></ModalHeader>
