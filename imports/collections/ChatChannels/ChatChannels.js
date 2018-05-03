@@ -24,12 +24,15 @@ class ChatChannelsCollection extends CollectionBase {
      */
     fixedFilters(user, selector = {}, actionName = 'View') {
         selector = super.fixedFilters(user, selector, actionName);
+        const userId = user && user._id || '';
         if (user.isAdmin || user.isDeveloper) {
-            if (!selector.userId) {
-                selector.userId = user && user._id || '';
+            if (!selector.adminQuery) {
+                selector["users." + userId] = {$exists: true};
+            } else {
+                delete selector.adminQuery;
             }
         } else {
-            selector.userId = user && user._id || '';
+            selector["users." + userId] = {$exists: true};
         }
 
         return selector;

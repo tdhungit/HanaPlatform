@@ -167,7 +167,7 @@ class Header extends Component {
                             <DropdownToggle className="nav-link dropdown-toggle">
                                 <ImageTag
                                     media={currentUser.profile && currentUser.profile.avatar ? currentUser.profile.avatar : ''}
-                                    className="img-avatar" alt={currentUser && currentUser.emails[0].address}/>
+                                    className="img-avatar" alt={currentUser && currentUser.username}/>
                                 <span className="d-md-down-none">{currentUser && currentUser.username}</span>
                             </DropdownToggle>
 
