@@ -30,6 +30,7 @@ ChatMessagesSchema.ChatMessages = CollectionBase.schema({
     },
     channelId: {type: String, optional: true},
     userId: {type: String},
+    type: {type: String, defaultValue: 'text'},
     message: {type: String},
 });
 

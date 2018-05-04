@@ -1,17 +1,23 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router';
 import {Meteor} from 'meteor/meteor';
+import {_} from 'meteor/underscore';
 import {
     Button, Input,
     FormGroup, InputGroup, InputGroupAddon,
     ButtonGroup,
     Alert
 } from 'reactstrap';
+import 'react-chat-elements/dist/main.css';
+import {MessageList} from 'react-chat-elements';
+
 import {t} from '../../../../common/Translation';
 import container from '../../../../common/Container';
 import ChatMessages from '../../../../collections/ChatMessages/ChatMessages';
 import Users from '../../../../collections/Users/Users';
 import ChatChannels from '../../../../collections/ChatChannels/ChatChannels';
+import Medias from '../../../../collections/Medias/Medias';
+import {utilsHelper} from '../../helpers/utils/utils';
 
 class FormChatComponent extends Component {
     constructor(props) {
@@ -24,6 +30,7 @@ class FormChatComponent extends Component {
 
         this.changeChatInfo = this.changeChatInfo.bind(this);
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+        this.handleMessageKeyPress = this.handleMessageKeyPress.bind(this);
     }
 
     componentDidMount() {
@@ -36,7 +43,7 @@ class FormChatComponent extends Component {
     }
 
     updateWindowDimensions() {
-        this.setState({messagesHeight: window.innerHeight - 320});
+        this.setState({messagesHeight: window.innerHeight - 330});
     }
 
     changeChatInfo(event) {
@@ -48,28 +55,66 @@ class FormChatComponent extends Component {
         this.setState({chat});
     }
 
+    handleMessageKeyPress(e) {
+        if (e.key === 'Enter') {
+            this.sendMessage();
+        }
+    }
+
     sendMessage() {
         let chat = {...this.state.chat};
         chat.channelId = this.props.channelId;
-        Meteor.call('chatMessages.insert', chat, (error) => {
-            if (error) {
-                console.log(error);
-                Bert.alert(t.__('Error! Please contact with Admin'), 'danger');
-            } else {
-                this.setState({chat: {}});
-
-                const {refs, props} = this;
-                const scrollTop = refs.messagesRef.scrollTop;
-                if (scrollTop === 0) {
-                    props.fetchHistory();
+        if (chat.message) {
+            Meteor.call('chatMessages.insert', chat, (error) => {
+                if (error) {
+                    console.log(error);
+                    Bert.alert(t.__('Error! Please contact with Admin'), 'danger');
+                } else {
+                    this.setState({chat: {}});
                 }
+            });
+        }
+    }
+
+    getChatSources() {
+        const {chats} = this.props;
+        let sources = [];
+
+        _.each(chats, (chat) => {
+            let position = 'right';
+            if (chat.userId === Meteor.userId()) {
+                position = 'left';
             }
+
+            sources.push({
+                position: position,
+                type: chat.type || 'text',
+                title: chat.user.username,
+                avatar: chat.avatar,
+                text: chat.message,
+                dateString: utilsHelper.toDateTimeDisplay(chat.createdAt),
+            });
         });
+
+        return sources;
+    }
+
+    renderChatMessages() {
+        const dataSources = this.getChatSources();
+        return (
+            <div className="messagesContent"
+                 style={{height: this.state.messagesHeight}}>
+                <MessageList
+                    className="messages"
+                    lockable={true}
+                    toBottomHeight="100%"
+                    dataSource={dataSources}/>
+            </div>
+        );
     }
 
     render() {
         const {chats} = this.props;
-
         if (!chats) {
             return (
                 <div className="inboxContent">
@@ -91,28 +136,7 @@ class FormChatComponent extends Component {
                             </Button>
                         </ButtonGroup>
                     </div>
-                    <ul className="messages"
-                        ref="messagesRef"
-                        style={{height: this.state.messagesHeight}}>
-                        {chats.map((chat, i) => {
-                            return (
-                                <li className="message" key={i}>
-                                    <div className="actions">
-
-                                    </div>
-                                    <div className="header">
-                                        <span className="from">
-                                            {chat.user && chat.user.username || 'Unknown'}
-                                        </span>
-                                        <span className="date">{chat.createdAt}</span>
-                                    </div>
-                                    <div className="description">
-                                        {chat.message}
-                                    </div>
-                                </li>
-                            );
-                        })}
-                    </ul>
+                    {this.renderChatMessages()}
                 </div>
                 <FormGroup className="messageInput">
                     <div className="controls">
@@ -121,7 +145,8 @@ class FormChatComponent extends Component {
                                    name="message"
                                    value={this.state.chat.message || ''}
                                    placeholder={t.__('Enter Message')}
-                                   onChange={this.changeChatInfo}/>
+                                   onChange={this.changeChatInfo}
+                                   onKeyPress={this.handleMessageKeyPress}/>
                             <InputGroupAddon addonType="append">
                                 <Button type="button" color="primary"
                                         onClick={() => this.sendMessage()}>
@@ -140,12 +165,17 @@ export default withRouter(container((props, onData) => {
     const channelId = props.channelId || '';
     Meteor.subscribe('chatChannels.detail', channelId);
     Meteor.subscribe('chatMessages.list', channelId);
+    Meteor.subscribe('medias.list', 'UserAvatar');
     let chats = null;
     const channel = ChatChannels.queryOne(Meteor.user(), channelId);
     if (channel && channel._id) {
         chats = ChatMessages.find({channelId: channelId}).fetch();
         chats.forEach((chat, i) => {
-            chats[i].user = Users.queryOne(Meteor.user(), chat.userId);
+            let user = Users.queryOne(Meteor.user(), chat.userId);
+            const media = Medias.findOne(user.profile && user.profile.avatar);
+            let mediaLink = media && media.link() || Meteor.absoluteUrl('img/avatars/6.jpg');
+            chats[i].user = user;
+            chats[i].avatar = mediaLink;
         });
     }
 

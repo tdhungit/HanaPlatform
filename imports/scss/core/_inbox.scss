@@ -75,50 +75,25 @@
       border-bottom: 1px solid #c2cfd6;
     }
 
-    .messages {
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      overflow-y: scroll;
+    .messagesContent {
+      overflow: hidden;
     }
 
-    .message {
-      position: relative;
-      padding: 1rem 1rem 1rem 2rem;
-      cursor: pointer;
-      border-bottom: 1px solid #c2cfd6;
+    .messages {
+      height: 100%;
+    }
 
-      .actions {
-        position: absolute;
-        left: 0;
-        display: -ms-flexbox;
-        display: flex;
-        -ms-flex-direction: column;
-        flex-direction: column;
-      }
+    .rce-mbox {
+      padding: 0 10px 7px 10px;
+    }
 
-      .header {
-        display: -ms-flexbox;
-        display: flex;
-        -ms-flex-direction: row;
-        flex-direction: row;
-        margin-bottom: .5rem;
+    .rce-mbox-body {
+      padding: 3px 0 7px 0;
+      min-width: 140px;
+    }
 
-        .date {
-          margin-left: auto;
-        }
-      }
-
-      .title {
-        margin-bottom: .5rem;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-
-      .description {
-        font-size: 12px;
-      }
+    .rce-mbox-time {
+      font-size: 10px;
     }
   }
 }

@@ -41,6 +41,7 @@ export const ImageTag = container((props, onData) => {
             }
         }
     }
+
     onData(null, {
         src: mediaLink
     });

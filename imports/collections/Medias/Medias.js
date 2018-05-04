@@ -17,7 +17,8 @@ let mediasSchema = {
 
             return this.value;
         }
-    }
+    },
+    mediaType: {type: String, defaultValue: 'UserAvatar'}
 };
 
 const Medias = new FilesCollection({

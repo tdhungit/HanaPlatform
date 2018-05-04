@@ -3,9 +3,10 @@ import Medias from './Medias';
 
 Medias.denyClient();
 
-Meteor.publish('medias.list', function () {
+Meteor.publish('medias.list', function (mediaType) {
     return Medias.find({
-        companyId: Meteor.user().companyId
+        companyId: Meteor.user().companyId,
+        mediaType: mediaType
     }).cursor;
 });
 
