@@ -28,4 +28,10 @@ import '/imports/collections/Activities/methods';
 import '/imports/collections/Models/publications';
 import '/imports/collections/Models/methods';
 
+import '/imports/collections/ChatChannels/publications';
+import '/imports/collections/ChatChannels/methods';
+
+import '/imports/collections/ChatMessages/publications';
+import '/imports/collections/ChatMessages/methods';
+
 import '/imports/modules/server.modules';

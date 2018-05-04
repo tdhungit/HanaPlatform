@@ -1,0 +1,71 @@
+import React, {Component} from 'react';
+import {
+    Row, Col,
+    Card, CardHeader, CardBody,
+} from 'reactstrap';
+import {Link} from 'react-router-dom';
+
+import {t, T, PT} from '/imports/common/Translation';
+import ${Collection} from '../../collections/${Collection}/${Collection}';
+import Models from '/imports/collections/Models/Models';
+import ListComponent from '/imports/ui/default/pages/models/components/ListComponent';
+
+class ${NAME} extends Component {
+    static viewInfo = {controller: '${Collection}', action: 'List'};
+
+    constructor(props) {
+        super(props);
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return true;
+    }
+
+    componentWillMount() {
+        this.limit = ${Collection}.getLimit();
+        this.pagination = ${Collection}.pagination();
+    }
+
+    componentWillReceiveProps(nextProps) {
+
+    }
+
+    componentDidMount() {
+
+    }
+
+    render() {
+        const {limit, pagination} = this;
+        const model = Models.getModel('${Collection}') || ${Collection}.getLayouts();
+
+        return (
+            <div className="${NAME} animated fadeIn">
+                <PT title={t.__('View ${Collection}')}/>
+                <Row>
+                    <Col>
+                        <Card>
+                            <CardHeader>
+                                <i className="fa fa-align-justify"/> <T>View ${Collection}</T>
+                                <div className="card-actions">
+                                    <Link to={'/manager/${Uri}/create'} title={t.__('Create')}>
+                                        <i className="fa fa-plus-circle"/>
+                                    </Link>
+                                </div>
+                            </CardHeader>
+                            <CardBody>
+                                <ListComponent
+                                    model={model}
+                                    pagination={pagination}
+                                    limit={limit}
+                                    detailLink="/manager/${Uri}/%s/detail"
+                                    editLink="/manager/${Uri}/%s/edit"/>
+                            </CardBody>
+                        </Card>
+                    </Col>
+                </Row>
+            </div>
+        );
+    }
+}
+
+export default ${NAME};

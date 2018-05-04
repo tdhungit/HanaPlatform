@@ -18,6 +18,7 @@ import Settings from '/imports/collections/Settings/Settings';
 import {AppListStrings} from '/imports/common/AppListStrings';
 
 import 'react-select/dist/react-select.css';
+import {utilsHelper} from '../utils/utils';
 
 /**
  * tag input select box with options is app list strings, array or object
@@ -72,9 +73,13 @@ export class SelectHelper extends Component {
     }
 
     render() {
+        const props = utilsHelper.objectWithoutProperties(this.props, [
+            'type',
+            'options'
+        ]);
+
         return (
-            <Input type="select" name={this.props.name} id={this.props.id} onChange={this.props.onChange}
-                   required={this.props.required} value={this.props.value}>
+            <Input type="select" {...props}>
                 {!this.props.required ? <option value="">{this.props.placeholder}</option> : null}
                 {this.renderOptions(this.props.options)}
             </Input>

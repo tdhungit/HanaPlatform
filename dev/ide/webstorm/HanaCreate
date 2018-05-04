@@ -1,0 +1,56 @@
+import React, {Component} from 'react';
+import {
+    Row, Col
+} from 'reactstrap';
+
+import {t, PT} from '/imports/common/Translation';
+import FormComponent from '/imports/ui/default/pages/models/components/FormComponent';
+import Models from '/imports/collections/Models/Models';
+import ${Collection} from '../../collections/${Collection}/${Collection}';
+
+class ${NAME} extends Component {
+    static viewInfo = {controller: '${Collection}', action: 'Create'};
+
+    constructor(props) {
+        super(props);
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return true;
+    }
+
+    componentWillMount() {
+
+    }
+
+    componentWillReceiveProps(nextProps) {
+
+    }
+
+    componentDidMount() {
+
+    }
+
+    render() {
+        const model = Models.getModel('${Collection}') || ${Collection}.getLayouts();
+        const title = t.__('${NAME}');
+
+        return (
+            <div className="${NAME} animated fadeIn">
+                <PT title={title}/>
+                <Row>
+                    <Col>
+                        <FormComponent
+                            title={title}
+                            model={model}
+                            method="${Uri}.insert"
+                            detailLink="/manager/${Uri}/%s/detail"
+                            listLink="/manager/${Uri}"/>
+                    </Col>
+                </Row>
+            </div>
+        );
+    }
+}
+
+export default ${NAME};

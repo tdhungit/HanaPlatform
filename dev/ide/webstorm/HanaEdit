@@ -1,0 +1,67 @@
+import React, {Component} from 'react';
+import {Meteor} from 'meteor/meteor';
+import {
+    Row, Col
+} from 'reactstrap';
+
+import {t, PT} from '/imports/common/Translation';
+import FormComponent from '/imports/ui/default/pages/models/components/FormComponent';
+import Models from '/imports/collections/Models/Models';
+import container from '/imports/common/Container';
+import ${Collection} from '../../collections/${Collection}/${Collection}';
+
+class ${NAME} extends Component {
+    static viewInfo = {controller: '${Collection}', action: 'Edit'};
+
+    constructor(props) {
+        super(props);
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return true;
+    }
+
+    componentWillMount() {
+
+    }
+
+    componentWillReceiveProps(nextProps) {
+
+    }
+
+    componentDidMount() {
+
+    }
+
+    render() {
+        const {record} = this.props;
+        const model = Models.getModel('${Collection}') || ${Collection}.getLayouts();
+        const title = t.__('Edit') + ': ' + (record[model.view.title] || '');
+
+        return (
+            <div className="${NAME} animated fadeIn">
+                <PT title={t.__('')}/>
+                <Row>
+                    <Col>
+                        <FormComponent
+                            title={title}
+                            model={model}
+                            record={record}
+                            method="${Uri}.update"
+                            detailLink="/manager/${Uri}/%s/detail"
+                            listLink="/manager/${Uri}"/>
+                    </Col>
+                </Row>
+            </div>
+        );
+    }
+}
+
+export default container((props, onData) => {
+    const recordId = props.match.params._id;
+    Meteor.subscribe('${Uri}.detail', recordId);
+
+    onData(null, {
+        record: ${Collection}.findOne(recordId)
+    });
+}, ${NAME});
