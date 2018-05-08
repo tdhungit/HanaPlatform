@@ -10,11 +10,11 @@ import {
     Button,
     Input
 } from 'reactstrap';
-import {Bert} from 'meteor/themeteorchef:bert';
 
 import {t, T, PT} from '/imports/common/Translation';
 import Settings from '/imports/collections/Settings/Settings';
 import {AppListStrings} from '/imports/common/AppListStrings';
+import {utilsHelper} from '../../helpers/utils/utils';
 
 class AppListStringsSettings extends Component {
     static viewInfo = {controller: 'Settings', action: 'Edit'};
@@ -72,10 +72,8 @@ class AppListStringsSettings extends Component {
             setting.value = JSON.stringify(this.state.listString);
 
             Meteor.call('settings.update', setting, (error, settingId) => {
-                if (error) {
-                    console.log(error);
-                    Bert.alert(t.__('Error! Please contact with Admin'), 'danger');
-                } else {
+                utilsHelper.alertSystem(error);
+                if (!error) {
                     let allAppListStrings = this.state.AppListStrings;
                     allAppListStrings[this.state.dropdownName] = this.state.listString;
                     this.setState({
@@ -84,8 +82,6 @@ class AppListStringsSettings extends Component {
                         listString: {},
                         isAddListString: false
                     });
-
-                    Bert.alert(t.__('Successful'), 'success');
                 }
             });
         }

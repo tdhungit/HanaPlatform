@@ -12,10 +12,10 @@ import {
     FormGroup,
     Label
 } from 'reactstrap';
-import {Bert} from 'meteor/themeteorchef:bert';
 
 import {T, t, PT} from '/imports/common/Translation';
 import Settings from '/imports/collections/Settings/Settings';
+import {utilsHelper} from '../../helpers/utils/utils';
 
 class SystemSettings extends Component {
     static viewInfo = {controller: 'Settings', action: 'Edit'};
@@ -72,13 +72,13 @@ class SystemSettings extends Component {
                 if (error) {
                     updateError = true;
                     console.log(error);
-                    Bert.alert(t.__('Error! Please contact with Admin'), 'danger');
+                    utilsHelper.errorMessage(t.__('Error! Please contact with Admin'));
                 }
             });
         }
 
-        if (updateError == false) {
-            Bert.alert(t.__('Successful!'), 'success');
+        if (updateError === false) {
+            utilsHelper.successMessage(t.__('Successful!'));
         }
     }
 

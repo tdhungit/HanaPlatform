@@ -13,7 +13,6 @@ import {
     Button
 } from 'reactstrap';
 import {Link} from 'react-router-dom';
-import {Bert} from 'meteor/themeteorchef:bert';
 
 import {t, T} from '/imports/common/Translation';
 import {modules} from '/imports/config/collections';
@@ -86,16 +85,13 @@ class FormModel extends Component {
 
         if (!errorStatus) {
             Meteor.call(method, model, (error, modelId) => {
-                if (error) {
-                    console.log(error);
-                    Bert.alert(t.__('Error! Please contact with Admin'), 'danger');
-                } else {
-                    Bert.alert(t.__('Successful!'), 'success');
+                utilsHelper.alertSystem(error);
+                if (!error) {
                     this.props.history.push('/manager/models/' + modelId + '/detail');
                 }
             });
         } else {
-            Bert.alert(errorMessage, 'danger');
+            utilsHelper.errorMessage(errorMessage);
         }
     }
 

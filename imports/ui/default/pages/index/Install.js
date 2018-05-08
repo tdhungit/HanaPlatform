@@ -13,12 +13,12 @@ import {
     Label,
     FormGroup
 } from 'reactstrap';
-import {Bert} from 'meteor/themeteorchef:bert';
 
 import container from '/imports/common/Container';
 import {t, T, PT} from '/imports/common/Translation';
 import Companies from '/imports/collections/Companies/Companies';
 import {Loading} from '../../components/Loading/Loading';
+import {utilsHelper} from '../../helpers/utils/utils';
 
 class Install extends Component {
     constructor(props) {
@@ -66,15 +66,14 @@ class Install extends Component {
 
             Meteor.call('companies.register', company, user, (error, companyId) => {
                 if (error) {
-                    console.log(error);
-                    Bert.alert(t.__('Error! Please contact with Admin'), 'danger');
+                    utilsHelper.alertError(error);
                 } else {
-                    Bert.alert(t.__('Installation successful'), 'success');
+                    utilsHelper.successMessage(t.__('Installation successful'));
                     this.props.history.push('/');
                 }
             });
         } else {
-            Bert.alert(t.__('Input data error'), 'danger');
+            utilsHelper.errorMessage(t.__('Input data error'));
         }
     }
 

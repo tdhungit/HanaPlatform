@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {Meteor} from 'meteor/meteor';
-import {Bert} from 'meteor/themeteorchef:bert';
 import {
     Container,
     Row,
@@ -14,6 +13,7 @@ import {
 import {Link} from 'react-router-dom';
 
 import {T, t, PT} from '/imports/common/Translation';
+import {utilsHelper} from '../../helpers/utils/utils';
 
 class Login extends Component {
     constructor(props) {
@@ -39,8 +39,7 @@ class Login extends Component {
     handleLogin() {
         Meteor.loginWithPassword(this.state.username, this.state.password, (error) => {
             if (error) {
-                const error_message = t.__("There was an error:") + error.reason;
-                Bert.alert(error_message, 'danger');
+                utilsHelper.alertError(error);
             } else {
                 this.props.history.push('/manager');
             }

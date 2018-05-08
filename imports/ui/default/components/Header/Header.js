@@ -17,11 +17,11 @@ import {
     Table
 } from 'reactstrap';
 import {Link} from 'react-router-dom';
-import {Bert} from 'meteor/themeteorchef:bert';
 
 import {t, T} from '/imports/common/Translation';
 import {ImageTag} from '../../helpers/tags/MediaImage';
 import BranchOffices from '/imports/collections/BranchOffices/BranchOffices';
+import {utilsHelper} from '../../helpers/utils/utils';
 
 class Header extends Component {
     constructor(props) {
@@ -94,8 +94,7 @@ class Header extends Component {
 
         Meteor.call('users.update', data, (error) => {
             if (error) {
-                console.log(error);
-                Bert.alert(t.__('Error! Please contact with Admin'), 'danger');
+                utilsHelper.alertError(error);
             } else {
                 this.setState({
                     selectBranchOffice: false,

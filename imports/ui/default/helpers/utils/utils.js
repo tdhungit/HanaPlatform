@@ -2,6 +2,8 @@ import {Meteor} from 'meteor/meteor';
 import {_} from 'meteor/underscore';
 import Settings from '../../../../collections/Settings/Settings';
 import moment from 'moment';
+import {t} from '../../../../common/Translation';
+import {Bert} from 'meteor/themeteorchef:bert';
 
 class UtilsHelper {
     getRecordTitle(record, fields) {
@@ -253,6 +255,59 @@ class UtilsHelper {
         }
 
         return result_array;
+    }
+
+    /**
+     * alertError
+     * @param error
+     */
+    alertError(error) {
+        console.log(error);
+        Bert.alert(t.__('Error! Please contact with Admin'), 'danger');
+    }
+
+    /**
+     * alert system message
+     * @param error
+     */
+    alertSystem(error) {
+        if (error) {
+            this.alertError(error);
+        } else {
+            this.successMessage(t.__('Successful!'));
+        }
+    }
+
+    /**
+     * error message
+     * @param message
+     */
+    errorMessage(message) {
+        Bert.alert(message, 'danger');
+    }
+
+    /**
+     * info message
+     * @param message
+     */
+    infoMessage(message) {
+        Bert.alert(message, 'info');
+    }
+
+    /**
+     * warning message
+     * @param message
+     */
+    warningMessage(message) {
+        Bert.alert(message, 'warning');
+    }
+
+    /**
+     * success message
+     * @param message
+     */
+    successMessage(message) {
+        Bert.alert(message, 'success');
     }
 }
 

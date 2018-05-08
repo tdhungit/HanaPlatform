@@ -8,11 +8,11 @@ import {
     FormGroup, Label, Input
 } from 'reactstrap';
 import {Link} from 'react-router-dom';
-import {Bert} from 'meteor/themeteorchef:bert';
 
 import container from '../../../../common/Container';
 import ChatChannels from '../../../../collections/ChatChannels/ChatChannels';
 import {t, T} from '/imports/common/Translation';
+import {utilsHelper} from '../../helpers/utils/utils';
 
 class ListChannelsComponent extends Component {
     constructor(props) {
@@ -37,11 +37,8 @@ class ListChannelsComponent extends Component {
 
     createChannel() {
         Meteor.call('chatChannels.insert', this.state.channel, (error, _id) => {
-            if (error) {
-                console.log(error);
-                Bert.alert(t.__('Error! Please contact with Admin'), 'danger');
-            } else {
-                Bert.alert(t.__('Successful!'), 'success');
+            utilsHelper.alertSystem(error);
+            if (!error) {
                 this.props.history.push('/manager/chats/' + _id);
             }
         });

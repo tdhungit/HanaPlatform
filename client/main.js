@@ -19,6 +19,7 @@ Meteor.startup(() => {
     const branchSub = Meteor.subscribe('branchOffices.forCurrentUser');
     const settingSub = Meteor.subscribe('settings.list');
     const modelSub = Meteor.subscribe('models.list');
+    Meteor.subscribe('notifications.list');
     // auto subscribe
     Meteor.subscribe('media.list');
 

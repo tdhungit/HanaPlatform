@@ -15,9 +15,9 @@ import ACLRoles from '/imports/collections/ACLRoles/ACLRoles';
 import {T, t, PT} from '/imports/common/Translation';
 import {SelectHelper} from '../../helpers/inputs/SelectHelper';
 import container from '/imports/common/Container';
-import {Bert} from 'meteor/themeteorchef:bert';
 import {permissionsAclDataTypes} from '../../../../collections/ACLPermissions/config';
 import {modulesComponent} from '../../../../config/config.inc';
+import {utilsHelper} from '../../helpers/utils/utils';
 
 class ViewPermissions extends Component {
     static viewInfo = {controller: 'ACL', action: 'List'};
@@ -94,12 +94,7 @@ class ViewPermissions extends Component {
         const {role} = this.props;
 
         Meteor.call('aclPermissions.update', this.state.permissions, this.state.aclActions, role._id, (error) => {
-            if (error) {
-                console.log(error);
-                Bert.alert(t.__('Error! Please contact with Admin'), 'danger');
-            } else {
-                Bert.alert(t.__('Successful!'), 'success');
-            }
+            utilsHelper.alertSystem(error);
         });
     }
 

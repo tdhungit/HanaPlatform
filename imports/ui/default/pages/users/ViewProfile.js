@@ -17,7 +17,6 @@ import {
     Button
 } from 'reactstrap';
 import classnames from 'classnames';
-import {Bert} from 'meteor/themeteorchef:bert';
 
 import {T, t, PT} from '/imports/common/Translation';
 import {ImageTag} from '../../helpers/tags/MediaImage';
@@ -78,17 +77,11 @@ class ViewProfile extends Component {
                 this.setState({avatarUploading: true});
             }, (error, fileObj) => {
                 if (error) {
-                    console.log(error);
-                    Bert.alert(t.__('Error! Please contact with Admin'), 'danger');
+                    utilsHelper.alertError(error);
                 } else {
                     const userId = Meteor.userId();
                     Meteor.call('users.updateAvatar', userId, fileObj._id, (error) => {
-                        if (error) {
-                            console.log(error);
-                            Bert.alert(t.__('Error! Please contact with Admin'), 'danger');
-                        } else {
-                            Bert.alert(t.__('Successful!'), 'success');
-                        }
+                        utilsHelper.alertSystem(error);
                     });
                 }
                 this.setState({avatarUploading: false});

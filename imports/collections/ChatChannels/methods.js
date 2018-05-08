@@ -13,14 +13,15 @@ Meteor.methods({
         let fixedChannel = {...channel};
         fixedChannel.userId = Meteor.userId();
         if (!fixedChannel.users) {
-            fixedChannel.users = {};
+            fixedChannel.users = [];
         }
 
-        fixedChannel.users[Meteor.userId()] = {
+        fixedChannel.users.push({
             _id: Meteor.userId(),
             username: Meteor.user().username,
-            isAdmin: true
-        };
+            isAdmin: true,
+            status: 'Active'
+        });
 
         return ChatChannels.insert(fixedChannel);
     },
@@ -71,17 +72,19 @@ Meteor.methods({
                 description: 'Direct Message',
                 userId: currentUserId,
                 isPubic: false,
-                users: {
-                    [currentUserId]: {
+                users: [
+                    {
                         _id: currentUserId,
                         username: currentUser.username,
-                        isAdmin: true
+                        isAdmin: true,
+                        status: 'Active'
                     },
-                    [friendId]: {
+                    {
                         _id: friendId,
-                        username: friendUser.username
+                        username: friendUser.username,
+                        status: 'Active'
                     }
-                }
+                ]
             });
         }
 

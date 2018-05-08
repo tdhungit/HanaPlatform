@@ -9,7 +9,6 @@ import {
     Label,
     Button
 } from 'reactstrap';
-import {Bert} from 'meteor/themeteorchef:bert';
 import classnames from 'classnames';
 
 import {T, t} from '/imports/common/Translation';
@@ -47,11 +46,8 @@ class ProfileUserInfo extends Component {
 
     saveUserInfo() {
         Meteor.call('users.update', this.state.user, (error, userId) => {
-            if (error) {
-                console.log(error);
-                Bert.alert(t.__('Error! Please contact with Admin'), 'danger');
-            } else {
-                Bert.alert(t.__('Update successful!'), 'success');
+            utilsHelper.alertSystem(error);
+            if (!error) {
                 this.setState({showEdit: false});
             }
         });

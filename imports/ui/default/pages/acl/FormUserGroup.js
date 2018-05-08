@@ -14,10 +14,10 @@ import {
     Input
 } from 'reactstrap';
 import {Roles} from 'meteor/alanning:roles';
-import {Bert} from 'meteor/themeteorchef:bert';
 
 import {T, t} from '/imports/common/Translation';
 import {SelectHelper} from '../../helpers/inputs/SelectHelper';
+import {utilsHelper} from '../../helpers/utils/utils';
 
 class FormUserGroup extends Component {
     constructor(props) {
@@ -68,11 +68,8 @@ class FormUserGroup extends Component {
 
         if (this.state.userGroup.name) {
             Meteor.call(method, this.state.userGroup, (error, groupId) => {
-                if (error) {
-                    console.log(error);
-                    Bert.alert(t.__('Error! Please contact with Admin'), 'danger');
-                } else {
-                    Bert.alert(t.__('Successful'), 'success');
+                utilsHelper.alertSystem(error);
+                if (!error) {
                     this.props.history.push('/manager/user-groups/' + groupId + '/detail');
                 }
             });

@@ -18,6 +18,7 @@ import Users from '../../../../collections/Users/Users';
 import ChatChannels from '../../../../collections/ChatChannels/ChatChannels';
 import Medias from '../../../../collections/Medias/Medias';
 import {utilsHelper} from '../../helpers/utils/utils';
+import {UsersModal} from '../../helpers/tags/UsersModal';
 
 class FormChatComponent extends Component {
     constructor(props) {
@@ -25,7 +26,8 @@ class FormChatComponent extends Component {
 
         this.state = {
             chat: {},
-            messagesHeight: 0
+            messagesHeight: 0,
+            showInvite: false
         };
 
         this.changeChatInfo = this.changeChatInfo.bind(this);
@@ -67,13 +69,16 @@ class FormChatComponent extends Component {
         if (chat.message) {
             Meteor.call('chatMessages.insert', chat, (error) => {
                 if (error) {
-                    console.log(error);
-                    Bert.alert(t.__('Error! Please contact with Admin'), 'danger');
+                    utilsHelper.alertError(error);
                 } else {
                     this.setState({chat: {}});
                 }
             });
         }
+    }
+
+    sendInvite() {
+
     }
 
     getChatSources() {
@@ -128,7 +133,9 @@ class FormChatComponent extends Component {
                 <div className="messageContent">
                     <div className="toolbar">
                         <ButtonGroup>
-                            <Button type="button" color="light">
+                            <Button type="button"
+                                    color="light"
+                                    onClick={() => this.setState({showInvite: true})}>
                                 <i className="fa fa-user-plus"/>
                             </Button>
                             <Button type="button" color="light">
@@ -136,6 +143,9 @@ class FormChatComponent extends Component {
                             </Button>
                         </ButtonGroup>
                     </div>
+                    <UsersModal
+                        isOpen={this.state.showInvite}
+                        mdToggle={() => this.setState({showInvite: false})}/>
                     {this.renderChatMessages()}
                 </div>
                 <FormGroup className="messageInput">
@@ -163,17 +173,23 @@ class FormChatComponent extends Component {
 
 export default withRouter(container((props, onData) => {
     const channelId = props.channelId || '';
-    Meteor.subscribe('chatChannels.detail', channelId);
+    Meteor.subscribe('chatChannels.detailActive', channelId);
     Meteor.subscribe('chatMessages.list', channelId);
     Meteor.subscribe('medias.list', 'UserAvatar');
     let chats = null;
-    const channel = ChatChannels.queryOne(Meteor.user(), channelId);
+    const channel = ChatChannels.findOne(channelId);
     if (channel && channel._id) {
         chats = ChatMessages.find({channelId: channelId}).fetch();
         chats.forEach((chat, i) => {
             let user = Users.queryOne(Meteor.user(), chat.userId);
-            const media = Medias.findOne(user.profile && user.profile.avatar);
-            let mediaLink = media && media.link() || Meteor.absoluteUrl('img/avatars/6.jpg');
+            let mediaLink = Meteor.absoluteUrl('img/avatars/6.jpg');
+            if (user.profile && user.profile.avatar) {
+                const media = Medias.findOne(user.profile && user.profile.avatar);
+                if (media) {
+                    mediaLink = media.link();
+                }
+            }
+
             chats[i].user = user;
             chats[i].avatar = mediaLink;
         });

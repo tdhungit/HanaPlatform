@@ -10,6 +10,7 @@ import {t} from '../../../../common/Translation';
 import {ImageTag} from '../tags/MediaImage';
 import Medias from '../../../../collections/Medias/Medias';
 import {ArrayFieldView} from './ArrayFieldHelper';
+import {utilsHelper} from '../utils/utils';
 
 /**
  * upload one image
@@ -53,8 +54,7 @@ export class ImageInput extends Component {
             }, (error, fileObj) => {
                 this.setState({uploading: false});
                 if (error) {
-                    console.log(error);
-                    Bert.alert(t.__('Error! Please contact with Admin'), 'danger');
+                    utilsHelper.alertError(error);
                 } else {
                     this.setState({uploadedId: fileObj._id});
                     if (this.props.onChange) {
@@ -185,8 +185,7 @@ export class ImagesInput extends Component {
                 this.setState({uploading: false});
                 count = count + 1;
                 if (error) {
-                    console.log(error);
-                    Bert.alert(t.__('Error! Please contact with Admin'), 'danger');
+                    utilsHelper.alertError(error);
                 } else {
                     uploadedIds.push(fileObj._id);
                 }

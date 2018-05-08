@@ -16,7 +16,6 @@ import {
     Alert
 } from 'reactstrap';
 import {Link} from 'react-router-dom';
-import {Bert} from 'meteor/themeteorchef:bert';
 import {vsprintf} from 'sprintf-js';
 
 import {t, T} from '/imports/common/Translation';
@@ -102,11 +101,8 @@ class FormComponent extends Component {
             }
 
             Meteor.call(method, saveRecord, (error, recordId) => {
-                if (error) {
-                    console.log(error);
-                    Bert.alert(t.__('Error! Please contact with Admin'), 'danger');
-                } else {
-                    Bert.alert(t.__('Successful'), 'success');
+                utilsHelper.alertSystem(error);
+                if (!error) {
                     if (afterSubmit) {
                         let record = {...saveRecord};
                         if (!record._id && typeof recordId === 'string') {

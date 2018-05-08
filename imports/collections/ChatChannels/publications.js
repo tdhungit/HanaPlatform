@@ -10,3 +10,10 @@ Meteor.publish('chatChannels.list', function () {
 Meteor.publish('chatChannels.detail', function (channelId) {
     return ChatChannels.publish(Meteor.user(), {_id: channelId});
 });
+
+Meteor.publish('chatChannels.detailActive', function (channelId) {
+    return ChatChannels.publish(Meteor.user(), {
+        _id: channelId,
+        users: {$elemMatch: {status: 'Active'}}
+    });
+});

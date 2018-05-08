@@ -27,12 +27,12 @@ class ChatChannelsCollection extends CollectionBase {
         const userId = user && user._id || '';
         if (user.isAdmin || user.isDeveloper) {
             if (!selector.adminQuery) {
-                selector["users." + userId] = {$exists: true};
+                selector.users = {$elemMatch: {_id: userId}};
             } else {
                 delete selector.adminQuery;
             }
         } else {
-            selector["users." + userId] = {$exists: true};
+            selector.users = {$elemMatch: {_id: userId}};
         }
 
         return selector;
@@ -72,13 +72,21 @@ ChatChannelsSchema.ChatChannels = CollectionBase.schema({
     description: {type: String, optional: true},
     isPubic: {type: Boolean, defaultValue: false},
     users: {
-        type: Object,
-        required: true,
-        blackbox: true
+        type: Array,
+        required: true
     },
+    "users.$": {type: Object},
     "users.$._id": {type: String},
     "users.$.username": {type: String},
-    "users.$.isAdmin": {type: Boolean, defaultValue: false},
+    "users.$.status": {
+        type: String,
+        defaultValue: 'Waiting',
+        allowedValues: ['Waiting', 'Active', 'Inactive']
+    },
+    "users.$.isAdmin": {
+        type: Boolean,
+        defaultValue: false
+    }
 });
 
 ChatChannels.attachSchema(ChatChannelsSchema.ChatChannels);

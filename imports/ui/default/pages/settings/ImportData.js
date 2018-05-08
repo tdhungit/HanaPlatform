@@ -8,7 +8,6 @@ import {
     ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText
 } from 'reactstrap';
 import ReactJson from 'react-json-view';
-import {Bert} from 'meteor/themeteorchef:bert';
 
 import {PT, T, t} from '../../../../common/Translation';
 import {utilsHelper} from '../../helpers/utils/utils';
@@ -83,11 +82,8 @@ class ImportData extends Component {
 
     import() {
         Meteor.call(this.state.method, this.state.data, (error, data) => {
-            if (error) {
-                console.log(error);
-                Bert.alert(t.__('Error! Please contact with Admin'), 'danger');
-            } else {
-                Bert.alert(t.__('Successful!'), 'success');
+            utilsHelper.alertSystem(error);
+            if (!error) {
                 this.setState({
                     csv: null,
                     data: null,

@@ -16,6 +16,9 @@ import '/imports/collections/ACLPermissions/methods'
 import '/imports/collections/MainMenus/publications';
 import '/imports/collections/MainMenus/methods';
 
+import '/imports/collections/Notifications/publications';
+import '/imports/collections/Notifications/methods';
+
 import '/imports/collections/Settings/publications';
 import '/imports/collections/Settings/methods';
 

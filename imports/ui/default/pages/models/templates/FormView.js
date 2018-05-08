@@ -14,7 +14,6 @@ import {
     Button
 } from 'reactstrap';
 import {Link} from 'react-router-dom';
-import {Bert} from 'meteor/themeteorchef:bert';
 
 import {t, T} from '/imports/common/Translation';
 import {utilsHelper} from '../../../helpers/utils/utils';
@@ -117,11 +116,8 @@ class FormView extends Component {
         }
 
         Meteor.call(method, model.model, this.state.record, (error, recordId) => {
-            if (error) {
-                console.log(error);
-                Bert.alert(t.__('Error! Please contact with Admin'), 'danger');
-            } else {
-                Bert.alert(t.__('Successful'), 'success');
+            utilsHelper.alertSystem(error);
+            if (!error) {
                 this.props.history.push('/manager/model/' + model.model + '/' + recordId + '/detail');
             }
         });

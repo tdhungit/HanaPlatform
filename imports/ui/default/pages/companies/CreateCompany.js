@@ -8,6 +8,7 @@ import {t, PT} from '/imports/common/Translation';
 import Models from '/imports/collections/Models/Models';
 import FormComponent from '../models/components/FormComponent';
 import Companies from '../../../../collections/Companies/Companies';
+import {utilsHelper} from '../../helpers/utils/utils';
 
 class CreateCompany extends Component {
     static viewInfo = {controller: 'Companies', action: 'Create'};
@@ -21,8 +22,7 @@ class CreateCompany extends Component {
         user.isAdmin = true;
         Meteor.call('users.insert', user, (error) => {
             if (error) {
-                console.log(error);
-                Bert.alert(t.__('Error! Please contact with Admin'), 'danger');
+                utilsHelper.alertError(error);
             } else {
                 this.props.history.push('/manager/companies/' + company.extra.companyId + '/detail');
             }

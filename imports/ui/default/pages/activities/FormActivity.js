@@ -23,7 +23,6 @@ import {
     DropdownMenu,
     DropdownItem
 } from 'reactstrap';
-import {Bert} from 'meteor/themeteorchef:bert';
 
 import {T, t} from '/imports/common/Translation';
 import {AppListStrings} from '/imports/common/AppListStrings';
@@ -322,11 +321,8 @@ class FormActivity extends Component {
         const method = existing ? 'activities.update' : 'activities.insert';
 
         Meteor.call(method, activity, (error, activityId) => {
-            if (error) {
-                console.log(error);
-                Bert.alert(t.__('Error! Please contact with Admin'), 'danger');
-            } else {
-                Bert.alert(t.__('Successful!'), 'success');
+            utilsHelper.alertSystem(error);
+            if (!error) {
                 this.props.history.push('/manager/activities/' + activityId + '/detail');
             }
         });

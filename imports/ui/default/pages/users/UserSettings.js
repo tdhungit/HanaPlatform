@@ -12,7 +12,6 @@ import {
     Input,
     Button
 } from 'reactstrap';
-import {Bert} from 'meteor/themeteorchef:bert';
 
 import {T, t} from '/imports/common/Translation';
 import {utilsHelper} from '../../helpers/utils/utils';
@@ -49,12 +48,7 @@ class UserSettings extends Component {
         const user = {_id: currentUser._id, settings: this.state.settings};
         console.log(user);
         Meteor.call('users.update', user, (error, userId) => {
-            if (error) {
-                console.log(error);
-                Bert.alert(t.__('Error! Please contact with Admin'), 'danger');
-            } else {
-                Bert.alert(t.__('Successful!'), 'success');
-            }
+            utilsHelper.alertSystem(error);
         });
     }
 

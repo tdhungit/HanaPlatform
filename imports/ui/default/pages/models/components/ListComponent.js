@@ -12,7 +12,6 @@ import {
     Input
 } from 'reactstrap';
 import {Link} from 'react-router-dom';
-import {Bert} from 'meteor/themeteorchef:bert';
 import {vsprintf} from 'sprintf-js';
 import BootstrapPaginator from 'react-bootstrap-pagination';
 

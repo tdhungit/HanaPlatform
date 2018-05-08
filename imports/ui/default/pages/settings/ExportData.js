@@ -5,11 +5,11 @@ import {
     Card, CardHeader, CardBody, CardFooter,
     Button
 } from 'reactstrap';
-import {Bert} from 'meteor/themeteorchef:bert';
 import {CSVLink} from 'react-csv';
 
 import {PT, T, t} from '../../../../common/Translation';
 import {Loading} from '../../components/Loading/Loading';
+import {utilsHelper} from '../../helpers/utils/utils';
 
 class ExportData extends Component {
     static viewInfo = {controller: 'Settings', action: 'Export'};
@@ -37,8 +37,7 @@ class ExportData extends Component {
         Meteor.call(this.state.method, (error, data) => {
             this.setState({loading: false});
             if (error) {
-                console.log(error);
-                Bert.alert(t.__('Error! Please contact with Admin'), 'danger');
+                utilsHelper.alertError(error);
             } else {
                 const Papa = require("papaparse/papaparse.min");
                 const csvString = Papa.unparse(data, {});

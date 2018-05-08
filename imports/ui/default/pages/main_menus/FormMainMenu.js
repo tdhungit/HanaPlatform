@@ -20,11 +20,11 @@ import {
     ModalBody,
     ModalFooter
 } from 'reactstrap';
-import {Bert} from 'meteor/themeteorchef:bert';
 
 import {T, t} from '/imports/common/Translation';
 import {SelectHelper} from '../../helpers/inputs/SelectHelper';
 import {SelectSimpleLineIcon} from '../../helpers/inputs/SelectSimpleLineIcon';
+import {utilsHelper} from '../../helpers/utils/utils';
 
 class FormMainMenu extends Component {
     constructor(props) {
@@ -120,11 +120,8 @@ class FormMainMenu extends Component {
             }
 
             Meteor.call(method, this.state.menu, (error, menuId) => {
-                if (error) {
-                    console.log(error);
-                    Bert.alert(t.__('Error! Please contact with Admin'), 'danger');
-                } else {
-                    Bert.alert(t.__('Successful!'), 'success');
+                utilsHelper.alertSystem(error);
+                if (!error) {
                     this.props.history.push('/manager/main-menus/' + menuId + '/edit');
                 }
             });

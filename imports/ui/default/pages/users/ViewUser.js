@@ -12,6 +12,7 @@ import Users from '/imports/collections/Users/Users';
 import DetailComponent from '../models/components/DetailComponent';
 import {UserFieldView} from './fields/UserFields';
 import {PanelBranchOffices} from '../companies/PanelBranchOffices';
+import {utilsHelper} from '../../helpers/utils/utils';
 
 class ViewUser extends Component {
     static viewInfo = {controller: 'Users', action: 'View'};
@@ -25,8 +26,7 @@ class ViewUser extends Component {
 
         Meteor.call('users.update', data, (error) => {
             if (error) {
-                console.log(error);
-                Bert.alert(t.__('Error! Please contact with Admin'), 'danger');
+                utilsHelper.alertError(error);
             }
 
             this.setState({selectBranchOffice: false});
