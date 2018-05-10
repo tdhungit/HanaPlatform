@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Meteor} from 'meteor/meteor';
-import {_} from 'meteor/underscore';
+import _ from 'underscore';
 import {
     Modal, ModalHeader, ModalBody, ModalFooter,
     Alert,

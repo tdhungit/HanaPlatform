@@ -1,5 +1,6 @@
 import {Meteor} from 'meteor/meteor';
 import ChatChannels from './ChatChannels';
+import _ from 'underscore';
 
 ChatChannels.publishPagination();
 
@@ -12,8 +13,15 @@ Meteor.publish('chatChannels.detail', function (channelId) {
 });
 
 Meteor.publish('chatChannels.detailActive', function (channelId) {
-    return ChatChannels.publish(Meteor.user(), {
-        _id: channelId,
-        users: {$elemMatch: {status: 'Active'}}
-    });
+    const channel = ChatChannels.queryOne(Meteor.user(), {_id: channelId});
+    if (!channel) {
+        return this.ready();
+    }
+
+    const pos = _.findLastIndex(channel.users, {_id: Meteor.userId(), status: 'Active'});
+    if (pos >= 0) {
+        return ChatChannels.publish(Meteor.user(), {_id: channelId});
+    }
+
+    return this.ready();
 });

@@ -1,4 +1,4 @@
-import {_} from 'meteor/underscore';
+import _ from 'underscore';
 import React, {Component} from 'react';
 import {Container} from 'reactstrap';
 

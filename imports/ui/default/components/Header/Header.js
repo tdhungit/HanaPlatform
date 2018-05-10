@@ -42,14 +42,9 @@ class Header extends Component {
         // get current branch office
         if (currentUser.settings && currentUser.settings.branchOfficeId) {
             this.state.currentBranchOffice = BranchOffices.findOne(currentUser.settings.branchOfficeId);
-
         }
         // check current branch office
-        if (this.state.currentBranchOffice && this.state.currentBranchOffice._id) {
-            this.state.selectBranchOffice = false;
-        } else {
-            this.state.selectBranchOffice = true;
-        }
+        this.state.selectBranchOffice = !(this.state.currentBranchOffice && this.state.currentBranchOffice._id);
     }
 
     toggle(dropdown) {
@@ -111,7 +106,7 @@ class Header extends Component {
         return (
             <header className="app-header navbar">
                 <NavbarToggler className="d-lg-none" onClick={this.mobileSidebarToggle}>&#9776;</NavbarToggler>
-                <NavbarBrand href="#"></NavbarBrand>
+                <NavbarBrand href="#"/>
                 <NavbarToggler className="d-md-down-none" onClick={this.sidebarToggle}>&#9776;</NavbarToggler>
 
                 <Nav className="d-md-down-none" navbar>
@@ -131,7 +126,9 @@ class Header extends Component {
                         <Dropdown isOpen={this.state.branchOfficeDropdownOpen}
                                   toggle={() => this.toggle('branchOfficeDropdownOpen')}>
                             <DropdownToggle className="nav-link dropdown-toggle">
-                                {this.state.selectBranchOffice ? t.__('Branch Office') : this.state.currentBranchOffice.name}
+                                {this.state.selectBranchOffice ?
+                                    t.__('Branch Office') :
+                                    this.state.currentBranchOffice.name}
                             </DropdownToggle>
 
                             <DropdownMenu right className={this.state.branchOfficeDropdownOpen ? 'show' : ''}>
@@ -165,7 +162,11 @@ class Header extends Component {
                                   toggle={() => this.toggle('userDropdownOpen')}>
                             <DropdownToggle className="nav-link dropdown-toggle">
                                 <ImageTag
-                                    media={currentUser.profile && currentUser.profile.avatar ? currentUser.profile.avatar : ''}
+                                    media={
+                                        currentUser.profile
+                                        && currentUser.profile.avatar
+                                            ? currentUser.profile.avatar : ''
+                                    }
                                     className="img-avatar" alt={currentUser && currentUser.username}/>
                                 <span className="d-md-down-none">{currentUser && currentUser.username}</span>
                             </DropdownToggle>
@@ -196,7 +197,9 @@ class Header extends Component {
                                     <i className="fa fa-wrench"/> Settings
                                 </DropdownItem>
                                 {/*<DropdownItem divider/>*/}
-                                <DropdownItem onClick={this.handleLogout.bind(this)}><i className="fa fa-lock"/> Logout</DropdownItem>
+                                <DropdownItem onClick={this.handleLogout.bind(this)}>
+                                    <i className="fa fa-lock"/> Logout
+                                </DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
                     </NavItem>

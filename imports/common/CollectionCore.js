@@ -1,6 +1,6 @@
 import {Meteor} from 'meteor/meteor';
 import {Mongo} from 'meteor/mongo';
-import {_} from 'meteor/underscore';
+import _ from 'underscore';
 import {publishPagination} from 'meteor/kurounin:pagination';
 import SimpleSchema from 'simpl-schema';
 

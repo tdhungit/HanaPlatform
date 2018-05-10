@@ -16,7 +16,10 @@ class BranchOfficesCollection extends CollectionBase {
             user = userParam;
         }
 
-        const branchOffices = this.find({_id: {$in: user.branchOffices}}).fetch();
+        const branchOffices = this.find({
+            _id: {$in: user.branchOffices},
+            type: {$not: 'Warehouse'}
+        }).fetch();
         return branchOffices ? branchOffices : [];
     }
 
@@ -50,6 +53,11 @@ const BranchOfficesSchema = CollectionBase.schema({
             if (this.isInsert) return (new Date()).toISOString();
             return this.value;
         }
+    },
+    type: {
+        type: String,
+        allowedValues: ['Office', 'Warehouse'],
+        defaultValue: 'Office'
     },
     name: {
         type: String,

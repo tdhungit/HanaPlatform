@@ -2,11 +2,11 @@ import React, {Component} from 'react';
 import {
     Modal, ModalHeader, ModalBody, ModalFooter,
     Button,
-    ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText,
+    ListGroup, ListGroupItem,
+    Badge
 } from 'reactstrap';
 import BootstrapPaginator from 'react-bootstrap-pagination';
 
-import {utilsHelper} from '../utils/utils';
 import {T} from '/imports/common/Translation';
 import Users from '../../../../collections/Users/Users';
 import container from '../../../../common/Container';
@@ -14,6 +14,11 @@ import container from '../../../../common/Container';
 export class UsersModal extends Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            selected: {}
+        };
+
         this.toggle = this.toggle.bind(this);
         this.onOk = this.onOk.bind(this);
         this.onCancel = this.onCancel.bind(this);
@@ -22,19 +27,29 @@ export class UsersModal extends Component {
     componentWillMount() {
         this.limit = Users.getLimit();
         this.pagination = Users.pagination();
+        this.state.selected = this.props.selected || {};
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.selected) {
+            this.setState({selected: nextProps.selected});
+        }
     }
 
     toggle() {
-        this.props.mdToggle && this.props.mdToggle();
+        const {mdToggle} = this.props;
+        mdToggle && mdToggle();
     }
 
     onOk() {
-        this.props.mdOk && this.props.mdOk(this.child);
+        const {onOk} = this.props;
+        onOk && onOk(this.state.selected);
     }
 
     onCancel() {
-        if (this.props.mdCancel) {
-            this.props.mdCancel()
+        const {mdCancel} = this.props;
+        if (mdCancel) {
+            mdCancel();
         } else {
             this.toggle();
         }
@@ -45,13 +60,16 @@ export class UsersModal extends Component {
 
         return (
             <Modal isOpen={isOpen}
-                   toggle={this.toggle}
-                   className="modal-lg">
+                   toggle={this.toggle}>
                 <ModalHeader toggle={this.toggle}>
                     <i className="fa fa-users"/> <T>Users</T>
                 </ModalHeader>
                 <ModalBody>
-                    <ListUsers pagination={this.pagination} limit={this.limit}/>
+                    <ListUsers
+                        selected={this.state.selected}
+                        pagination={this.pagination}
+                        limit={this.limit}
+                        onChange={(userSelected) => this.setState({selected: userSelected})}/>
                 </ModalBody>
                 <ModalFooter>
                     <Button color="primary"
@@ -69,16 +87,41 @@ export class UsersModal extends Component {
 }
 
 class ListUsersContainer extends Component {
+    selectInvite(user) {
+        const {onChange, selected} = this.props;
+        let userSelected = {...selected};
+        if (userSelected[user._id]) {
+            delete userSelected[user._id];
+        } else {
+            userSelected[user._id] = {
+                _id: user._id,
+                username: user.username
+            };
+        }
+
+        onChange && onChange(userSelected);
+    }
+
     render() {
-        const {pagination, limit, records} = this.props;
+        const {pagination, limit, records, selected} = this.props;
 
         return (
             <div>
                 <ListGroup>
                     {records.map((record, i) => {
                         return (
-                            <ListGroupItem key={i}>
+                            <ListGroupItem key={i}
+                                           tag="a"
+                                           href="javascript:void(0)"
+                                           onClick={() => this.selectInvite(record)}>
                                 {record.username}
+                                <Badge color="secondary" className="float-right">
+                                    {selected
+                                     && selected[record._id]
+                                     && selected[record._id]._id ?
+                                        <i className="fa fa-check-circle-o"/> :
+                                        <i className="fa fa-circle-o"/>}
+                                </Badge>
                             </ListGroupItem>
                         );
                     })}

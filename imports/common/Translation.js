@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import i18n from 'meteor/universe:i18n';
 import {Helmet} from 'react-helmet';
 import {Meteor} from 'meteor/meteor';
-import {_} from 'meteor/underscore';
+import _ from 'underscore';
 
 import Settings from '/imports/collections/Settings/Settings';
 

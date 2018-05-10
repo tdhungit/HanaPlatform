@@ -211,15 +211,6 @@ Users.filterOwnerData = (user, filters = {}) => {
 
     if (user !== -1) {
         selector.companyId = user && user.companyId || '';
-        if (user) {
-            if (user.isAdmin || user.isDeveloper) {
-                /* @TODO */
-            } else {
-                selector.branchOffices = user.settings && user.settings.branchOfficeId || '';
-            }
-        } else {
-            selector.branchOffices = '';
-        }
     }
 
     return selector;

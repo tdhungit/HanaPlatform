@@ -1,5 +1,6 @@
 import {Meteor} from 'meteor/meteor';
 import {check} from 'meteor/check';
+import _ from 'underscore';
 import {aclAccess} from '../Users/aclUtils';
 import ChatChannels from './ChatChannels';
 import Users from '../Users/Users';
@@ -89,5 +90,31 @@ Meteor.methods({
         }
 
         return channelId;
+    },
+    'chatChannels.invite': function(channelId, inviteUsers) {
+        const channel = ChatChannels.queryOne(Meteor.user(), {
+            _id: channelId,
+            users: {$elemMatch: {_id: Meteor.userId()}}
+        });
+
+        if (!channel) {
+            throw new Meteor.Error('404', 'Can not found channel');
+        }
+
+        let users = [];
+        _.each(inviteUsers, (user) => {
+            let pos = _.findLastIndex(channel.users, {_id: user._id});
+            if (pos >= 0) {
+                users.push(channel.users[pos]);
+            } else {
+                users.push(user);
+            }
+        });
+
+        try {
+            ChatChannels.update(channel._id, {$set: {users: users}});
+        } catch (e) {
+            throw new Meteor.Error('500', e);
+        }
     }
 });

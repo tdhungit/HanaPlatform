@@ -39,6 +39,7 @@
     "redux-form": "^7.3.0",
     "redux-thunk": "^2.2.0",
     "simpl-schema": "^1.4.2",
-    "sprintf-js": "^1.1.1"
+    "sprintf-js": "^1.1.1",
+    "underscore": "^1.9.0"
   }
 }

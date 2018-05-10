@@ -24,7 +24,7 @@ Meteor.publish('users.user', function () {
 });
 
 Meteor.publish('users.list', function () {
-    return Users.getAll({});
+    return Users.query(Meteor.user(), {});
 });
 
 Meteor.publish('users.detail', function (userId) {

@@ -1,5 +1,9 @@
 // system app list strings. Admin user can add more app list string in db settings
 export const AppListStrings = {
+    BranchOfficeTypesList: {
+        Office: 'Office',
+        Warehouse: 'Warehouse'
+    },
     DateFormatList: {
         'YYYY-MM-DD': 'YYYY-MM-DD',
         'MM-DD-YYYY': 'MM-DD-YYYY',
@@ -11,12 +15,12 @@ export const AppListStrings = {
         'DD-MM-YYYY HH:mm': 'DD-MM-YYYY HH:mm'
     },
     ActivityTypes: {
-        'Calls': 'Calls',
-        'Meetings': 'Meetings',
-        'Tasks': 'Tasks'
+        Calls: 'Calls',
+        Meetings: 'Meetings',
+        Tasks: 'Tasks'
     },
     ConferencingList: {
-        'Skype': 'Skype',
-        'Hangout': 'Hangout'
+        Skype: 'Skype',
+        Hangout: 'Hangout'
     }
 };

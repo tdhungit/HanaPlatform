@@ -1,5 +1,5 @@
 import {Meteor} from 'meteor/meteor';
-import {_} from 'meteor/underscore';
+import _ from 'underscore';
 import Settings from '../../../../collections/Settings/Settings';
 import moment from 'moment';
 import {t} from '../../../../common/Translation';

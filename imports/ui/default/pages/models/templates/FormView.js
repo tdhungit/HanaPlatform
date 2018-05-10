@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router';
 import {Meteor} from 'meteor/meteor';
-import {_} from 'meteor/underscore';
+import _ from 'underscore';
 import {
     Row,
     Col,

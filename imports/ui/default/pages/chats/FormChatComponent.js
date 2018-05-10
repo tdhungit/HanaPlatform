@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router';
 import {Meteor} from 'meteor/meteor';
-import {_} from 'meteor/underscore';
+import _ from 'underscore';
 import {
     Button, Input,
     FormGroup, InputGroup, InputGroupAddon,
@@ -77,8 +77,16 @@ class FormChatComponent extends Component {
         }
     }
 
-    sendInvite() {
-
+    sendInvite(invites) {
+        const {channelId} = this.props;
+        if (channelId) {
+            Meteor.call('chatChannels.invite', channelId, invites, (error) => {
+                utilsHelper.alertSystem(error);
+                if (!error) {
+                    this.setState({showInvite: false});
+                }
+            });
+        }
     }
 
     getChatSources() {
@@ -94,7 +102,7 @@ class FormChatComponent extends Component {
             sources.push({
                 position: position,
                 type: chat.type || 'text',
-                title: chat.user.username,
+                title: chat.user && chat.user.username,
                 avatar: chat.avatar,
                 text: chat.message,
                 dateString: utilsHelper.toDateTimeDisplay(chat.createdAt),
@@ -145,7 +153,8 @@ class FormChatComponent extends Component {
                     </div>
                     <UsersModal
                         isOpen={this.state.showInvite}
-                        mdToggle={() => this.setState({showInvite: false})}/>
+                        mdToggle={() => this.setState({showInvite: false})}
+                        onOk={(invites) => this.sendInvite(invites)}/>
                     {this.renderChatMessages()}
                 </div>
                 <FormGroup className="messageInput">
@@ -175,6 +184,7 @@ export default withRouter(container((props, onData) => {
     const channelId = props.channelId || '';
     Meteor.subscribe('chatChannels.detailActive', channelId);
     Meteor.subscribe('chatMessages.list', channelId);
+    Meteor.subscribe('users.list');
     Meteor.subscribe('medias.list', 'UserAvatar');
     let chats = null;
     const channel = ChatChannels.findOne(channelId);
@@ -183,7 +193,7 @@ export default withRouter(container((props, onData) => {
         chats.forEach((chat, i) => {
             let user = Users.queryOne(Meteor.user(), chat.userId);
             let mediaLink = Meteor.absoluteUrl('img/avatars/6.jpg');
-            if (user.profile && user.profile.avatar) {
+            if (user && user.profile && user.profile.avatar) {
                 const media = Medias.findOne(user.profile && user.profile.avatar);
                 if (media) {
                     mediaLink = media.link();
