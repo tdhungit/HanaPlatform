@@ -181,6 +181,10 @@ Schema.User = new SimpleSchema({
         blackbox: true
     },
     // user is admin
+    isBranchManager: {
+        type: Boolean,
+        defaultValue: false
+    },
     isAdmin: {
         type: Boolean,
         defaultValue: false

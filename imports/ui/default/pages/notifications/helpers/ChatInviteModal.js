@@ -45,7 +45,7 @@ class ChatInviteModalContainer extends Component {
     }
 
     joinChat(channel) {
-        const pos = _.findIndex(channel, ['_id', Meteor.userId()]);
+        const pos = _.findIndex(channel, {_id: Meteor.userId()});
         channel[pos].status = 'Active';
         Meteor.call('chatChannels.update', channel, (error) => {
             utilsHelper.alertSystem(error);
@@ -53,7 +53,7 @@ class ChatInviteModalContainer extends Component {
     }
 
     cancelChat(channel) {
-        const pos = _.findIndex(channel, ['_id', Meteor.userId()]);
+        const pos = _.findIndex(channel, {_id: Meteor.userId()});
         channel[pos].status = 'Inactive';
         Meteor.call('chatChannels.update', channel, (error) => {
             utilsHelper.alertSystem(error);
