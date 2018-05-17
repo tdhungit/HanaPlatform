@@ -95,6 +95,6 @@ class ListChannelsComponent extends Component {
 export default withRouter(container((props, onData) => {
     Meteor.subscribe('chatChannels.list');
     onData(null, {
-        channels: ChatChannels.find().fetch() || []
+        channels: ChatChannels.find({}).fetch() || []
     });
 }, ListChannelsComponent));

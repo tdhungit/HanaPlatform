@@ -4,6 +4,8 @@ import _ from 'underscore';
 import {aclAccess} from '../Users/aclUtils';
 import ChatChannels from './ChatChannels';
 import Users from '../Users/Users';
+import {NotificationTypes} from '../Notifications/config';
+import Notifications from '../Notifications/Notifications';
 
 Meteor.methods({
     'chatChannels.insert': function (channel) {
@@ -103,12 +105,24 @@ Meteor.methods({
 
         let users = [];
         _.each(inviteUsers, (user) => {
-            let pos = _.findLastIndex(channel.users, {_id: user._id});
+            let pos = _.findIndex(channel.users, {_id: user._id});
             if (pos >= 0) {
                 users.push(channel.users[pos]);
             } else {
                 users.push(user);
             }
+
+            // send Notification
+            const notification = {
+                type: NotificationTypes.ChatInvite,
+                assignedId: user._id,
+                message: NotificationTypes.ChatInvite,
+                destination: channelId,
+                params: {
+                    channel: channel
+                }
+            };
+            Notifications.insert(notification);
         });
 
         try {

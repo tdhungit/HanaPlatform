@@ -22,6 +22,7 @@ import {t, T} from '/imports/common/Translation';
 import {ImageTag} from '../../helpers/tags/MediaImage';
 import BranchOffices from '/imports/collections/BranchOffices/BranchOffices';
 import {utilsHelper} from '../../helpers/utils/utils';
+import {ChatInviteModal} from '../../pages/notifications/helpers/ChatInviteModal';
 
 class Header extends Component {
     constructor(props) {
@@ -207,6 +208,9 @@ class Header extends Component {
 
                 <NavbarToggler className="d-md-down-none" type="button"
                                onClick={this.asideToggle}>&#9776;</NavbarToggler>
+
+                {/* check notification */}
+                <ChatInviteModal/>
 
                 {/* check branch office */}
                 <Modal isOpen={this.state.selectBranchOffice}>

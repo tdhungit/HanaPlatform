@@ -1,7 +1,11 @@
 import CollectionAssign from '../../common/CollectionAssign';
+import {NotificationTypes} from './config';
 
 class NotificationsCollection extends CollectionAssign {
-
+    fixedFilters(user, selector = {}, actionName = 'View') {
+        selector.assignedId = user._id;
+        return selector;
+    }
 }
 
 const Notifications = new NotificationsCollection('notifications');
@@ -29,7 +33,7 @@ Schema.Notifications = CollectionAssign.schema({
     },
     type: {
         type: String,
-        defaultValue: "Message"
+        defaultValue: NotificationTypes.Message
     },
     message: {type: String},
     destination: {type: String},

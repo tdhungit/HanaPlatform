@@ -1,4 +1,6 @@
 import CollectionBase from '../../common/CollectionBase';
+import {Meteor} from "meteor/meteor";
+import {ChatChannelUserStatus} from './config';
 
 class ChatChannelsCollection extends CollectionBase {
     /**
@@ -80,8 +82,7 @@ ChatChannelsSchema.ChatChannels = CollectionBase.schema({
     "users.$.username": {type: String},
     "users.$.status": {
         type: String,
-        defaultValue: 'Waiting',
-        allowedValues: ['Waiting', 'Active', 'Inactive']
+        defaultValue: ChatChannelUserStatus.Waiting
     },
     "users.$.isAdmin": {
         type: Boolean,

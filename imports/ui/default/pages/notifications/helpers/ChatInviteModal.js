@@ -12,14 +12,11 @@ import container from '../../../../../common/Container';
 import Notifications from '../../../../../collections/Notifications/Notifications';
 import {NotificationUtils} from './utils';
 import {utilsHelper} from '../../../helpers/utils/utils';
+import {NotificationTypes} from '../../../../../collections/Notifications/config';
 
 class ChatInviteModalContainer extends Component {
     constructor(props) {
         super(props);
-
-        this.state = {
-            isOpen: false
-        };
 
         this.toggle = this.toggle.bind(this);
     }
@@ -29,11 +26,11 @@ class ChatInviteModalContainer extends Component {
     }
 
     componentWillMount() {
-        this.state.isOpen = this.props.isOpen;
+
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({isOpen: nextProps.isOpen});
+
     }
 
     componentDidMount() {
@@ -45,23 +42,23 @@ class ChatInviteModalContainer extends Component {
     }
 
     joinChat(channel) {
-        const pos = _.findIndex(channel, {_id: Meteor.userId()});
-        channel[pos].status = 'Active';
+        const pos = _.findIndex(channel.users, {_id: Meteor.userId()});
+        channel.users[pos].status = 'Active';
         Meteor.call('chatChannels.update', channel, (error) => {
             utilsHelper.alertSystem(error);
         });
     }
 
     cancelChat(channel) {
-        const pos = _.findIndex(channel, {_id: Meteor.userId()});
-        channel[pos].status = 'Inactive';
+        const pos = _.findIndex(channel.users, {_id: Meteor.userId()});
+        channel.users[pos].status = 'Inactive';
         Meteor.call('chatChannels.update', channel, (error) => {
             utilsHelper.alertSystem(error);
         });
     }
 
     render() {
-        const {notify} = this.props;
+        const {notify, isOpen} = this.props;
 
         if (!notify || !notify.params || !notify.params.channel || !notify.params.channel._id) {
             return <div/>;
@@ -70,7 +67,7 @@ class ChatInviteModalContainer extends Component {
         NotificationUtils.read(notify._id);
         const channel = notify.params.channel;
         return (
-            <Modal isOpen={false}>
+            <Modal isOpen={isOpen}>
                 <ModalHeader toggle={this.toggle}>
                     <i className="fa fa-send"/> <T>Chat Invited</T>
                 </ModalHeader>
@@ -96,7 +93,9 @@ class ChatInviteModalContainer extends Component {
     }
 }
 export const ChatInviteModal = container((props, onData) => {
-    const notify = Notifications.findOne({type: 'ChatInvite'});
+    const notify = Notifications.findOne({
+        type: NotificationTypes.ChatInvite
+    });
     let isOpen = false;
     if (notify && notify.params.channel && notify.params.channel._id) {
         isOpen = true;

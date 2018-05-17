@@ -11,7 +11,7 @@ import {
 import 'react-chat-elements/dist/main.css';
 import {MessageList} from 'react-chat-elements';
 
-import {t} from '../../../../common/Translation';
+import {t, T} from '../../../../common/Translation';
 import container from '../../../../common/Container';
 import ChatMessages from '../../../../collections/ChatMessages/ChatMessages';
 import Users from '../../../../collections/Users/Users';
@@ -19,6 +19,7 @@ import ChatChannels from '../../../../collections/ChatChannels/ChatChannels';
 import Medias from '../../../../collections/Medias/Medias';
 import {utilsHelper} from '../../helpers/utils/utils';
 import {UsersModal} from '../../helpers/tags/UsersModal';
+import {ChatChannelUserStatus} from '../../../../collections/ChatChannels/config';
 
 class FormChatComponent extends Component {
     constructor(props) {
@@ -89,6 +90,21 @@ class FormChatComponent extends Component {
         }
     }
 
+    joinChat() {
+        const {channelId, channel} = this.props;
+        if (channelId) {
+            let data = {_id: channelId};
+            data.users = channel.users;
+            const pos = _.findIndex(data.users, {_id: Meteor.userId()});
+            if (pos >= 0) {
+                data.users[pos].status = 'Active';
+                Meteor.call('chatChannels.update', data, (error) => {
+                    utilsHelper.alertSystem(error);
+                });
+            }
+        }
+    }
+
     getChatSources() {
         const {chats} = this.props;
         let sources = [];
@@ -127,11 +143,22 @@ class FormChatComponent extends Component {
     }
 
     render() {
-        const {chats} = this.props;
-        if (!chats) {
+        const {status} = this.props;
+        if (status === ChatChannelUserStatus.Inactive) {
             return (
                 <div className="inboxContent">
                     <Alert color="danger">{t.__('You can not access this channel!')}</Alert>
+                </div>
+            );
+        }
+
+        if (status === ChatChannelUserStatus.Waiting) {
+            return (
+                <div className="inboxContent">
+                    <Alert color="warning">{t.__('Please accept to join!')}</Alert>
+                    <Button block
+                            color="primary"
+                            onClick={() => this.joinChat()}><T>Join</T></Button>
                 </div>
             );
         }
@@ -182,30 +209,42 @@ class FormChatComponent extends Component {
 
 export default withRouter(container((props, onData) => {
     const channelId = props.channelId || '';
-    Meteor.subscribe('chatChannels.detailActive', channelId);
+    Meteor.subscribe('chatChannels.detail', channelId);
     Meteor.subscribe('chatMessages.list', channelId);
     Meteor.subscribe('users.list');
     Meteor.subscribe('medias.list', 'UserAvatar');
-    let chats = null;
+    let status = ChatChannelUserStatus.Inactive;
+    let chats = [];
     const channel = ChatChannels.findOne(channelId);
     if (channel && channel._id) {
-        chats = ChatMessages.find({channelId: channelId}).fetch();
-        chats.forEach((chat, i) => {
-            let user = Users.queryOne(Meteor.user(), chat.userId);
-            let mediaLink = Meteor.absoluteUrl('img/avatars/6.jpg');
-            if (user && user.profile && user.profile.avatar) {
-                const media = Medias.findOne(user.profile && user.profile.avatar);
-                if (media) {
-                    mediaLink = media.link();
-                }
-            }
-
-            chats[i].user = user;
-            chats[i].avatar = mediaLink;
+        status = ChatChannelUserStatus.Waiting;
+        const pos = _.findIndex(channel.users, {
+            _id: Meteor.userId(),
+            status: ChatChannelUserStatus.Active
         });
+
+        if (pos >= 0) {
+            status = ChatChannelUserStatus.Active;
+            chats = ChatMessages.find({channelId: channelId}).fetch();
+            chats.forEach((chat, i) => {
+                let user = Users.queryOne(Meteor.user(), chat.userId);
+                let mediaLink = Meteor.absoluteUrl('img/avatars/6.jpg');
+                if (user && user.profile && user.profile.avatar) {
+                    const media = Medias.findOne(user.profile && user.profile.avatar);
+                    if (media) {
+                        mediaLink = media.link();
+                    }
+                }
+
+                chats[i].user = user;
+                chats[i].avatar = mediaLink;
+            });
+        }
     }
 
     onData(null, {
-        chats: chats
+        channel: channel,
+        chats: chats,
+        status: status
     });
 }, FormChatComponent));
