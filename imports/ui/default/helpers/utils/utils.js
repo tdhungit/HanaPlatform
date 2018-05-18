@@ -225,7 +225,7 @@ class UtilsHelper {
         for (let key in filters) {
             let value = filters[key];
             if (value) {
-                query[key] = {$regex: ".*" + value + ".*", $options: "i"};
+                query[key] = {$regex: value, $options: "i"};
             }
         }
 

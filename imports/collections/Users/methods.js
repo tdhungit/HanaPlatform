@@ -102,7 +102,7 @@ Meteor.methods({
     'users.searchKeyword': function (keyword, limit = 10) {
         check(keyword, String);
         return Users.getAll({
-            username: {$regex: ".*" + keyword + ".*"}
+            username: {$regex: keyword}
         }, {
             limit: limit
         }).fetch();

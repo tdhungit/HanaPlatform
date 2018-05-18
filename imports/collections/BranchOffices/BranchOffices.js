@@ -1,6 +1,7 @@
 import CollectionBase from '/imports/common/CollectionBase';
 import Users from '../Users/Users';
 import {branchOfficeLayouts} from './layouts';
+import {BranchOfficeTypes} from './config';
 
 class BranchOfficesCollection extends CollectionBase {
     /**
@@ -56,8 +57,7 @@ const BranchOfficesSchema = CollectionBase.schema({
     },
     type: {
         type: String,
-        allowedValues: ['Office', 'Warehouse'],
-        defaultValue: 'Office'
+        defaultValue: BranchOfficeTypes.Office
     },
     name: {
         type: String,
