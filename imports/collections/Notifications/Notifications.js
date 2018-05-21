@@ -45,7 +45,11 @@ Schema.Notifications = CollectionAssign.schema({
     isRead: {
         type: Boolean,
         defaultValue: false
-    }
+    },
+    isNotify: {
+        type: Boolean,
+        defaultValue: true
+    },
 });
 
 Notifications.attachSchema(Schema.Notifications);

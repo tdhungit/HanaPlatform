@@ -11,6 +11,14 @@ export class NotificationUtils {
         });
     }
 
+    static notified(_id) {
+        Meteor.call('notifications.notified', _id, (error) => {
+            if (error) {
+                utilsHelper.alertError(error);
+            }
+        });
+    }
+
     static join(user, notify) {
         if (!notify.users || !notify.users[user._id]) {
             utilsHelper.errorMessage(t.__('Error! Please contact with Admin'));

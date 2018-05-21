@@ -23,6 +23,11 @@ import {ImageTag} from '../../helpers/tags/MediaImage';
 import BranchOffices from '/imports/collections/BranchOffices/BranchOffices';
 import {utilsHelper} from '../../helpers/utils/utils';
 import {ChatInviteModal} from '../../pages/notifications/helpers/ChatInviteModal';
+import Notifications from '../../../../collections/Notifications/Notifications';
+import {NotificationTypes} from '../../../../collections/Notifications/config';
+import container from '../../../../common/Container';
+import Users from '../../../../collections/Users/Users';
+import {NotificationUtils} from '../../pages/notifications/helpers/utils';
 
 class Header extends Component {
     constructor(props) {
@@ -32,6 +37,9 @@ class Header extends Component {
             branchOfficeDropdownOpen: false, // dropdown
             userDropdownOpen: false, // dropdown
             selectBranchOffice: false, // dropdown
+            notificationDropdownOpen: false, // dropdown
+
+            notificationModalId: '',
             branchOffices: [],
             currentBranchOffice: {}
         };
@@ -39,7 +47,6 @@ class Header extends Component {
 
     componentWillMount() {
         const currentUser = Meteor.user();
-        this.state.branchOffices = BranchOffices.ofUser(currentUser);
         // get current branch office
         if (currentUser.settings && currentUser.settings.branchOfficeId) {
             this.state.currentBranchOffice = BranchOffices.findOne(currentUser.settings.branchOfficeId);
@@ -101,9 +108,139 @@ class Header extends Component {
         });
     }
 
-    render() {
-        const currentUser = Meteor.user();
+    handleClickNotify(notify) {
+        if (notify.type === NotificationTypes.ChatInvite) {
+            this.setState({notificationModalId: notify._id});
+        } else if (notify.type === NotificationTypes.Message) {
+            if (notify.destination) {
+                NotificationUtils.read(notify._id);
+                this.props.history.push(notify.destination);
+            }
+        }
+    }
 
+    toastMsg(notify) {
+        if (notify.isNotify) {
+            const Msg = () => {
+                return (
+                    <a href="javascript:void(0)" onClick={() => this.handleClickNotify(notify)}>
+                        {notify.message}
+                    </a>
+                );
+            };
+
+            utilsHelper.toast(<Msg/>);
+        }
+    }
+
+    renderBranchOffices() {
+        const {branchOffices} = this.props;
+        return (
+            <NavItem>
+                <Dropdown isOpen={this.state.branchOfficeDropdownOpen}
+                          toggle={() => this.toggle('branchOfficeDropdownOpen')}>
+                    <DropdownToggle className="nav-link dropdown-toggle">
+                        {this.state.selectBranchOffice ?
+                            t.__('Branch Office') :
+                            this.state.currentBranchOffice.name}
+                    </DropdownToggle>
+
+                    <DropdownMenu right className={this.state.branchOfficeDropdownOpen ? 'show' : ''}>
+                        {branchOffices.map((branchOffice) => {
+                            return (
+                                <DropdownItem key={branchOffice._id} onClick={() => this.chooseBranchOffice(branchOffice._id)}>
+                                    {branchOffice.name}
+                                </DropdownItem>
+                            );
+                        })}
+                    </DropdownMenu>
+                </Dropdown>
+            </NavItem>
+        );
+    }
+
+    renderNotification() {
+        const {notifies, notifiesCount} = this.props;
+        return (
+            <NavItem className="d-md-down-none">
+                <Dropdown isOpen={this.state.notificationDropdownOpen}
+                          toggle={() => this.toggle('notificationDropdownOpen')}>
+                    <DropdownToggle className="nav-link">
+                        <i className="icon-bell"/> <Badge pill color="danger">{notifiesCount}</Badge>
+                    </DropdownToggle>
+                    <DropdownMenu right className={this.state.notificationDropdownOpen ? 'show' : ''}>
+                        {notifies.map((notify, i) => {
+                            if (notify.isNotify) {
+                                this.toastMsg(notify);
+                                NotificationUtils.notified(notify._id);
+                            }
+
+                            return (
+                                <DropdownItem key={i}
+                                              onClick={() => this.handleClickNotify(notify)}>
+                                    <i className="fa fa-bell-o"/> {notify.message}
+                                </DropdownItem>
+                            )
+                        })}
+                    </DropdownMenu>
+                </Dropdown>
+            </NavItem>
+        );
+    }
+
+    renderUserMenu() {
+        const {currentUser} = this.props;
+        return (
+            <NavItem>
+                <Dropdown isOpen={this.state.userDropdownOpen}
+                          toggle={() => this.toggle('userDropdownOpen')}>
+                    <DropdownToggle className="nav-link dropdown-toggle">
+                        <ImageTag
+                            media={
+                                currentUser.profile
+                                && currentUser.profile.avatar
+                                    ? currentUser.profile.avatar : ''
+                            }
+                            className="img-avatar" alt={currentUser && currentUser.username}/>
+                        <span className="d-md-down-none">{currentUser && currentUser.username}</span>
+                    </DropdownToggle>
+
+                    <DropdownMenu right className={this.state.userDropdownOpen ? 'show' : ''}>
+                        <DropdownItem header tag="div" className="text-center">
+                            <strong>Account</strong>
+                        </DropdownItem>
+                        <DropdownItem>
+                            <i className="fa fa-bell-o"/> Updates<Badge color="info">42</Badge>
+                        </DropdownItem>
+                        <DropdownItem>
+                            <i className="fa fa-envelope-o"/> Messages<Badge color="success">42</Badge>
+                        </DropdownItem>
+                        <DropdownItem>
+                            <i className="fa fa-tasks"/> Tasks<Badge color="danger">42</Badge>
+                        </DropdownItem>
+                        <DropdownItem>
+                            <i className="fa fa-comments"/> Comments<Badge color="warning">42</Badge>
+                        </DropdownItem>
+                        <DropdownItem header tag="div" className="text-center">
+                            <strong>Settings</strong>
+                        </DropdownItem>
+                        <DropdownItem onClick={() => this.props.history.push('/manager/me')}>
+                            <i className="fa fa-user"/> <T>Profile</T>
+                        </DropdownItem>
+                        <DropdownItem>
+                            <i className="fa fa-wrench"/> <T>Settings</T>
+                        </DropdownItem>
+                        {/*<DropdownItem divider/>*/}
+                        <DropdownItem onClick={() => this.handleLogout()}>
+                            <i className="fa fa-lock"/> <T>Logout</T>
+                        </DropdownItem>
+                    </DropdownMenu>
+                </Dropdown>
+            </NavItem>
+        );
+    }
+
+    render() {
         return (
             <header className="app-header navbar">
                 <NavbarToggler className="d-lg-none" onClick={this.mobileSidebarToggle}>&#9776;</NavbarToggler>
@@ -123,31 +260,9 @@ class Header extends Component {
                 </Nav>
 
                 <Nav className="ml-auto" navbar>
-                    <NavItem>
-                        <Dropdown isOpen={this.state.branchOfficeDropdownOpen}
-                                  toggle={() => this.toggle('branchOfficeDropdownOpen')}>
-                            <DropdownToggle className="nav-link dropdown-toggle">
-                                {this.state.selectBranchOffice ?
-                                    t.__('Branch Office') :
-                                    this.state.currentBranchOffice.name}
-                            </DropdownToggle>
+                    {this.renderBranchOffices()}
+                    {this.renderNotification()}
 
-                            <DropdownMenu right className={this.state.branchOfficeDropdownOpen ? 'show' : ''}>
-                                {this.state.branchOffices.map((branchOffice) => {
-                                    return (
-                                        <DropdownItem key={branchOffice._id} onClick={() => this.chooseBranchOffice(branchOffice._id)}>
-                                            {branchOffice.name}
-                                        </DropdownItem>
-                                    );
-                                })}
-                            </DropdownMenu>
-                        </Dropdown>
-                    </NavItem>
-                    <NavItem className="d-md-down-none">
-                        <NavLink href="#">
-                            <i className="icon-bell"/><Badge pill color="danger">5</Badge>
-                        </NavLink>
-                    </NavItem>
                     <NavItem className="d-md-down-none">
                         <Link to="/manager/activities/calendar" className="nav-link">
                             <i className="icon-list"/>
@@ -158,59 +273,18 @@ class Header extends Component {
                             <i className="icon-location-pin"/>
                         </NavLink>
                     </NavItem>
-                    <NavItem>
-                        <Dropdown isOpen={this.state.userDropdownOpen}
-                                  toggle={() => this.toggle('userDropdownOpen')}>
-                            <DropdownToggle className="nav-link dropdown-toggle">
-                                <ImageTag
-                                    media={
-                                        currentUser.profile
-                                        && currentUser.profile.avatar
-                                            ? currentUser.profile.avatar : ''
-                                    }
-                                    className="img-avatar" alt={currentUser && currentUser.username}/>
-                                <span className="d-md-down-none">{currentUser && currentUser.username}</span>
-                            </DropdownToggle>
 
-                            <DropdownMenu right className={this.state.userDropdownOpen ? 'show' : ''}>
-                                <DropdownItem header tag="div" className="text-center">
-                                    <strong>Account</strong>
-                                </DropdownItem>
-                                <DropdownItem>
-                                    <i className="fa fa-bell-o"/> Updates<Badge color="info">42</Badge>
-                                </DropdownItem>
-                                <DropdownItem>
-                                    <i className="fa fa-envelope-o"/> Messages<Badge color="success">42</Badge>
-                                </DropdownItem>
-                                <DropdownItem>
-                                    <i className="fa fa-tasks"/> Tasks<Badge color="danger">42</Badge>
-                                </DropdownItem>
-                                <DropdownItem>
-                                    <i className="fa fa-comments"/> Comments<Badge color="warning">42</Badge>
-                                </DropdownItem>
-                                <DropdownItem header tag="div" className="text-center">
-                                    <strong>Settings</strong>
-                                </DropdownItem>
-                                <DropdownItem onClick={() => this.props.history.push('/manager/me')}>
-                                    <i className="fa fa-user"/> Profile
-                                </DropdownItem>
-                                <DropdownItem>
-                                    <i className="fa fa-wrench"/> Settings
-                                </DropdownItem>
-                                {/*<DropdownItem divider/>*/}
-                                <DropdownItem onClick={this.handleLogout.bind(this)}>
-                                    <i className="fa fa-lock"/> Logout
-                                </DropdownItem>
-                            </DropdownMenu>
-                        </Dropdown>
-                    </NavItem>
+                    {this.renderUserMenu()}
                 </Nav>
 
-                <NavbarToggler className="d-md-down-none" type="button"
+                <NavbarToggler className="d-md-down-none"
+                               type="button"
                                onClick={this.asideToggle}>&#9776;</NavbarToggler>
 
                 {/* check notification */}
-                <ChatInviteModal/>
+                <ChatInviteModal
+                    notifyId={this.state.notificationModalId}
+                    opened={() => {this.setState({notificationModalId: ''})}}/>
 
                 {/* check branch office */}
                 <Modal isOpen={this.state.selectBranchOffice}>
@@ -234,4 +308,15 @@ class Header extends Component {
     }
 }
 
-export default Header;
+export default container((props, onData) => {
+    const currentUser = Users.findOne(Meteor.userId());
+    const branchOffices = BranchOffices.ofUser(currentUser);
+    const notifiesCursor = Notifications.find({isRead: false});
+
+    onData(null, {
+        currentUser: currentUser,
+        branchOffices: branchOffices,
+        notifiesCount: notifiesCursor.count(),
+        notifies: notifiesCursor.fetch()
+    });
+}, Header);

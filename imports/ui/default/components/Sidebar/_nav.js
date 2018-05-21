@@ -6,10 +6,11 @@ export default {
             name: 'Dashboard',
             url: '/manager/dashboard',
             icon: 'icon-speedometer',
-            badge: {
-                variant: 'info',
-                text: 'NEW'
-            }
+        },
+        {
+            name: 'Discuss',
+            url: '/manager/chats',
+            icon: 'fa fa-comments',
         },
     ],
     items: [...navModules],

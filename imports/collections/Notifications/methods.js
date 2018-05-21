@@ -11,5 +11,12 @@ Meteor.methods({
         } catch (e) {
             throw new Meteor.Error('500', e);
         }
+    },
+    'notifications.notified': function (_id) {
+        try {
+            Notifications.update(_id, {$set: {isNotify: false}});
+        } catch (e) {
+            throw new Meteor.Error('500', e);
+        }
     }
 });

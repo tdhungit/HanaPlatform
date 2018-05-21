@@ -12,7 +12,6 @@ import container from '../../../../../common/Container';
 import Notifications from '../../../../../collections/Notifications/Notifications';
 import {NotificationUtils} from './utils';
 import {utilsHelper} from '../../../helpers/utils/utils';
-import {NotificationTypes} from '../../../../../collections/Notifications/config';
 
 class ChatInviteModalContainer extends Component {
     constructor(props) {
@@ -38,11 +37,18 @@ class ChatInviteModalContainer extends Component {
     }
 
     componentDidMount() {
-
+        this.opened(this.state.isOpen);
     }
 
     toggle() {
-        this.setState({isOpen: false});
+        this.setState({isOpen: !this.state.isOpen});
+    }
+
+    opened(isOpen) {
+        const {notify, opened} = this.props;
+        if (isOpen && notify && notify._id) {
+            opened && opened();
+        }
     }
 
     joinChat(channel) {
@@ -63,7 +69,6 @@ class ChatInviteModalContainer extends Component {
 
     render() {
         const {notify} = this.props;
-
         if (!notify || !notify.params || !notify.params.channel || !notify.params.channel._id) {
             return <div/>;
         }
@@ -97,15 +102,9 @@ class ChatInviteModalContainer extends Component {
     }
 }
 export const ChatInviteModal = container((props, onData) => {
-    const notify = Notifications.findOne({
-        type: NotificationTypes.ChatInvite,
-        isRead: false
-    });
-
-    let isOpen = false;
-    if (notify && notify.params.channel && notify.params.channel._id) {
-        isOpen = true;
-    }
+    const notifyId = props.notifyId;
+    const notify = Notifications.findOne(notifyId);
+    const isOpen = !!(notify && notify._id);
 
     onData(null, {
         notify: notify,
