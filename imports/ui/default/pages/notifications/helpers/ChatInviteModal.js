@@ -18,6 +18,10 @@ class ChatInviteModalContainer extends Component {
     constructor(props) {
         super(props);
 
+        this.state = {
+            isOpen: false
+        };
+
         this.toggle = this.toggle.bind(this);
     }
 
@@ -26,11 +30,11 @@ class ChatInviteModalContainer extends Component {
     }
 
     componentWillMount() {
-
+        this.state.isOpen = this.props.isOpen;
     }
 
     componentWillReceiveProps(nextProps) {
-
+        this.setState({isOpen: nextProps.isOpen});
     }
 
     componentDidMount() {
@@ -58,7 +62,7 @@ class ChatInviteModalContainer extends Component {
     }
 
     render() {
-        const {notify, isOpen} = this.props;
+        const {notify} = this.props;
 
         if (!notify || !notify.params || !notify.params.channel || !notify.params.channel._id) {
             return <div/>;
@@ -67,7 +71,7 @@ class ChatInviteModalContainer extends Component {
         NotificationUtils.read(notify._id);
         const channel = notify.params.channel;
         return (
-            <Modal isOpen={isOpen}>
+            <Modal isOpen={this.state.isOpen}>
                 <ModalHeader toggle={this.toggle}>
                     <i className="fa fa-send"/> <T>Chat Invited</T>
                 </ModalHeader>
@@ -94,8 +98,10 @@ class ChatInviteModalContainer extends Component {
 }
 export const ChatInviteModal = container((props, onData) => {
     const notify = Notifications.findOne({
-        type: NotificationTypes.ChatInvite
+        type: NotificationTypes.ChatInvite,
+        isRead: false
     });
+
     let isOpen = false;
     if (notify && notify.params.channel && notify.params.channel._id) {
         isOpen = true;

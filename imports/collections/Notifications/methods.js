@@ -5,7 +5,7 @@ Meteor.methods({
     'notifications.insert': function (notification) {
         return Notifications.insert(notification);
     },
-    'notification.read': function (_id, isRead) {
+    'notifications.read': function (_id, isRead) {
         try {
             Notifications.update(_id, {$set: {isRead: isRead}});
         } catch (e) {
