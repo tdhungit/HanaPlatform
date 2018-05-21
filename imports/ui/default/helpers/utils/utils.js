@@ -4,6 +4,7 @@ import Settings from '../../../../collections/Settings/Settings';
 import moment from 'moment';
 import {t} from '../../../../common/Translation';
 import {Bert} from 'meteor/themeteorchef:bert';
+import {toast} from 'react-toastify';
 
 class UtilsHelper {
     getRecordTitle(record, fields) {
@@ -285,29 +286,34 @@ class UtilsHelper {
     errorMessage(message) {
         Bert.alert(message, 'danger');
     }
-
-    /**
-     * info message
-     * @param message
-     */
     infoMessage(message) {
         Bert.alert(message, 'info');
     }
-
-    /**
-     * warning message
-     * @param message
-     */
     warningMessage(message) {
         Bert.alert(message, 'warning');
     }
-
-    /**
-     * success message
-     * @param message
-     */
     successMessage(message) {
         Bert.alert(message, 'success');
+    }
+
+    /**
+     * toast
+     * @param message
+     */
+    toast(message) {
+        toast(message);
+    }
+    toastInfo(message) {
+        toast.info(message);
+    }
+    toastSuccess(message) {
+        toast.success(message);
+    }
+    toastWarning(message) {
+        toast.warn(message);
+    }
+    toastError(message) {
+        toast.error(message);
     }
 }
 

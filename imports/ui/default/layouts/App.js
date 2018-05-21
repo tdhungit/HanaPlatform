@@ -6,6 +6,8 @@ import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {appLoading, appSetVar} from '../store/app/app.actions';
+import {ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import container from '/imports/common/Container';
 import ManagerLayout from "./ManagerLayout";
@@ -44,6 +46,16 @@ class App extends Component {
                         <Authenticate path="/manager" component={ManagerLayout} {...appProps}/>
                         <Authenticate path="/" component={HomeLayout} {...appProps}/>
                     </Switch>
+                    <ToastContainer
+                        position="bottom-right"
+                        autoClose={6000}
+                        hideProgressBar={false}
+                        newestOnTop={false}
+                        closeOnClick
+                        rtl={false}
+                        pauseOnVisibilityChange
+                        draggable
+                        pauseOnHover/>
                 </div>
             </Router>
         );
