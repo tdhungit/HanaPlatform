@@ -1,7 +1,47 @@
 import CollectionBase from '/imports/common/CollectionBase';
 
 class MainMenusCollection extends CollectionBase {
+    getNav(user = null) {
+        if (!user) {
+            user = Meteor.user();
+        }
 
+        const menuRoot = this.query(user,
+            {
+                companyId: user.companyId,
+                parent: 'ROOT'
+            },
+            {
+                sort: {
+                    weight: 1
+                }
+            }
+        ).fetch();
+
+        let menus = [];
+        for (let idx in menuRoot) {
+            let menu = menuRoot[idx];
+            let menuChildren = this.query(user,
+                {
+                    companyId: user.companyId,
+                    parent: menu._id
+                },
+                {
+                    sort: {
+                        weight: 1
+                    }
+                }
+            ).fetch();
+
+            if (menuChildren.length > 0) {
+                menu.children = menuChildren;
+            }
+
+            menus.push(menu);
+        }
+
+        return menus;
+    }
 }
 
 const MainMenus = new MainMenusCollection('main_menus');

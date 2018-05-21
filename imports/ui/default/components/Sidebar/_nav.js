@@ -1,3 +1,5 @@
+import {navModules} from '../../../../modules/nav.modules';
+
 export default {
     first_items: [
         {
@@ -10,6 +12,7 @@ export default {
             }
         },
     ],
+    items: [...navModules],
     last_items: [
         {
             name: 'Companies',

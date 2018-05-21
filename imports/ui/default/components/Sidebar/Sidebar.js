@@ -8,6 +8,8 @@ import SidebarFooter from './SidebarFooter';
 import SidebarForm from './SidebarForm';
 import SidebarHeader from './SidebarHeader';
 import SidebarMinimizer from './SidebarMinimizer';
+import container from '../../../../common/Container';
+import MainMenus from '../../../../collections/MainMenus/MainMenus';
 
 class Sidebar extends Component {
     constructor(props) {
@@ -22,36 +24,29 @@ class Sidebar extends Component {
         this.hideMobile = this.hideMobile.bind(this);
     }
 
-    componentWillMount() {
-        Meteor.call('mainMenus.Nav', (error, response) => {
-            if (!error) {
-                let navItems = nav.first_items.slice();
-                for (let idx in response) {
-                    let menu = response[idx];
-                    navItems.push(menu);
-                }
+    componentDidMount() {
+        const {menus} = this.props;
+        // first
+        let navItems = nav.first_items.slice();
+        // get from db
+        for (let idx in menus) {
+            let menu = menus[idx];
+            navItems.push(menu);
+        }
 
-                for (let idx in nav.items) {
-                    let menu = nav.items[idx];
-                    navItems.push(menu);
-                }
+        // middle
+        for (let idx in nav.items) {
+            let menu = nav.items[idx];
+            navItems.push(menu);
+        }
 
-                for (let idx in nav.last_items) {
-                    let menu = nav.last_items[idx];
-                    navItems.push(menu);
-                }
+        // last
+        for (let idx in nav.last_items) {
+            let menu = nav.last_items[idx];
+            navItems.push(menu);
+        }
 
-                this.setState({navItems: navItems});
-            } else {
-                let navItems = nav.first_items;
-                for (let idx in nav.last_items) {
-                    let menu = nav.last_items[idx];
-                    navItems.push(menu);
-                }
-
-                this.setState({navItems: navItems});
-            }
-        });
+        this.setState({navItems});
     }
 
     handleClick(e) {
@@ -199,4 +194,11 @@ class Sidebar extends Component {
     }
 }
 
-export default Sidebar;
+export default container((props, onData) => {
+    Meteor.subscribe('mainMenus.list');
+    const menus = MainMenus.getNav();
+
+    onData(null, {
+        menus
+    });
+}, Sidebar);
