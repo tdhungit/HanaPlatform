@@ -66,7 +66,6 @@ class FullCalendar extends Component {
         const {options: newOptions} = newProps;
         const {options} = this.props;
 
-
         Object.keys(newOptions).forEach(optionName => {
             // update options dynamically
             if (isOption(optionName) && newOptions[optionName] !== options[optionName]) {
@@ -81,7 +80,7 @@ class FullCalendar extends Component {
 
     render() {
         return (
-            <div ref="fullcalendar-container"></div>
+            <div ref="fullcalendar-container"/>
         );
     }
 }

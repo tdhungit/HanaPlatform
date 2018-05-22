@@ -63,6 +63,7 @@ class ListChannelsComponent extends Component {
     }
 
     searchUsers(keyword) {
+        this.setState({search: keyword});
         if (keyword) {
             Meteor.call('users.searchKeyword', keyword, (error, res) => {
                 if (error) {

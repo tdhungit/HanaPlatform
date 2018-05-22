@@ -1,12 +1,20 @@
 import React, {Component} from 'react';
+import {Meteor} from 'meteor/meteor';
+import {Session} from 'meteor/session';
 import {
     Card,
     CardHeader,
     CardBody
 } from 'reactstrap';
+import _ from 'underscore';
+import moment from 'moment';
 
 import {T, t, PT} from '/imports/common/Translation';
 import {FullCalendar} from '../../components/FullCalendar/FullCalendar';
+import {utilsHelper} from '../../helpers/utils/utils';
+import container from '../../../../common/Container';
+import Activities from '../../../../collections/Activities/Activities';
+import {frameworkConfig} from '../../../../config/config.inc';
 
 class ViewCalendar extends Component {
     static viewInfo = {controller: 'Activities', action: 'View'};
@@ -17,16 +25,39 @@ class ViewCalendar extends Component {
         this.state = {
             view: 'month',
             date: new Date(),
-            events: [
-                {
-                    title: 'Default event',
-                    start: new Date(),
-                    end: new Date(Date.now + 30 * 60 * 1000),
-                }
-            ],
+            format: {},
+            events: [],
         };
 
         this.onEventSelect = this.onEventSelect.bind(this);
+    }
+
+    componentWillMount() {
+        const format = utilsHelper.getUserDateFormat();
+        this.state.format = format;
+        this.state.events = this.getEvents(this.props.events);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const events = this.getEvents(nextProps.events);
+        this.setState({
+            events,
+            date: moment(Session.get('viewCalendarStartDate'))
+        });
+    }
+
+    getEvents(currentEvents) {
+        const rawEvents = {...currentEvents};
+        let events = [];
+        _.each(rawEvents, (activity) => {
+            events.push({
+                title: activity.name,
+                start: moment(activity.dateStart),
+                end: moment(activity.dateEnd),
+            });
+        });
+
+        return events;
     }
 
     onEventSelect(start, end) {
@@ -45,6 +76,7 @@ class ViewCalendar extends Component {
     }
 
     render() {
+        console.log('render');
         const calendarOptions = {
             id: 'activities-calendar',
             defaultView: this.state.view,
@@ -65,7 +97,16 @@ class ViewCalendar extends Component {
 
             // please, use funciton events source for reactivity support
             events: (start, end, timezone, callback) => {
-                callback(this.state.events);
+                const startDate = start.format(frameworkConfig.dbDateFormat.datetime);
+                const endDate = end.format(frameworkConfig.dbDateFormat.datetime);
+                Session.set({
+                    viewCalendarStartDate: startDate,
+                    viewCalendarEndDate: endDate
+                });
+
+                if (this.state.events) {
+                    callback(this.state.events);
+                }
             },
         };
 
@@ -88,4 +129,16 @@ class ViewCalendar extends Component {
     }
 }
 
-export default ViewCalendar;
+export default container((props, onData) => {
+    Session.setDefault('viewCalendarStartDate', moment().format(frameworkConfig.dbDateFormat.datetime));
+    Session.setDefault('viewCalendarEndDate', moment().format(frameworkConfig.dbDateFormat.datetime));
+
+    const start = Session.get('viewCalendarStartDate');
+    const end = Session.get('viewCalendarEndDate');
+    console.log(start + '/' + end);
+    Meteor.subscribe('activities.events', start, end);
+    const events = Activities.find({}).fetch();
+    onData(null, {
+        events: events
+    });
+}, ViewCalendar);

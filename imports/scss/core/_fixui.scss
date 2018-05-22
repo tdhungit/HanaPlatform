@@ -36,6 +36,7 @@ header {
 
 .react-datepicker__time-list {
   padding-left: 0 !important;
+  overflow-y: visible !important;
 }
 
 .react-datepicker__time-list-item {
@@ -57,4 +58,8 @@ header {
       border-top: 1px solid #eeeeee;
     }
   }
+}
+
+.react-datepicker-popper {
+  z-index: 5 !important;
 }

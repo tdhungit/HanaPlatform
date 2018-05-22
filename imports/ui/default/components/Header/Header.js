@@ -265,13 +265,13 @@ class Header extends Component {
 
                     <NavItem className="d-md-down-none">
                         <Link to="/manager/activities/calendar" className="nav-link">
-                            <i className="icon-list"/>
+                            <i className="icon-calendar"/>
                         </Link>
                     </NavItem>
                     <NavItem className="d-md-down-none">
-                        <NavLink href="#">
-                            <i className="icon-location-pin"/>
-                        </NavLink>
+                        <Link to="/manager/chats" className="nav-link">
+                            <i className="icon-bubble"/>
+                        </Link>
                     </NavItem>
 
                     {this.renderUserMenu()}

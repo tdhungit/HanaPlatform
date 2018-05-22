@@ -101,7 +101,7 @@ Meteor.methods({
     // search user with keyword
     'users.searchKeyword': function (keyword, limit = 10) {
         check(keyword, String);
-        return Users.getAll({
+        return Users.query(Meteor.user(), {
             username: {$regex: keyword}
         }, {
             limit: limit

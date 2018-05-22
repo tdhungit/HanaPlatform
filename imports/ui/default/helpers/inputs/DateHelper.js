@@ -57,12 +57,12 @@ export class DateInput extends Component {
     render() {
         let showTimeSelect = false;
         let dateFormat = this.dateFormat;
-        if (this.props.type == 'datetime') {
+        if (this.props.type === 'datetime') {
             showTimeSelect = true;
             dateFormat = this.dateTimeFormat;
         }
 
-        let selected = moment();
+        let selected = null;//moment();
         if (this.props.value) {
             selected = moment(this.props.value, dateFormat);
         }

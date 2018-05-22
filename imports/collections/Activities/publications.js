@@ -11,3 +11,7 @@ Meteor.publish('activities.list', function () {
 Meteor.publish('activities.detail', function (activityId) {
     return Activities.publish(Meteor.user(), {_id: activityId});
 });
+
+Meteor.publish('activities.events', function (start, end) {
+    return Activities.publish(Meteor.user(), {});
+});

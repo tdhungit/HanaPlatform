@@ -1,13 +1,17 @@
 export const frameworkConfig = {
+    Permissions: {
+        defaultAccess: true,
+        defaultData: 'All'
+    },
+    dbDateFormat: {
+        date: 'YYYY-MM-DD',
+        datetime: 'YYYY-MM-DD HH:mm:ss'
+    },
     currency: {
         symbol: 'đ',
         symbolPos: 'suffix',
         format: null
     },
-    Permissions: {
-        defaultAccess: true,
-        defaultData: 'All'
-    }
 };
 
 export const modulesComponent = {
