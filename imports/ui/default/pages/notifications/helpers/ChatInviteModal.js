@@ -37,11 +37,12 @@ class ChatInviteModalContainer extends Component {
     }
 
     componentDidMount() {
-        this.opened(this.state.isOpen);
+
     }
 
     toggle() {
         this.setState({isOpen: !this.state.isOpen});
+        this.opened(this.state.isOpen);
     }
 
     opened(isOpen) {

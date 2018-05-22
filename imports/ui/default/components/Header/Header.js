@@ -169,7 +169,7 @@ class Header extends Component {
                         <i className="icon-bell"/> <Badge pill color="danger">{notifiesCount}</Badge>
                     </DropdownToggle>
                     <DropdownMenu right className={this.state.notificationDropdownOpen ? 'show' : ''}>
-                        {notifies.map((notify, i) => {
+                        {notifiesCount > 0 ? notifies.map((notify, i) => {
                             if (notify.isNotify) {
                                 this.toastMsg(notify);
                                 NotificationUtils.notified(notify._id);
@@ -181,7 +181,7 @@ class Header extends Component {
                                     <i className="fa fa-bell-o"/> {notify.message}
                                 </DropdownItem>
                             )
-                        })}
+                        }) : <DropdownItem><T>Have no Notification</T></DropdownItem>}
                     </DropdownMenu>
                 </Dropdown>
             </NavItem>
