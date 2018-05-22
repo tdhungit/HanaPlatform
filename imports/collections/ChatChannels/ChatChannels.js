@@ -72,7 +72,7 @@ ChatChannelsSchema.ChatChannels = CollectionBase.schema({
         required: true
     },
     description: {type: String, optional: true},
-    isPubic: {type: Boolean, defaultValue: false},
+    isPubic: {type: Boolean, defaultValue: true},
     users: {
         type: Array,
         required: true

@@ -14,6 +14,7 @@ Meteor.methods({
 
         check(channel, Object);
         let fixedChannel = {...channel};
+        fixedChannel.isPubic = true;
         fixedChannel.userId = Meteor.userId();
         if (!fixedChannel.users) {
             fixedChannel.users = [];
@@ -49,7 +50,7 @@ Meteor.methods({
             throw new Meteor.Error('500', 'Error Params!');
         }
 
-        const friendUser = Users.queryOne(friendId);
+        const friendUser = Users.findOne(friendId);
         if (!friendUser || !friendUser._id) {
             throw new Meteor.Error('500', 'Error Friend User!');
         }
@@ -58,20 +59,20 @@ Meteor.methods({
         const currentUserId = currentUser._id;
         let commonChannel, channelId = '';
         // check exist channel
-        const channels = ChatChannels.query(currentUser, {userId: currentUserId}).fetch();
-        if (channels.length > 0) {
-            channels.forEach((channel) => {
-                if (channel.users && channel.users[friendId]) {
-                    commonChannel = channel;
-                    channelId = channel._id;
-                }
-            });
+        const channel = ChatChannels.queryOne(currentUser, {
+            userId: currentUserId,
+            isPubic: false,
+            users: {$elemMatch: {_id: friendId}}
+        });
+        if (channel) {
+            commonChannel = channel;
+            channelId = channel._id;
         }
 
         // create new channel
         if (!channelId) {
             channelId = ChatChannels.insert({
-                name: `${currentUser.username} and ${friendUser.username}`,
+                name: `${friendUser.username}`,
                 description: 'Direct Message',
                 userId: currentUserId,
                 isPubic: false,

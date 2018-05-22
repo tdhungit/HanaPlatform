@@ -20,7 +20,9 @@ class ListChannelsComponent extends Component {
 
         this.state = {
             isCreateChannel: false,
-            channel: {}
+            channel: {},
+            search: '',
+            userList: []
         };
 
         this.changeChannelInfo = this.changeChannelInfo.bind(this);
@@ -44,6 +46,56 @@ class ListChannelsComponent extends Component {
         });
     }
 
+    createPrivateChannel(friendId) {
+        if (friendId) {
+            Meteor.call('chatChannels.directMessage', friendId, (error, _id) => {
+                if (error) {
+                    utilsHelper.alertError(error);
+                } else {
+                    this.setState({
+                        search: '',
+                        userList: []
+                    });
+                    this.props.history.push('/manager/chats/' + _id);
+                }
+            });
+        }
+    }
+
+    searchUsers(keyword) {
+        if (keyword) {
+            Meteor.call('users.searchKeyword', keyword, (error, res) => {
+                if (error) {
+                    utilsHelper.alertError(error);
+                } else {
+                    this.setState({userList: res});
+                }
+            })
+        }
+    }
+
+    renderSearchUsers() {
+        if (this.state.userList.length <= 0) {
+            return null;
+        }
+
+        return (
+            <ul className="nav" style={{marginTop: 15}}>
+                {this.state.userList.map((user, i) => {
+                    return (
+                        <li className="nav-item" key={i}>
+                            <a href="javascript:void(0)"
+                               className="nav-link"
+                               onClick={() => this.createPrivateChannel(user._id)}>
+                                <i className="fa fa-user"/> {user.username}
+                            </a>
+                        </li>
+                    );
+                })}
+            </ul>
+        );
+    }
+
     render() {
         const {channels} = this.props;
 
@@ -53,7 +105,14 @@ class ListChannelsComponent extends Component {
                         onClick={() => this.setState({isCreateChannel: true})}>
                     <T>New Channel</T>
                 </Button>
-                <ul className="nav">
+
+                <Input type="text"
+                       value={this.state.search}
+                       placeholder={t.__('Search Users')}
+                       onChange={(event) => this.searchUsers(event.target.value)}/>
+                {this.renderSearchUsers()}
+
+                <ul className="nav" style={{marginTop: 15}}>
                     {channels.map((channel, i) => {
                         return (
                             <li className="nav-item" key={i}>
