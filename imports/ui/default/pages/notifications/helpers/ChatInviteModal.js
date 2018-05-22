@@ -56,6 +56,7 @@ class ChatInviteModalContainer extends Component {
         channel.users[pos].status = 'Active';
         Meteor.call('chatChannels.update', channel, (error) => {
             utilsHelper.alertSystem(error);
+            this.opened(true);
         });
     }
 
@@ -64,6 +65,7 @@ class ChatInviteModalContainer extends Component {
         channel.users[pos].status = 'Inactive';
         Meteor.call('chatChannels.update', channel, (error) => {
             utilsHelper.alertSystem(error);
+            this.opened(true);
         });
     }
 

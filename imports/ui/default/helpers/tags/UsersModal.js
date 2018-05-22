@@ -41,6 +41,12 @@ export class UsersModal extends Component {
         mdToggle && mdToggle();
     }
 
+    onChange(userSelected) {
+        const {onChange} = this.props;
+        onChange && onChange(userSelected);
+        this.setState({selected: userSelected});
+    }
+
     onOk() {
         const {onOk} = this.props;
         onOk && onOk(this.state.selected);
@@ -69,7 +75,7 @@ export class UsersModal extends Component {
                         selected={this.state.selected}
                         pagination={this.pagination}
                         limit={this.limit}
-                        onChange={(userSelected) => this.setState({selected: userSelected})}/>
+                        onChange={(userSelected) => this.onChange(userSelected)}/>
                 </ModalBody>
                 <ModalFooter>
                     <Button color="primary"

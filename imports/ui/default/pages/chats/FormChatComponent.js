@@ -26,6 +26,7 @@ class FormChatComponent extends Component {
         super(props);
 
         this.state = {
+            selectedInvites: {},
             chat: {},
             messagesHeight: 0,
             showInvite: false
@@ -34,6 +35,19 @@ class FormChatComponent extends Component {
         this.changeChatInfo = this.changeChatInfo.bind(this);
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
         this.handleMessageKeyPress = this.handleMessageKeyPress.bind(this);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const {channel} = nextProps;
+        let selectedUsers = {};
+        _.each(channel.users, (inviteUser) => {
+            selectedUsers[inviteUser._id] = {
+                _id: inviteUser._id,
+                username: inviteUser.username
+            };
+        });
+
+        this.setState({selectedInvites: selectedUsers});
     }
 
     componentDidMount() {
@@ -81,6 +95,10 @@ class FormChatComponent extends Component {
     sendInvite(invites) {
         const {channelId} = this.props;
         if (channelId) {
+            if (invites.constructor !== 'Array') {
+                invites = Object.keys(invites).map(item => invites[item]);
+            }
+
             Meteor.call('chatChannels.invite', channelId, invites, (error) => {
                 utilsHelper.alertSystem(error);
                 if (!error) {
@@ -181,6 +199,8 @@ class FormChatComponent extends Component {
                     <UsersModal
                         isOpen={this.state.showInvite}
                         mdToggle={() => this.setState({showInvite: false})}
+                        selected={this.state.selectedInvites}
+                        onChange={(selectedInvites) => this.setState({selectedInvites})}
                         onOk={(invites) => this.sendInvite(invites)}/>
                     {this.renderChatMessages()}
                 </div>

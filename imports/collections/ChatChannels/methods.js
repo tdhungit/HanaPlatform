@@ -104,25 +104,34 @@ Meteor.methods({
         }
 
         let users = [];
-        _.each(inviteUsers, (user) => {
-            let pos = _.findIndex(channel.users, {_id: user._id});
-            if (pos >= 0) {
-                users.push(channel.users[pos]);
-            } else {
+        // admin can not remove
+        _.each(channel.users, (user) => {
+            if (user.isAdmin) {
                 users.push(user);
             }
+        });
 
-            // send Notification
-            const notification = {
-                type: NotificationTypes.ChatInvite,
-                assignedId: user._id,
-                message: NotificationTypes.ChatInvite,
-                destination: channelId,
-                params: {
-                    channel: channel
+        _.each(inviteUsers, (inviteUser) => {
+            const posExist = _.findIndex(users, {_id: inviteUser._id});
+            if (posExist < 0) {
+                const pos = _.findIndex(channel.users, {_id: inviteUser._id});
+                if (pos >= 0) {
+                    users.push(channel.users[pos]);
+                } else {
+                    users.push(inviteUser);
+                    // send Notification for new invite user
+                    const notification = {
+                        type: NotificationTypes.ChatInvite,
+                        assignedId: inviteUser._id,
+                        message: NotificationTypes.ChatInvite,
+                        destination: channelId,
+                        params: {
+                            channel: channel
+                        }
+                    };
+                    Notifications.insert(notification);
                 }
-            };
-            Notifications.insert(notification);
+            }
         });
 
         try {
