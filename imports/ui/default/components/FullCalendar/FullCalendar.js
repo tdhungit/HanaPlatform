@@ -75,9 +75,18 @@ class FullCalendar extends Component {
         this.calendar.fullCalendar('refetchEvents');
         this.calendar.fullCalendar('changeView', newOptions.defaultView);
         this.calendar.fullCalendar('gotoDate', newOptions.defaultDate);
+
+        if (newOptions.renderEvent) {
+            this.calendar.fullCalendar('renderEvent', newOptions.renderEvent);
+        }
+
+        if (newOptions.addEventSource) {
+            this.calendar.fullCalendar('addEventSource', newOptions.addEventSource);
+        }
     }
 
     render() {
+        console.log(this.props.options);
         return (
             <div ref="fullcalendar-container"/>
         );

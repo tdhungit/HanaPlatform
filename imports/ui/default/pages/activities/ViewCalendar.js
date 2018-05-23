@@ -2,9 +2,8 @@ import React, {Component} from 'react';
 import {Meteor} from 'meteor/meteor';
 import {Session} from 'meteor/session';
 import {
-    Card,
-    CardHeader,
-    CardBody
+    Card, CardHeader, CardBody,
+    Modal, ModalHeader, ModalBody,
 } from 'reactstrap';
 import _ from 'underscore';
 import moment from 'moment';
@@ -15,6 +14,7 @@ import {utilsHelper} from '../../helpers/utils/utils';
 import container from '../../../../common/Container';
 import Activities from '../../../../collections/Activities/Activities';
 import {frameworkConfig} from '../../../../config/config.inc';
+import FormActivity from './FormActivity';
 
 class ViewCalendar extends Component {
     static viewInfo = {controller: 'Activities', action: 'View'};
@@ -27,7 +27,10 @@ class ViewCalendar extends Component {
             date: moment(),
             format: {},
             events: [],
-            calendarComponent: null
+            calendarOptions: {},
+            calendarComponent: null,
+            isCreateEvent: false,
+            newEvent: {}
         };
 
         this.onEventSelect = this.onEventSelect.bind(this);
@@ -37,13 +40,25 @@ class ViewCalendar extends Component {
         this.state.format = utilsHelper.getUserDateFormat();
         this.state.events = this.getEvents(this.props.events);
         // calendar component
-        const calendarOptions = this.getCalendarOptions();
-        this.state.calendarComponent = <FullCalendar options={calendarOptions}/>;
+        this.state.calendarOptions = this.getCalendarOptions();
+        this.state.calendarComponent = <FullCalendar options={this.state.calendarOptions}/>;
     }
 
     componentWillReceiveProps(nextProps) {
         const events = this.getEvents(nextProps.events);
-        this.setState({events});
+        let calendarOptions = {...this.state.calendarOptions};
+        calendarOptions.addEventSource = events;
+        this.setState({
+            events,
+            calendarOptions
+        });
+    }
+
+    componentDidMount() {
+        this.setState({
+            calendarOptions: this.getCalendarOptions(),
+            calendarComponent: <FullCalendar options={this.state.calendarOptions}/>
+        });
     }
 
     getCalendarOptions() {
@@ -96,22 +111,32 @@ class ViewCalendar extends Component {
     }
 
     onEventSelect(start, end) {
-        const events = this.state.events;
+        const newEvent = {...this.state.newEvent};
+        const datetimeFormat = this.state.format.datetime;
+        newEvent.dateStart = start.format(datetimeFormat);
+        newEvent.dateEnd = end.format(datetimeFormat);
+        this.setState({isCreateEvent: true, newEvent});
+    }
 
-        const newEventsSource = events.concat({
-            title: `Event #${events.length}`,
-            // moment object to simple date object
-            start: start.toDate(),
-            end: end.toDate(),
-        });
-
-        this.setState({
-            events: newEventsSource,
-        });
+    renderModalCreateEvent() {
+        return (
+            <Modal isOpen={this.state.isCreateEvent}
+                   toggle={() => this.setState({isCreateEvent: true})}
+                   className="modal-lg">
+                <ModalHeader toggle={() => this.setState({isCreateEvent: false})}>
+                    <i className={'fa fa-plus'}/> <T>Create Event</T>
+                </ModalHeader>
+                <ModalBody>
+                    <FormActivity
+                        activity={this.state.newEvent}
+                        onSubmit={() => this.setState({isCreateEvent: false})}
+                        onCancel={() => this.setState({isCreateEvent: false})}/>
+                </ModalBody>
+            </Modal>
+        );
     }
 
     render() {
-        console.log(this.state.events);
         return (
             <div className="ViewCalendar animated fadeIn">
                 <PT title={t.__('View Calendar')}/>
@@ -126,21 +151,21 @@ class ViewCalendar extends Component {
                         </div>
                     </CardBody>
                 </Card>
+                {this.renderModalCreateEvent()}
             </div>
         );
     }
 }
 
 export default container((props, onData) => {
+    const currentDate = moment().format(frameworkConfig.dbDateFormat.datetime);
+    Session.setDefault('viewCalendarStartDate', currentDate);
+    Session.setDefault('viewCalendarEndDate', currentDate);
     const start = Session.get('viewCalendarStartDate');
     const end = Session.get('viewCalendarEndDate');
+    Meteor.subscribe('activities.events', start, end);
 
-    let events = [];
-    if (start && end) {
-        Meteor.subscribe('activities.events', start, end);
-        events = Activities.findEvents(start, end).fetch();
-    }
-
+    const events = Activities.findEvents(start, end).fetch();
     onData(null, {
         events: events
     });

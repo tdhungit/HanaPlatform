@@ -305,8 +305,26 @@ class FormActivity extends Component {
         return notifications;
     }
 
+    onCancel(isEdit) {
+        const {onCancel} = this.props;
+        if (onCancel) {
+            onCancel();
+        } else {
+            if (isEdit) {
+                const path = '/manager/activities/' + this.state.activity._id + '/detail';
+                this.props.history.push(path);
+            } else {
+                this.props.history.push('/manager/activities');
+            }
+        }
+    }
+
     handleSubmit() {
-        let activity = this.state.activity;
+        let activity = {...this.state.activity};
+
+        activity.dateStart = utilsHelper.toDatetimeDb(activity.dateStart);
+        activity.dateEnd = utilsHelper.toDatetimeDb(activity.dateEnd);
+
         let invites = [];
         if (activity.invites) {
             for (let userId in activity.invites) {
@@ -316,28 +334,34 @@ class FormActivity extends Component {
         }
 
         activity.invites = invites;
-
         const existing = this.props.activity && this.props.activity._id;
         const method = existing ? 'activities.update' : 'activities.insert';
 
         Meteor.call(method, activity, (error, activityId) => {
             utilsHelper.alertSystem(error);
             if (!error) {
-                this.props.history.push('/manager/activities/' + activityId + '/detail');
+                this.setState({activity: {}});
+                const {onSubmit} = this.props;
+                if (onSubmit) {
+                    onSubmit();
+                } else {
+                    this.props.history.push('/manager/activities/' + activityId + '/detail');
+                }
             }
         });
     }
 
     render() {
         const existing = this.props.activity && this.props.activity._id;
+        const {title, slogan} = this.props;
 
         return (
             <Card>
-                <CardHeader>
-                    <i className="fa fa-tasks"/>
-                    <strong>{this.props.title}</strong>&nbsp;
-                    {this.props.slogan}
-                </CardHeader>
+                {title ?
+                    <CardHeader>
+                        <i className="fa fa-tasks"/>
+                        <strong>{title}</strong> {slogan}
+                    </CardHeader> : null}
                 <CardBody>
                     <Row>
                         <Col xs="12" md="6">
@@ -423,17 +447,21 @@ class FormActivity extends Component {
                 </CardBody>
                 <CardFooter>
                     <Button type="button" size="sm" color="primary" onClick={this.handleSubmit.bind(this)}>
-                        <i className="fa fa-dot-circle-o"></i>&nbsp;
+                        <i className="fa fa-dot-circle-o"/>&nbsp;
                         {existing ? <T>Update</T> : <T>Create</T>}
                     </Button>
                     {existing
-                        ? <Button type="button" size="sm" color="danger"
-                                  onClick={() => this.props.history.push('/manager/activities/' + this.state.activity._id + '/detail')}>
-                            <i className="fa fa-ban"></i> <T>Cancel</T>
+                        ? <Button type="button"
+                                  size="sm"
+                                  color="danger"
+                                  onClick={() => this.onCancel(true)}>
+                            <i className="fa fa-ban"/> <T>Cancel</T>
                         </Button>
-                        : <Button type="button" size="sm" color="danger"
-                                  onClick={() => this.props.history.push('/manager/activities')}>
-                            <i className="fa fa-ban"></i> <T>Cancel</T>
+                        : <Button type="button"
+                                  size="sm"
+                                  color="danger"
+                                  onClick={() => this.onCancel(false)}>
+                            <i className="fa fa-ban"/> <T>Cancel</T>
                         </Button>}
                 </CardFooter>
             </Card>

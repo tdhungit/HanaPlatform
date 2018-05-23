@@ -5,6 +5,7 @@ import moment from 'moment';
 import {t} from '../../../../common/Translation';
 import {Bert} from 'meteor/themeteorchef:bert';
 import {toast} from 'react-toastify';
+import {frameworkConfig} from '../../../../config/config.inc';
 
 class UtilsHelper {
     getRecordTitle(record, fields) {
@@ -144,9 +145,9 @@ class UtilsHelper {
     getSystemDateFormat() {
         const systemSettings = Settings.getSystemSettings();
         const dateFormat = systemSettings && systemSettings.dateFormat && systemSettings.dateFormat.value
-            || 'YYYY-MM-DD';
+            || frameworkConfig.dbDateFormat.date;
         const dateTimeFormat = systemSettings && systemSettings.dateTimeFormat && systemSettings.dateTimeFormat.value
-            || 'YYYY-MM-DD HH:mm';
+            || frameworkConfig.dbDateFormat.datetime;
 
         return {
             date: dateFormat,
@@ -186,11 +187,18 @@ class UtilsHelper {
      */
     toDateDisplay(date = null) {
         const format = this.getUserDateFormat().date;
-        if (date) {
-            return moment(date).format(format);
-        }
+        return moment(date).format(format);
+    }
 
-        return moment().format(format);
+    /**
+     * date to db
+     * @param date
+     * @returns {string}
+     */
+    toDateDb(date) {
+        const format = this.getUserDateFormat().date;
+        const dbFormat = frameworkConfig.dbDateFormat.date;
+        return moment(date, format).format(dbFormat);
     }
 
     /**
@@ -200,11 +208,18 @@ class UtilsHelper {
      */
     toDateTimeDisplay(datetime = null) {
         const format = this.getUserDateFormat().datetime;
-        if (datetime) {
-            return moment(datetime).format(format);
-        }
+        return moment(datetime).format(format);
+    }
 
-        return moment().format(format);
+    /**
+     * to datetime db
+     * @param datetime
+     * @returns {string}
+     */
+    toDatetimeDb(datetime) {
+        const format = this.getUserDateFormat().datetime;
+        const dbFormat = frameworkConfig.dbDateFormat.datetime;
+        return moment(datetime, format).format(dbFormat);
     }
 
     /**

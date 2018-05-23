@@ -4,7 +4,7 @@ import {
     Col
 } from 'reactstrap';
 
-import {T, t, PT} from '/imports/common/Translation';
+import {t, PT} from '/imports/common/Translation';
 import FormActivity from './FormActivity';
 
 class CreateActivity extends Component {
