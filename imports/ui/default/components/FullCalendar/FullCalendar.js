@@ -9,7 +9,6 @@ import 'fullcalendar/dist/fullcalendar.css';
 import {isOption} from './utils';
 import {t} from '/imports/common/Translation';
 
-
 class FullCalendar extends Component {
     componentDidMount() {
         const {options, onDateChanged} = this.props;

@@ -24,26 +24,61 @@ class ViewCalendar extends Component {
 
         this.state = {
             view: 'month',
-            date: new Date(),
+            date: moment(),
             format: {},
             events: [],
+            calendarComponent: null
         };
 
         this.onEventSelect = this.onEventSelect.bind(this);
     }
 
     componentWillMount() {
-        const format = utilsHelper.getUserDateFormat();
-        this.state.format = format;
+        this.state.format = utilsHelper.getUserDateFormat();
         this.state.events = this.getEvents(this.props.events);
+        // calendar component
+        const calendarOptions = this.getCalendarOptions();
+        this.state.calendarComponent = <FullCalendar options={calendarOptions}/>;
     }
 
     componentWillReceiveProps(nextProps) {
         const events = this.getEvents(nextProps.events);
-        this.setState({
-            events,
-            date: moment(Session.get('viewCalendarStartDate'))
-        });
+        this.setState({events});
+    }
+
+    getCalendarOptions() {
+        return {
+            id: 'activities-calendar',
+            defaultView: this.state.view,
+            defaultDate: this.state.date,
+            timezone: 'local',
+
+            editable: true,
+            droppable: true,
+            selectable: true,
+
+            slotDuration: '00:15',
+            scrollTime: '08:00',
+            columnFormat: 'ddd DD/MM',
+            displayTime: true,
+            firstDay: 1,
+
+            select: this.onEventSelect,
+
+            // please, use funciton events source for reactivity support
+            events: (start, end, timezone, callback) => {
+                const startDate = start.format(frameworkConfig.dbDateFormat.datetime);
+                const endDate = end.format(frameworkConfig.dbDateFormat.datetime);
+                Session.set({
+                    viewCalendarStartDate: startDate,
+                    viewCalendarEndDate: endDate
+                });
+
+                if (this.state.events) {
+                    callback(this.state.events);
+                }
+            },
+        };
     }
 
     getEvents(currentEvents) {
@@ -76,40 +111,7 @@ class ViewCalendar extends Component {
     }
 
     render() {
-        console.log('render');
-        const calendarOptions = {
-            id: 'activities-calendar',
-            defaultView: this.state.view,
-            defaultDate: this.state.date,
-            timezone: 'local',
-
-            editable: true,
-            droppable: true,
-            selectable: true,
-
-            slotDuration: '00:15',
-            scrollTime: '08:00',
-            columnFormat: 'ddd DD/MM',
-            displayTime: true,
-            firstDay: 1,
-
-            select: this.onEventSelect,
-
-            // please, use funciton events source for reactivity support
-            events: (start, end, timezone, callback) => {
-                const startDate = start.format(frameworkConfig.dbDateFormat.datetime);
-                const endDate = end.format(frameworkConfig.dbDateFormat.datetime);
-                Session.set({
-                    viewCalendarStartDate: startDate,
-                    viewCalendarEndDate: endDate
-                });
-
-                if (this.state.events) {
-                    callback(this.state.events);
-                }
-            },
-        };
-
+        console.log(this.state.events);
         return (
             <div className="ViewCalendar animated fadeIn">
                 <PT title={t.__('View Calendar')}/>
@@ -120,7 +122,7 @@ class ViewCalendar extends Component {
                     </CardHeader>
                     <CardBody>
                         <div className="calendar">
-                            <FullCalendar options={calendarOptions}/>
+                            {this.state.calendarComponent}
                         </div>
                     </CardBody>
                 </Card>
@@ -130,14 +132,15 @@ class ViewCalendar extends Component {
 }
 
 export default container((props, onData) => {
-    Session.setDefault('viewCalendarStartDate', moment().format(frameworkConfig.dbDateFormat.datetime));
-    Session.setDefault('viewCalendarEndDate', moment().format(frameworkConfig.dbDateFormat.datetime));
-
     const start = Session.get('viewCalendarStartDate');
     const end = Session.get('viewCalendarEndDate');
-    console.log(start + '/' + end);
-    Meteor.subscribe('activities.events', start, end);
-    const events = Activities.find({}).fetch();
+
+    let events = [];
+    if (start && end) {
+        Meteor.subscribe('activities.events', start, end);
+        events = Activities.findEvents(start, end).fetch();
+    }
+
     onData(null, {
         events: events
     });

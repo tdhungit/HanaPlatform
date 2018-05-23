@@ -13,5 +13,5 @@ Meteor.publish('activities.detail', function (activityId) {
 });
 
 Meteor.publish('activities.events', function (start, end) {
-    return Activities.publish(Meteor.user(), {});
+    return Activities.findEvents(start, end, Meteor.user());
 });

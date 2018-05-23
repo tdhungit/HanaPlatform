@@ -8,6 +8,43 @@ class ActivitiesCollection extends CollectionAssign {
     getLayouts() {
         return activityLayouts;
     }
+
+    /**
+     * get events in start and in
+     * @param start
+     * @param end
+     * @param user
+     * @param options
+     * @returns {Mongo.Cursor}
+     */
+    findEvents(start, end, user = {}, options = {}) {
+        if (Meteor.isClient) {
+            user = Meteor.user();
+        }
+
+        return this.query(user, {
+            $or: [
+                {
+                    $and: [
+                        {dateStart: {$gte: start}},
+                        {dateStart: {$lte: end}}
+                    ]
+                },
+                {
+                    $and: [
+                        {dateEnd: {$gte: start}},
+                        {dateEnd: {$lte: end}}
+                    ]
+                },
+                {
+                    $and: [
+                        {dateStart: {$lte: start}},
+                        {dateEnd: {$gte: end}},
+                    ]
+                }
+            ]
+        }, options);
+    }
 }
 
 const Activities = new ActivitiesCollection('activities');
