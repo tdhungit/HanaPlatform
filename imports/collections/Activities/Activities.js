@@ -1,12 +1,28 @@
-import CollectionAssign from '/imports/common/CollectionAssign';
+import CollectionBase from '../../common/CollectionBase';
 import {activityLayouts} from './layouts';
+import {ActivityInviteStatus} from './config';
+import {Meteor} from "meteor/meteor";
 
-class ActivitiesCollection extends CollectionAssign {
+class ActivitiesCollection extends CollectionBase {
     /**
      * get default layouts
      */
     getLayouts() {
         return activityLayouts;
+    }
+
+    /**
+     * insert data
+     * @param doc
+     * @param callback
+     * @returns {*}
+     */
+    insert(doc, callback) {
+        if (!doc.userId) {
+            doc.userId = Meteor.userId();
+        }
+
+        return super.insert(doc, callback);
     }
 
     /**
@@ -45,6 +61,19 @@ class ActivitiesCollection extends CollectionAssign {
             ]
         }, options);
     }
+
+    /**
+     * fixed filters for owner data
+     * @param user if user === -1 => only get raw filter
+     * @param selector
+     * @param actionName
+     * @returns {{}}
+     */
+    fixedFilters(user, selector = {}, actionName = 'View') {
+        selector = super.fixedFilters(user, selector, actionName);
+        selector.invites = {$elemMatch: {userId: user._id, status: {$ne: ActivityInviteStatus.No}}};
+        return selector;
+    }
 }
 
 const Activities = new ActivitiesCollection('activities');
@@ -61,7 +90,7 @@ Activities.deny({
     remove: () => true,
 });
 
-const ActivitiesSchema = CollectionAssign.schema({
+const ActivitiesSchema = CollectionBase.schema({
     createdAt: {
         type: String,
         label: 'The date this record was created.',
@@ -70,141 +99,86 @@ const ActivitiesSchema = CollectionAssign.schema({
             return this.value;
         },
     },
-    name: {
-        type: String,
-        label: 'Subject of event'
-    },
-    type: {
-        type: String,
-        label: 'Type of activity'
-    },
-    dateStart: {
-        type: String,
-        label: 'Date start of event'
-    },
+    userId: {type: String},
+    name: {type: String},
+    type: {type: String},
+    dateStart: {type: String},
     dateEnd: {
         type: String,
-        label: 'Date end of event',
         optional: true
     },
     repeat: {
         type: Object,
-        label: 'Repeat event',
         optional: true
     },
-    "repeat.duration": {
-        type: Number,
-        label: 'Repeat duration'
-    },
-    "repeat.unit": {
-        type: String,
-        label: 'Repeat duration unit'
-    },
+    "repeat.duration": {type: Number},
+    "repeat.unit": {type: String},
     "repeat.dayOfWeek": {
         type: Array,
-        label: 'Days of week',
         optional: true
     },
     "repeat.dayOfWeek.$": {
         type: String,
-        label: 'Day of week',
         optional: true
     },
     "repeat.end": {
         type: Object,
-        label: 'Repeat end',
         optional: true
     },
     "repeat.end.date": {
         type: String,
-        label: 'Repeat date end',
         optional: true
     },
     "repeat.end.times": {
         type: Number,
-        label: 'Repeat max',
         optional: true
     },
     description: {
         type: String,
-        label: 'Description of event',
         optional: true
     },
     location: {
         type: String,
-        label: 'Location of event',
         optional: true
     },
     conferencing: {
         type: Object,
-        label: 'Use conferencing',
         optional: true
     },
-    "conferencing.type": {
-        type: String,
-        label: 'Conferencing tool'
-    },
-    "conferencing.name": {
-        type: String,
-        label: 'Conferencing tool name'
-    },
+    "conferencing.type": {type: String},
+    "conferencing.name": {type: String},
     notifications: {
         type: Array,
-        label: 'Notifications',
         optional: true
     },
-    "notifications.$": {
-        type: Object,
-        label: 'Notification step'
-    },
-    "notifications.$.type": {
-        type: String,
-        label: 'Notification type'
-    },
-    "notifications.$.duration": {
-        type: Number,
-        label: 'Notification duration'
-    },
-    "notifications.$.unit": {
-        type: String,
-        label: 'Notification duration unit'
-    },
+    "notifications.$": {type: Object},
+    "notifications.$.type": {type: String},
+    "notifications.$.duration": {type: Number},
+    "notifications.$.unit": {type: String},
     invites: {
         type: Array,
-        label: 'Invite users to event',
         optional: true
     },
-    "invites.$": {
-        type: Object,
-        label: 'User invited'
-    },
-    "invites.$.userId": {
-        type: String,
-        label: 'User id invited'
-    },
-    "invites.$.username": {
-        type: String,
-        label: 'Username of user invited'
-    },
-    "invites.$.userEmail": {
-        type: String,
-        label: 'Email of user invited'
-    },
+    "invites.$": {type: Object},
+    "invites.$.userId": {type: String},
+    "invites.$.username": {type: String},
+    "invites.$.userEmail": {type: String},
     "invites.$.canEdit": {
         type: Boolean,
-        label: 'User invited can edit event',
         defaultValue: true
     },
     "invites.$.canInvite": {
         type: Boolean,
-        label: 'User invited can invite other user',
         defaultValue: true
     },
     "invites.$.canSeeAll": {
         type: Boolean,
-        label: 'User invited can see all users in event',
         defaultValue: true
     },
+    "invites.$.status": {
+        type: String,
+        defaultValue: ActivityInviteStatus.Waiting
+    }
 });
 
 Activities.attachSchema(ActivitiesSchema);

@@ -325,15 +325,10 @@ class FormActivity extends Component {
         activity.dateStart = utilsHelper.toDatetimeDb(activity.dateStart);
         activity.dateEnd = utilsHelper.toDatetimeDb(activity.dateEnd);
 
-        let invites = [];
-        if (activity.invites) {
-            for (let userId in activity.invites) {
-                let user = activity.invites[userId];
-                invites.push(user);
-            }
+        if (activity.invites.constructor !== 'Array') {
+            activity.invites = Object.keys(activity.invites).map(item => activity.invites[item]);
         }
 
-        activity.invites = invites;
         const existing = this.props.activity && this.props.activity._id;
         const method = existing ? 'activities.update' : 'activities.insert';
 
