@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
 
 import $ from 'jquery';
 import 'fullcalendar';
@@ -9,88 +8,106 @@ import 'fullcalendar/dist/fullcalendar.css';
 import {isOption} from './utils';
 import {t} from '/imports/common/Translation';
 
-export const defaultFullCalendarOptions = (options, onDateChanged) => {
-    const defaultOptions = {
-        viewRender(view) {
-            const {intervalStart, intervalEnd} = view;
+export class CalendarUtils {
+    ref;
+    options = {};
+    onDateChanged;
+    calendar;
 
-            const toDate = (momentDate) => momentDate.toDate();
+    constructor(ref, options, onDateChanged) {
+        this.ref = ref;
+        this.options = options;
+        this.onDateChanged = onDateChanged;
 
-            if (onDateChanged && typeof onDateChanged === 'function') {
-                onDateChanged(toDate(intervalStart), toDate(intervalEnd));
-            }
-        },
-    };
+        this.calendar = $(this.ref);
+        const calendarOptions = this.defaultFullCalendarOptions();
+        this.calendar.fullCalendar(calendarOptions);
+    }
 
-    let calendarOptions = Object.assign({}, defaultOptions, options);
-    // default calendar config
-    if (!calendarOptions.header) {
-        calendarOptions.header = {
-            left: 'prev,today,next',
-            center: 'title',
-            right: 'month,agendaWeek,agendaDay'
+    defaultFullCalendarOptions() {
+        const {options, onDateChanged} = this;
+
+        const defaultOptions = {
+            viewRender(view) {
+                const {intervalStart, intervalEnd} = view;
+
+                const toDate = (momentDate) => momentDate.toDate();
+
+                if (onDateChanged && typeof onDateChanged === 'function') {
+                    onDateChanged(toDate(intervalStart), toDate(intervalEnd));
+                }
+            },
         };
-    }
 
-    if (!calendarOptions.buttonText) {
-        calendarOptions.buttonText = {
-            today: t.__('Today'),
-            month: t.__('Month'),
-            week: t.__('Week'),
-            day: t.__('Day'),
-            list: t.__('List'),
-            prev: t.__('Back'),
-            next: t.__('Next')
-        };
-    }
-
-    if (!calendarOptions.themeSystem) {
-        calendarOptions.themeSystem = 'bootstrap3';
-    }
-
-    return calendarOptions;
-};
-
-export const getFullCalendar = (ref, options, onDateChanged) => {
-    const calendar = $(ref);
-    const calendarOptions = defaultFullCalendarOptions(options, onDateChanged);
-    calendar.fullCalendar(calendarOptions);
-    return calendar;
-};
-
-export const updateCalendar = (calendar, options, newOptions) => {
-    Object.keys(newOptions).forEach(optionName => {
-        // update options dynamically
-        if (isOption(optionName) && newOptions[optionName] !== options[optionName]) {
-            calendar.fullCalendar('option', optionName, newOptions[optionName]);
+        let calendarOptions = Object.assign({}, defaultOptions, options);
+        // default calendar config
+        if (!calendarOptions.header) {
+            calendarOptions.header = {
+                left: 'prev,today,next',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay'
+            };
         }
-    });
 
-    calendar.fullCalendar('refetchEvents');
-    calendar.fullCalendar('changeView', newOptions.defaultView);
-    calendar.fullCalendar('gotoDate', newOptions.defaultDate);
+        if (!calendarOptions.buttonText) {
+            calendarOptions.buttonText = {
+                today: t.__('Today'),
+                month: t.__('Month'),
+                week: t.__('Week'),
+                day: t.__('Day'),
+                list: t.__('List'),
+                prev: t.__('Back'),
+                next: t.__('Next')
+            };
+        }
 
-    if (newOptions.renderEvent) {
-        calendar.fullCalendar('renderEvent', newOptions.renderEvent);
+        if (!calendarOptions.themeSystem) {
+            calendarOptions.themeSystem = 'bootstrap3';
+        }
+
+        return calendarOptions;
     }
 
-    if (newOptions.addEventSource) {
-        calendar.fullCalendar('addEventSource', newOptions.addEventSource);
+    updateCalendar(newOptions) {
+        const {options} = this;
+
+        Object.keys(newOptions).forEach(optionName => {
+            // update options dynamically
+            if (isOption(optionName) && newOptions[optionName] !== options[optionName]) {
+                calendar.fullCalendar('option', optionName, newOptions[optionName]);
+            }
+        });
+
+        this.calendar.fullCalendar('refetchEvents');
+        this.calendar.fullCalendar('changeView', newOptions.defaultView);
+        this.calendar.fullCalendar('gotoDate', newOptions.defaultDate);
     }
 
-    return calendar;
-};
+    setOption(name, value) {
+        if (!value) {
+            this.calendar.fullCalendar(name);
+        } else {
+            this.calendar.fullCalendar(name, value);
+        }
+    }
+}
 
+/**
+ * Example or use FullCalendar as a tag
+ */
 export class FullCalendar extends Component {
     componentDidMount() {
         const {options, onDateChanged} = this.props;
-        this.calendar = getFullCalendar(this.refs['fullcalendar-container'], options, onDateChanged);
+        this.calendar = new CalendarUtils(
+            this.refs['fullcalendar-container'],
+            options,
+            onDateChanged
+        );
     }
 
     componentWillReceiveProps(newProps) {
         const {options: newOptions} = newProps;
-        const {options} = this.props;
-        this.calendar = updateCalendar(this.calendar, options, newOptions);
+        this.calendar.updateCalendar(newOptions);
     }
 
     render() {

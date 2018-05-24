@@ -9,7 +9,7 @@ import _ from 'underscore';
 import moment from 'moment';
 
 import {T, t, PT} from '/imports/common/Translation';
-import {getFullCalendar} from '../../components/FullCalendar/FullCalendar';
+import {CalendarUtils} from '../../components/FullCalendar/FullCalendar';
 import {utilsHelper} from '../../helpers/utils/utils';
 import container from '../../../../common/Container';
 import Activities from '../../../../collections/Activities/Activities';
@@ -41,12 +41,13 @@ class ViewCalendar extends Component {
 
     componentWillReceiveProps(nextProps) {
         const events = this.getEvents(nextProps.events);
-        this.calendar.fullCalendar('addEventSource', events);
+        this.calendar.setOption('removeEvents');
+        this.calendar.setOption('addEventSource', events);
         this.setState({events});
     }
 
     componentDidMount() {
-        this.calendar = getFullCalendar(
+        this.calendar = new CalendarUtils(
             this.refs['fullcalendar-container'],
             this.getCalendarOptions()
         );
@@ -92,6 +93,7 @@ class ViewCalendar extends Component {
         let events = [];
         _.each(rawEvents, (activity) => {
             events.push({
+                id: activity._id,
                 title: activity.name,
                 start: moment(activity.dateStart),
                 end: moment(activity.dateEnd),
