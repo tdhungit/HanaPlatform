@@ -343,7 +343,7 @@ class FormActivity extends Component {
                 this.setState({activity: {}});
                 const {onSubmit} = this.props;
                 if (onSubmit) {
-                    onSubmit();
+                    onSubmit(activity);
                 } else {
                     this.props.history.push('/manager/activities/' + activityId + '/detail');
                 }

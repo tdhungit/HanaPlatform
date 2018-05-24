@@ -9,7 +9,7 @@ import _ from 'underscore';
 import moment from 'moment';
 
 import {T, t, PT} from '/imports/common/Translation';
-import {FullCalendar} from '../../components/FullCalendar/FullCalendar';
+import {getFullCalendar} from '../../components/FullCalendar/FullCalendar';
 import {utilsHelper} from '../../helpers/utils/utils';
 import container from '../../../../common/Container';
 import Activities from '../../../../collections/Activities/Activities';
@@ -27,8 +27,6 @@ class ViewCalendar extends Component {
             date: moment(),
             format: {},
             events: [],
-            calendarOptions: {},
-            calendarComponent: null,
             isCreateEvent: false,
             newEvent: {}
         };
@@ -39,26 +37,19 @@ class ViewCalendar extends Component {
     componentWillMount() {
         this.state.format = utilsHelper.getUserDateFormat();
         this.state.events = this.getEvents(this.props.events);
-        // calendar component
-        this.state.calendarOptions = this.getCalendarOptions();
-        this.state.calendarComponent = <FullCalendar options={this.state.calendarOptions}/>;
     }
 
     componentWillReceiveProps(nextProps) {
         const events = this.getEvents(nextProps.events);
-        let calendarOptions = {...this.state.calendarOptions};
-        calendarOptions.addEventSource = events;
-        this.setState({
-            events,
-            calendarOptions
-        });
+        this.calendar.fullCalendar('addEventSource', events);
+        this.setState({events});
     }
 
     componentDidMount() {
-        this.setState({
-            calendarOptions: this.getCalendarOptions(),
-            calendarComponent: <FullCalendar options={this.state.calendarOptions}/>
-        });
+        this.calendar = getFullCalendar(
+            this.refs['fullcalendar-container'],
+            this.getCalendarOptions()
+        );
     }
 
     getCalendarOptions() {
@@ -147,7 +138,7 @@ class ViewCalendar extends Component {
                     </CardHeader>
                     <CardBody>
                         <div className="calendar">
-                            {this.state.calendarComponent}
+                            <div ref="fullcalendar-container"/>
                         </div>
                     </CardBody>
                 </Card>
