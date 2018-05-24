@@ -22,5 +22,15 @@ export const AppListStrings = {
     ConferencingList: {
         Skype: 'Skype',
         Hangout: 'Hangout'
-    }
+    },
+    CalendarEventColor: {
+        Calls: '#20a8d8',
+        Meetings: '#20a8d8',
+        Tasks: '#20a8d8',
+    },
+    CalendarEventIcon: {
+        Calls: 'fa fa-phone',
+        Meetings: 'fa fa-check',
+        Tasks: 'fa fa-tasks',
+    },
 };

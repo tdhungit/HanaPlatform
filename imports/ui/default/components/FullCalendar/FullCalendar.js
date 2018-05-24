@@ -37,6 +37,12 @@ export class CalendarUtils {
                     onDateChanged(toDate(intervalStart), toDate(intervalEnd));
                 }
             },
+
+            eventRender: (event, element) => {
+                if(event.icon){
+                    element.find(".fc-title").prepend("<i class='" + event.icon + "'/> ");
+                }
+            },
         };
 
         let calendarOptions = Object.assign({}, defaultOptions, options);

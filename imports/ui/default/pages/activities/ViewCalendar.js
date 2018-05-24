@@ -15,6 +15,7 @@ import container from '../../../../common/Container';
 import Activities from '../../../../collections/Activities/Activities';
 import {frameworkConfig} from '../../../../config/config.inc';
 import FormActivity from './FormActivity';
+import Settings from '../../../../collections/Settings/Settings';
 
 class ViewCalendar extends Component {
     static viewInfo = {controller: 'Activities', action: 'View'};
@@ -69,6 +70,7 @@ class ViewCalendar extends Component {
             columnFormat: 'ddd DD/MM',
             displayTime: true,
             firstDay: 1,
+            timeFormat: 'HH:mm',
 
             select: this.onEventSelect,
 
@@ -89,6 +91,8 @@ class ViewCalendar extends Component {
     }
 
     getEvents(currentEvents) {
+        const colors = Settings.getListStrings('CalendarEventColor');
+        const icons = Settings.getListStrings('CalendarEventIcon');
         const rawEvents = {...currentEvents};
         let events = [];
         _.each(rawEvents, (activity) => {
@@ -97,6 +101,10 @@ class ViewCalendar extends Component {
                 title: activity.name,
                 start: moment(activity.dateStart),
                 end: moment(activity.dateEnd),
+                className: 'calendar-event-' + activity.type,
+                icon: icons[activity.type],
+                color: colors[activity.type],
+                source: activity
             });
         });
 

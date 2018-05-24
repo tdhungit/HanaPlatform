@@ -1,4 +1,7 @@
+import {Meteor} from 'meteor/meteor';
+import _ from 'underscore';
 import CollectionBase from '/imports/common/CollectionBase';
+import {AppListStrings} from '../../common/AppListStrings';
 
 class SettingsCollection extends CollectionBase {
     /**
@@ -29,6 +32,34 @@ class SettingsCollection extends CollectionBase {
         }
 
         return this.find({}).fetch();
+    }
+
+    /**
+     * get all app list strings
+     * @param name
+     * @param user
+     * @returns {*}
+     */
+    getListStrings(name = '', user = {}) {
+        if (Meteor.isClient) {
+            user = Meteor.user();
+        }
+
+        if (!user && !user._id) {
+            return [];
+        }
+
+        let ListStrings = AppListStrings;
+        const appListStrings = this.query(user, {category: 'AppListStrings'}).fetch();
+        _.each(appListStrings, (list) => {
+            ListStrings[list.name] = JSON.parse(list.value);
+        });
+
+        if (name) {
+            return ListStrings[name] || [];
+        }
+
+        return ListStrings;
     }
 
     /**

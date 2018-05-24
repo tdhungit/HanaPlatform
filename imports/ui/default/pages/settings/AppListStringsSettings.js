@@ -13,7 +13,6 @@ import {
 
 import {t, T, PT} from '/imports/common/Translation';
 import Settings from '/imports/collections/Settings/Settings';
-import {AppListStrings} from '/imports/common/AppListStrings';
 import {utilsHelper} from '../../helpers/utils/utils';
 
 class AppListStringsSettings extends Component {
@@ -36,14 +35,7 @@ class AppListStringsSettings extends Component {
     }
 
     componentWillMount() {
-        let allAppListStrings = AppListStrings;
-        const appListStrings = Settings.find({category: 'AppListStrings'}).fetch();
-        for (let idx in appListStrings) {
-            let appListString = appListStrings[idx];
-            allAppListStrings[appListString.name] = JSON.parse(appListString.value);
-        }
-
-        this.state.AppListStrings = allAppListStrings;
+        this.state.AppListStrings = Settings.getListStrings();
     }
 
     addListStringValue() {
