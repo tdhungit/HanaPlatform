@@ -1,7 +1,7 @@
 import CollectionBase from '../../common/CollectionBase';
 import {activityLayouts} from './layouts';
 import {ActivityInviteStatus} from './config';
-import {Meteor} from "meteor/meteor";
+import {Meteor} from 'meteor/meteor';
 
 class ActivitiesCollection extends CollectionBase {
     /**
