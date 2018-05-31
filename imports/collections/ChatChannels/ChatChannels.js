@@ -59,7 +59,6 @@ const ChatChannelsSchema = {};
 ChatChannelsSchema.ChatChannels = CollectionBase.schema({
     createdAt: {
         type: String,
-        label: 'The date this record was created.',
         autoValue() {
             if (this.isInsert) return (new Date()).toISOString();
             return this.value;
@@ -68,11 +67,11 @@ ChatChannelsSchema.ChatChannels = CollectionBase.schema({
     userId: {type: String},
     name: {
         type: String,
-        label: 'Channel Name',
         required: true
     },
     description: {type: String, optional: true},
     isPubic: {type: Boolean, defaultValue: true},
+    isActive: {type: Boolean, defaultValue: true},
     users: {
         type: Array,
         required: true

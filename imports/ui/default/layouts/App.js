@@ -21,6 +21,7 @@ import Login from '../pages/auth/Login';
 import Signup from '../pages/auth/Signup';
 import RecoverPassword from '../pages/auth/RecoverPassword';
 import ResetPassword from '../pages/auth/ResetPassword';
+import WidgetChatComponent from '../pages/chats/WidgetChatComponent';
 
 /**
  * App main layout
@@ -37,6 +38,7 @@ class App extends Component {
             <Router>
                 <div className="HanaPlatform">
                     {appProps.app.loading ? <AppLoading/> : null}
+
                     <Switch>
                         <Public exact path="/signup" component={Signup} {...appProps} />
                         <Public exact path="/login" component={Login} {...appProps} />
@@ -46,6 +48,9 @@ class App extends Component {
                         <Authenticate path="/manager" component={ManagerLayout} {...appProps}/>
                         <Authenticate path="/" component={HomeLayout} {...appProps}/>
                     </Switch>
+
+                    <WidgetChatComponent/>
+
                     <ToastContainer
                         position="bottom-right"
                         autoClose={6000}

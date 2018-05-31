@@ -1,0 +1,97 @@
+#WidgetChatComponent {
+  position: fixed;
+  bottom: 0;
+  right: 30px;
+  display: flex;
+  align-items: flex-end;
+  z-index: 2;
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .ChatChannels {
+    margin-left: 2px;
+    width: 180px;
+    background: #fff;
+    border: 1px solid #20a8d8;
+    border-bottom: 0;
+    -webkit-border-top-left-radius: 3px;
+    -webkit-border-top-right-radius: 3px;
+    -moz-border-radius-topleft: 3px;
+    -moz-border-radius-topright: 3px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+
+    .ChatChannels-header {
+      text-align: center;
+      padding: 2px 0;
+      border-bottom: 1px solid #dddddd;
+      cursor: pointer;
+
+      strong {
+        font-size: 11px;
+      }
+    }
+
+    .ChatChannels-body {
+      height: 250px;
+      padding: 0;
+
+      ul {
+        li {
+          a {
+            display: block;
+            padding: 8px 10px;
+            background: #fff;
+          }
+
+          a:hover {
+            background: #ddd !important;
+            text-decoration: none;
+          }
+        }
+
+        li:nth-of-type(odd) {
+          a {
+            background: #eee;
+          }
+        }
+      }
+    }
+  }
+
+  .ChatWindows {
+    .ChatWindow {
+      float: right;
+      margin-left: 2px;
+      width: 250px;
+      background: #fff;
+      border: 1px solid #20a8d8;
+      border-bottom: 0;
+      -webkit-border-top-left-radius: 3px;
+      -webkit-border-top-right-radius: 3px;
+      -moz-border-radius-topleft: 3px;
+      -moz-border-radius-topright: 3px;
+      border-top-left-radius: 3px;
+      border-top-right-radius: 3px;
+
+      .ChatWindow-header {
+        text-align: center;
+        padding: 2px 0;
+        border-bottom: 1px solid #dddddd;
+        cursor: pointer;
+
+        strong {
+          font-size: 11px;
+        }
+      }
+
+      .ChatWindow-body {
+        height: 250px;
+      }
+    }
+  }
+}
