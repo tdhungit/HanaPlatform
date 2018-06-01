@@ -2,17 +2,40 @@ import React, {Component} from 'react';
 import container from '../../../../common/Container';
 import {Meteor} from 'meteor/meteor';
 import ChatChannels from '../../../../collections/ChatChannels/ChatChannels';
-
 import {t, T} from '/imports/common/Translation';
+import {utilsHelper} from '../../helpers/utils/utils';
+import FormChatComponent from './FormChatComponent';
 
 class WidgetChatComponent extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            isShow: false,
-            windows: {}
+            isShow: false
         }
+    }
+
+    minimizeWindow(channel) {
+        let data = {};
+        data._id = channel._id;
+        data.isChatting = !channel.isChatting;
+        Meteor.call('chatChannels.update', data, (error) => {
+            if (error) {
+                utilsHelper.alertError(error);
+            }
+        });
+    }
+
+    activeChat(channel) {
+        let data = {};
+        data._id = channel._id;
+        data.isActive = !channel.isActive;
+        data.isChatting = true;
+        Meteor.call('chatChannels.update', data, (error) => {
+            if (error) {
+                utilsHelper.alertError(error);
+            }
+        });
     }
 
     render() {
@@ -22,27 +45,20 @@ class WidgetChatComponent extends Component {
             <div id="WidgetChatComponent">
                 <div className="ChatWindows">
                     {activeChannels.map((channel, i) => {
-                        let display = 'block';
-                        if (!this.state.windows[channel._id]) {
-                            display = 'block';
-                        } else {
-                            display = this.state.windows[channel._id] ? 'block' : 'none';
-                        }
+                        const display = channel.isChatting ? 'block' : 'none';
 
                         return (
                             <div className="ChatWindow" key={i}>
                                 <div className="ChatWindow-header"
-                                     onClick={() => {
-                                         const cd = this.state.windows[channel._id] || true;
-                                         const windows = {...this.state.windows};
-                                         windows[channel._id] = !cd;
-                                         this.setState({windows});
-                                     }}>
+                                     onClick={() => this.minimizeWindow(channel)}>
                                     <strong>{channel.name}</strong>
                                 </div>
                                 <div className="ChatWindow-body"
                                      style={{display: display}}>
-
+                                    <FormChatComponent
+                                        channelId={channel._id}
+                                        miniForm={true}
+                                        messagesHeight={222}/>
                                 </div>
                             </div>
                         );
@@ -60,7 +76,8 @@ class WidgetChatComponent extends Component {
                             {channels.map((channel, i) => {
                                 return (
                                     <li key={i}>
-                                        <a href="javascript:void(0)">
+                                        <a href="javascript:void(0)"
+                                           onClick={() => this.activeChat(channel)}>
                                             <i className="fa fa-comments"/> {channel.name}
                                         </a>
                                     </li>

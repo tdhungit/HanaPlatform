@@ -91,6 +91,37 @@
 
       .ChatWindow-body {
         height: 250px;
+
+        .ChatWindow-chat {
+          height: 222px;
+        }
+      }
+    }
+  }
+}
+
+.miniForm {
+  .messages {
+    height: 100%;
+
+    .rce-mlist {
+      .rce-container-mbox {
+        .rce-mbox {
+          .rce-mbox-body {
+            .rce-mbox-title {
+              margin-bottom: 0 !important;
+              font-size: 11px;
+            }
+
+            .rce-mbox-text {
+              font-size: 11px;
+            }
+
+            .rce-mbox-time {
+              font-size: 8px;
+            }
+          }
+        }
       }
     }
   }

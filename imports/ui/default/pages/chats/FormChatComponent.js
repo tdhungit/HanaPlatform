@@ -146,11 +146,13 @@ class FormChatComponent extends Component {
         return sources;
     }
 
+    // render
     renderChatMessages() {
+        const {messagesHeight} = this.props;
         const dataSources = this.getChatSources();
+
         return (
-            <div className="messagesContent"
-                 style={{height: this.state.messagesHeight}}>
+            <div style={{height: messagesHeight || this.state.messagesHeight}}>
                 <MessageList
                     className="messages"
                     lockable={true}
@@ -160,27 +162,8 @@ class FormChatComponent extends Component {
         );
     }
 
-    render() {
-        const {status} = this.props;
-        if (status === ChatChannelUserStatus.Inactive) {
-            return (
-                <div className="inboxContent">
-                    <Alert color="danger">{t.__('You can not access this channel!')}</Alert>
-                </div>
-            );
-        }
-
-        if (status === ChatChannelUserStatus.Waiting) {
-            return (
-                <div className="inboxContent">
-                    <Alert color="warning">{t.__('Please accept to join!')}</Alert>
-                    <Button block
-                            color="primary"
-                            onClick={() => this.joinChat()}><T>Join</T></Button>
-                </div>
-            );
-        }
-
+    // render
+    renderFullForm() {
         return (
             <div className="inboxContent">
                 <div className="messageContent">
@@ -224,6 +207,73 @@ class FormChatComponent extends Component {
                 </FormGroup>
             </div>
         );
+    }
+
+    // render
+    renderMiniForm() {
+        return (
+            <div className="inboxContent">
+                <div className="messagesContent miniForm">
+                    <UsersModal
+                        isOpen={this.state.showInvite}
+                        mdToggle={() => this.setState({showInvite: false})}
+                        selected={this.state.selectedInvites}
+                        onChange={(selectedInvites) => this.setState({selectedInvites})}
+                        onOk={(invites) => this.sendInvite(invites)}/>
+                    {this.renderChatMessages()}
+                </div>
+                <FormGroup className="messageInput">
+                    <div className="controls">
+                        <InputGroup>
+                            <Input type="text"
+                                   bsSize="sm"
+                                   name="message"
+                                   value={this.state.chat.message || ''}
+                                   placeholder={t.__('Enter Message')}
+                                   onChange={this.changeChatInfo}
+                                   onKeyPress={this.handleMessageKeyPress}/>
+                            <InputGroupAddon addonType="append">
+                                <Button type="button"
+                                        color="primary"
+                                        size="sm"
+                                        onClick={() => this.sendMessage()}>
+                                    <i className="fa fa-send"/>
+                                </Button>
+                            </InputGroupAddon>
+                        </InputGroup>
+                    </div>
+                </FormGroup>
+            </div>
+        );
+    }
+
+    // main render
+    render() {
+        const {status, miniForm} = this.props;
+        if (status === ChatChannelUserStatus.Inactive) {
+            return (
+                <div className="inboxContent">
+                    <Alert color="danger">{t.__('You can not access this channel!')}</Alert>
+                </div>
+            );
+        }
+
+        if (status === ChatChannelUserStatus.Waiting) {
+            return (
+                <div className="inboxContent">
+                    <Alert color="warning">{t.__('Please accept to join!')}</Alert>
+                    <Button block
+                            color="primary"
+                            onClick={() => this.joinChat()}><T>Join</T></Button>
+                </div>
+            );
+        }
+
+        if (miniForm) {
+            return this.renderMiniForm();
+        }
+
+        return this.renderFullForm();
     }
 }
 

@@ -71,7 +71,8 @@ ChatChannelsSchema.ChatChannels = CollectionBase.schema({
     },
     description: {type: String, optional: true},
     isPubic: {type: Boolean, defaultValue: true},
-    isActive: {type: Boolean, defaultValue: true},
+    isActive: {type: Boolean, defaultValue: false},
+    isChatting: {type: Boolean, defaultValue: false},
     users: {
         type: Array,
         required: true
