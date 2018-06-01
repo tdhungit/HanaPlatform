@@ -51,11 +51,15 @@ class FormChatComponent extends Component {
     }
 
     componentDidMount() {
+        this.props.onRef && this.props.onRef(this);
+
         this.updateWindowDimensions();
         window.addEventListener('resize', this.updateWindowDimensions);
     }
 
     componentWillUnmount() {
+        this.props.onRef && this.props.onRef(undefined);
+
         window.removeEventListener('resize', this.updateWindowDimensions);
     }
 

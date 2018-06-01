@@ -28,7 +28,8 @@
     .ChatChannels-header {
       text-align: center;
       padding: 2px 0;
-      border-bottom: 1px solid #dddddd;
+      background: #20a8d8;
+      color: #fff;
       cursor: pointer;
 
       strong {
@@ -64,8 +65,11 @@
   }
 
   .ChatWindows {
+    display: flex;
+    align-items: flex-end;
+    flex-direction: row-reverse;
+
     .ChatWindow {
-      float: right;
       margin-left: 2px;
       width: 250px;
       background: #fff;
@@ -79,13 +83,27 @@
       border-top-right-radius: 3px;
 
       .ChatWindow-header {
+        position: relative;
         text-align: center;
         padding: 2px 0;
-        border-bottom: 1px solid #dddddd;
+        background: #20a8d8;
+        color: #fff;
         cursor: pointer;
 
         strong {
           font-size: 11px;
+        }
+
+        .ChatWindow-controls {
+          position: absolute;
+          top: 1px;
+          right: 1px;
+
+          a {
+            display: inline-block;
+            padding: 0 3px;
+            color: #FFFFFF;
+          }
         }
       }
 

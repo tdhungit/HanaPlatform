@@ -12,7 +12,7 @@ class WidgetChatComponent extends Component {
 
         this.state = {
             isShow: false
-        }
+        };
     }
 
     minimizeWindow(channel) {
@@ -29,13 +29,59 @@ class WidgetChatComponent extends Component {
     activeChat(channel) {
         let data = {};
         data._id = channel._id;
-        data.isActive = !channel.isActive;
+        data.isActive = true;
         data.isChatting = true;
         Meteor.call('chatChannels.update', data, (error) => {
             if (error) {
                 utilsHelper.alertError(error);
             }
         });
+    }
+
+    removeChat(channel) {
+        let data = {};
+        data._id = channel._id;
+        data.isActive = false;
+        data.isChatting = false;
+        Meteor.call('chatChannels.update', data, (error) => {
+            if (error) {
+                utilsHelper.alertError(error);
+            }
+        });
+    }
+
+    inviteChat(event) {
+        event.stopPropagation();
+        this.formChat.setState({showInvite: true});
+    }
+
+    // render
+    renderChatWindowHeader(channel) {
+        return (
+            <div className="ChatWindow-header"
+                 onClick={() => this.minimizeWindow(channel)}>
+                <strong>{channel.name}</strong>
+                <div className="ChatWindow-controls">
+                    <a href="javascript:void(0)"
+                       onClick={(event) => this.inviteChat(event)}>
+                        <i className="fa fa-user-plus"/>
+                    </a>
+                    <a href="javascript:void(0)"
+                       onClick={() => this.removeChat(channel)}>
+                        <i className="fa fa-remove"/>
+                    </a>
+                </div>
+            </div>
+        );
+    }
+
+    renderChatChannelsHeader() {
+        return (
+            <div className="ChatChannels-header"
+                 onClick={() => this.setState({isShow: !this.state.isShow})}>
+                <strong><T>Chats</T></strong>
+            </div>
+        );
     }
 
     render() {
@@ -49,16 +95,14 @@ class WidgetChatComponent extends Component {
 
                         return (
                             <div className="ChatWindow" key={i}>
-                                <div className="ChatWindow-header"
-                                     onClick={() => this.minimizeWindow(channel)}>
-                                    <strong>{channel.name}</strong>
-                                </div>
+                                {this.renderChatWindowHeader(channel)}
                                 <div className="ChatWindow-body"
                                      style={{display: display}}>
                                     <FormChatComponent
                                         channelId={channel._id}
                                         miniForm={true}
-                                        messagesHeight={222}/>
+                                        messagesHeight={222}
+                                        onRef={(ref) => this.formChat = ref}/>
                                 </div>
                             </div>
                         );
@@ -66,10 +110,7 @@ class WidgetChatComponent extends Component {
                 </div>
 
                 <div className="ChatChannels">
-                    <div className="ChatChannels-header"
-                         onClick={() => this.setState({isShow: !this.state.isShow})}>
-                        <strong><T>Chats</T></strong>
-                    </div>
+                    {this.renderChatChannelsHeader()}
                     <div className="ChatChannels-body"
                          style={{display: this.state.isShow ? 'block' : 'none'}}>
                         <ul>
