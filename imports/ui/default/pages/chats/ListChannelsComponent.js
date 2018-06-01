@@ -48,7 +48,7 @@ class ListChannelsComponent extends Component {
 
     createPrivateChannel(friendId) {
         if (friendId) {
-            Meteor.call('chatChannels.directMessage', friendId, (error, _id) => {
+            Meteor.call('chatChannels.directMessage', friendId, false, (error, _id) => {
                 if (error) {
                     utilsHelper.alertError(error);
                 } else {

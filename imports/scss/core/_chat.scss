@@ -1,7 +1,7 @@
 #WidgetChatComponent {
   position: fixed;
   bottom: 0;
-  right: 30px;
+  right: 1px;
   display: flex;
   align-items: flex-end;
   z-index: 2;
@@ -26,6 +26,7 @@
     border-top-right-radius: 3px;
 
     .ChatChannels-header {
+      position: relative;
       text-align: center;
       padding: 2px 0;
       background: #20a8d8;
@@ -35,10 +36,22 @@
       strong {
         font-size: 11px;
       }
+
+      .ChatChannels-controls {
+        position: absolute;
+        top: 1px;
+        right: 1px;
+
+        a {
+          display: inline-block;
+          padding: 0 3px;
+          color: #FFFFFF;
+        }
+      }
     }
 
     .ChatChannels-body {
-      height: 250px;
+      height: 300px;
       padding: 0;
 
       ul {

@@ -42,7 +42,7 @@ Meteor.methods({
             throw new Meteor.Error('500', e);
         }
     },
-    'chatChannels.directMessage': function (friendId) {
+    'chatChannels.directMessage': function (friendId, chatting = false) {
         // check access
         aclAccess('ChatChannels', 'Create');
 
@@ -71,7 +71,7 @@ Meteor.methods({
 
         // create new channel
         if (!channelId) {
-            channelId = ChatChannels.insert({
+            let chatData = {
                 name: `${friendUser.username}`,
                 description: 'Direct Message',
                 userId: currentUserId,
@@ -89,12 +89,29 @@ Meteor.methods({
                         status: 'Active'
                     }
                 ]
-            });
+            };
+
+            if (chatting) {
+                chatData.isActive = true;
+                chatData.isChatting = true;
+            }
+
+            channelId = ChatChannels.insert(chatData);
+        } else {
+            if (chatting) {
+                ChatChannels.update(channelId, {
+                    $set: {
+                        _id: channelId,
+                        isActive: true,
+                        isChatting: true
+                    }
+                });
+            }
         }
 
         return channelId;
     },
-    'chatChannels.invite': function(channelId, inviteUsers) {
+    'chatChannels.invite': function (channelId, inviteUsers) {
         const channel = ChatChannels.queryOne(Meteor.user(), {
             _id: channelId,
             users: {$elemMatch: {_id: Meteor.userId()}}
