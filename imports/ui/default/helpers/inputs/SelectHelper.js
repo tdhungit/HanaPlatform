@@ -30,14 +30,7 @@ export class SelectHelper extends Component {
         }
 
         if (typeof options === 'string') {
-            const appListStrings = Settings.getSettings('AppListStrings', options);
-            if (appListStrings && appListStrings.value) {
-                options = JSON.parse(appListStrings.value);
-            } else if (AppListStrings[options]) {
-                options = AppListStrings[options];
-            } else {
-                return [];
-            }
+            options = Settings.getListStrings(options);
         }
 
         if (options.constructor === Array) {

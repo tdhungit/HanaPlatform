@@ -1,5 +1,7 @@
 // system app list strings. Admin user can add more app list string in db settings
-export const AppListStrings = {
+import {ModulesAppListStrings} from '../modules/app_list_strings.modules';
+
+const CoreAppListStrings = {
     BranchOfficeTypesList: {
         Office: 'Office',
         Warehouse: 'Warehouse'
@@ -33,4 +35,9 @@ export const AppListStrings = {
         Meetings: 'fa fa-check',
         Tasks: 'fa fa-tasks',
     },
+};
+
+export const AppListStrings = {
+    ...CoreAppListStrings,
+    ...ModulesAppListStrings
 };
