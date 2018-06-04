@@ -131,7 +131,7 @@ class DetailComponent extends Component {
     }
 
     render() {
-        const {model, record} = this.props;
+        const {model, record, editLink} = this.props;
 
         if (!model || !record || !record._id) {
             return <Alert color="danger"><T>No Data</T></Alert>;
@@ -145,9 +145,10 @@ class DetailComponent extends Component {
                     <strong>{this.props.title}</strong> {title}
                     <div className="card-actions">
                         {this.renderHeaderLinks()}
-                        <Link to={vsprintf(this.props.editLink, [record._id])} title={t.__('Edit')}>
+                        {editLink ?
+                        <Link to={vsprintf(editLink, [record._id])} title={t.__('Edit')}>
                             <i className="fa fa-edit"/>
-                        </Link>
+                        </Link> : null}
                     </div>
                 </CardHeader>
                 <CardBody className="title">
