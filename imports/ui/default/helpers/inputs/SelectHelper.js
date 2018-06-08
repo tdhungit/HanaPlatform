@@ -311,7 +311,8 @@ export class SelectGroupHelper extends Component {
         for (let selected in this.props.items) {
             let item = this.props.items[selected];
             dropdownItem.push(
-                <DropdownItem key={selected} onClick={this.onItemChange.bind(this, item)}>
+                <DropdownItem key={selected}
+                              onClick={this.onItemChange.bind(this, item)}>
                     {item.icon ? <i className={item.icon}/> : null}
                     {item.label}
                 </DropdownItem>
@@ -322,28 +323,42 @@ export class SelectGroupHelper extends Component {
     }
 
     render() {
+        const {first, name, placeholder, icon} = this.props;
+
         return (
             <InputGroup>
-                {this.props.first ?
-                    <Input type="text" name={this.props.name} disabled={this.state.active.selected ? false : true}
-                           placeholder={this.props.placeholder} value={this.state.text}
+                {first ?
+                    <Input type="text"
+                           name={name}
+                           disabled={!this.state.active.selected}
+                           placeholder={placeholder}
+                           value={this.state.text}
                            onChange={this.onInputChange.bind(this)}/> : null}
                 <InputGroupAddon addonType="prepend">
                     <ButtonDropdown isOpen={this.state.isOpen}
                                     toggle={() => {
                                         this.setState({isOpen: !this.state.isOpen});
                                     }}>
-                        <DropdownToggle caret color="gray-200">{this.state.active.label}</DropdownToggle>
+                        <DropdownToggle caret color="gray-200">
+                            <i className={icon} /> {this.state.active.label}
+                            </DropdownToggle>
                         <DropdownMenu
-                            className={this.state.isOpen ? "show" : ""}>{this.renderDropdownItem()}</DropdownMenu>
+                            className={this.state.isOpen ? "show" : ""}>
+                            {this.renderDropdownItem()}
+                        </DropdownMenu>
                     </ButtonDropdown>
                 </InputGroupAddon>
-                {!this.props.first ?
-                    <Input type="text" name={this.props.name} disabled={this.state.active.selected ? false : true}
-                           placeholder={this.props.placeholder} value={this.state.text}
+                {!first ?
+                    <Input type="text"
+                           name={name}
+                           disabled={!this.state.active.selected}
+                           placeholder={placeholder}
+                           value={this.state.text}
                            onChange={this.onInputChange.bind(this)}/> : null}
                 <Button type="button" color="warning"
-                        onClick={this.onItemDefault.bind(this)}><i className="fa fa-remove"/></Button>
+                        onClick={this.onItemDefault.bind(this)}>
+                    <i className="fa fa-remove"/>
+                </Button>
             </InputGroup>
         );
     }

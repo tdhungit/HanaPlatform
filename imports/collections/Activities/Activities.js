@@ -107,10 +107,16 @@ const ActivitiesSchema = CollectionBase.schema({
         type: String,
         optional: true
     },
+    allDay: {
+        type: Boolean,
+        defaultValue: false
+    },
     repeat: {
         type: Object,
         optional: true
     },
+    "repeat.start": {type: String},
+    "repeat.end": {type: String},
     "repeat.duration": {type: Number},
     "repeat.unit": {type: String},
     "repeat.dayOfWeek": {
@@ -118,18 +124,6 @@ const ActivitiesSchema = CollectionBase.schema({
         optional: true
     },
     "repeat.dayOfWeek.$": {
-        type: String,
-        optional: true
-    },
-    "repeat.end": {
-        type: Object,
-        optional: true
-    },
-    "repeat.end.date": {
-        type: String,
-        optional: true
-    },
-    "repeat.end.times": {
         type: Number,
         optional: true
     },

@@ -2,27 +2,15 @@ import React, {Component} from 'react';
 import {withRouter} from 'react-router';
 import PropTypes from 'prop-types';
 import {Meteor} from 'meteor/meteor';
-import {
-    Row,
-    Col,
-    Card,
-    CardHeader,
-    CardBody,
-    CardFooter,
-    Button,
-    FormGroup,
-    Label,
-    Input,
-    ListGroup,
-    ListGroupItem,
-    Badge,
-    InputGroup,
-    InputGroupAddon,
-    ButtonDropdown,
-    DropdownToggle,
-    DropdownMenu,
-    DropdownItem
+import {Row, Col,
+    Card, CardHeader, CardBody, CardFooter,
+    Button, Input, Label, Badge,
+    ListGroup, ListGroupItem,
+    FormGroup, InputGroup, InputGroupAddon,
+    ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem,
+    Modal, ModalHeader, ModalBody, ModalFooter
 } from 'reactstrap';
+import _ from 'underscore';
 
 import {T, t} from '/imports/common/Translation';
 import {AppListStrings} from '/imports/common/AppListStrings';
@@ -54,7 +42,9 @@ class FormActivity extends Component {
                 notifications: []
             },
             inviting: '',
-            conferencingList: []
+            conferencingList: [],
+            showRepeat: false,
+            showRepeatConfig: false,
         };
 
         this.loadInviteUsers = this.loadInviteUsers.bind(this);
@@ -98,7 +88,7 @@ class FormActivity extends Component {
         this.setState({activity: activity});
     }
 
-    getInputValue(name) {
+    getInputValue(name, defaultValue = '') {
         if (name === 'conferencing') {
             if (this.state.activity.conferencing) {
                 const conferencing = this.state.activity.conferencing;
@@ -116,7 +106,7 @@ class FormActivity extends Component {
             }
         }
 
-        return utilsHelper.getField(this.state.activity, name);
+        return utilsHelper.getField(this.state.activity, name, defaultValue);
     }
 
     loadInviteUsers(input, callback) {
@@ -305,6 +295,200 @@ class FormActivity extends Component {
         return notifications;
     }
 
+    renderRepeat() {
+        const days = [
+            {value: 0, label: 'S'},
+            {value: 1, label: 'M'},
+            {value: 2, label: 'T'},
+            {value: 3, label: 'W'},
+            {value: 4, label: 'T'},
+            {value: 5, label: 'F'},
+            {value: 6, label: 'S'},
+        ];
+
+        return (
+            <Modal isOpen={this.state.showRepeat}
+                   toggle={() => this.setState({showRepeat: true})}>
+                <ModalHeader toggle={() => this.setState({showRepeat: false})}>
+                    <T>Repeat Setting</T>
+                </ModalHeader>
+                <ModalBody>
+                    <Row>
+                        <Col>
+                            <FormGroup row>
+                                <Col lg="3"><Label><T>Enable</T></Label></Col>
+                                <Col lg="9">
+                                    <Label className="switch switch-3d switch-primary">
+                                        <Input type="checkbox"
+                                               className="switch-input"
+                                               checked={this.getInputValue('repeat.enable')}
+                                               name="repeat.enable"
+                                               onChange={() => {
+                                                   let activity = {...this.state.activity};
+                                                   const enable = activity.repeat && activity.repeat.enable || false;
+                                                   if (!activity.repeat) {
+                                                       activity.repeat = {};
+                                                   }
+
+                                                   activity.repeat.enable = !enable;
+                                                   if (activity.repeat.enable === false) {
+                                                       activity.repeat = {enable: false};
+                                                   } else {
+                                                       if (!activity.repeat.duration) {
+                                                           activity.repeat.duration = 1;
+                                                       }
+
+                                                       if (!activity.repeat.unit) {
+                                                           activity.repeat.unit = 'weeks';
+                                                       }
+                                                   }
+
+                                                   this.setState({
+                                                       activity,
+                                                       showRepeatConfig: !this.state.showRepeatConfig
+                                                   })
+                                               }}/>
+                                        <span className="switch-label"/>
+                                        <span className="switch-handle"/>
+                                    </Label>
+                                </Col>
+                            </FormGroup>
+                        </Col>
+                    </Row>
+                    <div style={{display: this.state.showRepeatConfig ? 'block': 'none'}}>
+                        <Row>
+                            <Col>
+                                <FormGroup row>
+                                    <Col lg="3"><Label><T>All days</T></Label></Col>
+                                    <Col lg="9">
+                                        <Label className="switch switch-3d switch-primary">
+                                            <Input type="checkbox"
+                                                   className="switch-input"
+                                                   checked={this.getInputValue('allDay', false)}
+                                                   name="allDay"
+                                                   onChange={this.handleInputChange}/>
+                                            <span className="switch-label"/>
+                                            <span className="switch-handle"/>
+                                        </Label>
+                                    </Col>
+                                </FormGroup>
+                            </Col>
+                        </Row>
+                        <div>
+                            <Row>
+                                <Col>
+                                    <FormGroup row>
+                                        <Col lg="3"><Label><T>Start</T></Label></Col>
+                                        <Col lg="9">
+                                            <Input type="text"/>
+                                        </Col>
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col>
+                                    <FormGroup row>
+                                        <Col lg="3"><Label><T>End</T></Label></Col>
+                                        <Col lg="9">
+                                            <Input type="text"/>
+                                        </Col>
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+                        </div>
+                        <Row>
+                            <Col>
+                                <FormGroup row>
+                                    <Col lg="3"><Label><T>Repeat every</T></Label></Col>
+                                    <Col lg="3">
+                                        <Input type="number"
+                                               name="repeat.duration"
+                                               value={this.getInputValue('repeat.duration', 1)}
+                                               onChange={this.handleInputChange}/>
+                                    </Col>
+                                    <Col lg="3">
+                                        <SelectHelper
+                                            name="repeat.unit"
+                                            options={[
+                                                'days',
+                                                'weeks',
+                                                'months',
+                                                'years'
+                                            ]}
+                                            required={true}
+                                            value={this.getInputValue('repeat.unit', 'weeks')}
+                                            onChange={this.handleInputChange}/>
+                                    </Col>
+                                </FormGroup>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <FormGroup row>
+                                    <Col lg="3">
+                                        <Label><T>Repeat days</T></Label>
+                                    </Col>
+                                    <Col lg="9">
+                                        {days.map((day, i) => {
+                                            let color = 'gray-200';
+                                            let outline = true;
+                                            if (this.state.activity.repeat && this.state.activity.repeat.dayOfWeek) {
+                                                const cDIdx = _.indexOf(this.state.activity.repeat.dayOfWeek, day.value);
+                                                if (cDIdx >= 0) {
+                                                    color = 'info';
+                                                    outline = false;
+                                                }
+                                            }
+
+                                            return (
+                                                <Button key={i}
+                                                        outline={outline}
+                                                        size="sm"
+                                                        color={color}
+                                                        style={{marginRight: 2}}
+                                                        onClick={() => {
+                                                            let activity = {...this.state.activity};
+                                                            if (!activity.repeat) {
+                                                                activity.repeat = {};
+                                                            }
+
+                                                            if (!activity.repeat.dayOfWeek) {
+                                                                activity.repeat.dayOfWeek = [];
+                                                            }
+
+                                                            const pos = _.indexOf(activity.repeat.dayOfWeek, day.value);
+                                                            if (pos >= 0) {
+                                                                activity.repeat.dayOfWeek.splice(pos, 1);
+                                                            } else {
+                                                                activity.repeat.dayOfWeek.push(day.value);
+                                                            }
+
+                                                            this.setState({activity});
+                                                        }}>
+                                                    {day.label}
+                                                </Button>
+                                            );
+                                        })}
+                                    </Col>
+                                </FormGroup>
+                            </Col>
+                        </Row>
+                    </div>
+                </ModalBody>
+                <ModalFooter>
+                    <Button color="primary"
+                            onClick={() => this.setState({showRepeat: false})}>
+                        <i className="fa fa-check-circle"/> <T>Done</T>
+                    </Button>
+                    <Button color="secondary"
+                            onClick={() => this.setState({showRepeat: false})}>
+                        <i className="fa fa-ban"/> <T>Cancel</T>
+                    </Button>
+                </ModalFooter>
+            </Modal>
+        );
+    }
+
     onCancel(isEdit) {
         const {onCancel} = this.props;
         if (onCancel) {
@@ -378,6 +562,18 @@ class FormActivity extends Component {
                         </Col>
                     </Row>
                     <Row>
+                        <Col>
+                            <FormGroup>
+                                <Button type="button"
+                                        color="gray-200"
+                                        onClick={() => this.setState({showRepeat: true})}>
+                                    <i className="icon-reload"/> <T>Repeat</T>
+                                </Button>
+                                {this.renderRepeat()}
+                            </FormGroup>
+                        </Col>
+                    </Row>
+                    <Row>
                         <Col xs="12" md="6">
                             <FormGroup>
                                 <Label><T>Date start</T></Label>
@@ -399,40 +595,53 @@ class FormActivity extends Component {
                         <Col xs="12" md="8">
                             <FormGroup>
                                 <Label><T>Location</T></Label>
-                                <Input type="text" name="location" placeholder={t.__('Enter here')}
+                                <Input type="text"
+                                       name="location"
+                                       placeholder={t.__('Enter here')}
                                        value={this.getInputValue('location')}
                                        onChange={this.handleInputChange}/>
                             </FormGroup>
                             <FormGroup>
                                 <Label><T>Conferencing</T></Label>
-                                <SelectGroupHelper name="conferencing"
-                                                   label={t.__('Add Conferencing')}
-                                                   placeholder={t.__('Conferencing')}
-                                                   items={this.state.conferencingList}
-                                                   value={this.getInputValue('conferencing')}
-                                                   onChange={this.handleInputChange}/>
+                                <SelectGroupHelper
+                                    name="conferencing"
+                                    icon="icon-speech"
+                                    label={t.__('Add Conferencing')}
+                                    placeholder={t.__('Conferencing')}
+                                    items={this.state.conferencingList}
+                                    value={this.getInputValue('conferencing')}
+                                    onChange={this.handleInputChange}/>
                             </FormGroup>
                             <FormGroup>
-                                <Button type="button" color="gray-200" onClick={this.addNotification.bind(this)}><T>Add
-                                    Notification</T></Button>
+                                <Button type="button"
+                                        color="gray-200"
+                                        onClick={this.addNotification.bind(this)}>
+                                    <i className="icon-bell"/> <T>Add Notification</T>
+                                </Button>
                                 <div className="activityNotifications">
                                     {this.renderNotifications()}
                                 </div>
                             </FormGroup>
                             <FormGroup>
                                 <Label><T>Description</T></Label>
-                                <TextEditor name="description" placeholder={t.__('Enter here')}
-                                            value={this.getInputValue('description')}
-                                            onChange={this.handleInputChange}/>
+                                <TextEditor
+                                    name="description"
+                                    placeholder={t.__('Enter here')}
+                                    value={this.getInputValue('description')}
+                                    onChange={this.handleInputChange}/>
                             </FormGroup>
                         </Col>
                         <Col xs="12" md="4">
                             <FormGroup>
                                 <Label><T>Invites</T></Label>
-                                <Select2Helper name="invites" placeholder={t.__('Choose...')}
-                                               value={this.state.inviting}
-                                               async={true} loadOptions={this.loadInviteUsers} imgOption={true}
-                                               onChange={this.inviteUser.bind(this)}/>
+                                <Select2Helper
+                                    name="invites"
+                                    placeholder={t.__('Choose...')}
+                                    value={this.state.inviting}
+                                    async={true}
+                                    loadOptions={this.loadInviteUsers}
+                                    imgOption={true}
+                                    onChange={this.inviteUser.bind(this)}/>
                             </FormGroup>
                             <ListGroup className="inviteUsers">
                                 {this.renderInviteUsers()}

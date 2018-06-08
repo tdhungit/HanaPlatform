@@ -101,6 +101,7 @@ class ViewCalendar extends Component {
                 title: activity.name,
                 start: moment(activity.dateStart),
                 end: moment(activity.dateEnd),
+                allDay:false,
                 className: 'calendar-event-' + activity.type,
                 icon: icons[activity.type],
                 color: colors[activity.type],

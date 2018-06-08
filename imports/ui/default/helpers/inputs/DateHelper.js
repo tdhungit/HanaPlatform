@@ -13,7 +13,7 @@ export class DateInput extends Component {
     constructor(props) {
         super(props);
         this.dateFormat = 'YYYY-MM-DD';
-        this.dateTimeFormat = 'YYYY-MM-DD HH:mm';
+        this.dateTimeFormat = 'YYYY-MM-DD HH:mm:ss';
         this.handleChange = this.handleChange.bind(this);
     }
 

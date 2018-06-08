@@ -14,6 +14,7 @@ Meteor.methods({
 
         check(activity, Object);
 
+        // activity invites
         if (!activity.invites) {
             activity.invites = [];
         }
@@ -36,6 +37,8 @@ Meteor.methods({
             activity._id = _id;
             sendNotifications('add', Meteor.user(), activity);
         }
+
+        return _id;
     },
     'activities.update': function (activity) {
         // check permission
