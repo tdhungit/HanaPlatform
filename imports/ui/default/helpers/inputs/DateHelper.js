@@ -3,8 +3,10 @@ import {Meteor} from 'meteor/meteor';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import Settings from '/imports/collections/Settings/Settings';
+import {t} from '/imports/common/Translation';
 
 import 'react-datepicker/dist/react-datepicker.css';
+import {utilsHelper} from '../utils/utils';
 
 /**
  * tag input field type date or datetime
@@ -13,6 +15,7 @@ export class DateInput extends Component {
     constructor(props) {
         super(props);
         this.dateFormat = 'YYYY-MM-DD';
+        this.timeFormat = 'HH:mm';
         this.dateTimeFormat = 'YYYY-MM-DD HH:mm:ss';
         this.handleChange = this.handleChange.bind(this);
     }
@@ -36,46 +39,91 @@ export class DateInput extends Component {
     }
 
     handleChange(dateValue) {
+        const {type, name, onChange} = this.props;
         let inputType = 'date';
         let dateFormat = this.dateFormat;
-        if (this.props.type = 'datetime') {
+
+        if (type === 'datetime') {
             inputType = 'datetime';
             dateFormat = this.dateTimeFormat;
+        }
+
+        if (type === 'time') {
+            inputType = 'time';
+            dateFormat = this.timeFormat;
         }
 
         const event = {
             dateValue: dateValue,
             target: {
-                name: this.props.name,
+                name: name,
                 type: inputType,
-                value: dateValue.format(dateFormat)
+                value: (type === 'time') ? dateValue : dateValue.format(dateFormat)
             }
         };
-        this.props.onChange(event);
+
+        onChange && onChange(event);
     }
 
     render() {
+        const {type, value} = this.props;
+        let formated = this.props.formated;
         let showTimeSelect = false;
         let dateFormat = this.dateFormat;
-        if (this.props.type === 'datetime') {
+
+        if (type === 'datetime') {
             showTimeSelect = true;
             dateFormat = this.dateTimeFormat;
         }
 
+        let timeOnly = false;
+        if (type === 'time') {
+            timeOnly = true;
+            showTimeSelect = true;
+            dateFormat = this.timeFormat;
+            if (!formated) {
+                formated = true;
+            }
+        }
+
         let selected = null;//moment();
-        if (this.props.value) {
-            selected = moment(this.props.value, dateFormat);
+        if (value) {
+            if (formated) {
+                selected = moment(value, dateFormat);
+            } else {
+                selected = moment(value);
+            }
         }
 
         return (
             <div className="DateInputHelper">
-                <DatePicker name={name}
-                            dateFormat={dateFormat}
-                            selected={selected}
-                            onChange={this.handleChange}
-                            showTimeSelect={showTimeSelect}
+                <DatePicker
+                    name={name}
+                    selected={selected}
+                    onChange={this.handleChange}
+                    dateFormat={dateFormat}
+                    showTimeSelect={showTimeSelect}
+                    timeFormat="HH:mm"
+                    showTimeSelectOnly={timeOnly}
+                    timeIntervals={15}
+                    timeCaption={t.__('Time')}
                 />
             </div>
         );
+    }
+}
+
+export class DateView extends Component {
+    render() {
+        const {type, value, className} = this.props;
+        let display = value;
+
+        if (type === 'date') {
+            display = utilsHelper.toDateDisplay(value)
+        } else if (type === 'datetime') {
+            display = utilsHelper.toDateTimeDisplay(value);
+        }
+
+        return <div className={className || ''}>{display}</div>;
     }
 }

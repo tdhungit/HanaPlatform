@@ -44,7 +44,6 @@ class FormActivity extends Component {
             inviting: '',
             conferencingList: [],
             showRepeat: false,
-            showRepeatConfig: false,
         };
 
         this.loadInviteUsers = this.loadInviteUsers.bind(this);
@@ -306,6 +305,15 @@ class FormActivity extends Component {
             {value: 6, label: 'S'},
         ];
 
+        let enable = this.state.activity.repeat
+            && this.state.activity.repeat.enable
+            || false;
+        if (this.state.activity.repeat
+            && this.state.activity.repeat.dayOfWeek
+            && this.state.activity.repeat.dayOfWeek.length >= 0) {
+            enable = true;
+        }
+
         return (
             <Modal isOpen={this.state.showRepeat}
                    toggle={() => this.setState({showRepeat: true})}>
@@ -321,11 +329,10 @@ class FormActivity extends Component {
                                     <Label className="switch switch-3d switch-primary">
                                         <Input type="checkbox"
                                                className="switch-input"
-                                               checked={this.getInputValue('repeat.enable')}
+                                               checked={enable}
                                                name="repeat.enable"
                                                onChange={() => {
                                                    let activity = {...this.state.activity};
-                                                   const enable = activity.repeat && activity.repeat.enable || false;
                                                    if (!activity.repeat) {
                                                        activity.repeat = {};
                                                    }
@@ -343,10 +350,7 @@ class FormActivity extends Component {
                                                        }
                                                    }
 
-                                                   this.setState({
-                                                       activity,
-                                                       showRepeatConfig: !this.state.showRepeatConfig
-                                                   })
+                                                   this.setState({activity});
                                                }}/>
                                         <span className="switch-label"/>
                                         <span className="switch-handle"/>
@@ -355,7 +359,7 @@ class FormActivity extends Component {
                             </FormGroup>
                         </Col>
                     </Row>
-                    <div style={{display: this.state.showRepeatConfig ? 'block': 'none'}}>
+                    <div style={{display: enable ? 'block': 'none'}}>
                         <Row>
                             <Col>
                                 <FormGroup row>
@@ -380,7 +384,11 @@ class FormActivity extends Component {
                                     <FormGroup row>
                                         <Col lg="3"><Label><T>Start</T></Label></Col>
                                         <Col lg="9">
-                                            <Input type="text"/>
+                                            <DateInput
+                                                type='time'
+                                                name='repeat.start'
+                                                value={this.getInputValue('repeat.start')}
+                                                onChange={this.handleInputChange}/>
                                         </Col>
                                     </FormGroup>
                                 </Col>
@@ -390,7 +398,11 @@ class FormActivity extends Component {
                                     <FormGroup row>
                                         <Col lg="3"><Label><T>End</T></Label></Col>
                                         <Col lg="9">
-                                            <Input type="text"/>
+                                            <DateInput
+                                                type='time'
+                                                name='repeat.end'
+                                                value={this.getInputValue('repeat.end')}
+                                                onChange={this.handleInputChange}/>
                                         </Col>
                                     </FormGroup>
                                 </Col>
@@ -509,6 +521,16 @@ class FormActivity extends Component {
         activity.dateStart = utilsHelper.toDatetimeDb(activity.dateStart);
         activity.dateEnd = utilsHelper.toDatetimeDb(activity.dateEnd);
 
+        if (activity.repeat) {
+            if (activity.repeat.start) {
+                activity.repeat.start = activity.repeat.start.format('HH:mm');
+            }
+
+            if (activity.repeat.end) {
+                activity.repeat.end = activity.repeat.end.format('HH:mm');
+            }
+        }
+
         if (activity.invites.constructor !== 'Array') {
             activity.invites = Object.keys(activity.invites).map(item => activity.invites[item]);
         }
@@ -546,7 +568,8 @@ class FormActivity extends Component {
                         <Col xs="12" md="6">
                             <FormGroup>
                                 <Label><T>Subject</T></Label>
-                                <Input type="text" name="name" placeholder={t.__('Enter here')}
+                                <Input type="text" name="name"
+                                       placeholder={t.__('Enter here')}
                                        value={this.getInputValue('name')}
                                        onChange={this.handleInputChange}/>
                             </FormGroup>
@@ -554,7 +577,8 @@ class FormActivity extends Component {
                         <Col xs="12" md="6">
                             <FormGroup>
                                 <Label><T>Type</T></Label>
-                                <SelectHelper name="type" placeholder={t.__('Choose...')}
+                                <SelectHelper name="type"
+                                              placeholder={t.__('Choose...')}
                                               options={AppListStrings.ActivityTypes}
                                               value={this.getInputValue('type')}
                                               onChange={this.handleInputChange}/>
@@ -577,17 +601,21 @@ class FormActivity extends Component {
                         <Col xs="12" md="6">
                             <FormGroup>
                                 <Label><T>Date start</T></Label>
-                                <DateInput type="datetime" name="dateStart"
-                                           value={this.getInputValue('dateStart')}
-                                           onChange={this.handleInputChange}/>
+                                <DateInput
+                                    type="datetime"
+                                    name="dateStart"
+                                    value={this.getInputValue('dateStart')}
+                                    onChange={this.handleInputChange}/>
                             </FormGroup>
                         </Col>
                         <Col xs="12" md="6">
                             <FormGroup>
                                 <Label><T>Date end</T></Label>
-                                <DateInput type="datetime" name="dateEnd"
-                                           value={this.getInputValue('dateEnd')}
-                                           onChange={this.handleInputChange}/>
+                                <DateInput
+                                    type="datetime"
+                                    name="dateEnd"
+                                    value={this.getInputValue('dateEnd')}
+                                    onChange={this.handleInputChange}/>
                             </FormGroup>
                         </Col>
                     </Row>

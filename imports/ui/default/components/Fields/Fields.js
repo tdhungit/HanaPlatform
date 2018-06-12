@@ -12,7 +12,7 @@ import {
     SelectGroupHelper,
     SelectValue
 } from '../../helpers/inputs/SelectHelper';
-import {DateInput} from '../../helpers/inputs/DateHelper';
+import {DateInput, DateView} from '../../helpers/inputs/DateHelper';
 import {TextEditor} from '../../helpers/inputs/TextEditor';
 
 /*----- FORM -----*/
@@ -80,6 +80,10 @@ export class FieldView extends Component {
                 return <CurrencyView value={value} {...fieldProps}/>;
             case 'relate':
                 return <RelateView value={value} {...fieldProps}/>;
+            case 'date':
+            case 'time':
+            case 'datetime':
+                return <DateView type={fieldDisplay.type} value={value}/>;
             default:
                 return <div className={fieldDisplay.className || ''}>{value}</div>;
         }
