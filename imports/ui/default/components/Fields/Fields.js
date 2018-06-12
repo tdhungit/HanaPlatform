@@ -186,7 +186,7 @@ export class FieldInput extends Component {
     }
 
     render() {
-        let attributes = this.props;
+        let attributes = {...this.props};
         if (!attributes.type) {
             attributes.type = 'text';
         }

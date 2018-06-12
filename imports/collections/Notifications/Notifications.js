@@ -3,7 +3,7 @@ import {NotificationTypes} from './config';
 
 class NotificationsCollection extends CollectionAssign {
     fixedFilters(user, selector = {}, actionName = 'View') {
-        selector.assignedId = user._id;
+        selector.assignedId = user && user._id || '';
         return selector;
     }
 }

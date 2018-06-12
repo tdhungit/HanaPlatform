@@ -27,7 +27,7 @@ class ChatChannelsCollection extends CollectionBase {
     fixedFilters(user, selector = {}, actionName = 'View') {
         selector = super.fixedFilters(user, selector, actionName);
         const userId = user && user._id || '';
-        if (user.isAdmin || user.isDeveloper) {
+        if (user && (user.isAdmin || user.isDeveloper)) {
             if (!selector.adminQuery) {
                 selector.users = {$elemMatch: {_id: userId}};
             } else {
