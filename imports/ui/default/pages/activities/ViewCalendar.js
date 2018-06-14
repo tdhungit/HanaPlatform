@@ -96,17 +96,32 @@ class ViewCalendar extends Component {
         const rawEvents = {...currentEvents};
         let events = [];
         _.each(rawEvents, (activity) => {
-            events.push({
+            const momentStart = moment(activity.dateStart);
+            const momentEnd = moment(activity.dateEnd);
+
+            let event  = {
                 id: activity._id,
                 title: activity.name,
-                start: moment(activity.dateStart),
-                end: moment(activity.dateEnd),
-                allDay:false,
+                start: momentStart,
+                end: momentEnd,
+                allDay: activity.allDay || false,
                 className: 'calendar-event-' + activity.type,
                 icon: icons[activity.type],
                 color: colors[activity.type],
                 source: activity
-            });
+            };
+
+            if (activity.repeat && activity.repeat.dayOfWeek && activity.repeat.dayOfWeek.length > 0) {
+                event.start = activity.repeat.start || moment(activity.dateStart);
+                event.end = activity.repeat.end || moment(activity.dateEnd);
+                event.dow = activity.repeat.dayOfWeek;
+                event.ranges = [{
+                    start: moment(momentStart.format('YYYY-MM-DD')),
+                    end: moment(momentEnd.format('YYYY-MM-DD')).endOf('day'),
+                }];
+            }
+
+            events.push(event);
         });
 
         return events;

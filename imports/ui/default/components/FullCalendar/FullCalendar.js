@@ -39,8 +39,15 @@ export class CalendarUtils {
             },
 
             eventRender: (event, element) => {
-                if(event.icon){
+                if (event.icon) {
                     element.find(".fc-title").prepend("<i class='" + event.icon + "'/> ");
+                }
+
+                if (event.ranges) {
+                    return (event.ranges.filter(function (range) {
+                        return (event.start.isBefore(range.end) &&
+                            event.end.isAfter(range.start));
+                    }).length) > 0;
                 }
             },
         };
