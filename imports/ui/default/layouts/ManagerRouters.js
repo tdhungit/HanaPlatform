@@ -41,7 +41,6 @@ import CreateBranchOffice from '../pages/companies/CreateBranchOffice';
 import EditBranchOffice from '../pages/companies/EditBranchOffice';
 import ViewBranchOffice from '../pages/companies/ViewBranchOffice';
 import Index from '../pages/index/Index';
-import Install from '../pages/index/Install';
 import About from '../pages/index/About';
 import NotFound from '../pages/index/NotFound';
 import ImportData from '../pages/settings/ImportData';
@@ -51,7 +50,6 @@ import ViewChat from '../pages/chats/ViewChat';
 
 let HomeRouters = {
     "/": {component: Index},
-    "/install": {component: Install},
     "/about-us": {component: About},
     "/404": {component: NotFound}
 };

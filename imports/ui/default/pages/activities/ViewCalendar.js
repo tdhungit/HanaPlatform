@@ -16,6 +16,8 @@ import Activities from '../../../../collections/Activities/Activities';
 import {frameworkConfig} from '../../../../config/config.inc';
 import FormActivity from './FormActivity';
 import Settings from '../../../../collections/Settings/Settings';
+import Models from '/imports/collections/Models/Models';
+import DetailComponent from '../models/components/DetailComponent';
 
 class ViewCalendar extends Component {
     static viewInfo = {controller: 'Activities', action: 'View'};
@@ -29,10 +31,13 @@ class ViewCalendar extends Component {
             format: {},
             events: [],
             isCreateEvent: false,
-            newEvent: {}
+            newEvent: {},
+            isOpenEvent: false,
+            openEvent: {},
         };
 
         this.onEventSelect = this.onEventSelect.bind(this);
+        this.onEventClick = this.onEventClick.bind(this);
     }
 
     componentWillMount() {
@@ -73,6 +78,7 @@ class ViewCalendar extends Component {
             timeFormat: 'HH:mm',
 
             select: this.onEventSelect,
+            eventClick: this.onEventClick,
 
             // please, use funciton events source for reactivity support
             events: (start, end, timezone, callback) => {
@@ -108,7 +114,7 @@ class ViewCalendar extends Component {
                 className: 'calendar-event-' + activity.type,
                 icon: icons[activity.type],
                 color: colors[activity.type],
-                source: activity
+                activity: activity // source activity
             };
 
             if (activity.repeat && activity.repeat.dayOfWeek && activity.repeat.dayOfWeek.length > 0) {
@@ -135,6 +141,14 @@ class ViewCalendar extends Component {
         this.setState({isCreateEvent: true, newEvent});
     }
 
+    onEventClick(event, jsEvent, view) {
+        const openEvent = event.activity || {};
+        this.setState({
+            openEvent: openEvent,
+            isOpenEvent: true
+        });
+    }
+
     renderModalCreateEvent() {
         return (
             <Modal isOpen={this.state.isCreateEvent}
@@ -148,6 +162,26 @@ class ViewCalendar extends Component {
                         activity={this.state.newEvent}
                         onSubmit={() => this.setState({isCreateEvent: false})}
                         onCancel={() => this.setState({isCreateEvent: false})}/>
+                </ModalBody>
+            </Modal>
+        );
+    }
+
+    renderModalEvent() {
+        const event = this.state.openEvent;
+        const model = Models.getModel('Activities') || Activities.getLayouts();
+
+        return (
+            <Modal isOpen={this.state.isOpenEvent} toggle={() => {}} className="modal-lg">
+                <ModalHeader toggle={() => this.setState({isOpenEvent: false})}>
+                    <i className="fa fa-tasks"/> <T>{event.name}</T>
+                </ModalHeader>
+                <ModalBody>
+                    <DetailComponent
+                        title={false}
+                        model={model}
+                        record={this.state.openEvent}
+                        editLink={false}/>
                 </ModalBody>
             </Modal>
         );
@@ -169,6 +203,7 @@ class ViewCalendar extends Component {
                     </CardBody>
                 </Card>
                 {this.renderModalCreateEvent()}
+                {this.renderModalEvent()}
             </div>
         );
     }

@@ -131,18 +131,19 @@ class DetailComponent extends Component {
     }
 
     render() {
-        const {model, record, editLink} = this.props;
+        const {model, record, editLink, title} = this.props;
 
         if (!model || !record || !record._id) {
             return <Alert color="danger"><T>No Data</T></Alert>;
         }
 
-        const title = record[model.view.title];
+        const titleRecord = record[model.view.title];
         return (
             <Card>
+                {title ?
                 <CardHeader>
                     <i className={model.icon}/>
-                    <strong>{this.props.title}</strong> {title}
+                    <strong>{title}</strong> {titleRecord}
                     <div className="card-actions">
                         {this.renderHeaderLinks()}
                         {editLink ?
@@ -150,7 +151,7 @@ class DetailComponent extends Component {
                             <i className="fa fa-edit"/>
                         </Link> : null}
                     </div>
-                </CardHeader>
+                </CardHeader> : null}
                 <CardBody className="title">
                     {this.renderFields(model, record)}
                 </CardBody>
