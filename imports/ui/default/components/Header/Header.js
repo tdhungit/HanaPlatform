@@ -40,7 +40,6 @@ class Header extends Component {
             notificationDropdownOpen: false, // dropdown
 
             notificationModalId: '',
-            branchOffices: [],
             currentBranchOffice: {}
         };
     }
@@ -241,6 +240,8 @@ class Header extends Component {
     }
 
     render() {
+        const {branchOffices} = this.props;
+
         return (
             <header className="app-header navbar">
                 <NavbarToggler className="d-lg-none" onClick={this.mobileSidebarToggle}>&#9776;</NavbarToggler>
@@ -292,7 +293,7 @@ class Header extends Component {
                     <ModalBody>
                         <Table bordered hover>
                             <tbody>
-                            {this.state.branchOffices.map((branchOffice) => {
+                            {branchOffices.map((branchOffice) => {
                                 return (
                                     <tr key={branchOffice._id} onClick={() => this.chooseBranchOffice(branchOffice._id)}>
                                         <td>{branchOffice.name}</td>
