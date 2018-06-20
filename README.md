@@ -33,3 +33,7 @@
 ### Login
 * Access: http://localhost:3000/login
 * Account: @username.@domain (Example: admin.up5.vn)
+
+### Demo
+* UPPOS built on HanaPlatform: http://pos.up5.vn
+* Account: admin.up5.vn/123
