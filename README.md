@@ -1,5 +1,7 @@
 # Hana App Platform for data manager in business with Software Service Model
 
+# I moved this project to: https://github.com/avoca-platform/Platform
+
 ![alt text](./public/img/app/screenshot.png?raw=true "Penguin Platform")
 
 ## Feature
